@@ -1,0 +1,25 @@
+repositories {
+    // PlaceholderAPI repository
+    maven { url = 'http://repo.extendedclip.com/content/repositories/placeholderapi/' }
+}
+
+dependencies {
+    compile project(':common')
+    compile group: 'com.alessiodp.core', name: 'bukkit', version: project.ext.adpCore
+
+    compileOnly group: 'me.clip', name: 'placeholderapi', version: project.ext.placeholderApi
+}
+
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        include 'plugin.yml'
+        expand([
+                'pluginVersion': project.version,
+                'pluginName': project.ext.pluginName,
+                'pluginDescription': project.ext.pluginDescription,
+                'pluginAuthor': project.ext.pluginAuthor,
+                'pluginWebsite': project.ext.pluginWebsite
+        ])
+    }
+}

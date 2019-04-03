@@ -1,0 +1,9 @@
+rootProject.name = 'oreannouncer'
+include (
+    ':api' ,
+    ':common',
+    ':bukkit'
+)
+
+project(':api').name = 'oreannouncer-api'
+

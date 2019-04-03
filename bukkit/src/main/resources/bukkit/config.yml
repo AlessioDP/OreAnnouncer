@@ -1,0 +1,196 @@
+#
+# Main configuration file
+#
+# You can find a list of available tags here: https://alessiodp.com/docs/oreannouncer/placeholders/
+#
+
+# / = = = = = = = = = = = = = = = = \
+# |      OREANNOUNCER SETTINGS      |
+# \ = = = = = = = = = = = = = = = = /
+oreannouncer:
+  updates:
+    # Check for updates, recommended. OreAnnouncer will check for updates when the server finish to load
+    check: true
+    # Send a message to admins if an update is available
+    warn: true
+
+  logging:
+    # Enable debug messages
+    debug: false
+    save-file:
+      # Save to file log messages
+      enable: false
+      # Format of messages
+      format: "%date% [%time%] %message%\n"
+      # Log file name
+      file: "log.txt"
+
+
+# / = = = = = = = = = = = = = = = = \
+# |        STORAGE  SETTINGS        |
+# \ = = = = = = = = = = = = = = = = /
+storage:
+  # What type of storage the plugin should use?
+  # Database storage types:
+  # => mysql      | [Remote] Save the data into a MySQL database
+  # => sqlite     | [File]   Save the data into a SQLite database (default)
+  database-storage-type: sqlite
+
+  storage-settings:
+    # General settings of SQL databases
+    general-sql-settings:
+      varchar-size: 255
+      upgrade:
+        save-old-table: true
+        old-table-suffix: "_backup"
+      tables:
+        players: "oreannouncer_players"
+        blocks: "oreannouncer_blocks"
+        versions: "oreannouncer_versions"
+
+    # SQLite settings
+    sqlite:
+      database-file: "database.db"
+
+    # MySQL settings
+    mysql:
+      address: "localhost"
+      port: "3306"
+      database: "database"
+      username: "username"
+      password: "password"
+      # Size of the connection pool
+      pool-size: 10
+      # Lifetime of each connection, in milliseconds (Default: 30 minutes = 1800000ms)
+      connection-lifetime: 1800000
+      # Property used to alert when the connection is not using a valid SSL certificate
+      use-ssl: false
+      # Charset used by tables
+      charset: "utf8"
+
+
+# / = = = = = = = = = = = = = = = = \
+# |         ALERTS SETTINGS         |
+# \ = = = = = = = = = = = = = = = = /
+alerts:
+  # Enable alerts system
+  # Whenever a player dig a block users/admins will receive a message
+  enable: true
+  # Send an alert to the console
+  console: true
+  # Get coordinates of the user when he digs an ore
+  coordinates:
+    enable: false
+    # This option will replace placeholders: %coordinates_user% and %coordinates_admin%
+    # You have to use %x%, %y% or %z%
+    format: "&7[x: %x%&7, z: %z%&7]"
+    # Hide a single, or every, coordinate
+    hide-real-coordinates:
+      enable: false
+      # How many coordinates to hide
+      # Coordinates are choose randomly if this number
+      #   is lower than existing coordinates number into the format
+      count: 1
+      # Hide coordinates only for users/admins
+      hidden-for:
+        user: true
+        admin: false
+        console: false
+      # Choose what to hide
+      hide:
+        x: true
+        y: true
+        z: true
+      # Format of a hidden coordinate
+      format: "&k%coordinate%"
+      # Completely remove hidden coordinate to bypass cheaters
+      obfuscate: true
+      # Normally an obfuscated hidden coordinate will keep the original length
+      # Disable that with this option
+      fixed-length: false
+
+
+# / = = = = = = = = = = = = = = = = \
+# |         BLOCKS SETTINGS         |
+# \ = = = = = = = = = = = = = = = = /
+blocks:
+  # Do warn on blocks placed by players (until a server reload)
+  bypass-player-blocks: true
+  # Do not count block broken with a silk touch tool
+  bypass-silk-touch: true
+  # Send a warn message when there is a wrong configured block
+  warn-on-wrong-blocks: true
+  # Light level system is used to check light level when a player is digging a block
+  light-level:
+    enable: false
+    # Send the alert only when the light level is lower than the specified one
+    alert-only-if-lower: true
+    # Count the block only when the light level is lower than the specified one
+    count-only-if-lower: false
+  # Block list, structure:
+  # BLOCK_NAME:                       | Material name of the block
+  #   alerts:                         | Alert options of the block
+  #     user: true/false              |
+  #     admin: true/false             |
+  #   name:                           | Name of the block
+  #     singular: "block"             |
+  #     plural: "blocks"              |
+  #   light-level: 0-15               | Set the light level
+  #   count-on-destroy: true/false    | Count this block
+  list:
+    DIAMOND_ORE:
+      alerts:
+        user: true
+        admin: true
+      name:
+        singular: "diamond"
+        plural: "diamonds"
+      light-level: 15
+      count-on-destroy: true
+    EMERALD_ORE:
+      alerts:
+        user: false
+        admin: true
+      name:
+        singular: "emerald"
+        plural: "emeralds"
+      light-level: 6
+      count-on-destroy: true
+
+
+# / = = = = = = = = = = = = = = = = \
+# |         STATS  SETTINGS         |
+# \ = = = = = = = = = = = = = = = = /
+stats:
+  # Enable statistics system
+  # Any block you put on blocks list will be registered into the database
+  # Choose which block by adding 'count-on-destroy' option
+  enable: false
+  top:
+    enable: true
+    number-of-players: 5
+    page-size: 5
+
+
+
+# / = = = = = = = = = = = = = = = = \
+# |        COMMANDS SETTINGS        |
+# \ = = = = = = = = = = = = = = = = /
+commands:
+  # Enable tab support (/oa <tab> to see every allowed command)
+  tab-support: true
+  oa-description: "OreAnnouncer help page"
+  main-commands:
+    help: "help"
+    oa: "oa"
+    alerts: "alerts"
+    reload: "reload"
+    stats: "stats"
+    top: "top"
+    version: "version"
+  sub-commands:
+    on: "on"
+    off: "off"
+
+
+dont-edit-this.version: 1

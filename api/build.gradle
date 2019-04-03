@@ -1,0 +1,65 @@
+apply plugin: 'maven-publish'
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    archiveClassifier = 'sources'
+}
+
+task javadocJar(type: Jar) {
+    from javadoc
+    archiveClassifier = 'javadoc'
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+            pom {
+                url = 'https://alessiodp.com/'
+                licenses {
+                    license {
+                        name = 'AGPL-3.0'
+                        url = 'https://www.gnu.org/licenses/agpl-3.0.html'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'AlessioDP'
+                        email = 'me@alessiodp.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/AlessioDP/OreAnnouncer.git'
+                    developerConnection = 'scm:git:git@github.com:AlessioDP/OreAnnouncer.git'
+                    url = 'http://github.com/AlessioDP/OreAnnouncer'
+                }
+                ciManagement {
+                    system = 'Jenkins'
+                    url = 'https://ci.codemc.org/job/AlessioDP/job/OreAnnouncer/'
+                }
+            }
+        }
+    }
+    repositories {
+        mavenLocal()
+        if (project.hasProperty('mavenUsername') && project.hasProperty('mavenPassword')) {
+            maven {
+                credentials {
+                    username project.mavenUsername
+                    password project.mavenPassword
+                }
+
+                def releasesRepoUrl = 'https://repo.codemc.org/repository/maven-releases/'
+                def snapshotsRepoUrl = 'https://repo.codemc.org/repository/maven-snapshots/'
+                url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            }
+        }
+    }
+}

@@ -1,0 +1,88 @@
+#
+# Messages configuration file
+#
+# You can find a list of available tags here: https://alessiodp.com/docs/oreannouncer/placeholders/
+#
+
+# / = = = = = = = = = = = = = = = = \
+# |      OREANNOUNCER MESSAGES      |
+# \ = = = = = = = = = = = = = = = = /
+oreannouncer:
+  # Special tags:
+  # => %version%     = New version found
+  # => %thisversion% = Version installed
+  update-available: "&2New version of OreAnnouncer found: %version% (Current: %thisversion%)"
+  # Special tag: %permission% = Missing permission
+  no-permission: "&cYou do not have access to that command"
+  common-messages:
+    invalid-command: "&cInvalid command"
+    configuration-reloaded: "&aConfiguration reloaded"
+
+
+# / = = = = = = = = = = = = = = = = \
+# |         ALERTS MESSAGES         |
+# \ = = = = = = = = = = = = = = = = /
+alerts:
+  user: "&6%player% &efound %number% %block%!"
+  admin: "&6%player% &efound %number% %block%! %coordinates%"
+  console: "%player% found %number% %block%! %coordinates%"
+
+
+# / = = = = = = = = = = = = = = = = \
+# |        COMMANDS MESSAGES        |
+# \ = = = = = = = = = = = = = = = = /
+commands:
+  alerts:
+    toggle-on: "&aNow you will be able to see alerts"
+    toggle-off: "&aYou won't see alerts anymore"
+    wrong-command: "&cWrong variables: Type &7/oa alerts [on/off]"
+
+  stats:
+    content:
+      - "&2============ &l%player%'s Stats &r&2============"
+      - "&bDiamonds&7: %player_destroyed_diamond_ore%"
+      - "&aEmeralds&7: %player_destroyed_emerald_ore%"
+    player-not-found: "&c%player% not found!"
+
+  top:
+    # Special tags:
+    # => %total%    = Total players
+    # => %page%     = Current list page
+    # => %maxpages% = How many pages exist
+    header: "&2============ &lTop Players &r&2============"
+    footer: ""
+    no-one: "&7No one"
+    # You can use JSON to shows per-block total on hover
+    format-player: '&a%player%&7: %player_destroyed% blocks'
+    wrong-command: "&cWrong variables: Type &7/oa top [page]"
+
+  version:
+    # Special tags:
+    # => %version%    = OreAnnouncer version
+    # => %newversion% = Latest OreAnnouncer version
+    updated: "&2&lOreAnnouncer &2%version% &7- Developed by &6AlessioDP"
+    outdated: "&2&lOreAnnouncer &2%version% &7- Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
+
+
+# / = = = = = = = = = = = = = = = = \
+# |          HELP MESSAGES          |
+# \ = = = = = = = = = = = = = = = = /
+help:
+  header: "&2============ &lOreAnnouncer Help Page &r&2============"
+  footer: ""
+  console-help:
+    - "You can only make these commands:"
+    - " > oa reload - Reload the configuration"
+    - " > oa stats <player> - Show player stats"
+    - " > oa top - List of top players"
+    - " > oa version - Show OreAnnouncer information"
+  commands:
+    help: '{"text":"","extra":[{"text":"/oa help","color":"dark_green"},{"text":" - Show help pages","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa help "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    alerts: '{"text":"","extra":[{"text":"/oa alerts [on/off]","color":"dark_green"},{"text":" - Toggle alerts","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa alerts "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    reload: '{"text":"","extra":[{"text":"/oa reload","color":"dark_green"},{"text":" - Reload OreAnnouncer configuration files","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa reload"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    stats: '{"text":"","extra":[{"text":"/oa stats [player]","color":"dark_green"},{"text":" - Show player stats","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa stats "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    top: '{"text":"","extra":[{"text":"/oa top [page]","color":"dark_green"},{"text":" - List of top players","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa top "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    version: '{"text":"","extra":[{"text":"/oa version","color":"dark_green"},{"text":" - Show OreAnnouncer information","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa version"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+
+
+dont-edit-this.version: 1

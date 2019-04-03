@@ -1,0 +1,77 @@
+buildscript {
+    repositories {
+        jcenter() // Shadow plugin
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:5.0.0'
+    }
+}
+
+defaultTasks 'clean', 'build', 'publish'
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'com.github.johnrengelman.shadow' // Shadow jar
+
+    group 'com.alessiodp.oreannouncer'
+    version '2.0.0-SNAPSHOT'
+
+    // Info
+    ext.pluginName = "OreAnnouncer"
+    ext.pluginDescription = "Collects data whenever a player digs an ore"
+    ext.pluginAuthor = "AlessioDP"
+    ext.pluginWebsite = "https://alessiodp.com/"
+
+    // Development
+    ext.adpCore = '1.0.0-SNAPSHOT'
+    ext.lombok = '1.18.6'
+    ext.powermock = '2.0.0'
+
+    // Libraries
+    ext.placeholderApi = '2.9.2'
+
+    // Misc
+    sourceCompatibility = 1.8
+
+    repositories {
+        mavenLocal()
+
+        // Maven central
+        mavenCentral()
+        // CodeMC repository - ADP Core
+        maven { url = 'https://repo.codemc.org/repository/maven-public/' }
+        // Spigot repository for Spigot & Bukkit
+        maven { url = 'https://hub.spigotmc.org/nexus/content/groups/public/' }
+        // JitPack repo
+        maven { url = 'https://jitpack.io' }
+    }
+
+    dependencies {
+        compileOnly group: 'org.projectlombok', name: 'lombok', version: project.ext.lombok
+        annotationProcessor group: 'org.projectlombok', name: 'lombok', version: project.ext.lombok
+
+        testCompile group: 'org.powermock', name: 'powermock-module-junit4', version: project.ext.powermock
+        testCompile group: 'org.powermock', name: 'powermock-api-mockito2', version: project.ext.powermock
+    }
+}
+
+dependencies {
+    compile project(':oreannouncer-api')
+    compile project(':common')
+    compile project(':bukkit')
+}
+
+shadowJar {
+    archiveBaseName  = project.ext.pluginName
+    archiveClassifier = null
+    dependencies {
+        include(dependency('com.alessiodp.oreannouncer:.*'))
+        include(dependency('com.alessiodp.core:.*'))
+    }
+
+    relocate 'com.alessiodp.core', 'com.alessiodp.oreannouncer.core'
+}
+
+artifacts {
+    archives shadowJar
+}
