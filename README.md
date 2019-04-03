@@ -6,7 +6,6 @@ You can send an alert to users/admins or just store every block they destroy to 
 
 [Official project page here!](https://alessiodp.com/oreannouncer/)
 
-
 ## Downloads
 [Download from Spigot](http://www.spigotmc.org/resources/oreannouncer.33464/)  
 [Download from Bukkit](https://dev.bukkit.org/projects/oreannouncer)

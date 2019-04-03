@@ -50,6 +50,9 @@ public enum SQLTable implements ISQLTable {
 				case "versions":
 					ret = VERSIONS;
 					break;
+				default:
+					ret = null;
+					break;
 			}
 		}
 		return ret;

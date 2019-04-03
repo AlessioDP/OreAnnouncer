@@ -35,6 +35,7 @@ public class OADatabaseManager extends DatabaseManager {
 				// Unsupported storage type
 				plugin.getLoggerManager().printError(Constants.DEBUG_DB_INIT_FAILED_UNSUPPORTED
 						.replace("{type}", ConfigMain.STORAGE_TYPE_DATABASE));
+				break;
 		}
 		
 		if (ret != null) {

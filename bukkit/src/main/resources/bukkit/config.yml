@@ -81,8 +81,8 @@ alerts:
   # Get coordinates of the user when he digs an ore
   coordinates:
     enable: false
-    # This option will replace placeholders: %coordinates_user% and %coordinates_admin%
-    # You have to use %x%, %y% or %z%
+    # Settings for the placeholder %coordinates%
+    # Here you can use: %x%, %y% or %z%
     format: "&7[x: %x%&7, z: %z%&7]"
     # Hide a single, or every, coordinate
     hide-real-coordinates:

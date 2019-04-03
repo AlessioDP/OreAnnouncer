@@ -23,6 +23,7 @@ oreannouncer:
 # |         ALERTS MESSAGES         |
 # \ = = = = = = = = = = = = = = = = /
 alerts:
+  # Special tag: %coordinates% = Coordinates of the destroyed block
   user: "&6%player% &efound %number% %block%!"
   admin: "&6%player% &efound %number% %block%! %coordinates%"
   console: "%player% found %number% %block%! %coordinates%"
