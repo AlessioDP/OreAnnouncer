@@ -114,7 +114,7 @@ public class TestCoordinateUtils {
 	private int countObfuscations(String result) {
 		int ret = 0;
 		for (String str : result.split(",")) {
-			if (str.equals("&k0000"))
+			if ("&k0000".equals(str))
 				ret++;
 		}
 		return ret;

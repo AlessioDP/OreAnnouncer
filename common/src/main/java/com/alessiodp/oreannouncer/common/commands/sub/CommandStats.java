@@ -55,15 +55,14 @@ public class CommandStats extends ADPSubCommand {
 		
 		// Command handling
 		OAPlayerImpl targetPlayer = null;
-		if (commandData.getArgs().length > 1) {
-			if (commandData.havePermission(OreAnnouncerPermission.ADMIN_STATS_OTHER)) {
-				targetPlayer = ((OreAnnouncerPlugin) plugin).getDatabaseManager().getPlayerByName(commandData.getArgs()[1]);
-				if (targetPlayer == null) {
-					// Not found
-					sendMessage(player, Messages.CMD_STATS_PLAYERNOTFOUND
-							.replace("%player%", commandData.getArgs()[1]));
-					return;
-				}
+		if (commandData.getArgs().length > 1
+				&& commandData.havePermission(OreAnnouncerPermission.ADMIN_STATS_OTHER)) {
+			targetPlayer = ((OreAnnouncerPlugin) plugin).getDatabaseManager().getPlayerByName(commandData.getArgs()[1]);
+			if (targetPlayer == null) {
+				// Not found
+				sendMessage(player, Messages.CMD_STATS_PLAYERNOTFOUND
+						.replace("%player%", commandData.getArgs()[1]));
+				return;
 			}
 		}
 		

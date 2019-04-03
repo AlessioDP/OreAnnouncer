@@ -64,9 +64,8 @@ public class OASQLDispatcher extends SQLDispatcher implements IOADatabaseDispatc
 				database = new SQLiteDao(plugin, ConfigMain.STORAGE_SETTINGS_SQLITE_DBFILE);
 				database.initSQL();
 				break;
-			case YAML:
-			case NONE:
-				// Pass
+			default:
+				// Unsupported storage type
 		}
 		
 		if (database != null && !database.isFailed()) {

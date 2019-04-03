@@ -62,11 +62,11 @@ public abstract class BlockListener {
 				boolean alertAdmins = block.isAlertingAdmins();
 				
 				// Light level system
-				if (ConfigMain.BLOCKS_LIGHT_ENABLE && lightLevel < block.getLightLevel()) {
-					if (ConfigMain.BLOCKS_LIGHT_ALERTIFLOWER) {
-						alertUsers = false;
-						alertAdmins = false;
-					}
+				if (ConfigMain.BLOCKS_LIGHT_ENABLE
+						&& lightLevel < block.getLightLevel()
+						&& ConfigMain.BLOCKS_LIGHT_ALERTIFLOWER) {
+					alertUsers = false;
+					alertAdmins = false;
 				}
 				
 				if (alertUsers || alertAdmins)

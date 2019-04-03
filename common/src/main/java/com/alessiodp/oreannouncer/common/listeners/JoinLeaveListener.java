@@ -17,12 +17,12 @@ public abstract class JoinLeaveListener {
 		plugin.getScheduler().runAsync(() -> {
 			OAPlayerImpl player = plugin.getPlayerManager().loadPlayer(user.getUUID());
 			
-			if (ConfigMain.OREANNOUNCER_UPDATES_WARN && user.hasPermission(OreAnnouncerPermission.ADMIN_UPDATES.toString())) {
-				if (!plugin.getAdpUpdater().getFoundVersion().isEmpty()) {
-					player.sendMessage(Messages.OREANNOUNCER_UPDATEAVAILABLE
-							.replace("%version%", plugin.getAdpUpdater().getFoundVersion())
-							.replace("%thisversion%", plugin.getVersion()));
-				}
+			if (ConfigMain.OREANNOUNCER_UPDATES_WARN
+					&& user.hasPermission(OreAnnouncerPermission.ADMIN_UPDATES.toString())
+					&& !plugin.getAdpUpdater().getFoundVersion().isEmpty()) {
+				player.sendMessage(Messages.OREANNOUNCER_UPDATEAVAILABLE
+						.replace("%version%", plugin.getAdpUpdater().getFoundVersion())
+						.replace("%thisversion%", plugin.getVersion()));
 			}
 		});
 	}

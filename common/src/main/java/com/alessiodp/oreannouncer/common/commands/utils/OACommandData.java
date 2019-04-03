@@ -7,8 +7,4 @@ import lombok.Setter;
 
 public class OACommandData extends CommandData {
 	@Getter @Setter private OAPlayerImpl player;
-	
-	public OACommandData() {
-		super();
-	}
 }

@@ -1,4 +1,4 @@
-m-- Start and end placeholders are used to obtain right queries
+-- Start and end placeholders are used to obtain right queries
 
 /*START_PLAYERS*/
 CREATE TABLE `{table_players}` (

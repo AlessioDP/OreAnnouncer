@@ -43,22 +43,26 @@ public class CommandOA extends ADPMainCommand {
 	
 	@Override
 	public boolean onCommand(User sender, String command, String[] args) {
+		String subCommand;
 		if (sender.isPlayer()) {
 			if (args.length == 0) {
 				// Set /oa to /oa help
-				args = new String[]{ConfigMain.COMMANDS_CMD_HELP};
+				subCommand = ConfigMain.COMMANDS_CMD_HELP.toLowerCase();
+			} else {
+				subCommand = args[0].toLowerCase();
 			}
 			
-			if (exists(args[0])) {
-				plugin.getCommandManager().getCommandUtils().executeCommand(sender, getCommandName(), getSubCommand(args[0].toLowerCase()), args);
+			if (exists(subCommand)) {
+				plugin.getCommandManager().getCommandUtils().executeCommand(sender, getCommandName(), getSubCommand(subCommand), args);
 			} else {
 				sender.sendMessage(Messages.OREANNOUNCER_COMMON_INVALIDCMD, true);
 			}
 		} else {
 			// Console
 			if (args.length > 0) {
-				if (exists(args[0]) && getSubCommand(args[0].toLowerCase()).isExecutableByConsole()) {
-					plugin.getCommandManager().getCommandUtils().executeCommand(sender, getCommandName(), getSubCommand(args[0].toLowerCase()), args);
+				subCommand = args[0].toLowerCase();
+				if (exists(subCommand) && getSubCommand(subCommand).isExecutableByConsole()) {
+					plugin.getCommandManager().getCommandUtils().executeCommand(sender, getCommandName(), getSubCommand(subCommand), args);
 				} else {
 					plugin.logConsole(plugin.getColorUtils().removeColors(Messages.OREANNOUNCER_COMMON_INVALIDCMD), false);
 				}

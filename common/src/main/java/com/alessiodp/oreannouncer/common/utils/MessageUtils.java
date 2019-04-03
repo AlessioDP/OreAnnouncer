@@ -30,6 +30,7 @@ public abstract class MessageUtils {
 					case OAConstants.PLACEHOLDER_PLAYER_DESTROYED:
 						ret = ret.replace(identifier, Integer.toString(plugin.getPlayerManager().getTotalBlocks(player)));
 						break;
+					default: // Nothing to do
 				}
 				
 				// Player destroyed material placeholder

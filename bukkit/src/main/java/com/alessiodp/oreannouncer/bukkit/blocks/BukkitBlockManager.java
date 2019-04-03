@@ -32,11 +32,11 @@ public class BukkitBlockManager extends BlockManager {
 				blockLocation.getZ(),
 				blockLocation.getYaw(),
 				blockLocation.getPitch()).getBlock();
-		if (block != null && block.getType().toString().equalsIgnoreCase(material)) {
-			if (!block.hasMetadata(OAConstants.BLOCK_METADATA)) {
-				block.setMetadata(OAConstants.BLOCK_METADATA, new FixedMetadataValue((BukkitOreAnnouncerBootstrap) plugin.getBootstrap(), true));
-				ret = true;
-			}
+		if (block != null
+				&& block.getType().toString().equalsIgnoreCase(material)
+				&& !block.hasMetadata(OAConstants.BLOCK_METADATA)) {
+			block.setMetadata(OAConstants.BLOCK_METADATA, new FixedMetadataValue((BukkitOreAnnouncerBootstrap) plugin.getBootstrap(), true));
+			ret = true;
 		}
 		return ret;
 	}
