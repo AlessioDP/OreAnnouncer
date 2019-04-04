@@ -14,16 +14,16 @@ allprojects {
     apply plugin: 'com.github.johnrengelman.shadow' // Shadow jar
 
     group 'com.alessiodp.oreannouncer'
-    version '2.0.0'
+    version '2.0.1-SNAPSHOT'
 
     // Info
     ext.pluginName = "OreAnnouncer"
-    ext.pluginDescription = "Collects data whenever a player digs an ore"
+    ext.pluginDescription = "Collects data about mined blocks"
     ext.pluginAuthor = "AlessioDP"
     ext.pluginWebsite = "https://alessiodp.com/"
 
     // Development
-    ext.adpCore = '1.0.0'
+    ext.adpCore = '1.0.1'
     ext.lombok = '1.18.6'
     ext.powermock = '2.0.0'
 
@@ -60,6 +60,9 @@ dependencies {
     compile project(':common')
     compile project(':bukkit')
 }
+
+// Disable OreAnnouncer root project jar
+jar.enabled = false
 
 shadowJar {
     archiveBaseName  = project.ext.pluginName
