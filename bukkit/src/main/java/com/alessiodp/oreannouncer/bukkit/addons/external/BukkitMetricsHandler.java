@@ -13,7 +13,7 @@ public class BukkitMetricsHandler extends MetricsHandler {
 	}
 	
 	@Override
-	public void registerMetrics() {
+	protected void registerMetrics() {
 		Metrics metrics = new Metrics((Plugin) plugin.getBootstrap());
 		
 		metrics.addCustomChart(new Metrics.SimplePie("type_of_announce_used", () -> {
