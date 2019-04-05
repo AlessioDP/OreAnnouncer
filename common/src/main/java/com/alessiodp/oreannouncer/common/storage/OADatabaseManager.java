@@ -4,7 +4,6 @@ import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.core.common.storage.DatabaseManager;
 import com.alessiodp.core.common.storage.StorageType;
-import com.alessiodp.core.common.storage.dispatchers.NoneDispatcher;
 import com.alessiodp.core.common.storage.interfaces.IDatabaseDispatcher;
 import com.alessiodp.oreannouncer.common.configuration.OAConstants;
 import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
@@ -24,9 +23,6 @@ public class OADatabaseManager extends DatabaseManager {
 	public IDatabaseDispatcher initializeDispatcher(StorageType storageType) {
 		IDatabaseDispatcher ret = null;
 		switch (storageType) {
-			case NONE:
-				ret = new NoneDispatcher();
-				break;
 			case MYSQL:
 			case SQLITE:
 				ret = new OASQLDispatcher(plugin);
