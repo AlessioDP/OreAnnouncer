@@ -2,6 +2,7 @@ package com.alessiodp.oreannouncer.common;
 
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.bootstrap.ADPBootstrap;
+import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.core.common.logging.ConsoleColor;
 import com.alessiodp.oreannouncer.api.OreAnnouncer;
 import com.alessiodp.oreannouncer.common.api.ApiHandler;
@@ -67,7 +68,7 @@ public abstract class OreAnnouncerPlugin extends ADPPlugin {
 	
 	@Override
 	public void reloadConfiguration() {
-		getLoggerManager().logDebug(OAConstants.DEBUG_PLUGIN_RELOADING, true);
+		getLoggerManager().logDebug(Constants.DEBUG_PLUGIN_RELOADING, true);
 		getConfigurationManager().reload();
 		reloadLoggerManager();
 		getDatabaseManager().reload();

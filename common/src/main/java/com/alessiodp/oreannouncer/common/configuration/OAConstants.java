@@ -26,6 +26,8 @@ public class OAConstants {
 	public static final String PLACEHOLDER_PLAYER_DESTROYED = "%player_destroyed%";
 	public static final String PLACEHOLDER_PLAYER_DESTROYED_MATERIAL = "%player_destroyed_{material}%";;
 	public static final String PLACEHOLDER_PLAYER_DESTROYED_MATERIAL_REGEX = "%player_destroyed_([^%]+)%";
+	
+	
 	// SQL queries
 	public static final String QUERY_PLAYER_INSERT_MYSQL = "INSERT INTO {table_players} (`uuid`, `name`, `alerts`) VALUES (?,?,?) ON DUPLICATE KEY UPDATE `name`=VALUES(`name`), `alerts`=VALUES(`alerts`);";
 	public static final String QUERY_PLAYER_INSERT_SQLITE = "INSERT OR REPLACE INTO {table_players} (`uuid`, `name`, `alerts`) VALUES (?,?,?);";
@@ -38,6 +40,7 @@ public class OAConstants {
 	public static final String QUERY_BLOCK_INSERT_MYSQL = "INSERT INTO {table_blocks} (`player`, `material_name`, `destroyed`) VALUES (?,?,?) ON DUPLICATE KEY UPDATE `destroyed`=VALUES(`destroyed`);";
 	public static final String QUERY_BLOCK_INSERT_SQLITE = "INSERT OR REPLACE INTO {table_blocks} (`player`, `material_name`, `destroyed`) VALUES (?,?,?);";
 	public static final String QUERY_BLOCK_GET_PLAYER = "SELECT * FROM {table_blocks} WHERE `player`=?;";
+	
 	
 	// Debug messages
 	public static final String DEBUG_CFG_WRONGBLOCK = "Cannot find the block '{block}'";
@@ -63,6 +66,4 @@ public class OAConstants {
 	public static final String DEBUG_EVENT_BLOCK_PLACE = "{player} placed a marked block '{block}'";
 	public static final String DEBUG_PLAYER_UPDATENAME = "Changed name of '{uuid}' from '{old}' to '{new}'";
 	public static final String DEBUG_PLAYER_LOADBLOCKS = "Loaded {number} blocks of '{uuid}'";
-	public static final String DEBUG_PLUGIN_REGISTERING = "Registering listeners...";
-	public static final String DEBUG_PLUGIN_RELOADING = "Reloading plugin...";
 }
