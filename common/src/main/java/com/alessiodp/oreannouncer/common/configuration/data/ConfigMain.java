@@ -295,7 +295,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 							.replace("{block}", key));
 				}
 			}
+			ConfigMain.BLOCKS_LIST = blocks;
 		}
-		ConfigMain.BLOCKS_LIST = blocks; // Empty if no blocks found
 	}
 }
