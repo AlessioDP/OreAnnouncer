@@ -27,8 +27,8 @@ commands:
     format-player: '&a%player%&7: %player_destroyed% blocs'
     wrong-command: "&cMauvaises variables: Tapez &7/oa top [page]"
   version:
-    updated: "&2&lOreAnnouncer &2%version% &7- Développé par &6AlessioDP"
-    outdated: "&2&lOreAnnouncer &2%version% &7- Développé par &6AlessioDP\n&aNouvelle version trouvé: &2%newversion%"
+    updated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Developed by &6AlessioDP"
+    outdated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
 help:
   header: "&2======= &lPage d'aide de OreAnnouncer &r&2======="
   footer: ""
@@ -45,4 +45,5 @@ help:
     stats: '{"text":"","extra":[{"text":"/oa stats [player]","color":"dark_green"},{"text":" - Afficher les statistiques du joueur","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa stats "},"hoverEvent":{"action":"show_text","value":{"text":"Effectuer la commande","color":"gold"}}}'
     top: '{"text":"","extra":[{"text":"/oa top [page]","color":"dark_green"},{"text":" - Liste des meilleurs joueurs","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa top "},"hoverEvent":{"action":"show_text","value":{"text":"Effectuer la commande","color":"gold"}}}'
     version: '{"text":"","extra":[{"text":"/oa version","color":"dark_green"},{"text":" - Afficher les information OreAnnouncer ","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa version"},"hoverEvent":{"action":"show_text","value":{"text":"Effectuer la commande","color":"gold"}}}'
-dont-edit-this.version: 1
+dont-edit-this:
+  version: 2
