@@ -1,4 +1,6 @@
 dependencies {
     compile project(':oreannouncer-api')
     compile group: 'com.alessiodp.core', name: 'common', version: project.ext.adpCore
+
+    compileOnly group: 'com.alessiodp.lastloginapi', name: 'lastloginapi-api', version: '1.1.0'
 }

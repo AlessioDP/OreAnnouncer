@@ -61,8 +61,9 @@ commands:
     # Special tags:
     # => %version%    = OreAnnouncer version
     # => %newversion% = Latest OreAnnouncer version
-    updated: "&2&lOreAnnouncer &2%version% &7- Developed by &6AlessioDP"
-    outdated: "&2&lOreAnnouncer &2%version% &7- Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
+    # => %platform%   = Platform of the plugin (e.g. Bukkit, BungeeCord)
+    updated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Developed by &6AlessioDP"
+    outdated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
 
 
 # / = = = = = = = = = = = = = = = = \
@@ -86,4 +87,5 @@ help:
     version: '{"text":"","extra":[{"text":"/oa version","color":"dark_green"},{"text":" - Show OreAnnouncer information","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa version"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
 
 
-dont-edit-this.version: 1
+dont-edit-this:
+  version: 2

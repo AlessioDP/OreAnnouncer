@@ -1,0 +1,68 @@
+package com.alessiodp.oreannouncer.bungeecord;
+
+import com.alessiodp.core.bungeecord.scheduling.ADPBungeeScheduler;
+import com.alessiodp.core.bungeecord.utils.BungeeColorUtils;
+import com.alessiodp.core.common.bootstrap.ADPBootstrap;
+import com.alessiodp.core.common.configuration.Constants;
+import com.alessiodp.oreannouncer.bungeecord.addons.BungeeOAAddonManager;
+import com.alessiodp.oreannouncer.bungeecord.addons.external.BungeeMetricsHandler;
+import com.alessiodp.oreannouncer.bungeecord.blocks.BungeeBlockManager;
+import com.alessiodp.oreannouncer.bungeecord.commands.BungeeOACommandManager;
+import com.alessiodp.oreannouncer.bungeecord.configuration.BungeeOAConfigurationManager;
+import com.alessiodp.oreannouncer.bungeecord.listeners.BungeeJoinLeaveListener;
+import com.alessiodp.oreannouncer.bungeecord.messaging.BungeeOAMessenger;
+import com.alessiodp.oreannouncer.bungeecord.players.BungeePlayerManager;
+import com.alessiodp.oreannouncer.bungeecord.utils.BungeeMessageUtils;
+import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
+import net.md_5.bungee.api.plugin.Plugin;
+import net.md_5.bungee.api.plugin.PluginManager;
+
+public class BungeeOreAnnouncerPlugin extends OreAnnouncerPlugin {
+	
+	public BungeeOreAnnouncerPlugin(ADPBootstrap bootstrap) {
+		super(bootstrap);
+	}
+	
+	@Override
+	protected void initializeCore() {
+		scheduler = new ADPBungeeScheduler(this);
+		configurationManager = new BungeeOAConfigurationManager(this);
+		messageUtils = new BungeeMessageUtils(this);
+		messenger = new BungeeOAMessenger(this);
+		
+		super.initializeCore();
+	}
+	
+	@Override
+	protected void loadCore() {
+		blockManager = new BungeeBlockManager(this);
+		playerManager = new BungeePlayerManager(this);
+		commandManager = new BungeeOACommandManager(this);
+		
+		super.loadCore();
+	}
+	
+	@Override
+	protected void postHandle() {
+		colorUtils = new BungeeColorUtils();
+		addonManager = new BungeeOAAddonManager(this);
+		
+		super.postHandle();
+		
+		new BungeeMetricsHandler(this);
+	}
+	
+	@Override
+	protected void registerListeners() {
+		getLoggerManager().logDebug(Constants.DEBUG_PLUGIN_REGISTERING, true);
+		Plugin plugin = (Plugin) getBootstrap();
+		PluginManager pm = plugin.getProxy().getPluginManager();
+		pm.registerListener(plugin, new BungeeJoinLeaveListener(this));
+	}
+	
+	@Override
+	public boolean isBungeeCordEnabled() {
+		return false;
+	}
+}
+

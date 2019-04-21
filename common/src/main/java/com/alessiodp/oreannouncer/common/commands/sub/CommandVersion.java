@@ -56,7 +56,8 @@ public class CommandVersion extends ADPSubCommand {
 		if (player != null) {
 			player.sendMessage(message
 					.replace("%version%", version)
-					.replace("%newversion%", newVersion));
+					.replace("%newversion%", newVersion)
+					.replace("%platform%", plugin.getPlatform()));
 		} else {
 			plugin.logConsole(plugin.getColorUtils().removeColors(message), false);
 		}

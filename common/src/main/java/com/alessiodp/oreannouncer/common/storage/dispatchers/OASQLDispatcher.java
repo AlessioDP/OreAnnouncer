@@ -14,8 +14,8 @@ import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 import com.alessiodp.oreannouncer.common.players.objects.PlayerDataBlock;
 import com.alessiodp.oreannouncer.common.storage.interfaces.IOADatabaseDispatcher;
+import com.alessiodp.oreannouncer.common.storage.sql.OASQLUpgradeManager;
 import com.alessiodp.oreannouncer.common.storage.sql.SQLTable;
-import com.alessiodp.oreannouncer.common.storage.sql.SQLUpgradeManager;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,11 +30,12 @@ public class OASQLDispatcher extends SQLDispatcher implements IOADatabaseDispatc
 	
 	public OASQLDispatcher(ADPPlugin plugin) {
 		super(plugin);
-		upgradeManager = new SQLUpgradeManager();
 	}
 	
 	@Override
 	public void init(StorageType type) {
+		upgradeManager = new OASQLUpgradeManager(plugin, this, type);
+		
 		switch (type) {
 			case MYSQL:
 				SQLTable.setupTables(
@@ -101,8 +102,7 @@ public class OASQLDispatcher extends SQLDispatcher implements IOADatabaseDispatc
 							query = OAConstants.QUERY_PLAYER_INSERT_MYSQL;
 						try (PreparedStatement preStatement = connection.prepareStatement(SQLTable.formatGenericQuery(query))) {
 							preStatement.setString(1, player.getPlayerUUID().toString());
-							preStatement.setString(2, player.getName());
-							preStatement.setBoolean(3, player.haveAlertsOn());
+							preStatement.setBoolean(2, player.haveAlertsOn());
 							
 							preStatement.executeUpdate();
 						}
@@ -129,31 +129,6 @@ public class OASQLDispatcher extends SQLDispatcher implements IOADatabaseDispatc
 		try (Connection connection = getConnection()) {
 			if (connection != null) {
 				ret = getPlayer(connection, playerUuid);
-			}
-		} catch (SQLException ex) {
-			plugin.getLoggerManager().printErrorStacktrace(Constants.DEBUG_SQL_ERROR, ex);
-		}
-		return ret;
-	}
-	
-	@Override
-	public OAPlayerImpl getPlayerByName(String playerName) {
-		OAPlayerImpl ret = null;
-		try (Connection connection = getConnection()) {
-			if (connection != null) {
-				String query = OAConstants.QUERY_PLAYER_GET_BYNAME;
-				
-				try (PreparedStatement preStatement = connection.prepareStatement(SQLTable.formatGenericQuery(query))) {
-					preStatement.setString(1, playerName);
-					
-					try (ResultSet rs = preStatement.executeQuery()) {
-						if (rs.next()) {
-							ret = getPlayerFromResultSet(rs);
-							if (ret != null)
-								ret.loadBlocks(getPlayerBlocks(connection, ret.getPlayerUUID()));
-						}
-					}
-				}
 			}
 		} catch (SQLException ex) {
 			plugin.getLoggerManager().printErrorStacktrace(Constants.DEBUG_SQL_ERROR, ex);
@@ -262,7 +237,6 @@ public class OASQLDispatcher extends SQLDispatcher implements IOADatabaseDispatc
 		try {
 			uuid = rs.getString("uuid");
 			ret = ((OreAnnouncerPlugin) plugin).getPlayerManager().initializePlayer(UUID.fromString(uuid));
-			ret.setName(rs.getString("name"));
 			ret.setAlertsOn(rs.getBoolean("alerts"));
 		} catch (IllegalArgumentException ex) {
 			plugin.getLoggerManager().printErrorStacktrace(Constants.DEBUG_SQL_ERROR_UUID
@@ -296,10 +270,8 @@ public class OASQLDispatcher extends SQLDispatcher implements IOADatabaseDispatc
 	private ArrayList<PlayerDataBlock> getPlayerBlocks(Connection connection, UUID playerUuid) {
 		ArrayList<PlayerDataBlock> ret = new ArrayList<>();
 		String query = OAConstants.QUERY_BLOCK_GET_PLAYER;
-		
 		try (PreparedStatement preStatement = connection.prepareStatement(SQLTable.formatGenericQuery(query))) {
 			preStatement.setString(1, playerUuid.toString());
-			
 			try (ResultSet rs = preStatement.executeQuery()) {
 				while (rs.next()) {
 					ret.add(getBlockFromResultSet(rs));

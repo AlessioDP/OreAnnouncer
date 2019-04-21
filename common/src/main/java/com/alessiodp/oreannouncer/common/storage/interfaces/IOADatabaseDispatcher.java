@@ -10,7 +10,6 @@ import java.util.UUID;
 public interface IOADatabaseDispatcher extends IDatabaseDispatcher {
 	void updatePlayer(OAPlayerImpl player);
 	OAPlayerImpl getPlayer(UUID playerUuid);
-	OAPlayerImpl getPlayerByName(String playerName);
 	ArrayList<OAPlayerImpl> getTopPlayersDestroyed(int limit, int offset);
 	int getTopPlayersNumber();
 	

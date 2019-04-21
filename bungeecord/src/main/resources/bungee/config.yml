@@ -1,0 +1,128 @@
+#
+# Main configuration file
+#
+# You can find a list of available tags here: https://alessiodp.com/docs/oreannouncer/placeholders/
+#
+
+# / = = = = = = = = = = = = = = = = \
+# |      OREANNOUNCER SETTINGS      |
+# \ = = = = = = = = = = = = = = = = /
+oreannouncer:
+  updates:
+    # Check for updates, recommended. OreAnnouncer will check for updates when the server finish to load
+    check: true
+    # Send a message to admins if an update is available
+    warn: true
+
+  logging:
+    # Enable debug messages
+    debug: false
+    save-file:
+      # Save to file log messages
+      enable: false
+      # Format of messages
+      format: "%date% [%time%] %message%\n"
+      # Log file name
+      file: "log.txt"
+
+
+# / = = = = = = = = = = = = = = = = \
+# |        STORAGE  SETTINGS        |
+# \ = = = = = = = = = = = = = = = = /
+storage:
+  # What type of storage the plugin should use?
+  # Database storage types:
+  # => mysql      | [Remote] Save the data into a MySQL database
+  # => sqlite     | [File]   Save the data into a SQLite database (default)
+  database-storage-type: sqlite
+
+  storage-settings:
+    # General settings of SQL databases
+    general-sql-settings:
+      varchar-size: 255
+      upgrade:
+        save-old-table: true
+        old-table-suffix: "_backup"
+      tables:
+        players: "oreannouncer_players"
+        blocks: "oreannouncer_blocks"
+        versions: "oreannouncer_versions"
+
+    # SQLite settings
+    sqlite:
+      database-file: "database.db"
+
+    # MySQL settings
+    mysql:
+      address: "localhost"
+      port: "3306"
+      database: "database"
+      username: "username"
+      password: "password"
+      # Size of the connection pool
+      pool-size: 10
+      # Lifetime of each connection, in milliseconds (Default: 30 minutes = 1800000ms)
+      connection-lifetime: 1800000
+      # Property used to alert when the connection is not using a valid SSL certificate
+      use-ssl: false
+      # Charset used by tables
+      charset: "utf8"
+
+
+# / = = = = = = = = = = = = = = = = \
+# |         ALERTS SETTINGS         |
+# \ = = = = = = = = = = = = = = = = /
+alerts:
+  # Enable alerts system
+  # Whenever a player dig a block users/admins will receive a message
+  enable: true
+  # Send an alert to the console
+  console: true
+
+
+# / = = = = = = = = = = = = = = = = \
+# |         BLOCKS SETTINGS         |
+# \ = = = = = = = = = = = = = = = = /
+blocks:
+  # Allowed blocks to handle
+  # You can use '*' to handle every block that is received from servers
+  list-allowed:
+    - '*'
+
+# / = = = = = = = = = = = = = = = = \
+# |         STATS  SETTINGS         |
+# \ = = = = = = = = = = = = = = = = /
+stats:
+  # Enable statistics system
+  # Any block you put on blocks list will be registered into the database
+  # Choose which block by adding 'count-on-destroy' option
+  enable: false
+  top:
+    enable: true
+    number-of-players: 5
+    page-size: 5
+
+
+
+# / = = = = = = = = = = = = = = = = \
+# |        COMMANDS SETTINGS        |
+# \ = = = = = = = = = = = = = = = = /
+commands:
+  # Enable tab support (/oa <tab> to see every allowed command)
+  tab-support: true
+  oa-description: "OreAnnouncer help page"
+  main-commands:
+    help: "help"
+    oa: "oa"
+    alerts: "alerts"
+    reload: "reload"
+    stats: "stats"
+    top: "top"
+    version: "version"
+  sub-commands:
+    on: "on"
+    off: "off"
+
+
+dont-edit-this:
+  version: 1

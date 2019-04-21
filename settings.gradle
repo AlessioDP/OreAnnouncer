@@ -2,7 +2,8 @@ rootProject.name = 'oreannouncer'
 include (
     ':api' ,
     ':common',
-    ':bukkit'
+    ':bukkit',
+    'bungeecord'
 )
 
 project(':api').name = 'oreannouncer-api'

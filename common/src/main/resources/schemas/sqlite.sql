@@ -3,7 +3,6 @@
 /*START_PLAYERS*/
 CREATE TABLE '{table_players}' (
 	'uuid'			VARCHAR({varcharsize}) NOT NULL PRIMARY KEY,
-	'name'			VARCHAR({varcharsize}) DEFAULT '',
 	'alerts'		INTEGER DEFAULT 1 NOT NULL);
 /*END_PLAYERS*/
 

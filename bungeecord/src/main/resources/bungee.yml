@@ -1,0 +1,7 @@
+name: ${pluginName}
+description: ${pluginDescription}
+author: ${pluginAuthor}
+website: ${pluginWebsite}
+version: ${pluginVersion}
+main: com.alessiodp.oreannouncer.bungeecord.bootstrap.BungeeOreAnnouncerBootstrap
+softDepends: [LastLoginAPI]

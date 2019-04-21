@@ -3,7 +3,6 @@
 /*START_PLAYERS*/
 CREATE TABLE `{table_players}` (
 	`uuid`			VARCHAR({varcharsize}) NOT NULL,
-	`name`			VARCHAR({varcharsize}) DEFAULT '',
 	`alerts`		TINYINT(1) DEFAULT 1 NOT NULL,
 	PRIMARY KEY (`uuid`))
  DEFAULT CHARSET='{charset}';

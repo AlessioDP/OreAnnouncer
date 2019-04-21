@@ -78,11 +78,6 @@ public class BukkitConfigurationTest {
 		BukkitMessages messages = new BukkitMessages(mockPlugin);
 		Field[] fields = PowerMockito.fields(messages.getClass());
 		
-		// Mock managers
-		BukkitBlockManager mockBlockManager = mock(BukkitBlockManager.class);
-		when(mockPlugin.getBlockManager()).thenReturn(mockBlockManager);
-		when(mockBlockManager.existsMaterial(any())).thenReturn(true);
-		
 		// Load defaults
 		messages.loadDefaults();
 		

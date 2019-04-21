@@ -25,6 +25,12 @@ oreannouncer:
       # Log file name
       file: "log.txt"
 
+  bungeecord:
+    # Enable BungeeCord support
+    # Commands and storage features will be disabled
+    # Destroyed blocks will be handled by OreAnnouncer into BungeeCord
+    enable: false
+
 
 # / = = = = = = = = = = = = = = = = \
 # |        STORAGE  SETTINGS        |
@@ -193,4 +199,5 @@ commands:
     off: "off"
 
 
-dont-edit-this.version: 1
+dont-edit-this:
+  version: 2

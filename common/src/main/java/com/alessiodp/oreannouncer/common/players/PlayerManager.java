@@ -33,7 +33,6 @@ public abstract class PlayerManager {
 	public OAPlayerImpl loadPlayer(UUID uuid) {
 		OAPlayerImpl ret = getPlayer(uuid);
 		getListPlayers().put(uuid, ret);
-		ret.updateName(); // Check for name updates
 		return ret;
 	}
 	
@@ -49,11 +48,6 @@ public abstract class PlayerManager {
 		} else {
 			// Get player from database
 			ret = plugin.getDatabaseManager().getPlayer(uuid);
-			
-			if (ret != null) {
-				// Check for username changes
-				ret.updateName();
-			}
 			
 			// Load new player
 			if (ret == null)

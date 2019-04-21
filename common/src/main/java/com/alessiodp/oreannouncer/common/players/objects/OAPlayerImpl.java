@@ -4,6 +4,7 @@ import com.alessiodp.core.common.commands.list.ADPCommand;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.oreannouncer.api.interfaces.OAPlayer;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
+import com.alessiodp.oreannouncer.common.addons.external.LLAPIHandler;
 import com.alessiodp.oreannouncer.common.commands.list.CommonCommands;
 import com.alessiodp.oreannouncer.common.commands.utils.OreAnnouncerPermission;
 import com.alessiodp.oreannouncer.common.configuration.OAConstants;
@@ -22,8 +23,8 @@ public abstract class OAPlayerImpl implements OAPlayer {
 	@Getter private final HashMap<String, PlayerDataBlock> dataBlocks = new HashMap<>();
 	
 	@Getter @Setter private UUID playerUUID;
-	@Getter @Setter private String name;
 	@Setter private boolean alertsOn;
+	@Getter private String name;
 	
 	@Getter private final ReentrantLock lock = new ReentrantLock();
 	
@@ -31,29 +32,14 @@ public abstract class OAPlayerImpl implements OAPlayer {
 		this.plugin = plugin;
 		
 		playerUUID = uuid;
+		alertsOn = true;
 		name = plugin.getOfflinePlayer(uuid).getName();
 		if (name == null)
-			name = "";
-		alertsOn = true;
+			name = LLAPIHandler.getPlayerName(playerUUID); // Use LastLoginAPI to get the name
 	}
 	
 	public void updatePlayer() {
 		plugin.getDatabaseManager().updatePlayer(this);
-	}
-	
-	public void updateName() {
-		lock.lock(); // Lock
-		String serverName = plugin.getOfflinePlayer(getPlayerUUID()).getName();
-		if (!serverName.isEmpty() && !serverName.equals(getName())) {
-			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_PLAYER_UPDATENAME
-					.replace("{uuid}", getPlayerUUID().toString())
-					.replace("{old}", getName())
-					.replace("{new}", serverName), true);
-			
-			setName(serverName);
-			updatePlayer();
-		}
-		lock.unlock(); // Unlock
 	}
 	
 	public void loadBlocks(ArrayList<PlayerDataBlock> blocks) {

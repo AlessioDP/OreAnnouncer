@@ -87,8 +87,8 @@ public abstract class Messages extends ConfigurationFile {
 		CMD_TOP_FORMATPLAYER = "&a%player%&7: %player_destroyed% blocks";
 		CMD_TOP_WRONGCMD = "&cWrong variables: Type &7/oa top [page]";
 		
-		CMD_VERSION_UPDATED = "&2&lOreAnnouncer &2%version% &7- Developed by &6AlessioDP";
-		CMD_VERSION_OUTDATED = "&2&lOreAnnouncer &2%version% &7- Developed by &6AlessioDP\n&aNew version found: &2%newversion%";
+		CMD_VERSION_UPDATED = "&2&lOreAnnouncer &2%version% &7(%platform%) - Developed by &6AlessioDP";
+		CMD_VERSION_OUTDATED = "&2&lOreAnnouncer &2%version% &7(%platform%) - Developed by &6AlessioDP\n&aNew version found: &2%newversion%";
 		
 		
 		// Help messages
@@ -115,8 +115,8 @@ public abstract class Messages extends ConfigurationFile {
 		OREANNOUNCER_UPDATEAVAILABLE = confAdapter.getString("oreannouncer.update-available", OREANNOUNCER_UPDATEAVAILABLE);
 		OREANNOUNCER_NOPERMISSION = confAdapter.getString("oreannouncer.no-permission", OREANNOUNCER_NOPERMISSION);
 		
-		OREANNOUNCER_COMMON_INVALIDCMD = confAdapter.getString("common-messages.invalid-command", OREANNOUNCER_COMMON_INVALIDCMD);
-		OREANNOUNCER_COMMON_CONFIGRELOAD = confAdapter.getString("common-messages.configuration-reloaded", OREANNOUNCER_COMMON_CONFIGRELOAD);
+		OREANNOUNCER_COMMON_INVALIDCMD = confAdapter.getString("oreannouncer.common-messages.invalid-command", OREANNOUNCER_COMMON_INVALIDCMD);
+		OREANNOUNCER_COMMON_CONFIGRELOAD = confAdapter.getString("oreannouncer.common-messages.configuration-reloaded", OREANNOUNCER_COMMON_CONFIGRELOAD);
 		
 		
 		// Event messages

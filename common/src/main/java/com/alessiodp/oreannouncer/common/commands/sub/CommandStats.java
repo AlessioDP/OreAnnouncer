@@ -6,6 +6,7 @@ import com.alessiodp.core.common.commands.utils.ADPSubCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
+import com.alessiodp.oreannouncer.common.addons.external.LLAPIHandler;
 import com.alessiodp.oreannouncer.common.commands.utils.OACommandData;
 import com.alessiodp.oreannouncer.common.commands.utils.OreAnnouncerPermission;
 import com.alessiodp.oreannouncer.common.configuration.OAConstants;
@@ -14,7 +15,11 @@ import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 import lombok.Getter;
 import lombok.NonNull;
 
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 public class CommandStats extends ADPSubCommand {
 	@Getter private final boolean executableByConsole = true;
@@ -57,8 +62,11 @@ public class CommandStats extends ADPSubCommand {
 		OAPlayerImpl targetPlayer = null;
 		if (commandData.getArgs().length > 1
 				&& commandData.havePermission(OreAnnouncerPermission.ADMIN_STATS_OTHER)) {
-			targetPlayer = ((OreAnnouncerPlugin) plugin).getDatabaseManager().getPlayerByName(commandData.getArgs()[1]);
-			if (targetPlayer == null) {
+			Set<UUID> targetPlayersUuid = LLAPIHandler.getPlayerByName(commandData.getArgs()[1]);
+			if (targetPlayersUuid.size() > 0) {
+				UUID targetPlayerUuid = targetPlayersUuid.iterator().next();
+				targetPlayer = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(targetPlayerUuid);
+			} else {
 				// Not found
 				sendMessage(player, Messages.CMD_STATS_PLAYERNOTFOUND
 						.replace("%player%", commandData.getArgs()[1]));

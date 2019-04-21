@@ -15,6 +15,6 @@ public class BukkitPlayerManager extends PlayerManager {
 	
 	@Override
 	public OAPlayerImpl initializePlayer(UUID playerUUID) {
-		return new BukkitOAPlayerImpl(plugin,playerUUID);
+		return new BukkitOAPlayerImpl(plugin, playerUUID);
 	}
 }

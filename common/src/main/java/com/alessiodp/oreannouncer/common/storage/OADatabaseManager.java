@@ -61,15 +61,6 @@ public class OADatabaseManager extends DatabaseManager {
 		}).join();
 	}
 	
-	public OAPlayerImpl getPlayerByName(String playerName) {
-		return plugin.getScheduler().runSupplyAsync(() -> {
-			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_GETPLAYER_BYNAME
-					.replace("{player}", playerName), true);
-			
-			return ((IOADatabaseDispatcher) database).getPlayerByName(playerName);
-		}).join();
-	}
-	
 	public ArrayList<OAPlayerImpl> getTopPlayersDestroyed(int limit, int offset) {
 		return plugin.getScheduler().runSupplyAsync(() -> {
 			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_TOP_PLAYERBLOCKS

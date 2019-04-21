@@ -4,6 +4,7 @@ import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.bootstrap.ADPBootstrap;
 import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.core.common.logging.ConsoleColor;
+import com.alessiodp.core.common.messaging.ADPMessenger;
 import com.alessiodp.oreannouncer.api.OreAnnouncer;
 import com.alessiodp.oreannouncer.common.api.ApiHandler;
 import com.alessiodp.oreannouncer.common.blocks.BlockManager;
@@ -27,6 +28,7 @@ public abstract class OreAnnouncerPlugin extends ADPPlugin {
 	@Getter protected BlockManager blockManager;
 	@Getter protected PlayerManager playerManager;
 	@Getter protected MessageUtils messageUtils;
+	@Getter protected ADPMessenger messenger;
 	
 	public OreAnnouncerPlugin(ADPBootstrap bootstrap) {
 		super(bootstrap);
@@ -57,6 +59,7 @@ public abstract class OreAnnouncerPlugin extends ADPPlugin {
 		getBlockManager().reload();
 		getPlayerManager().reload();
 		getCommandManager().setup();
+		getMessenger().reload();
 		registerListeners();
 		
 		reloadAdpUpdater();
@@ -77,6 +80,7 @@ public abstract class OreAnnouncerPlugin extends ADPPlugin {
 		getPlayerManager().reload();
 		getAddonManager().loadAddons();
 		getCommandManager().setup();
+		getMessenger().reload();
 		
 		reloadAdpUpdater();
 	}
@@ -106,4 +110,6 @@ public abstract class OreAnnouncerPlugin extends ADPPlugin {
 		);
 		getAdpUpdater().asyncTaskCheckUpdates();
 	}
+	
+	public abstract boolean isBungeeCordEnabled();
 }

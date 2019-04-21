@@ -5,7 +5,7 @@ website: ${pluginWebsite}
 version: ${pluginVersion}
 main: com.alessiodp.oreannouncer.bukkit.bootstrap.BukkitOreAnnouncerBootstrap
 api-version: 1.13
-softdepend: [PlaceholderAPI]
+softdepend: [LastLoginAPI, PlaceholderAPI]
 permissions:
   oreannouncer.user.alerts.see:
     description: See user alerts

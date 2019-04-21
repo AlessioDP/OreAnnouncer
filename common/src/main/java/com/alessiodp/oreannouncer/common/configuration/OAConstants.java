@@ -11,10 +11,12 @@ public class OAConstants {
 	public static final String PLUGIN_SPIGOTCODE = "33464";
 	
 	// Versions
-	public static final int VERSION_BUKKIT_CONFIG = 1;
-	public static final int VERSION_BUKKIT_MESSAGES = 1;
-	public static final int VERSION_DATABASE_MYSQL = 1;
-	public static final int VERSION_DATABASE_SQLITE = 1;
+	public static final int VERSION_BUKKIT_CONFIG = 2;
+	public static final int VERSION_BUNGEE_CONFIG = 1;
+	public static final int VERSION_BUKKIT_MESSAGES = 2;
+	public static final int VERSION_BUNGEE_MESSAGES = 1;
+	public static final int VERSION_DATABASE_MYSQL = 2;
+	public static final int VERSION_DATABASE_SQLITE = 2;
 	
 	
 	// Blocks
@@ -29,11 +31,10 @@ public class OAConstants {
 	
 	
 	// SQL queries
-	public static final String QUERY_PLAYER_INSERT_MYSQL = "INSERT INTO {table_players} (`uuid`, `name`, `alerts`) VALUES (?,?,?) ON DUPLICATE KEY UPDATE `name`=VALUES(`name`), `alerts`=VALUES(`alerts`);";
-	public static final String QUERY_PLAYER_INSERT_SQLITE = "INSERT OR REPLACE INTO {table_players} (`uuid`, `name`, `alerts`) VALUES (?,?,?);";
+	public static final String QUERY_PLAYER_INSERT_MYSQL = "INSERT INTO {table_players} (`uuid`, `alerts`) VALUES (?,?) ON DUPLICATE KEY UPDATE `alerts`=VALUES(`alerts`);";
+	public static final String QUERY_PLAYER_INSERT_SQLITE = "INSERT OR REPLACE INTO {table_players} (`uuid`, `alerts`) VALUES (?,?);";
 	public static final String QUERY_PLAYER_DELETE = "DELETE FROM {table_players} WHERE `uuid`=?;";
 	public static final String QUERY_PLAYER_GET = "SELECT * FROM {table_players} WHERE `uuid`=?;";
-	public static final String QUERY_PLAYER_GET_BYNAME = "SELECT * FROM {table_players} WHERE `name`=?;";
 	public static final String QUERY_PLAYER_TOP_BLOCKS = "SELECT player, sum(destroyed) as total FROM {table_blocks} GROUP BY player ORDER BY total DESC LIMIT ? OFFSET ?;";
 	public static final String QUERY_PLAYER_TOP_NUMBER = "SELECT COUNT(DISTINCT player) as total FROM {table_blocks};";
 	
@@ -64,6 +65,13 @@ public class OAConstants {
 	public static final String DEBUG_DB_TOP_NUMBER = "Getting number of top players";
 	public static final String DEBUG_EVENT_BLOCK_BREAK = "{player} broke a block of '{block}'";
 	public static final String DEBUG_EVENT_BLOCK_PLACE = "{player} placed a marked block '{block}'";
+	public static final String DEBUG_MESSAGING_SEND_ALERT = "Sent an alert packet";
+	public static final String DEBUG_MESSAGING_SEND_ALERT_FAILED = "Failed to send an alert packet";
+	public static final String DEBUG_MESSAGING_SEND_DESTROY = "Sent a destroy packet";
+	public static final String DEBUG_MESSAGING_SEND_DESTROY_FAILED = "Failed to send a destroy packet";
+	public static final String DEBUG_MESSAGING_RECEIVED = "Received an OreAnnouncer packet of type '{type}'";
+	public static final String DEBUG_MESSAGING_RECEIVED_WRONG = "Received a wrong OreAnnouncer packet";
+	public static final String DEBUG_MESSAGING_DESTROY_UUID_EMPTY = "Received an OreAnnouncer destroy packet with an empty UUID";
 	public static final String DEBUG_PLAYER_UPDATENAME = "Changed name of '{uuid}' from '{old}' to '{new}'";
 	public static final String DEBUG_PLAYER_LOADBLOCKS = "Loaded {number} blocks of '{uuid}'";
 }

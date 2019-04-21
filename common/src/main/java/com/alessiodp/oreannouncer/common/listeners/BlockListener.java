@@ -70,7 +70,7 @@ public abstract class BlockListener {
 				}
 				
 				if (alertUsers || alertAdmins)
-					plugin.getBlockManager().alertPlayers(alertUsers, alertAdmins, player, block, blockLocation, numberOfBlocks);
+					plugin.getBlockManager().handleAlerts(alertUsers, alertAdmins, player, block, blockLocation, numberOfBlocks);
 			});
 		}
 	}
@@ -79,7 +79,7 @@ public abstract class BlockListener {
 		if (block.isCountingOnDestroy() && (!ConfigMain.BLOCKS_LIGHT_COUNTIFLOWER || lightLevel <= block.getLightLevel())) {
 			plugin.getScheduler().runAsync(() -> {
 				OAPlayerImpl player = plugin.getPlayerManager().getPlayer(user.getUUID());
-				plugin.getBlockManager().countBlockDestroy(block, player, 1);
+				plugin.getBlockManager().handleBlockDestroy(block, player, 1);
 			});
 		}
 	}
