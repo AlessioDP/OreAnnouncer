@@ -1,8 +1,6 @@
 package com.alessiodp.oreannouncer.bukkit.addons;
 
 import com.alessiodp.core.common.ADPPlugin;
-import com.alessiodp.core.common.addons.AddonManager;
-import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.oreannouncer.bukkit.addons.external.EssentialsChatHandler;
 import com.alessiodp.oreannouncer.bukkit.addons.external.PlaceholderAPIHandler;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;

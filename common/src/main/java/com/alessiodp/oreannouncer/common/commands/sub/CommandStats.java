@@ -15,8 +15,6 @@ import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 import lombok.Getter;
 import lombok.NonNull;
 
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;

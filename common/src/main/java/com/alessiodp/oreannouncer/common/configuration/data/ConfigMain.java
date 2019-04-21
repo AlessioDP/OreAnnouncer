@@ -246,7 +246,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 		BLOCKS_LIGHT_ENABLE = confAdapter.getBoolean("blocks.light-level.enable", BLOCKS_LIGHT_ENABLE);
 		BLOCKS_LIGHT_ALERTIFLOWER = confAdapter.getBoolean("blocks.light-level.alert-only-if-lower", BLOCKS_LIGHT_ALERTIFLOWER);
 		BLOCKS_LIGHT_COUNTIFLOWER = confAdapter.getBoolean("blocks.light-level.count-only-if-lower", BLOCKS_LIGHT_COUNTIFLOWER);
-		handleBlocks(confAdapter, BLOCKS_LIST);
+		handleBlocks(confAdapter);
 		
 		
 		// Stats settings
@@ -272,7 +272,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 		COMMANDS_SUB_OFF = confAdapter.getString("commands.sub-commands.off", COMMANDS_SUB_OFF);
 	}
 	
-	private void handleBlocks(ConfigurationAdapter confAdapter, Set<OABlockImpl> def) {
+	private void handleBlocks(ConfigurationAdapter confAdapter) {
 		Set<OABlockImpl> blocks = new HashSet<>();
 		OABlockImpl block;
 		
