@@ -27,8 +27,8 @@ commands:
     format-player: '&a%player%&7: %player_destroyed% blocchi'
     wrong-command: "&cComando sbagliato: Esegui &7/oa top [page]"
   version:
-    updated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Developed by &6AlessioDP"
-    outdated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
+    updated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Sviluppata da &6AlessioDP"
+    outdated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Sviluppata da &6AlessioDP\n&aNuova versione trovata: &2%newversion%"
 help:
   header: "&2======= &lPagina d'aiuto di OreAnnouncer &r&2======="
   footer: ""
