@@ -27,8 +27,8 @@ commands:
     format-player: '&a%player%&7: %player_destroyed% blocs'
     wrong-command: "&cMauvaises variables: Tapez &7/oa top [page]"
   version:
-    updated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Developed by &6AlessioDP"
-    outdated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
+    updated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Développé par &6AlessioDP"
+    outdated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Développé par &6AlessioDP\n&aNouvelle version trouvé: &2%newversion%"
 help:
   header: "&2======= &lPage d'aide de OreAnnouncer &r&2======="
   footer: ""
