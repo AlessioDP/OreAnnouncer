@@ -1,0 +1,49 @@
+---
+oreannouncer:
+  update-available: "&2Nuova versione di OreAnnouncer trovata: %version% (Attuale: %thisversion%)"
+  no-permission: "&cNon hai accesso a questo comando"
+  common-messages:
+    invalid-command: "&cComando non valido"
+    configuration-reloaded: "&aConfigurazione ricaricata"
+alerts:
+  user: "&6%player% &eha trovato %number% %block%!"
+  admin: "&6%player% &eha trovato %number% %block%! %coordinates%"
+  console: "%player% ha trovato %number% %block%! %coordinates%"
+commands:
+  alerts:
+    toggle-on: "&aOra sarai in grado di vedere gli avvisi"
+    toggle-off: "&aNon vedrai più gli avvisi"
+    wrong-command: "&cComando sbagliato: Esegui &7/oa alerts [on/off]"
+  stats:
+    content:
+      - "&2======== &l Statistiche di %player% &r&2========"
+      - "&bDiamanti&7: %player_destroyed_diamond_ore%"
+      - "&aSmeraldi&7: %player_destroyed_emerald_ore%"
+    player-not-found: "&c%player% non trovato!"
+  top:
+    header: "&2============ &lMiglior giocatori &r&2============"
+    footer: ""
+    no-one: "&7Nessuno"
+    format-player: '&a%player%&7: %player_destroyed% blocchi'
+    wrong-command: "&cComando sbagliato: Esegui &7/oa top [page]"
+  version:
+    updated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Sviluppata da &6AlessioDP"
+    outdated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Sviluppata da &6AlessioDP\n&aNuova versione trovata: &2%newversion%"
+help:
+  header: "&2======= &lPagina d'aiuto di OreAnnouncer &r&2======="
+  footer: ""
+  console-help:
+    - "Puoi solamente far questi comandi:"
+    - " > oa reload - Ricarica la configurazione"
+    - " > oa stats <player> - Mostra le statistiche del giocatore"
+    - " > oa top - Lista migliori giocatori"
+    - " > oa version - Mostra informazioni su OreAnnouncer"
+  commands:
+    help: '{"text":"","extra":[{"text":"/oa help","color":"dark_green"},{"text":" - Mostra la pagina d''aiuto","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa help "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    alerts: '{"text":"","extra":[{"text":"/oa alerts [on/off]","color":"dark_green"},{"text":" - Attiva/disattiva avvisi","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa alerts "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    reload: '{"text":"","extra":[{"text":"/oa reload","color":"dark_green"},{"text":" - Ricarica file di configurazione","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa reload"},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    stats: '{"text":"","extra":[{"text":"/oa stats [player]","color":"dark_green"},{"text":" - Mostra statistiche del giocatore","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa stats "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    top: '{"text":"","extra":[{"text":"/oa top [page]","color":"dark_green"},{"text":" - Lista migliori giocatori","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa top "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    version: '{"text":"","extra":[{"text":"/oa version","color":"dark_green"},{"text":" - Mostra informazioni su OreAnnouncer","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa version"},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+dont-edit-this:
+  version: 1
