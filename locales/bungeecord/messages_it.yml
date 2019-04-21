@@ -46,4 +46,4 @@ help:
     top: '{"text":"","extra":[{"text":"/oa top [page]","color":"dark_green"},{"text":" - Lista migliori giocatori","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa top "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
     version: '{"text":"","extra":[{"text":"/oa version","color":"dark_green"},{"text":" - Mostra informazioni su OreAnnouncer","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa version"},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
 dont-edit-this:
-  version: 2
+  version: 1
