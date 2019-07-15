@@ -66,8 +66,8 @@ public abstract class Messages extends ConfigurationFile {
 		
 		// Event messages
 		ALERTS_USER = "&6%player% &efound %number% %block%!";
-		ALERTS_ADMIN = "&6%player% &efound %number% %block%! %coordinates%";
-		ALERTS_CONSOLE = "%player% found %number% %block%! %coordinates%";
+		ALERTS_ADMIN = "[{\"text\":\"%player% \",\"color\":\"gold\"},{\"text\":\"found %number% %block%! \",\"color\":\"yellow\"},{\"text\":\"Teleport\",\"color\":\"gray\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Click to teleport!\",\"color\":\"gold\"}},\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/tp %x% %y% %z%\"}}]";
+		ALERTS_CONSOLE = "%player% found %number% %block%! [x: %x%, y: %y%, z: %z%]";
 		
 		
 		// Command messages

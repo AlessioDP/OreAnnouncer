@@ -23,10 +23,20 @@ oreannouncer:
 # |         ALERTS MESSAGES         |
 # \ = = = = = = = = = = = = = = = = /
 alerts:
-  # Special tag: %coordinates% = Coordinates of the destroyed block
+  # Special tags:
+  # %x%, %y% and %z% = Coordinates of the destroyed block
+  #
+  # JSON tips:
+  #   - Make a single block for a coordinate (see below)
+  #   - Do not use obfuscation if you are using coordinates to run commands
+  #   Example:
+  #     {"text":"%x%","color":"gray"} - This is a single block for a coordinate
   user: "&6%player% &efound %number% %block%!"
-  admin: "&6%player% &efound %number% %block%! %coordinates%"
-  console: "%player% found %number% %block%! %coordinates%"
+  # Without teleport:
+  # admin: "&6%player% &efound %number% %block%! &7[x: %x%&7, z: %z%&7]"
+  admin: '[{"text":"%player% ","color":"gold"},{"text":"found %number% %block%! ","color":"yellow"},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Click to teleport!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %x% %y% %z%"}}]'
+  # No JSON for console
+  console: "%player% found %number% %block%! [x: %x%, y: %y%, z: %z%]"
 
 
 # / = = = = = = = = = = = = = = = = \
@@ -88,4 +98,4 @@ help:
 
 
 dont-edit-this:
-  version: 2
+  version: 3

@@ -1,5 +1,7 @@
 package com.alessiodp.oreannouncer.bukkit;
 
+import com.alessiodp.core.bukkit.addons.internal.json.BukkitJsonHandler;
+import com.alessiodp.core.bukkit.addons.internal.json.SpigotJsonHandler;
 import com.alessiodp.core.bukkit.scheduling.ADPBukkitScheduler;
 import com.alessiodp.core.bukkit.utils.BukkitColorUtils;
 import com.alessiodp.core.common.bootstrap.ADPBootstrap;
@@ -7,6 +9,7 @@ import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.oreannouncer.bukkit.addons.BukkitOAAddonManager;
 import com.alessiodp.oreannouncer.bukkit.addons.external.BukkitMetricsHandler;
 import com.alessiodp.oreannouncer.bukkit.blocks.BukkitBlockManager;
+import com.alessiodp.oreannouncer.bukkit.bootstrap.BukkitOreAnnouncerBootstrap;
 import com.alessiodp.oreannouncer.bukkit.commands.BukkitOACommandManager;
 import com.alessiodp.oreannouncer.bukkit.configuration.BukkitOAConfigurationManager;
 import com.alessiodp.oreannouncer.bukkit.configuration.data.BukkitConfigMain;
@@ -53,6 +56,14 @@ public class BukkitOreAnnouncerPlugin extends OreAnnouncerPlugin {
 		super.postHandle();
 		
 		new BukkitMetricsHandler(this);
+	}
+	
+	@Override
+	protected void initializeJsonHandler() {
+		if (((BukkitOreAnnouncerBootstrap) getBootstrap()).isSpigot())
+			jsonHandler = new SpigotJsonHandler();
+		else
+			jsonHandler = new BukkitJsonHandler();
 	}
 	
 	@Override

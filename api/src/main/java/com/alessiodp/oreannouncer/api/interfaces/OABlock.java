@@ -64,6 +64,18 @@ public interface OABlock {
 	 */
 	void setPluralName(String pluralName);
 	
+	/**
+	 * Get sound name
+	 *
+	 * @return Returns the name of the sound
+	 */
+	String getSound();
+	
+	/**
+	 * Set sound name
+	 * @param sound The sound name to set
+	 */
+	void setSound(String sound);
 	
 	/**
 	 * Get light level value

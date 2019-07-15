@@ -84,12 +84,15 @@ alerts:
   enable: true
   # Send an alert to the console
   console: true
+  # Alert sound settings (not supported by BungeeCord)
+  sound:
+    volume: 1
+    pitch: 2
   # Get coordinates of the user when he digs an ore
   coordinates:
-    enable: false
-    # Settings for the placeholder %coordinates%
-    # Here you can use: %x%, %y% or %z%
-    format: "&7[x: %x%&7, z: %z%&7]"
+    # Enable parsing of %x%, %y% and %z%
+    # Required to show coordinates or use them into commands
+    enable: true
     # Hide a single, or every, coordinate
     hide-real-coordinates:
       enable: false
@@ -108,12 +111,19 @@ alerts:
         y: true
         z: true
       # Format of a hidden coordinate
-      format: "&k%coordinate%"
-      # Completely remove hidden coordinate to bypass cheaters
-      obfuscate: true
-      # Normally an obfuscated hidden coordinate will keep the original length
-      # Disable that with this option
-      fixed-length: false
+      format:
+        text: "&k%coordinate%"
+        # Warning: This is an advanced option, if you have problems
+        # with JSON and obfuscation consider to ask for help on Discord!
+        json: '%coordinate%","color":"gray","obfuscated":true},{"text":"'
+      obfuscation:
+        # Completely remove hidden coordinate to bypass cheaters
+        enable: true
+        # Replace any hidden coordinate with this value
+        character: "?"
+        # If greater than 0 replace the coordinate with exactly X character
+        # Otherwise it will maintain the coordinate length
+        fixed-length: 0
 
 
 # / = = = = = = = = = = = = = = = = \
@@ -121,7 +131,7 @@ alerts:
 # \ = = = = = = = = = = = = = = = = /
 blocks:
   # Do warn on blocks placed by players (until a server reload)
-  bypass-player-blocks: true
+  bypass-player-blocks: false
   # Do not count block broken with a silk touch tool
   bypass-silk-touch: true
   # Send a warn message when there is a wrong configured block
@@ -141,6 +151,7 @@ blocks:
   #   name:                           | Name of the block
   #     singular: "block"             |
   #     plural: "blocks"              |
+  #   sound: "SoundName"              | Sound to play (empty = no sound)
   #   light-level: 0-15               | Set the light level
   #   count-on-destroy: true/false    | Count this block
   list:
@@ -151,6 +162,7 @@ blocks:
       name:
         singular: "diamond"
         plural: "diamonds"
+      sound: "ENTITY_PLAYER_LEVELUP"
       light-level: 15
       count-on-destroy: true
     EMERALD_ORE:
@@ -160,6 +172,7 @@ blocks:
       name:
         singular: "emerald"
         plural: "emeralds"
+      sound: "ENTITY_PLAYER_LEVELUP"
       light-level: 6
       count-on-destroy: true
 
@@ -200,4 +213,4 @@ commands:
 
 
 dont-edit-this:
-  version: 2
+  version: 3

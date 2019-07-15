@@ -42,8 +42,9 @@ public abstract class ConfigMain extends ConfigurationFile {
 	// Alerts settings
 	public static boolean		ALERTS_ENABLE;
 	public static boolean		ALERTS_CONSOLE;
+	public static float			ALERTS_SOUND_VOLUME;
+	public static float			ALERTS_SOUND_PITCH;
 	public static boolean		ALERTS_COORDINATES_ENABLE;
-	public static String		ALERTS_COORDINATES_FORMAT;
 	public static boolean		ALERTS_COORDINATES_HIDE_ENABLE;
 	public static int			ALERTS_COORDINATES_HIDE_COUNT;
 	public static boolean		ALERTS_COORDINATES_HIDE_HIDDENFOR_USER;
@@ -52,9 +53,11 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static boolean		ALERTS_COORDINATES_HIDE_HIDE_X;
 	public static boolean		ALERTS_COORDINATES_HIDE_HIDE_Y;
 	public static boolean		ALERTS_COORDINATES_HIDE_HIDE_Z;
-	public static String		ALERTS_COORDINATES_HIDE_FORMAT;
-	public static boolean		ALERTS_COORDINATES_HIDE_OBFUSCATE;
-	public static boolean		ALERTS_COORDINATES_HIDE_FIXEDLENGTH;
+	public static String		ALERTS_COORDINATES_HIDE_FORMAT_TEXT;
+	public static String		ALERTS_COORDINATES_HIDE_FORMAT_JSON;
+	public static boolean		ALERTS_COORDINATES_HIDE_OBFUSCATION_ENABLE;
+	public static String		ALERTS_COORDINATES_HIDE_OBFUSCATION_CHARACTER;
+	public static int			ALERTS_COORDINATES_HIDE_OBFUSCATION_FIXEDLENGTH;
 	
 	
 	// Blocks settings
@@ -128,8 +131,9 @@ public abstract class ConfigMain extends ConfigurationFile {
 		// Alerts settings
 		ALERTS_ENABLE = true;
 		ALERTS_CONSOLE = true;
-		ALERTS_COORDINATES_ENABLE = false;
-		ALERTS_COORDINATES_FORMAT = "&7[x: %x%&7, z: %z%&7]";
+		ALERTS_SOUND_VOLUME = 1;
+		ALERTS_SOUND_PITCH = 2;
+		ALERTS_COORDINATES_ENABLE = true;
 		ALERTS_COORDINATES_HIDE_ENABLE = false;
 		ALERTS_COORDINATES_HIDE_COUNT = 1;
 		ALERTS_COORDINATES_HIDE_HIDDENFOR_USER = true;
@@ -138,13 +142,15 @@ public abstract class ConfigMain extends ConfigurationFile {
 		ALERTS_COORDINATES_HIDE_HIDE_X = true;
 		ALERTS_COORDINATES_HIDE_HIDE_Y = true;
 		ALERTS_COORDINATES_HIDE_HIDE_Z = true;
-		ALERTS_COORDINATES_HIDE_FORMAT = "&k%coordinate%";
-		ALERTS_COORDINATES_HIDE_OBFUSCATE = true;
-		ALERTS_COORDINATES_HIDE_FIXEDLENGTH = false;
+		ALERTS_COORDINATES_HIDE_FORMAT_TEXT = "&k%coordinate%";
+		ALERTS_COORDINATES_HIDE_FORMAT_JSON = "%coordinate%\",\"color\":\"gray\",\"obfuscated\":true},{\"text\":\"";
+		ALERTS_COORDINATES_HIDE_OBFUSCATION_ENABLE = true;
+		ALERTS_COORDINATES_HIDE_OBFUSCATION_CHARACTER = "?";
+		ALERTS_COORDINATES_HIDE_OBFUSCATION_FIXEDLENGTH = 0;
 		
 		
 		// Blocks settings
-		BLOCKS_BYPASS_PLAYERBLOCKS = true;
+		BLOCKS_BYPASS_PLAYERBLOCKS = false;
 		BLOCKS_BYPASS_SILKTOUCH = true;
 		BLOCKS_WARNONWRONGBLOCKS = true;
 		BLOCKS_LIGHT_ENABLE = false;
@@ -156,6 +162,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 		temp.setAlertingAdmins(true);
 		temp.setSingularName("diamond");
 		temp.setPluralName("diamonds");
+		temp.setSound("ENTITY_PLAYER_LEVELUP");
 		temp.setLightLevel(15);
 		temp.setCountingOnDestroy(true);
 		BLOCKS_LIST.add(temp);
@@ -164,6 +171,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 		temp.setAlertingAdmins(true);
 		temp.setSingularName("emerald");
 		temp.setPluralName("emeralds");
+		temp.setSound("ENTITY_PLAYER_LEVELUP");
 		temp.setLightLevel(6);
 		temp.setCountingOnDestroy(true);
 		BLOCKS_LIST.add(temp);
@@ -224,8 +232,9 @@ public abstract class ConfigMain extends ConfigurationFile {
 		// Alerts settings
 		ALERTS_ENABLE = confAdapter.getBoolean("alerts.enable", ALERTS_ENABLE);
 		ALERTS_CONSOLE = confAdapter.getBoolean("alerts.console", ALERTS_CONSOLE);
+		ALERTS_SOUND_VOLUME = (float) confAdapter.getDouble("alerts.sound.volume", ALERTS_SOUND_VOLUME);
+		ALERTS_SOUND_PITCH = (float) confAdapter.getDouble("alerts.sound.pitch", ALERTS_SOUND_PITCH);
 		ALERTS_COORDINATES_ENABLE = confAdapter.getBoolean("alerts.coordinates.enable", ALERTS_COORDINATES_ENABLE);
-		ALERTS_COORDINATES_FORMAT  = confAdapter.getString("alerts.coordinates.format", ALERTS_COORDINATES_FORMAT);
 		ALERTS_COORDINATES_HIDE_ENABLE = confAdapter.getBoolean("alerts.coordinates.hide-real-coordinates.enable", ALERTS_COORDINATES_HIDE_ENABLE);
 		ALERTS_COORDINATES_HIDE_COUNT = confAdapter.getInt("alerts.coordinates.hide-real-coordinates.count", ALERTS_COORDINATES_HIDE_COUNT);
 		ALERTS_COORDINATES_HIDE_HIDDENFOR_USER = confAdapter.getBoolean("alerts.coordinates.hide-real-coordinates.hidden-for.user", ALERTS_COORDINATES_HIDE_HIDDENFOR_USER);
@@ -234,9 +243,11 @@ public abstract class ConfigMain extends ConfigurationFile {
 		ALERTS_COORDINATES_HIDE_HIDE_X = confAdapter.getBoolean("alerts.coordinates.hide-real-coordinates.hide.x", ALERTS_COORDINATES_HIDE_HIDE_X);
 		ALERTS_COORDINATES_HIDE_HIDE_Y = confAdapter.getBoolean("alerts.coordinates.hide-real-coordinates.hide.y", ALERTS_COORDINATES_HIDE_HIDE_Y);
 		ALERTS_COORDINATES_HIDE_HIDE_Z = confAdapter.getBoolean("alerts.coordinates.hide-real-coordinates.hide.z", ALERTS_COORDINATES_HIDE_HIDE_Z);
-		ALERTS_COORDINATES_HIDE_FIXEDLENGTH = confAdapter.getBoolean("alerts.coordinates.hide-real-coordinates.fixed-length", ALERTS_COORDINATES_HIDE_FIXEDLENGTH);
-		ALERTS_COORDINATES_HIDE_FORMAT = confAdapter.getString("alerts.coordinates.hide-real-coordinates.format", ALERTS_COORDINATES_HIDE_FORMAT);
-		ALERTS_COORDINATES_HIDE_OBFUSCATE = confAdapter.getBoolean("alerts.coordinates.hide-real-coordinates.obfuscate", ALERTS_COORDINATES_HIDE_OBFUSCATE);
+		ALERTS_COORDINATES_HIDE_FORMAT_TEXT = confAdapter.getString("alerts.coordinates.hide-real-coordinates.format.text", ALERTS_COORDINATES_HIDE_FORMAT_TEXT);
+		ALERTS_COORDINATES_HIDE_FORMAT_JSON = confAdapter.getString("alerts.coordinates.hide-real-coordinates.format.json", ALERTS_COORDINATES_HIDE_FORMAT_JSON);
+		ALERTS_COORDINATES_HIDE_OBFUSCATION_ENABLE = confAdapter.getBoolean("alerts.coordinates.hide-real-coordinates.obfuscation.enable", ALERTS_COORDINATES_HIDE_OBFUSCATION_ENABLE);
+		ALERTS_COORDINATES_HIDE_OBFUSCATION_CHARACTER = confAdapter.getString("alerts.coordinates.hide-real-coordinates.obfuscation.character", ALERTS_COORDINATES_HIDE_OBFUSCATION_CHARACTER);
+		ALERTS_COORDINATES_HIDE_OBFUSCATION_FIXEDLENGTH = confAdapter.getInt("alerts.coordinates.hide-real-coordinates.obfuscation.fixed-length", ALERTS_COORDINATES_HIDE_OBFUSCATION_FIXEDLENGTH);
 		
 		
 		// Blocks settings
@@ -286,6 +297,7 @@ public abstract class ConfigMain extends ConfigurationFile {
 					block.setAlertingAdmins(csBlocks.getBoolean(key + ".alerts.admin", false));
 					block.setSingularName(csBlocks.getString(key + ".name.singular", key));
 					block.setPluralName(csBlocks.getString(key + ".name.plural", key));
+					block.setSound(csBlocks.getString(key + ".sound", ""));
 					block.setLightLevel(csBlocks.getInt(key + ".light-level", 15));
 					block.setCountingOnDestroy(csBlocks.getBoolean(key + ".count-on-destroy", false));
 					blocks.add(block);

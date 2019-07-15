@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public abstract class JoinLeaveListener {
-	private final OreAnnouncerPlugin plugin;
+	protected final OreAnnouncerPlugin plugin;
 	
 	protected void onPlayerJoin(User user) {
 		// Make it async

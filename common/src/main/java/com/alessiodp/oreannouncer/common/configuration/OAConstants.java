@@ -11,10 +11,10 @@ public class OAConstants {
 	public static final String PLUGIN_SPIGOTCODE = "33464";
 	
 	// Versions
-	public static final int VERSION_BUKKIT_CONFIG = 2;
+	public static final int VERSION_BUKKIT_CONFIG = 3;
 	public static final int VERSION_BUNGEE_CONFIG = 1;
-	public static final int VERSION_BUKKIT_MESSAGES = 2;
-	public static final int VERSION_BUNGEE_MESSAGES = 1;
+	public static final int VERSION_BUKKIT_MESSAGES = 3;
+	public static final int VERSION_BUNGEE_MESSAGES = 2;
 	public static final int VERSION_DATABASE_MYSQL = 2;
 	public static final int VERSION_DATABASE_SQLITE = 2;
 	
@@ -26,7 +26,7 @@ public class OAConstants {
 	// Placeholders
 	public static final String PLACEHOLDER_PLAYER_NAME = "%player%";
 	public static final String PLACEHOLDER_PLAYER_DESTROYED = "%player_destroyed%";
-	public static final String PLACEHOLDER_PLAYER_DESTROYED_MATERIAL = "%player_destroyed_{material}%";;
+	public static final String PLACEHOLDER_PLAYER_DESTROYED_MATERIAL = "%player_destroyed_{material}%";
 	public static final String PLACEHOLDER_PLAYER_DESTROYED_MATERIAL_REGEX = "%player_destroyed_([^%]+)%";
 	
 	

@@ -27,7 +27,8 @@ public class BungeeOAMessageListener extends BungeeMessageListener {
 					((OreAnnouncerPlugin) plugin).getBlockManager().sendAlerts(
 							packet.getMessageUsers(),
 							packet.getMessageAdmins(),
-							packet.getMessageConsole());
+							packet.getMessageConsole(),
+							"");
 					break;
 				case DESTROY:
 					if (!packet.getPlayerUuid().isEmpty()) {

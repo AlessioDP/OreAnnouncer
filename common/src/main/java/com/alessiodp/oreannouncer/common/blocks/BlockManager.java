@@ -29,18 +29,20 @@ public abstract class BlockManager {
 	public BlockManager(OreAnnouncerPlugin plugin) {
 		this.plugin = plugin;
 		coordinatesUtils = new CoordinateUtils(plugin);
+		listBlocks = new HashMap<>();
+		allowedBlocks = new ArrayList<>();
 	}
 	
 	public void reload() {
-		listBlocks = new HashMap<>();
-		allowedBlocks = new ArrayList<>();
+		listBlocks.clear();
+		allowedBlocks.clear();
 		for (OABlockImpl block : ConfigMain.BLOCKS_LIST) {
 			listBlocks.put(block.getMaterialName(), block);
 			allowedBlocks.add(block.getMaterialName());
 		}
 	}
 	
-	public void sendAlerts(String userMessage, String adminMessage, String consoleMessage) {
+	public void sendAlerts(String userMessage, String adminMessage, String consoleMessage, String sound) {
 		for (User user : plugin.getOnlinePlayers()) {
 			OAPlayerImpl onlinePlayer = plugin.getPlayerManager().getPlayer(user.getUUID());
 			if (onlinePlayer != null && onlinePlayer.haveAlertsOn()) {
@@ -53,6 +55,9 @@ public abstract class BlockManager {
 				
 				if (msg != null) {
 					user.sendMessage(msg, true);
+					
+					// Send alert sound
+					user.playSound(sound, ConfigMain.ALERTS_SOUND_VOLUME, ConfigMain.ALERTS_SOUND_PITCH);
 				}
 			}
 		}
@@ -115,12 +120,13 @@ public abstract class BlockManager {
 					.replace("%number%", pNumber)
 					.replace("%block%", pBlock);
 		
-		userMessage = repl.apply(userMessage)
-				.replace("%coordinates%", coordinatesUtils.calculate(blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_USER));
-		adminMessage = repl.apply(adminMessage)
-				.replace("%coordinates%", coordinatesUtils.calculate(blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_ADMIN));
-		consoleMessage = repl.apply(consoleMessage)
-				.replace("%coordinates%", plugin.getColorUtils().removeColors(coordinatesUtils.calculate(blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_CONSOLE)));
+		userMessage = repl.apply(userMessage);
+		adminMessage = repl.apply(adminMessage);
+		consoleMessage = repl.apply(consoleMessage);
+		
+		userMessage = coordinatesUtils.replaceCoordinates(userMessage, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_USER);
+		adminMessage = coordinatesUtils.replaceCoordinates(adminMessage, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_ADMIN);
+		consoleMessage = plugin.getColorUtils().removeColors(coordinatesUtils.replaceCoordinates(consoleMessage, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_CONSOLE));
 		
 		// Send message to players
 		if (plugin.isBungeeCordEnabled()) {
@@ -140,7 +146,8 @@ public abstract class BlockManager {
 			sendAlerts(
 					alertUsers ? userMessage : "",
 					alertAdmins ? adminMessage : "",
-					consoleMessage);
+					consoleMessage,
+					block.getSound());
 		}
 	}
 	

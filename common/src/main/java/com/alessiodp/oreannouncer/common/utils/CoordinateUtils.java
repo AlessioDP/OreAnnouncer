@@ -13,10 +13,9 @@ import java.util.ArrayList;
 public class CoordinateUtils {
 	private final OreAnnouncerPlugin plugin;
 	
-	public String calculate(ADPLocation location, boolean hideEnabled) {
-		String ret = "";
+	public String replaceCoordinates(String message, ADPLocation location, boolean hideEnabled) {
+		String ret = message;
 		if (ConfigMain.ALERTS_COORDINATES_ENABLE) {
-			ret = ConfigMain.ALERTS_COORDINATES_FORMAT;
 			ArrayList<Coordinate> coords = new ArrayList<>();
 			if (ret.contains(CoordinateAxis.X.toString()))
 				coords.add(new Coordinate(
@@ -48,9 +47,9 @@ public class CoordinateUtils {
 					visibleCoordinates.get(chosen).hidden = true;
 				}
 			}
-			
+			boolean isJson = plugin.getJsonHandler().isJson(message);
 			for (Coordinate coord : coords) {
-				ret = ret.replace(coord.axis.placeholder, coord.parseValue());
+				ret = ret.replace(coord.axis.placeholder, coord.parseValue(isJson));
 			}
 		}
 		return ret;
@@ -73,16 +72,22 @@ public class CoordinateUtils {
 		// If null, this coordinate does not support hide
 		private Boolean hidden;
 		
-		private String parseValue() {
+		private String parseValue(boolean isJson) {
 			String ret = Integer.toString((int) value);
 			if (hidden != null && hidden) {
-				if (ConfigMain.ALERTS_COORDINATES_HIDE_OBFUSCATE) {
-					if (ConfigMain.ALERTS_COORDINATES_HIDE_FIXEDLENGTH)
-						ret = "0000";
-					else
-						ret = Strings.repeat("0", ret.length() - (value < 0 ? 1 : 0));
+				if (ConfigMain.ALERTS_COORDINATES_HIDE_OBFUSCATION_ENABLE) {
+					int num = ConfigMain.ALERTS_COORDINATES_HIDE_OBFUSCATION_FIXEDLENGTH;
+					if (num <= 0)
+						num = ret.length() - (value < 0 ? 1 : 0);
+					
+					ret = Strings.repeat(ConfigMain.ALERTS_COORDINATES_HIDE_OBFUSCATION_CHARACTER, num);
 				}
-				ret = ConfigMain.ALERTS_COORDINATES_HIDE_FORMAT.replace("%coordinate%", ret);
+				
+				if (isJson) {
+					ret = ConfigMain.ALERTS_COORDINATES_HIDE_FORMAT_JSON.replace("%coordinate%", ret);
+				} else {
+					ret = ConfigMain.ALERTS_COORDINATES_HIDE_FORMAT_TEXT.replace("%coordinate%", ret);
+				}
 			}
 			return ret;
 		}

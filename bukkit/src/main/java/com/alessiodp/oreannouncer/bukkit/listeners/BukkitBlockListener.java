@@ -23,7 +23,7 @@ public class BukkitBlockListener extends BlockListener implements Listener {
 	public void onBlockBreak(BlockBreakEvent event) {
 		if (!event.isCancelled()) {
 			super.onBlockBreak(
-					new BukkitUser(event.getPlayer()),
+					new BukkitUser(plugin, event.getPlayer()),
 					event.getBlock().getType().name(),
 					event.getPlayer().getLastTwoTargetBlocks(null,1).get(0).getLightLevel(),
 					event.getBlock().hasMetadata(OAConstants.BLOCK_METADATA),
@@ -44,7 +44,7 @@ public class BukkitBlockListener extends BlockListener implements Listener {
 	public void onBlockPlace(BlockPlaceEvent event) {
 		if (!event.isCancelled() && ConfigMain.BLOCKS_BYPASS_PLAYERBLOCKS)
 			super.onBlockPlace(
-					new BukkitUser(event.getPlayer()),
+					new BukkitUser(plugin, event.getPlayer()),
 					event.getBlock().getType().name(),
 					event.getBlock().hasMetadata(OAConstants.BLOCK_METADATA),
 					new ADPLocation(

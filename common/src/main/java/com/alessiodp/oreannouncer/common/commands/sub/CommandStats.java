@@ -98,6 +98,6 @@ public class CommandStats extends ADPSubCommand {
 	
 	@Override
 	public List<String> onTabComplete(@NonNull User sender, String[] args) {
-		return plugin.getCommandManager().getCommandUtils().tabCompleteOnOff(args);
+		return plugin.getCommandManager().getCommandUtils().tabCompletePlayerList(args, 1);
 	}
 }

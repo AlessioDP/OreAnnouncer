@@ -1,5 +1,6 @@
 package com.alessiodp.oreannouncer.bungeecord;
 
+import com.alessiodp.core.bungeecord.addons.internal.json.BungeeJsonHandler;
 import com.alessiodp.core.bungeecord.scheduling.ADPBungeeScheduler;
 import com.alessiodp.core.bungeecord.utils.BungeeColorUtils;
 import com.alessiodp.core.common.bootstrap.ADPBootstrap;
@@ -50,6 +51,11 @@ public class BungeeOreAnnouncerPlugin extends OreAnnouncerPlugin {
 		super.postHandle();
 		
 		new BungeeMetricsHandler(this);
+	}
+	
+	@Override
+	protected void initializeJsonHandler() {
+		jsonHandler = new BungeeJsonHandler();
 	}
 	
 	@Override
