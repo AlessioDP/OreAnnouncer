@@ -5,10 +5,6 @@ oreannouncer:
   common-messages:
     invalid-command: "&cComando inválido"
     configuration-reloaded: "&aLa configuración ha sido reiniciada"
-alerts:
-  user: "&6%player% &eencontro %number% %block%!"
-  admin: "&6%player% &eencontro %number% %block%! %coordinates%"
-  console: "%player% encontró %number% %block%! %coordinates%"
 commands:
   alerts:
     toggle-on: "&aAhora podrás ver las alertas"
@@ -46,4 +42,4 @@ help:
     top: '{"text":"","extra":[{"text":"/oa top [page]","color":"dark_green"},{"text":" - Lista de los mejores jugadores","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa top "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
     version: '{"text":"","extra":[{"text":"/oa version","color":"dark_green"},{"text":" - Mostrar informacíon de OreAnnouncer","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa version"},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
 dont-edit-this:
-  version: 1
+  version: 2

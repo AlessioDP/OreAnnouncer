@@ -7,8 +7,8 @@ oreannouncer:
     configuration-reloaded: "&aConfigaration rechargée"
 alerts:
   user: "&6%player% &etrouvé %number% %block%!"
-  admin: "&6%player% &etrouvé %number% %block%! %coordinates%"
-  console: "%player% trouvé %number% %block%! %coordinates%"
+  admin: '[{"text":"%player% ","color":"gold"},{"text":"trouvé %number% %block%! ","color":"yellow"},{"text":"Téléportation","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Cliquez pour téléporter!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %x% %y% %z%"}}]'
+  console: "%player% trouvé %number% %block%! [x: %x%, y: %y%, z: %z%]"
 commands:
   alerts:
     toggle-on: "&aMaintenant, tu peux voir les alertes"
@@ -46,4 +46,4 @@ help:
     top: '{"text":"","extra":[{"text":"/oa top [page]","color":"dark_green"},{"text":" - Liste des meilleurs joueurs","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa top "},"hoverEvent":{"action":"show_text","value":{"text":"Effectuer la commande","color":"gold"}}}'
     version: '{"text":"","extra":[{"text":"/oa version","color":"dark_green"},{"text":" - Afficher les information OreAnnouncer ","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa version"},"hoverEvent":{"action":"show_text","value":{"text":"Effectuer la commande","color":"gold"}}}'
 dont-edit-this:
-  version: 2
+  version: 3
