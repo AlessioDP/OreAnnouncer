@@ -14,6 +14,9 @@ public class OABlockImpl implements OABlock {
 	@Getter @Setter private boolean alertingAdmins;
 	@Getter @Setter private String singularName;
 	@Getter @Setter private String pluralName;
+	@Getter @Setter private String messageUser;
+	@Getter @Setter private String messageAdmin;
+	@Getter @Setter private String messageConsole;
 	@Getter @Setter private String sound;
 	@Getter @Setter private int lightLevel;
 	@Getter @Setter private boolean countingOnDestroy;
@@ -24,6 +27,9 @@ public class OABlockImpl implements OABlock {
 		alertingAdmins = false;
 		singularName = "";
 		pluralName = "";
+		messageUser = null;
+		messageAdmin = null;
+		messageConsole = null;
 		sound = "";
 		lightLevel = 15;
 		countingOnDestroy = false;
@@ -31,7 +37,7 @@ public class OABlockImpl implements OABlock {
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(materialName, alertingUsers, alertingAdmins, singularName, pluralName, lightLevel, countingOnDestroy);
+		return Objects.hash(materialName, alertingUsers, alertingAdmins, singularName, pluralName, messageUser, messageAdmin, messageConsole, lightLevel, countingOnDestroy);
 	}
 	
 	@Override
@@ -42,6 +48,9 @@ public class OABlockImpl implements OABlock {
 					&& alertingAdmins == ((OABlockImpl) other).alertingAdmins
 					&& Objects.equals(singularName, ((OABlockImpl) other).singularName)
 					&& Objects.equals(pluralName, ((OABlockImpl) other).pluralName)
+					&& Objects.equals(messageUser, ((OABlockImpl) other).messageUser)
+					&& Objects.equals(messageAdmin, ((OABlockImpl) other).messageAdmin)
+					&& Objects.equals(messageConsole, ((OABlockImpl) other).messageConsole)
 					&& Objects.equals(sound, ((OABlockImpl) other).sound)
 					&& lightLevel == ((OABlockImpl) other).lightLevel
 					&& countingOnDestroy == ((OABlockImpl) other).countingOnDestroy;

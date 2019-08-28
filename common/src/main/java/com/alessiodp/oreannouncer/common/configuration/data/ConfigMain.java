@@ -297,6 +297,9 @@ public abstract class ConfigMain extends ConfigurationFile {
 					block.setAlertingAdmins(csBlocks.getBoolean(key + ".alerts.admin", false));
 					block.setSingularName(csBlocks.getString(key + ".name.singular", key));
 					block.setPluralName(csBlocks.getString(key + ".name.plural", key));
+					block.setMessageUser(csBlocks.getString(key + ".messages.user", null));
+					block.setMessageAdmin(csBlocks.getString(key + ".messages.admin", null));
+					block.setMessageConsole(csBlocks.getString(key + ".messages.console", null));
 					block.setSound(csBlocks.getString(key + ".sound", ""));
 					block.setLightLevel(csBlocks.getInt(key + ".light-level", 15));
 					block.setCountingOnDestroy(csBlocks.getBoolean(key + ".count-on-destroy", false));

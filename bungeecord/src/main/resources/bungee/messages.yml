@@ -12,7 +12,11 @@ oreannouncer:
   # => %version%     = New version found
   # => %thisversion% = Version installed
   update-available: "&2New version of OreAnnouncer found: %version% (Current: %thisversion%)"
-  # Special tag: %permission% = Missing permission
+  # Special tag:
+  # => %config%      = The configuration file name that is outdated
+  configuration-outdated: "&cThe configuration file '%config%' of OreAnnouncer is outdated!"
+  # Special tag:
+  # => %permission%  = Missing permission
   no-permission: "&cYou do not have access to that command"
   common-messages:
     invalid-command: "&cInvalid command"
@@ -78,4 +82,4 @@ help:
 
 
 dont-edit-this:
-  version: 2
+  version: 3

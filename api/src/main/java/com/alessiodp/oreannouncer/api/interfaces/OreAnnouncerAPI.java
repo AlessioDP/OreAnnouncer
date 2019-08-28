@@ -39,4 +39,12 @@ public interface OreAnnouncerAPI {
 	 * @param block The {@link OAPlayerDataBlock} to save
 	 */
 	void updatePlayerDataBlock(OAPlayerDataBlock block);
+	
+	/**
+	 * Get top players
+	 *
+	 * @param numberOfPlayers Number of players to get
+	 * @return Returns a set of players
+	 */
+	Set<OAPlayer> getTopPlayers(int numberOfPlayers);
 }

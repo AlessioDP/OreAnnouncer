@@ -106,9 +106,9 @@ public abstract class BlockManager {
 	public abstract void unmarkBlock(ADPLocation blockLocation);
 	
 	public void handleAlerts(boolean alertUsers, boolean alertAdmins, OAPlayerImpl player, OABlockImpl block, ADPLocation blockLocation, int numberOfBlocks) {
-		String userMessage = Messages.ALERTS_USER;
-		String adminMessage = Messages.ALERTS_ADMIN;
-		String consoleMessage = Messages.ALERTS_CONSOLE;
+		String userMessage = block.getMessageUser() != null ? block.getMessageUser() : Messages.ALERTS_USER;
+		String adminMessage = block.getMessageAdmin() != null ? block.getMessageAdmin() : Messages.ALERTS_ADMIN;
+		String consoleMessage = block.getMessageConsole() != null ? block.getMessageConsole() : Messages.ALERTS_CONSOLE;
 		
 		// Replace placeholders
 		String pPlayer = player.getName();

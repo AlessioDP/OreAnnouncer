@@ -14,7 +14,7 @@ allprojects {
     apply plugin: 'com.github.johnrengelman.shadow' // Shadow jar
 
     group 'com.alessiodp.oreannouncer'
-    version '2.2.0'
+    version '2.3.0'
 
     // Info
     ext.pluginName = "OreAnnouncer"
@@ -23,12 +23,12 @@ allprojects {
     ext.pluginWebsite = "https://alessiodp.com/"
 
     // Development
-    ext.adpCore = '1.2.0'
+    ext.adpCore = '1.2.5'
     ext.lombok = '1.18.8'
     ext.powermock = '2.0.2'
 
     // Libraries
-    ext.lastLoginAPI = '1.1.1'
+    ext.lastLoginAPI = '1.2.0'
     ext.placeholderApi = '2.10.3'
 
     // Misc

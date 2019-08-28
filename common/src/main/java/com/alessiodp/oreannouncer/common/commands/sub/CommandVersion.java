@@ -28,7 +28,7 @@ public class CommandVersion extends ADPSubCommand {
 			
 			// Checks for command prerequisites
 			if (!sender.hasPermission(OreAnnouncerPermission.ADMIN_VERSION.toString())) {
-				player.sendNoPermission(OreAnnouncerPermission.USER_ALERTS_TOGGLE);
+				player.sendNoPermission(OreAnnouncerPermission.ADMIN_VERSION);
 				return false;
 			}
 			
@@ -47,8 +47,8 @@ public class CommandVersion extends ADPSubCommand {
 		} else {
 			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_CMD_VERSION_CONSOLE, true);
 		}
-		// Command starts
 		
+		// Command starts
 		String version = plugin.getVersion();
 		String newVersion = plugin.getAdpUpdater().getFoundVersion().isEmpty() ? version : plugin.getAdpUpdater().getFoundVersion();
 		String message = version.equals(newVersion) ? Messages.CMD_VERSION_UPDATED : Messages.CMD_VERSION_OUTDATED;

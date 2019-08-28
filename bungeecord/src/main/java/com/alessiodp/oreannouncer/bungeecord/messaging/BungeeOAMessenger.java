@@ -5,7 +5,7 @@ import com.alessiodp.core.common.messaging.ADPMessenger;
 
 public class BungeeOAMessenger extends ADPMessenger {
 	public BungeeOAMessenger(ADPPlugin plugin) {
-		super(plugin);
+		super(plugin, false);
 		messageListener = new BungeeOAMessageListener(plugin);
 	}
 	

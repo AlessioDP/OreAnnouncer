@@ -72,6 +72,7 @@ public abstract class OreAnnouncerPlugin extends ADPPlugin {
 	@Override
 	public void reloadConfiguration() {
 		getLoggerManager().logDebug(Constants.DEBUG_PLUGIN_RELOADING, true);
+		getLoginAlertsManager().reload();
 		getConfigurationManager().reload();
 		reloadLoggerManager();
 		getDatabaseManager().reload();
@@ -105,7 +106,7 @@ public abstract class OreAnnouncerPlugin extends ADPPlugin {
 				OAConstants.PLUGIN_SPIGOTCODE,
 				ConfigMain.OREANNOUNCER_UPDATES_CHECK,
 				ConfigMain.OREANNOUNCER_UPDATES_WARN,
-				OreAnnouncerPermission.ADMIN_UPDATES.toString(),
+				OreAnnouncerPermission.ADMIN_WARNINGS.toString(),
 				Messages.OREANNOUNCER_UPDATEAVAILABLE
 		);
 		getAdpUpdater().asyncTaskCheckUpdates();

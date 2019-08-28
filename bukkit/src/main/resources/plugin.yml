@@ -23,10 +23,10 @@ permissions:
     description: Allow access to /oa reload
   oreannouncer.admin.stats.other:
     description: Allow access to /oa stats on other players
-  oreannouncer.admin.updates:
-    description: Send a message if there is an update
   oreannouncer.admin.version:
     description: Allow access to /oa version
+  oreannouncer.admin.warnings:
+    description: Send an alert if there is an error
 
   oreannouncer.user.*:
     default: op
@@ -46,5 +46,5 @@ permissions:
       oreannouncer.admin.migrate: true
       oreannouncer.admin.reload: true
       oreannouncer.admin.stats.other: true
-      oreannouncer.admin.updates: true
       oreannouncer.admin.version: true
+      oreannouncer.admin.warnings: true

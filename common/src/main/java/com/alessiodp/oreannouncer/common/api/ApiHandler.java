@@ -46,4 +46,9 @@ public class ApiHandler implements OreAnnouncerAPI {
 	public void updatePlayerDataBlock(OAPlayerDataBlock block) {
 		plugin.getDatabaseManager().updateDataBlock((PlayerDataBlock) block);
 	}
+	
+	@Override
+	public Set<OAPlayer> getTopPlayers(int numberOfPlayers) {
+		return new HashSet<>(plugin.getDatabaseManager().getTopPlayersDestroyed(numberOfPlayers, 0));
+	}
 }

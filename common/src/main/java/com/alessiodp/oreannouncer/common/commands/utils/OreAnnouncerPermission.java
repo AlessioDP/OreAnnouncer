@@ -13,8 +13,8 @@ public enum OreAnnouncerPermission implements ADPPermission {
 	ADMIN_ALERTS_SEE	("oreannouncer.admin.alerts.see"),
 	ADMIN_RELOAD		("oreannouncer.admin.reload"),
 	ADMIN_STATS_OTHER	("oreannouncer.admin.stats.other"),
-	ADMIN_UPDATES		("oreannouncer.admin.updates"),
-	ADMIN_VERSION		("oreannouncer.admin.version");
+	ADMIN_VERSION		("oreannouncer.admin.version"),
+	ADMIN_WARNINGS		("oreannouncer.admin.warnings");
 	
 	private final String perm;
 	OreAnnouncerPermission(String t) {

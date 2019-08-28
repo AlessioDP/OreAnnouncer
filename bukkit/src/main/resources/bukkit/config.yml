@@ -151,6 +151,10 @@ blocks:
   #   name:                           | Name of the block
   #     singular: "block"             |
   #     plural: "blocks"              |
+  #   messages:                       |
+  #     user: ""                      | Custom message for users
+  #     admin: ""                     | Custom message for admins
+  #     console: ""                   | Custom message for the console
   #   sound: "SoundName"              | Sound to play (empty = no sound)
   #   light-level: 0-15               | Set the light level
   #   count-on-destroy: true/false    | Count this block

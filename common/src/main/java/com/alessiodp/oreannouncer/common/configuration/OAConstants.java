@@ -13,8 +13,8 @@ public class OAConstants {
 	// Versions
 	public static final int VERSION_BUKKIT_CONFIG = 3;
 	public static final int VERSION_BUNGEE_CONFIG = 1;
-	public static final int VERSION_BUKKIT_MESSAGES = 3;
-	public static final int VERSION_BUNGEE_MESSAGES = 2;
+	public static final int VERSION_BUKKIT_MESSAGES = 4;
+	public static final int VERSION_BUNGEE_MESSAGES = 3;
 	public static final int VERSION_DATABASE_MYSQL = 2;
 	public static final int VERSION_DATABASE_SQLITE = 2;
 	
