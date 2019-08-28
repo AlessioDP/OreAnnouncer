@@ -1,13 +1,14 @@
 ---
 oreannouncer:
   update-available: "&2Nueva versión de OreAnnouncer encontrada: %version% (Actual: %thisversion%)"
+  configuration-outdated: "&cThe configuration file '%config%' of OreAnnouncer is outdated!"
   no-permission: "&cNo tienes acceso a ese comando"
   common-messages:
     invalid-command: "&cComando inválido"
     configuration-reloaded: "&aLa configuración ha sido reiniciada"
 alerts:
   user: "&6%player% &eencontro %number% %block%!"
-  admin: '[{"text":"%player% ","color":"gold"},{"text":"encontro %number% %block%! ","color":"yellow"},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Haga click para teletransportarse!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %x% %y% %z%"}}]'
+  admin: '[{"text":"%player% ","color":"gold"},{"text":"found %number% %block%! ","color":"yellow"},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Click to teleport!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
   console: "%player% encontró %number% %block%! [x: %x%, y: %y%, z: %z%]"
 commands:
   alerts:
@@ -46,4 +47,4 @@ help:
     top: '{"text":"","extra":[{"text":"/oa top [page]","color":"dark_green"},{"text":" - Lista de los mejores jugadores","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa top "},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
     version: '{"text":"","extra":[{"text":"/oa version","color":"dark_green"},{"text":" - Mostrar informacíon de OreAnnouncer","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa version"},"hoverEvent":{"action":"show_text","value":{"text":"Ejecutar el comando","color":"gold"}}}'
 dont-edit-this:
-  version: 3
+  version: 4

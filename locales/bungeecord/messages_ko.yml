@@ -1,6 +1,7 @@
 ---
 oreannouncer:
   update-available: "&2New version of OreAnnouncer found: %version% (Current: %thisversion%)"
+  configuration-outdated: "&cThe configuration file '%config%' of OreAnnouncer is outdated!"
   no-permission: "&cYou do not have access to that command"
   common-messages:
     invalid-command: "&cInvalid command"
@@ -42,4 +43,4 @@ help:
     top: '{"text":"","extra":[{"text":"/oa top [page]","color":"dark_green"},{"text":" - List of top players","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa top "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
     version: '{"text":"","extra":[{"text":"/oa version","color":"dark_green"},{"text":" - Show OreAnnouncer information","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa version"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
 dont-edit-this:
-  version: 2
+  version: 3
