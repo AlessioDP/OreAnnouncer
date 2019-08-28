@@ -1,6 +1,7 @@
 ---
 oreannouncer:
   update-available: "&2Новая версия OreAnnouncer найдена: %version% (Текущая: %thisversion%)"
+  configuration-outdated: "&cThe configuration file '%config%' of OreAnnouncer is outdated!"
   no-permission: "&cУ вас нет доступа к этой команде"
   common-messages:
     invalid-command: "&cНеверная команда"
@@ -42,4 +43,4 @@ help:
     top: '{"text":"","extra":[{"text":"/oa top [page]","color":"dark_green"},{"text":" - Топ игроков","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa top "},"hoverEvent":{"action":"show_text","value":{"text":"Выполнить команду","color":"gold"}}}'
     version: '{"text":"","extra":[{"text":"/oa version","color":"dark_green"},{"text":" - Показать информацию о плагине","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa version"},"hoverEvent":{"action":"show_text","value":{"text":"Выполнить команду","color":"gold"}}}'
 dont-edit-this:
-  version: 2
+  version: 3
