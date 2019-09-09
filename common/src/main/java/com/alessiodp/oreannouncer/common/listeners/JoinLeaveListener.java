@@ -2,10 +2,6 @@ package com.alessiodp.oreannouncer.common.listeners;
 
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
-import com.alessiodp.oreannouncer.common.commands.utils.OreAnnouncerPermission;
-import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
-import com.alessiodp.oreannouncer.common.configuration.data.Messages;
-import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
