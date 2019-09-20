@@ -1,7 +1,7 @@
 ---
 oreannouncer:
   update-available: "&2Nuova versione di OreAnnouncer trovata: %version% (Attuale: %thisversion%)"
-  configuration-outdated: "&cThe configuration file '%config%' of OreAnnouncer is outdated!"
+  configuration-outdated: "&cIl file di configurazione '%config%' di OreAnnouncer è obsoleto!"
   no-permission: "&cNon hai accesso a questo comando"
   common-messages:
     invalid-command: "&cComando non valido"

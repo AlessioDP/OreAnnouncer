@@ -1,15 +1,15 @@
 ---
 oreannouncer:
   update-available: "&2Новая версия OreAnnouncer найдена: %version% (Текущая: %thisversion%)"
-  configuration-outdated: "&cThe configuration file '%config%' of OreAnnouncer is outdated!"
+  configuration-outdated: "&cФайл конфигурации '%config%' плагина OreAnnouncer устарел!"
   no-permission: "&cУ вас нет доступа к этой команде"
   common-messages:
     invalid-command: "&cНеверная команда"
     configuration-reloaded: "&aКонфигурация перезагружена"
 alerts:
   user: "&6%player% &eнашёл %number% %block%!"
-  admin: '[{"text":"%player% ","color":"gold"},{"text":"found %number% %block%! ","color":"yellow"},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Click to teleport!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
-  console: "%player% found %number% %block%! [x: %x%, y: %y%, z: %z%]"
+  admin: '[{"text":"%player% ","color":"gold"},{"text":"найдено %number% %block%! ","color":"yellow"},{"text":"Телепорт","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Нажмите, чтобы телепортироваться!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
+  console: "%player% нашёл %number% %block%! [x: %x%, y: %y%, z: %z%]"
 commands:
   alerts:
     toggle-on: "&aТеперь вы будете видеть оповещения"
@@ -28,10 +28,10 @@ commands:
     format-player: '&a%player%&7: %player_destroyed% блоков'
     wrong-command: "&cНеверная переменная. Используйте &7/oa top [страница]"
   version:
-    updated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Developed by &6AlessioDP"
-    outdated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
+    updated: "&2&lOreAnnouncer &2%version% &7(%platform%) - разработано &6AlessioDP"
+    outdated: "&2&lOreAnnouncer &2%version% &7(%platform%) - разработано &6AlessioDP\n&aНайдена новая версия: &2%newversion%"
 help:
-  header: "&2============ &lOreAnnouncer Help Page &r&2============"
+  header: "&2============ &lOreAnnouncer&r&2============"
   footer: ""
   console-help:
     - "Вы можете использовать только эти команды:"
