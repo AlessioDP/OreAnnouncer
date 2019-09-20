@@ -1,14 +1,14 @@
 ---
 oreannouncer:
   update-available: "&2Nouvelle version de OreAnnouncer trouvée : %version% (Actuelle : %thisversion%)"
-  configuration-outdated: "&cThe configuration file '%config%' of OreAnnouncer is outdated!"
+  configuration-outdated: "&cLe fichier de configuration \"%config%\" de OreAnnouncer est obsolète !"
   no-permission: "&cVous n'avez pas accès à cette commande"
   common-messages:
     invalid-command: "&cCommande invalide"
     configuration-reloaded: "&aConfiguration rechargée"
 alerts:
   user: "&6%player% &ea trouvé %number% %block% !"
-  admin: '[{"text":"%player% ","color":"gold"},{"text":"found %number% %block%! ","color":"yellow"},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Click to teleport!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
+  admin: '[{"text":"%player% ","color":"gold"},{"text":"a trouvé %number% %block% ! ","color":"yellow"},{"text":"Se téléporter","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Cliquez pour se téléporter !","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
   console: "%player% a trouvé %number% %block% ! [x : %x%, y : %y%, z : %z%]"
 commands:
   alerts:
