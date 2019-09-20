@@ -47,7 +47,7 @@ public class CommandOA extends ADPMainCommand {
 		if (sender.isPlayer()) {
 			if (args.length == 0) {
 				// Set /oa to /oa help
-				subCommand = ConfigMain.COMMANDS_CMD_HELP.toLowerCase();
+				subCommand = CommonCommands.HELP.getCommand().toLowerCase();
 			} else {
 				subCommand = args[0].toLowerCase();
 			}

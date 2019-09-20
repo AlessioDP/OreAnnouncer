@@ -64,6 +64,60 @@ public interface OABlock {
 	 */
 	void setPluralName(String pluralName);
 	
+	/**
+	 * Get custom message for users
+	 *
+	 * @return Returns the alert message for users
+	 */
+	String getMessageUser();
+	
+	/**
+	 * Set the custom message for users
+	 *
+	 * @param messageUser The message to set
+	 */
+	void setMessageUser(String messageUser);
+	
+	/**
+	 * Get custom message for admins
+	 *
+	 * @return Returns the alert message for admins
+	 */
+	String getMessageAdmin();
+	
+	/**
+	 * Set the custom message for admins
+	 *
+	 * @param messageAdmin The message to set
+	 */
+	void setMessageAdmin(String messageAdmin);
+	
+	/**
+	 * Get custom message for the console
+	 *
+	 * @return Returns the alert message for the console
+	 */
+	String getMessageConsole();
+	
+	/**
+	 * Set the custom message for the console
+	 *
+	 * @param messageConsole The message to set
+	 */
+	void setMessageConsole(String messageConsole);
+	
+	/**
+	 * Get sound name
+	 *
+	 * @return Returns the name of the sound
+	 */
+	String getSound();
+	
+	/**
+	 * Set sound name
+	 * @param sound The sound name to set
+	 */
+	void setSound(String sound);
 	
 	/**
 	 * Get light level value

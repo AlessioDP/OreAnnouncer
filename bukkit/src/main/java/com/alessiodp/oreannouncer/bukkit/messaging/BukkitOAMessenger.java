@@ -7,7 +7,7 @@ import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 
 public class BukkitOAMessenger extends ADPMessenger {
 	public BukkitOAMessenger(ADPPlugin plugin) {
-		super(plugin);
+		super(plugin, false);
 		messageDispatcher = new BukkitMessageDispatcher(plugin);
 	}
 	

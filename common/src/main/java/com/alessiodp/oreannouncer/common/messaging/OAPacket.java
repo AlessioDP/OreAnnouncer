@@ -113,6 +113,6 @@ public class OAPacket extends ADPPacket {
 	}
 	
 	public enum PacketType {
-		ALERT, DESTROY;
+		ALERT, DESTROY
 	}
 }

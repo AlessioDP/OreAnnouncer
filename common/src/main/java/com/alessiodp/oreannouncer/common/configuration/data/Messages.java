@@ -10,6 +10,7 @@ import java.util.List;
 public abstract class Messages extends ConfigurationFile {
 	// OreAnnouncer messages
 	public static String OREANNOUNCER_UPDATEAVAILABLE;
+	public static String OREANNOUNCER_CONFIGURATION_OUTDATED;
 	public static String OREANNOUNCER_NOPERMISSION;
 	
 	public static String OREANNOUNCER_COMMON_INVALIDCMD;
@@ -58,6 +59,7 @@ public abstract class Messages extends ConfigurationFile {
 	public void loadDefaults() {
 		// OreAnnouncer messages
 		OREANNOUNCER_UPDATEAVAILABLE = "&2New version of OreAnnouncer found: %version% (Current: %thisversion%)";
+		OREANNOUNCER_CONFIGURATION_OUTDATED = "&cThe configuration file '%config%' of OreAnnouncer is outdated!";
 		OREANNOUNCER_NOPERMISSION = "&cYou do not have access to that command";
 		
 		OREANNOUNCER_COMMON_INVALIDCMD = "&cInvalid command";
@@ -66,8 +68,8 @@ public abstract class Messages extends ConfigurationFile {
 		
 		// Event messages
 		ALERTS_USER = "&6%player% &efound %number% %block%!";
-		ALERTS_ADMIN = "&6%player% &efound %number% %block%! %coordinates%";
-		ALERTS_CONSOLE = "%player% found %number% %block%! %coordinates%";
+		ALERTS_ADMIN = "[{\"text\":\"%player% \",\"color\":\"gold\"},{\"text\":\"found %number% %block%! \",\"color\":\"yellow\"},{\"text\":\"Teleport\",\"color\":\"gray\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Click to teleport!\",\"color\":\"gold\"}},\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/tp %player%\"}}]";
+		ALERTS_CONSOLE = "%player% found %number% %block%! [x: %x%, y: %y%, z: %z%]";
 		
 		
 		// Command messages
@@ -113,6 +115,7 @@ public abstract class Messages extends ConfigurationFile {
 	public void loadConfiguration(ConfigurationAdapter confAdapter) {
 		// OreAnnouncer messages
 		OREANNOUNCER_UPDATEAVAILABLE = confAdapter.getString("oreannouncer.update-available", OREANNOUNCER_UPDATEAVAILABLE);
+		OREANNOUNCER_CONFIGURATION_OUTDATED = confAdapter.getString("oreannouncer.configuration-outdated", OREANNOUNCER_CONFIGURATION_OUTDATED);
 		OREANNOUNCER_NOPERMISSION = confAdapter.getString("oreannouncer.no-permission", OREANNOUNCER_NOPERMISSION);
 		
 		OREANNOUNCER_COMMON_INVALIDCMD = confAdapter.getString("oreannouncer.common-messages.invalid-command", OREANNOUNCER_COMMON_INVALIDCMD);

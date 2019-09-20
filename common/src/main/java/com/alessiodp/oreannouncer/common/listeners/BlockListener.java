@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public abstract class BlockListener {
-	private final OreAnnouncerPlugin plugin;
+	protected final OreAnnouncerPlugin plugin;
 	
 	protected void onBlockBreak(User user, String blockType, int lightLevel, boolean blockHasMetadata, boolean hasSilkTouch, ADPLocation blockLocation) {
 		if (!(ConfigMain.BLOCKS_BYPASS_SILKTOUCH && hasSilkTouch) && (ConfigMain.STATS_ENABLE || ConfigMain.ALERTS_ENABLE)) {

@@ -21,7 +21,7 @@ public abstract class PlayerManager {
 	}
 	
 	public void reload() {
-		listPlayers = new HashMap<>();
+		listPlayers.clear();
 		
 		for (User user : plugin.getOnlinePlayers()) {
 			loadPlayer(user.getUUID());
