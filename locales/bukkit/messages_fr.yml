@@ -1,15 +1,43 @@
 ---
+#Messages configuration file
+#You can find a list of available tags here: https://alessiodp.com/docs/oreannouncer/placeholders/
+#/ = = = = = = = = = = = = = = = = \
+#|      OREANNOUNCER MESSAGES      |
+#\ = = = = = = = = = = = = = = = = /
 oreannouncer:
+  #Special tags:
+  #=> %version%     = New version found
+  #=> %thisversion% = Version installed
   update-available: "&2Nouvelle version de OreAnnouncer trouvée : %version% (Actuelle : %thisversion%)"
+  #Special tag:
+  #=> %config%      = The configuration file name that is outdated
   configuration-outdated: "&cLe fichier de configuration \"%config%\" de OreAnnouncer est obsolète !"
+  #Special tag:
+  #=> %permission%  = Missing permission
   no-permission: "&cVous n'avez pas accès à cette commande"
   common-messages:
     invalid-command: "&cCommande invalide"
     configuration-reloaded: "&aConfiguration rechargée"
+#/ = = = = = = = = = = = = = = = = \
+#|         ALERTS MESSAGES         |
+#\ = = = = = = = = = = = = = = = = /
 alerts:
+  #Special tags:
+  #%x%, %y% and %z% = Coordinates of the destroyed block
+  #JSON tips:
+  #- Make a single block for a coordinate (see below)
+  #- Do not use obfuscation if you are using coordinates to run commands
+  #Example:
+  #{"text":"%x%","color":"gray"} - This is a single block for a coordinate
   user: "&6%player% &ea trouvé %number% %block% !"
+  #Without teleport:
+  #admin: "&6%player% &efound %number% %block%! &7[x: %x%&7, z: %z%&7]"
   admin: '[{"text":"%player% ","color":"gold"},{"text":"a trouvé %number% %block% ! ","color":"yellow"},{"text":"Se téléporter","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Cliquez pour se téléporter !","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
+  #No JSON for console
   console: "%player% a trouvé %number% %block% ! [x : %x%, y : %y%, z : %z%]"
+#/ = = = = = = = = = = = = = = = = \
+#|        COMMANDS MESSAGES        |
+#\ = = = = = = = = = = = = = = = = /
 commands:
   alerts:
     toggle-on: "&aVous pourrez maintenant voir les alertes"
@@ -22,14 +50,26 @@ commands:
       - "&aÉmeraudes&7 : %player_destroyed_emerald_ore%"
     player-not-found: "&c%player% introuvable !"
   top:
+    #Special tags:
+    #=> %total%    = Total players
+    #=> %page%     = Current list page
+    #=> %maxpages% = How many pages exist
     header: "&2============ &lMeilleurs joueurs &r&2============"
     footer: ""
     no-one: "&7Personne"
+    #You can use JSON to shows per-block total on hover
     format-player: '&a%player%&7 : %player_destroyed% blocs'
     wrong-command: "&cVariables incorrectes : Tapez &7/oa top [page]"
   version:
+    #Special tags:
+    #=> %version%    = OreAnnouncer version
+    #=> %newversion% = Latest OreAnnouncer version
+    #=> %platform%   = Platform of the plugin (e.g. Bukkit, BungeeCord)
     updated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Développé par &6AlessioDP"
     outdated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Développé par &6AlessioDP\n&aNouvelle version trouvée : &2%newversion%"
+#/ = = = = = = = = = = = = = = = = \
+#|          HELP MESSAGES          |
+#\ = = = = = = = = = = = = = = = = /
 help:
   header: "&2======= &lPage d'aide de OreAnnouncer &r&2======="
   footer: ""
