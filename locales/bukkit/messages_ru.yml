@@ -1,15 +1,43 @@
 ---
+#Messages configuration file
+#You can find a list of available tags here: https://alessiodp.com/docs/oreannouncer/placeholders/
+#/ = = = = = = = = = = = = = = = = \
+#|      OREANNOUNCER MESSAGES      |
+#\ = = = = = = = = = = = = = = = = /
 oreannouncer:
+  #Special tags:
+  #=> %version%     = New version found
+  #=> %thisversion% = Version installed
   update-available: "&2Новая версия OreAnnouncer найдена: %version% (Текущая: %thisversion%)"
-  configuration-outdated: "&cThe configuration file '%config%' of OreAnnouncer is outdated!"
+  #Special tag:
+  #=> %config%      = The configuration file name that is outdated
+  configuration-outdated: "&cФайл конфигурации '%config%' плагина OreAnnouncer устарел!"
+  #Special tag:
+  #=> %permission%  = Missing permission
   no-permission: "&cУ вас нет доступа к этой команде"
   common-messages:
     invalid-command: "&cНеверная команда"
     configuration-reloaded: "&aКонфигурация перезагружена"
+#/ = = = = = = = = = = = = = = = = \
+#|         ALERTS MESSAGES         |
+#\ = = = = = = = = = = = = = = = = /
 alerts:
+  #Special tags:
+  #%x%, %y% and %z% = Coordinates of the destroyed block
+  #JSON tips:
+  #- Make a single block for a coordinate (see below)
+  #- Do not use obfuscation if you are using coordinates to run commands
+  #Example:
+  #{"text":"%x%","color":"gray"} - This is a single block for a coordinate
   user: "&6%player% &eнашёл %number% %block%!"
-  admin: '[{"text":"%player% ","color":"gold"},{"text":"found %number% %block%! ","color":"yellow"},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Click to teleport!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
-  console: "%player% found %number% %block%! [x: %x%, y: %y%, z: %z%]"
+  #Without teleport:
+  #admin: "&6%player% &efound %number% %block%! &7[x: %x%&7, z: %z%&7]"
+  admin: '[{"text":"%player% ","color":"gold"},{"text":"найдено %number% %block%! ","color":"yellow"},{"text":"Телепорт","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Нажмите, чтобы телепортироваться!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
+  #No JSON for console
+  console: "%player% нашёл %number% %block%! [x: %x%, y: %y%, z: %z%]"
+#/ = = = = = = = = = = = = = = = = \
+#|        COMMANDS MESSAGES        |
+#\ = = = = = = = = = = = = = = = = /
 commands:
   alerts:
     toggle-on: "&aТеперь вы будете видеть оповещения"
@@ -22,16 +50,28 @@ commands:
       - "&aИзумруды&7: %player_destroyed_emerald_ore%"
     player-not-found: "&cИгрок %player% не найден!"
   top:
+    #Special tags:
+    #=> %total%    = Total players
+    #=> %page%     = Current list page
+    #=> %maxpages% = How many pages exist
     header: "&2============ &lТоп игроков &r&2============"
     footer: ""
     no-one: "&7Никто"
+    #You can use JSON to shows per-block total on hover
     format-player: '&a%player%&7: %player_destroyed% блоков'
     wrong-command: "&cНеверная переменная. Используйте &7/oa top [страница]"
   version:
-    updated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Developed by &6AlessioDP"
-    outdated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
+    #Special tags:
+    #=> %version%    = OreAnnouncer version
+    #=> %newversion% = Latest OreAnnouncer version
+    #=> %platform%   = Platform of the plugin (e.g. Bukkit, BungeeCord)
+    updated: "&2&lOreAnnouncer &2%version% &7(%platform%) - разработано &6AlessioDP"
+    outdated: "&2&lOreAnnouncer &2%version% &7(%platform%) - разработано &6AlessioDP\n&aНайдена новая версия: &2%newversion%"
+#/ = = = = = = = = = = = = = = = = \
+#|          HELP MESSAGES          |
+#\ = = = = = = = = = = = = = = = = /
 help:
-  header: "&2============ &lOreAnnouncer Help Page &r&2============"
+  header: "&2============ &lOreAnnouncer&r&2============"
   footer: ""
   console-help:
     - "Вы можете использовать только эти команды:"
