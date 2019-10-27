@@ -5,6 +5,8 @@ import com.alessiodp.oreannouncer.bungeecord.configuration.data.BungeeConfigMain
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.blocks.BlockManager;
 
+import java.util.UUID;
+
 public class BungeeBlockManager extends BlockManager {
 	
 	public BungeeBlockManager(OreAnnouncerPlugin plugin) {
@@ -33,5 +35,10 @@ public class BungeeBlockManager extends BlockManager {
 	@Override
 	public void unmarkBlock(ADPLocation blockLocation) {
 		// Nothing to do
+	}
+	
+	@Override
+	public String parsePAPI(UUID playerUuid, String message) {
+		return message;
 	}
 }

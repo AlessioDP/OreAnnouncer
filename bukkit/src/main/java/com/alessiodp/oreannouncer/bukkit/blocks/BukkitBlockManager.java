@@ -1,6 +1,7 @@
 package com.alessiodp.oreannouncer.bukkit.blocks;
 
 import com.alessiodp.core.common.utils.ADPLocation;
+import com.alessiodp.oreannouncer.bukkit.addons.external.PlaceholderAPIHandler;
 import com.alessiodp.oreannouncer.bukkit.bootstrap.BukkitOreAnnouncerBootstrap;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.blocks.BlockManager;
@@ -10,6 +11,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.metadata.FixedMetadataValue;
+
+import java.util.UUID;
 
 public class BukkitBlockManager extends BlockManager {
 	
@@ -54,5 +57,10 @@ public class BukkitBlockManager extends BlockManager {
 			block.removeMetadata(OAConstants.BLOCK_METADATA, (BukkitOreAnnouncerBootstrap) plugin.getBootstrap());
 			
 		}
+	}
+	
+	@Override
+	protected String parsePAPI(UUID playerUuid, String message) {
+		return PlaceholderAPIHandler.getPlaceholders(playerUuid, message);
 	}
 }

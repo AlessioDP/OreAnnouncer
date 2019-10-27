@@ -17,6 +17,7 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Function;
 
 public abstract class BlockManager {
@@ -128,6 +129,11 @@ public abstract class BlockManager {
 		adminMessage = coordinatesUtils.replaceCoordinates(adminMessage, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_ADMIN);
 		consoleMessage = plugin.getColorUtils().removeColors(coordinatesUtils.replaceCoordinates(consoleMessage, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_CONSOLE));
 		
+		// PlaceholderAPI
+		userMessage = parsePAPI(player.getPlayerUUID(), userMessage);
+		adminMessage = parsePAPI(player.getPlayerUUID(), adminMessage);
+		consoleMessage = parsePAPI(player.getPlayerUUID(), consoleMessage);
+		
 		// Send message to players
 		if (plugin.isBungeeCordEnabled()) {
 			OAPacket packet = new OAPacket(plugin.getVersion());
@@ -183,4 +189,6 @@ public abstract class BlockManager {
 			updateBlock(player, block.getMaterialName(), numberOfBlocks);
 		}
 	}
+	
+	protected abstract String parsePAPI(UUID playerUuid, String message);
 }
