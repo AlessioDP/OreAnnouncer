@@ -8,16 +8,16 @@ oreannouncer:
   #Special tags:
   #=> %version%     = New version found
   #=> %thisversion% = Version installed
-  update-available: "&2New version of OreAnnouncer found: %version% (Current: %thisversion%)"
+  update-available: "&2Neue Version von OreAnnouncer gefunden: %version% (Aktuell: %thisversion%)"
   #Special tag:
   #=> %config%      = The configuration file name that is outdated
-  configuration-outdated: "&cThe configuration file '%config%' of OreAnnouncer is outdated!"
+  configuration-outdated: "&cDie Konfigurationsdatei '%config%' von OreAnnouncer ist veraltet!"
   #Special tag:
   #=> %permission%  = Missing permission
-  no-permission: "&cYou do not have access to that command"
+  no-permission: "&cDu hast keinen Zugriff auf diesen Befehl"
   common-messages:
-    invalid-command: "&cInvalid command"
-    configuration-reloaded: "&aConfiguration reloaded"
+    invalid-command: "&cUngültiger Befehl"
+    configuration-reloaded: "&aDie Konfigurationen wurden neu geladen"
 #/ = = = = = = = = = = = = = = = = \
 #|         ALERTS MESSAGES         |
 #\ = = = = = = = = = = = = = = = = /
@@ -29,19 +29,19 @@ alerts:
   #- Do not use obfuscation if you are using coordinates to run commands
   #Example:
   #{"text":"%x%","color":"gray"} - This is a single block for a coordinate
-  user: "&6%player% &efound %number% %block%!"
+  user: "&6%player% &efindet %number% %block%!"
   #Without teleport:
   #admin: "&6%player% &efound %number% %block%! &7[x: %x%&7, z: %z%&7]"
-  admin: '[{"text":"%player% ","color":"gold"},{"text":"found %number% %block%! ","color":"yellow"},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Click to teleport!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
+  admin: '[{"text":"%player% ","color":"gold"},{"text":"findet %number% %block%! ","color":"yellow"},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Klicke hier, um sich zu teleportieren!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
   #No JSON for console
-  console: "%player% found %number% %block%! [x: %x%, y: %y%, z: %z%]"
+  console: "%player% findet %number% %block%! [x: %x%, y: %y%, z: %z%]"
 #/ = = = = = = = = = = = = = = = = \
 #|        COMMANDS MESSAGES        |
 #\ = = = = = = = = = = = = = = = = /
 commands:
   alerts:
     toggle-on: "&aNow you will be able to see alerts"
-    toggle-off: "&aYou won't see alerts anymore"
+    toggle-off: "&aDu wirst keine Warnungen mehr sehen"
     wrong-command: "&cWrong variables: Type &7/oa alerts [on/off]"
   stats:
     content:
