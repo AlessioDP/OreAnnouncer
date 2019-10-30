@@ -40,51 +40,51 @@ alerts:
 #\ = = = = = = = = = = = = = = = = /
 commands:
   alerts:
-    toggle-on: "&aNow you will be able to see alerts"
+    toggle-on: "&aDu kannst jetzt die Warnungen sehen"
     toggle-off: "&aDu wirst keine Warnungen mehr sehen"
-    wrong-command: "&cWrong variables: Type &7/oa alerts [on/off]"
+    wrong-command: "&cFalscher Ausdruck: Tippe &7/oa alerts [on/off]"
   stats:
     content:
-      - "&2============ &l%player%'s Stats &r&2============"
-      - "&bDiamonds&7: %player_destroyed_diamond_ore%"
-      - "&aEmeralds&7: %player_destroyed_emerald_ore%"
-    player-not-found: "&c%player% not found!"
+      - "&2============ &l%player%'s Statistik &r&2============"
+      - "&bDiamanten&7: %player_destroyed_diamond_ore%"
+      - "&aSmaragde&7: %player_destroyed_emerald_ore%"
+    player-not-found: "&c%player% wurde nicht gefunden!"
   top:
     #Special tags:
     #=> %total%    = Total players
     #=> %page%     = Current list page
     #=> %maxpages% = How many pages exist
-    header: "&2============ &lTop Players &r&2============"
+    header: "&2============ &lTop Spieler &r&2============"
     footer: ""
-    no-one: "&7No one"
+    no-one: "&7Niemand"
     #You can use JSON to shows per-block total on hover
-    format-player: '&a%player%&7: %player_destroyed% blocks'
-    wrong-command: "&cWrong variables: Type &7/oa top [page]"
+    format-player: '&a%player%&7: %player_destroyed% Blöcke'
+    wrong-command: "&cFalscher Ausdruck: Tippe &7/oa top [seite]"
   version:
     #Special tags:
     #=> %version%    = OreAnnouncer version
     #=> %newversion% = Latest OreAnnouncer version
     #=> %platform%   = Platform of the plugin (e.g. Bukkit, BungeeCord)
-    updated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Developed by &6AlessioDP"
-    outdated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
+    updated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Entwickelt von &6AlessioDP"
+    outdated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Entwickelt von &6AlessioDP\\n&aNeue Version gefunden: &2%newversion%"
 #/ = = = = = = = = = = = = = = = = \
 #|          HELP MESSAGES          |
 #\ = = = = = = = = = = = = = = = = /
 help:
-  header: "&2============ &lOreAnnouncer Help Page &r&2============"
+  header: "&2============ &lOreAnnouncer Hilfeseite &r&2============"
   footer: ""
   console-help:
-    - "You can only make these commands:"
-    - " > oa reload - Reload the configuration"
-    - " > oa stats <player> - Show player stats"
-    - " > oa top - List of top players"
-    - " > oa version - Show OreAnnouncer information"
+    - "Du kannst nur diese Befehle ausführen:"
+    - " > oa reload - Die Konfiguration neu laden"
+    - " > oa stats <spieler> - Spielerstatistik anzeigen"
+    - " > oa top - Liste der besten Spieler anzeigen"
+    - " > oa version - OreAnnouncer Informationen anzeigen"
   commands:
-    help: '{"text":"","extra":[{"text":"/oa help","color":"dark_green"},{"text":" - Show help pages","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa help "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    alerts: '{"text":"","extra":[{"text":"/oa alerts [on/off]","color":"dark_green"},{"text":" - Toggle alerts","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa alerts "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    reload: '{"text":"","extra":[{"text":"/oa reload","color":"dark_green"},{"text":" - Reload OreAnnouncer configuration files","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa reload"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    stats: '{"text":"","extra":[{"text":"/oa stats [player]","color":"dark_green"},{"text":" - Show player stats","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa stats "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    top: '{"text":"","extra":[{"text":"/oa top [page]","color":"dark_green"},{"text":" - List of top players","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa top "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    version: '{"text":"","extra":[{"text":"/oa version","color":"dark_green"},{"text":" - Show OreAnnouncer information","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa version"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    help: '{"text":"","extra":[{"text":"/oa help","color":"dark_green"},{"text":" - Hilfeseiten anzeigen","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa help "},"hoverEvent":{"action":"show_text","value":{"text":"Den Befehl ausführen","color":"gold"}}}'
+    alerts: '{"text":"","extra":[{"text":"/oa alerts [on/off]","color":"dark_green"},{"text":" - Umschalten der Warnmeldungen","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa alerts "},"hoverEvent":{"action":"show_text","value":{"text":"Den Befehl ausführen","color":"gold"}}}'
+    reload: '{"text":"","extra":[{"text":"/oa reload","color":"dark_green"},{"text":" - Die Konfiguration neu laden","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa reload"},"hoverEvent":{"action":"show_text","value":{"text":"Den Befehl ausführen","color":"gold"}}}'
+    stats: '{"text":"","extra":[{"text":"/oa stats [spieler]","color":"dark_green"},{"text":" - Spielerstatistik anzeigen","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa stats "},"hoverEvent":{"action":"show_text","value":{"text":"Den Befehl ausführen","color":"gold"}}}'
+    top: '{"text":"","extra":[{"text":"/oa top [seite]","color":"dark_green"},{"text":" - Liste der besten Spieler anzeigen","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa top "},"hoverEvent":{"action":"show_text","value":{"text":"Den Befehl ausführen","color":"gold"}}}'
+    version: '{"text":"","extra":[{"text":"/oa version","color":"dark_green"},{"text":" - OreAnnouncer Informationen anzeigen","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa version"},"hoverEvent":{"action":"show_text","value":{"text":"Den Befehl ausführen","color":"gold"}}}'
 dont-edit-this:
   version: 4
