@@ -8,23 +8,23 @@ oreannouncer:
   #Special tags:
   #=> %version%     = New version found
   #=> %thisversion% = Version installed
-  update-available: "&2New version of OreAnnouncer found: %version% (Current: %thisversion%)"
+  update-available: "&2Neue Version von OreAnnouncer gefunden: %version% (Aktuell: %thisversion%)"
   #Special tag:
   #=> %config%      = The configuration file name that is outdated
-  configuration-outdated: "&cThe configuration file '%config%' of OreAnnouncer is outdated!"
+  configuration-outdated: "&cDie Konfigurationsdatei '%config%' von OreAnnouncer ist veraltet!"
   #Special tag:
   #=> %permission%  = Missing permission
-  no-permission: "&cYou do not have access to that command"
+  no-permission: "&cDu hast keinen Zugriff auf diesen Befehl"
   common-messages:
-    invalid-command: "&cInvalid command"
-    configuration-reloaded: "&aConfiguration reloaded"
+    invalid-command: "&cUngültiger Befehl"
+    configuration-reloaded: "&aDie Konfigurationen wurden neu geladen"
 #/ = = = = = = = = = = = = = = = = \
 #|        COMMANDS MESSAGES        |
 #\ = = = = = = = = = = = = = = = = /
 commands:
   alerts:
-    toggle-on: "&aNow you will be able to see alerts"
-    toggle-off: "&aYou won't see alerts anymore"
+    toggle-on: "&aDu kannst jetzt die Warnungen sehen"
+    toggle-off: "&aDu wirst keine Warnungen mehr sehen"
     wrong-command: "&cWrong variables: Type &7/oa alerts [on/off]"
   stats:
     content:
