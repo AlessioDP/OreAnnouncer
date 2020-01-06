@@ -5,7 +5,6 @@ import com.alessiodp.oreannouncer.bukkit.addons.external.PlaceholderAPIHandler;
 import com.alessiodp.oreannouncer.bukkit.bootstrap.BukkitOreAnnouncerBootstrap;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.blocks.BlockManager;
-import com.alessiodp.oreannouncer.common.configuration.OAConstants;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -25,8 +24,9 @@ public class BukkitBlockManager extends BlockManager {
 		return Material.getMaterial(materialName.toUpperCase()) != null;
 	}
 	
+	@SuppressWarnings("ConstantConditions")
 	@Override
-	public boolean markBlock(ADPLocation blockLocation, String material) {
+	public boolean isBlockMarked(ADPLocation blockLocation, String material, MarkType markType) {
 		boolean ret = false;
 		Block block = new Location(
 				Bukkit.getWorld(blockLocation.getWorld()),
@@ -37,15 +37,16 @@ public class BukkitBlockManager extends BlockManager {
 				blockLocation.getPitch()).getBlock();
 		if (block != null
 				&& block.getType().toString().equalsIgnoreCase(material)
-				&& !block.hasMetadata(OAConstants.BLOCK_METADATA)) {
-			block.setMetadata(OAConstants.BLOCK_METADATA, new FixedMetadataValue((BukkitOreAnnouncerBootstrap) plugin.getBootstrap(), true));
+				&& block.hasMetadata(markType.getMark())) {
 			ret = true;
 		}
 		return ret;
 	}
 	
+	@SuppressWarnings("ConstantConditions")
 	@Override
-	public void unmarkBlock(ADPLocation blockLocation) {
+	public boolean markBlock(ADPLocation blockLocation, String material, MarkType markType) {
+		boolean ret = false;
 		Block block = new Location(
 				Bukkit.getWorld(blockLocation.getWorld()),
 				blockLocation.getX(),
@@ -53,8 +54,27 @@ public class BukkitBlockManager extends BlockManager {
 				blockLocation.getZ(),
 				blockLocation.getYaw(),
 				blockLocation.getPitch()).getBlock();
-		if (block != null && block.hasMetadata(OAConstants.BLOCK_METADATA)) {
-			block.removeMetadata(OAConstants.BLOCK_METADATA, (BukkitOreAnnouncerBootstrap) plugin.getBootstrap());
+		if (block != null
+				&& block.getType().toString().equalsIgnoreCase(material)
+				&& !block.hasMetadata(markType.getMark())) {
+			block.setMetadata(markType.getMark(), new FixedMetadataValue((BukkitOreAnnouncerBootstrap) plugin.getBootstrap(), true));
+			ret = true;
+		}
+		return ret;
+	}
+	
+	@SuppressWarnings("ConstantConditions")
+	@Override
+	public void unmarkBlock(ADPLocation blockLocation, MarkType markType) {
+		Block block = new Location(
+				Bukkit.getWorld(blockLocation.getWorld()),
+				blockLocation.getX(),
+				blockLocation.getY(),
+				blockLocation.getZ(),
+				blockLocation.getYaw(),
+				blockLocation.getPitch()).getBlock();
+		if (block != null && block.hasMetadata(markType.getMark())) {
+			block.removeMetadata(markType.getMark(), (BukkitOreAnnouncerBootstrap) plugin.getBootstrap());
 			
 		}
 	}

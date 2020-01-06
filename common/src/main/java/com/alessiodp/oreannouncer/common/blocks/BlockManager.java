@@ -3,6 +3,7 @@ package com.alessiodp.oreannouncer.common.blocks;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.core.common.utils.ADPLocation;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
+import com.alessiodp.oreannouncer.common.blocks.objects.BlockFound;
 import com.alessiodp.oreannouncer.common.blocks.objects.OABlockImpl;
 import com.alessiodp.oreannouncer.common.commands.utils.OreAnnouncerPermission;
 import com.alessiodp.oreannouncer.common.configuration.OAConstants;
@@ -13,10 +14,9 @@ import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 import com.alessiodp.oreannouncer.common.players.objects.PlayerDataBlock;
 import com.alessiodp.oreannouncer.common.utils.CoordinateUtils;
 import lombok.Getter;
+import org.apache.commons.lang.time.DurationFormatUtils;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -24,23 +24,9 @@ public abstract class BlockManager {
 	protected final OreAnnouncerPlugin plugin;
 	private final CoordinateUtils coordinatesUtils;
 	
-	@Getter private HashMap<String, OABlockImpl> listBlocks;
-	@Getter protected List<String> allowedBlocks;
-	
 	public BlockManager(OreAnnouncerPlugin plugin) {
 		this.plugin = plugin;
 		coordinatesUtils = new CoordinateUtils(plugin);
-		listBlocks = new HashMap<>();
-		allowedBlocks = new ArrayList<>();
-	}
-	
-	public void reload() {
-		listBlocks.clear();
-		allowedBlocks.clear();
-		for (OABlockImpl block : ConfigMain.BLOCKS_LIST) {
-			listBlocks.put(block.getMaterialName(), block);
-			allowedBlocks.add(block.getMaterialName());
-		}
 	}
 	
 	public void sendAlerts(String userMessage, String adminMessage, String consoleMessage, String sound) {
@@ -58,7 +44,8 @@ public abstract class BlockManager {
 					user.sendMessage(msg, true);
 					
 					// Send alert sound
-					user.playSound(sound, ConfigMain.ALERTS_SOUND_VOLUME, ConfigMain.ALERTS_SOUND_PITCH);
+					if (!sound.isEmpty())
+						user.playSound(sound, ConfigMain.ALERTS_SOUND_VOLUME, ConfigMain.ALERTS_SOUND_PITCH);
 				}
 			}
 		}
@@ -102,37 +89,20 @@ public abstract class BlockManager {
 	
 	public abstract boolean existsMaterial(String materialName);
 	
-	public abstract boolean markBlock(ADPLocation blockLocation, String material);
+	public abstract boolean isBlockMarked(ADPLocation blockLocation, String material, MarkType markType);
 	
-	public abstract void unmarkBlock(ADPLocation blockLocation);
+	public abstract boolean markBlock(ADPLocation blockLocation, String material, MarkType markType);
+	
+	public abstract void unmarkBlock(ADPLocation blockLocation, MarkType markType);
 	
 	public void handleAlerts(boolean alertUsers, boolean alertAdmins, OAPlayerImpl player, OABlockImpl block, ADPLocation blockLocation, int numberOfBlocks) {
 		String userMessage = block.getMessageUser() != null ? block.getMessageUser() : Messages.ALERTS_USER;
 		String adminMessage = block.getMessageAdmin() != null ? block.getMessageAdmin() : Messages.ALERTS_ADMIN;
 		String consoleMessage = block.getMessageConsole() != null ? block.getMessageConsole() : Messages.ALERTS_CONSOLE;
 		
-		// Replace placeholders
-		String pPlayer = player.getName();
-		String pNumber = Integer.toString(numberOfBlocks);
-		String pBlock = numberOfBlocks > 1 ? block.getPluralName() : block.getSingularName();
-		
-		Function<String, String> repl = (msg) -> msg
-					.replace("%player%", pPlayer)
-					.replace("%number%", pNumber)
-					.replace("%block%", pBlock);
-		
-		userMessage = repl.apply(userMessage);
-		adminMessage = repl.apply(adminMessage);
-		consoleMessage = repl.apply(consoleMessage);
-		
-		userMessage = coordinatesUtils.replaceCoordinates(userMessage, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_USER);
-		adminMessage = coordinatesUtils.replaceCoordinates(adminMessage, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_ADMIN);
-		consoleMessage = plugin.getColorUtils().removeColors(coordinatesUtils.replaceCoordinates(consoleMessage, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_CONSOLE));
-		
-		// PlaceholderAPI
-		userMessage = parsePAPI(player.getPlayerUUID(), userMessage);
-		adminMessage = parsePAPI(player.getPlayerUUID(), adminMessage);
-		consoleMessage = parsePAPI(player.getPlayerUUID(), consoleMessage);
+		userMessage = parseMessage(userMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_USER, numberOfBlocks);
+		adminMessage = parseMessage(adminMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_ADMIN, numberOfBlocks);
+		consoleMessage = parseMessage(consoleMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_CONSOLE, numberOfBlocks);
 		
 		// Send message to players
 		if (plugin.isBungeeCordEnabled()) {
@@ -153,23 +123,8 @@ public abstract class BlockManager {
 					alertUsers ? userMessage : "",
 					alertAdmins ? adminMessage : "",
 					consoleMessage,
-					block.getSound());
+					block.getSound() != null ? block.getSound() : ConfigMain.ALERTS_SOUND_DEFAULT);
 		}
-	}
-	
-	public int countNearBlocks(ADPLocation blockLocation, String material) {
-		int ret = 0;
-		if (markBlock(blockLocation, material)) {
-			ret++;
-			for (int x=-1; x <= 1; x++) {
-				for (int y=-1; y <= 1; y++) {
-					for (int z=-1; z <= 1; z++) {
-						ret += countNearBlocks(blockLocation.add(x, y, z), material);
-					}
-				}
-			}
-		}
-		return ret;
 	}
 	
 	public void handleBlockDestroy(OABlockImpl block, OAPlayerImpl player, int numberOfBlocks) {
@@ -190,5 +145,150 @@ public abstract class BlockManager {
 		}
 	}
 	
+	public void handleBlockFound(OABlockImpl block, OAPlayerImpl player, ADPLocation blockLocation, int numberOfBlocks) {
+		BlockFound bf = new BlockFound(player.getPlayerUUID(), block, numberOfBlocks);
+		plugin.getDatabaseManager().insertBlocksFound(bf);
+		
+		BlockFound previousBf = plugin.getDatabaseManager().getLatestBlocksFound(player.getPlayerUUID(), block, block.getCountTime());
+		if (previousBf != null) {
+			bf = bf.merge(previousBf);
+		}
+		
+		if (bf.getFound() >= block.getCountNumber()) {
+			String countTimeFormat = block.getCountTimeFormat() != null ? block.getCountTimeFormat() : ConfigMain.STATS_ADVANCED_COUNT_TIME_FORMAT;
+			
+			// Alert
+			String userMessage = block.getCountMessageUser() != null ? block.getCountMessageUser() : Messages.ALERTS_COUNT_USER;
+			String adminMessage = block.getCountMessageAdmin() != null ? block.getCountMessageAdmin() : Messages.ALERTS_COUNT_ADMIN;
+			String consoleMessage = block.getCountMessageConsole() != null ? block.getCountMessageConsole() : Messages.ALERTS_COUNT_CONSOLE;
+			
+			userMessage = parseMessage(userMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_USER, numberOfBlocks, bf.getTimestamp(), countTimeFormat);
+			adminMessage = parseMessage(adminMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_ADMIN, numberOfBlocks, bf.getTimestamp(), countTimeFormat);
+			consoleMessage = parseMessage(consoleMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_CONSOLE, numberOfBlocks, bf.getTimestamp(), countTimeFormat);
+			
+			if (plugin.isBungeeCordEnabled()) {
+				OAPacket packet = new OAPacket(plugin.getVersion());
+				packet
+						.setMaterialName(block.getMaterialName())
+						.setType(OAPacket.PacketType.ALERT_COUNT)
+						.setMessageUsers(userMessage)
+						.setMessageAdmins(adminMessage)
+						.setMessageConsole(consoleMessage);
+				if (plugin.getMessenger().getMessageDispatcher().sendPacket(packet)) {
+					plugin.getLoggerManager().logDebug(OAConstants.DEBUG_MESSAGING_SEND_ALERT_COUNT, true);
+				} else {
+					plugin.getLoggerManager().printError(OAConstants.DEBUG_MESSAGING_SEND_ALERT_COUNT_FAILED);
+				}
+			} else {
+				sendAlerts(
+						userMessage,
+						adminMessage,
+						consoleMessage,
+						block.getSound() != null ? block.getSound() : ConfigMain.ALERTS_SOUND_DEFAULT);
+			}
+		}
+	}
+	
+	public void handleTNTDestroy(@Nullable OAPlayerImpl player, OABlockImpl block, ADPLocation blockLocation, int numberOfBlocks) {
+		String userMessage = player != null ? Messages.ALERTS_TNT_PLAYER_USER : Messages.ALERTS_TNT_USER;
+		String adminMessage = player != null ? Messages.ALERTS_TNT_PLAYER_ADMIN : Messages.ALERTS_TNT_ADMIN;
+		String consoleMessage = player != null ? Messages.ALERTS_TNT_PLAYER_CONSOLE : Messages.ALERTS_TNT_CONSOLE;
+		
+		userMessage = parseMessage(userMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_USER, numberOfBlocks);
+		adminMessage = parseMessage(adminMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_ADMIN, numberOfBlocks);
+		consoleMessage = parseMessage(consoleMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_CONSOLE, numberOfBlocks);
+		
+		// Send message to players
+		if (plugin.isBungeeCordEnabled()) {
+			OAPacket packet = new OAPacket(plugin.getVersion());
+			packet
+					.setMaterialName(block.getMaterialName())
+					.setType(OAPacket.PacketType.ALERT_TNT)
+					.setMessageUsers(userMessage)
+					.setMessageAdmins(adminMessage)
+					.setMessageConsole(consoleMessage);
+			if (plugin.getMessenger().getMessageDispatcher().sendPacket(packet)) {
+				plugin.getLoggerManager().logDebug(OAConstants.DEBUG_MESSAGING_SEND_ALERT_TNT, true);
+			} else {
+				plugin.getLoggerManager().printError(OAConstants.DEBUG_MESSAGING_SEND_ALERT_TNT_FAILED);
+			}
+		} else {
+			sendAlerts(
+					userMessage,
+					adminMessage,
+					consoleMessage,
+					block.getSound() != null ? block.getSound() : ConfigMain.ALERTS_SOUND_DEFAULT);
+		}
+	}
+	
+	public int countNearBlocks(ADPLocation blockLocation, String material, MarkType markType) {
+		return countNearBlocks(blockLocation, material, markType, 0);
+	}
+	
+	public int countNearBlocks(ADPLocation blockLocation, String material, MarkType markType, int currentNumber) {
+		int ret = currentNumber;
+		if (markBlock(blockLocation, material, markType)) {
+			ret++;
+			for (int x=-1; x <= 1; x++) {
+				for (int y=-1; y <= 1; y++) {
+					for (int z=-1; z <= 1; z++) {
+						if (ret < 500 || ConfigMain.BLOCKS_BYPASS_SECURE_COUNTER) {
+							ret = countNearBlocks(blockLocation.add(x, y, z), material, markType, ret);
+						} else {
+							// Calculating too many blocks, print an error
+							// and force to stop the counter
+							plugin.getLoggerManager().printError(OAConstants.DEBUG_EVENT_BLOCK_BREAK_INFINITE_COUNT
+									.replace("{block}", material));
+							return -1;
+						}
+						
+						if (ret == -1)
+							return -1;
+					}
+				}
+			}
+		}
+		return ret;
+	}
+	
+	protected String parseMessage(String message, OAPlayerImpl player, OABlockImpl block, ADPLocation blockLocation, boolean hiddenCoordinates, int numberOfBlocks) {
+		return parseMessage(message, player, block, blockLocation, hiddenCoordinates, numberOfBlocks, 0, "");
+	}
+	
+	protected String parseMessage(String message, @Nullable OAPlayerImpl player, OABlockImpl block, ADPLocation blockLocation, boolean hiddenCoordinates, int numberOfBlocks, long elapsed, String elapsedFormat) {
+		// Replace placeholders
+		String pPlayer = player != null ? player.getName() : "unknown";
+		String pNumber = Integer.toString(numberOfBlocks);
+		String pBlock = numberOfBlocks > 1 ? block.getPluralName() : block.getSingularName();
+		
+		Function<String, String> repl = (msg) -> msg
+				.replace("%player%", pPlayer)
+				.replace("%number%", pNumber)
+				.replace("%block%", pBlock)
+				.replace("%time%", formatElapsed(elapsed, elapsedFormat));
+		
+		String ret = repl.apply(message);
+		
+		ret = coordinatesUtils.replaceCoordinates(ret, blockLocation, hiddenCoordinates);
+		
+		// PlaceholderAPI
+		return player != null ? parsePAPI(player.getPlayerUUID(), ret) : ret;
+	}
+	
+	private String formatElapsed(long timestamp, String format) {
+		return DurationFormatUtils.formatDuration(System.currentTimeMillis() - (timestamp * 1000L), format);
+	}
+	
 	protected abstract String parsePAPI(UUID playerUuid, String message);
+	
+	public enum MarkType {
+		ALERT("OreAnnouncer_alert"),
+		FOUND("OreAnnouncer_found");
+		
+		@Getter private final String mark;
+		
+		MarkType(String mark) {
+			this.mark = mark;
+		}
+	}
 }

@@ -13,7 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public enum SQLTable implements ISQLTable {
-	PLAYERS, BLOCKS, VERSIONS;
+	PLAYERS, BLOCKS, BLOCKS_FOUND, VERSIONS;
 	// VERSIONS must be first, it needs to be created before others.
 	
 	@Getter private String tableName;
@@ -32,6 +32,7 @@ public enum SQLTable implements ISQLTable {
 		
 		PLAYERS.tableName = ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_TABLES_PLAYERS;
 		BLOCKS.tableName = ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_TABLES_BLOCKS;
+		BLOCKS_FOUND.tableName = ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_TABLES_BLOCKS_FOUND;
 		VERSIONS.tableName = ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_TABLES_VERSIONS;
 		
 		parseSchema(schema);
@@ -46,6 +47,9 @@ public enum SQLTable implements ISQLTable {
 					break;
 				case "blocks":
 					ret = BLOCKS;
+					break;
+				case "blocks_found":
+					ret = BLOCKS_FOUND;
 					break;
 				case "versions":
 					ret = VERSIONS;
@@ -77,6 +81,7 @@ public enum SQLTable implements ISQLTable {
 		return query
 				.replace("{table_players}", PLAYERS.tableName)
 				.replace("{table_blocks}", BLOCKS.tableName)
+				.replace("{table_blocks_found}", BLOCKS_FOUND.tableName)
 				.replace("{table_versions}", VERSIONS.tableName)
 				.replace("{charset}", charset)
 				.replace("{version}", Integer.toString(version))
@@ -97,7 +102,7 @@ public enum SQLTable implements ISQLTable {
 					table.createQuery = m.group(2);
 				}
 			}
-		} catch (IOException ex) {
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}

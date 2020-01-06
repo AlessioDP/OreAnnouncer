@@ -8,11 +8,14 @@ import com.alessiodp.core.common.storage.sql.ISQLTable;
 import com.alessiodp.core.common.storage.sql.mysql.MySQLDao;
 import com.alessiodp.core.common.storage.sql.mysql.MySQLHikariConfiguration;
 import com.alessiodp.core.common.storage.sql.sqlite.SQLiteDao;
+import com.alessiodp.oreannouncer.api.interfaces.OABlock;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
+import com.alessiodp.oreannouncer.common.blocks.objects.BlockFound;
 import com.alessiodp.oreannouncer.common.configuration.OAConstants;
 import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 import com.alessiodp.oreannouncer.common.players.objects.PlayerDataBlock;
+import com.alessiodp.oreannouncer.common.storage.OADatabaseManager;
 import com.alessiodp.oreannouncer.common.storage.interfaces.IOADatabaseDispatcher;
 import com.alessiodp.oreannouncer.common.storage.sql.OASQLUpgradeManager;
 import com.alessiodp.oreannouncer.common.storage.sql.SQLTable;
@@ -77,6 +80,7 @@ public class OASQLDispatcher extends SQLDispatcher implements IOADatabaseDispatc
 			tables.add(SQLTable.VERSIONS); // Version must be first
 			tables.add(SQLTable.PLAYERS);
 			tables.add(SQLTable.BLOCKS);
+			tables.add(SQLTable.BLOCKS_FOUND);
 			
 			try (Connection connection = getConnection()) {
 				initTables(connection, tables);
@@ -137,11 +141,19 @@ public class OASQLDispatcher extends SQLDispatcher implements IOADatabaseDispatc
 	}
 	
 	@Override
-	public ArrayList<OAPlayerImpl> getTopPlayersDestroyed(int limit, int offset) {
+	public ArrayList<OAPlayerImpl> getTopPlayers(OADatabaseManager.TopOrderBy orderBy, int limit, int offset) {
 		ArrayList<OAPlayerImpl> list = new ArrayList<>();
 		try (Connection connection = getConnection()) {
 			if (connection != null) {
-				String query = OAConstants.QUERY_PLAYER_TOP_BLOCKS;
+				String query;
+				switch (orderBy) {
+					case FOUND:
+						query = OAConstants.QUERY_PLAYER_TOP_BLOCKS_FOUND;
+						break;
+					case DESTROY:
+					default:
+						query = OAConstants.QUERY_PLAYER_TOP_BLOCKS_DESTROY;
+				}
 				
 				try (PreparedStatement preStatement = connection.prepareStatement(SQLTable.formatGenericQuery(query))) {
 					preStatement.setInt(1, limit);
@@ -170,11 +182,19 @@ public class OASQLDispatcher extends SQLDispatcher implements IOADatabaseDispatc
 	}
 	
 	@Override
-	public int getTopPlayersNumber() {
+	public int getTopPlayersNumber(OADatabaseManager.TopOrderBy orderBy) {
 		int ret = 0;
 		try (Connection connection = getConnection()) {
 			if (connection != null) {
-				String query = OAConstants.QUERY_PLAYER_TOP_NUMBER;
+				String query;
+				switch (orderBy) {
+					case FOUND:
+						query = OAConstants.QUERY_PLAYER_TOP_NUMBER_FOUND;
+						break;
+					case DESTROY:
+					default:
+						query = OAConstants.QUERY_PLAYER_TOP_NUMBER_DESTROY;
+				}
 				
 				try (
 						Statement statement = connection.createStatement();
@@ -209,6 +229,57 @@ public class OASQLDispatcher extends SQLDispatcher implements IOADatabaseDispatc
 		} catch (SQLException ex) {
 			plugin.getLoggerManager().printErrorStacktrace(Constants.DEBUG_SQL_ERROR, ex);
 		}
+	}
+	
+	@Override
+	public void insertBlocksFound(BlockFound blockFound) {
+		String query = OAConstants.QUERY_BLOCK_FOUND_INSERT_SQLITE;
+		if (databaseType == StorageType.MYSQL)
+			query = OAConstants.QUERY_BLOCK_FOUND_INSERT_MYSQL;
+		try (Connection connection = getConnection()) {
+			if (connection != null) {
+				try (PreparedStatement preStatement = connection.prepareStatement(SQLTable.formatGenericQuery(query))) {
+					preStatement.setString(1, blockFound.getPlayer().toString());
+					preStatement.setString(2, blockFound.getMaterialName());
+					preStatement.setLong(3, blockFound.getTimestamp());
+					preStatement.setInt(4, blockFound.getFound());
+					
+					preStatement.executeUpdate();
+				}
+			}
+		} catch (SQLException ex) {
+			plugin.getLoggerManager().printErrorStacktrace(Constants.DEBUG_SQL_ERROR, ex);
+		}
+	}
+	
+	@Override
+	public BlockFound getLatestBlocksFound(UUID player, OABlock block, long rangeTime) {
+		BlockFound ret = null;
+		String query = OAConstants.QUERY_BLOCK_FOUND_GET_LATEST;
+		
+		try (Connection connection = getConnection()) {
+			if (connection != null) {
+				try (PreparedStatement preStatement = connection.prepareStatement(SQLTable.formatGenericQuery(query))) {
+					preStatement.setString(1, player.toString());
+					preStatement.setString(2, block.getMaterialName().toUpperCase());
+					preStatement.setLong(3, rangeTime);
+					
+					try (ResultSet rs = preStatement.executeQuery()) {
+						if (rs.next()) {
+							ret = new BlockFound(
+									player,
+									block,
+									rs.getLong(1),
+									rs.getInt(2)
+							);
+						}
+					}
+				}
+			}
+		} catch (SQLException ex) {
+			plugin.getLoggerManager().printErrorStacktrace(Constants.DEBUG_SQL_ERROR, ex);
+		}
+		return ret;
 	}
 	
 	private OAPlayerImpl getPlayer(Connection connection, UUID playerUuid) {

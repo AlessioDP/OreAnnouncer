@@ -17,6 +17,15 @@ CREATE TABLE `{table_blocks}` (
  DEFAULT CHARSET='{charset}';
 /*END_BLOCKS*/
 
+/*START_BLOCKS_FOUND*/
+CREATE TABLE `{table_blocks_found}` (
+	`id`				INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	`player`			VARCHAR({varcharsize}) NOT NULL,
+	`material_name`		VARCHAR({varcharsize}) NOT NULL,
+	`timestamp`			BIGINT NOT NULL,
+	`found`				INT DEFAULT 0);
+/*END_BLOCKS_FOUND*/
+
 /*START_VERSIONS*/
 CREATE TABLE `{table_versions}` (
 	`name`		VARCHAR({varcharsize}) NOT NULL,

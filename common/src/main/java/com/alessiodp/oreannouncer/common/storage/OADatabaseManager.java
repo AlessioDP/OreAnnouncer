@@ -5,6 +5,8 @@ import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.core.common.storage.DatabaseManager;
 import com.alessiodp.core.common.storage.StorageType;
 import com.alessiodp.core.common.storage.interfaces.IDatabaseDispatcher;
+import com.alessiodp.oreannouncer.api.interfaces.OABlock;
+import com.alessiodp.oreannouncer.common.blocks.objects.BlockFound;
 import com.alessiodp.oreannouncer.common.configuration.OAConstants;
 import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
@@ -61,21 +63,23 @@ public class OADatabaseManager extends DatabaseManager {
 		}).join();
 	}
 	
-	public ArrayList<OAPlayerImpl> getTopPlayersDestroyed(int limit, int offset) {
+	public ArrayList<OAPlayerImpl> getTopPlayersDestroyed(TopOrderBy orderBy, int limit, int offset) {
 		return plugin.getScheduler().runSupplyAsync(() -> {
 			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_TOP_PLAYERBLOCKS
+					.replace("{order}", orderBy.name())
 					.replace("{limit}", Integer.toString(limit))
 					.replace("{offset}", Integer.toString(offset)), true);
 			
-			return ((IOADatabaseDispatcher) database).getTopPlayersDestroyed(limit, offset);
+			return ((IOADatabaseDispatcher) database).getTopPlayers(orderBy, limit, offset);
 		}).join();
 	}
 	
-	public Integer getTopPlayersNumber() {
+	public Integer getTopPlayersNumber(TopOrderBy orderBy) {
 		return plugin.getScheduler().runSupplyAsync(() -> {
-			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_TOP_NUMBER, true);
+			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_TOP_NUMBER
+					.replace("{order}", orderBy.name()), true);
 			
-			return ((IOADatabaseDispatcher) database).getTopPlayersNumber();
+			return ((IOADatabaseDispatcher) database).getTopPlayersNumber(orderBy);
 		}).join();
 	}
 	
@@ -87,5 +91,29 @@ public class OADatabaseManager extends DatabaseManager {
 			
 			((IOADatabaseDispatcher) database).updateDataBlock(playerDataBlock);
 		}).join();
+	}
+	
+	public void insertBlocksFound(BlockFound blockFound) {
+		plugin.getScheduler().runAsync(() -> {
+			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_INSERT_BLOCKS_FOUND
+					.replace("{uuid}", blockFound.getPlayer().toString())
+					.replace("{block}", blockFound.getMaterialName()), true);
+			
+			((IOADatabaseDispatcher) database).insertBlocksFound(blockFound);
+		}).join();
+	}
+	
+	public BlockFound getLatestBlocksFound(UUID player, OABlock block, long rangeTime) {
+		return plugin.getScheduler().runSupplyAsync(() -> {
+			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_LATEST_BLOCKS_FOUND
+					.replace("{uuid}", player.toString())
+					.replace("{block}", block.getMaterialName()), true);
+			
+			return ((IOADatabaseDispatcher) database).getLatestBlocksFound(player, block, (System.currentTimeMillis() / 1000L) - rangeTime);
+		}).join();
+	}
+	
+	public enum TopOrderBy {
+		DESTROY, FOUND
 	}
 }

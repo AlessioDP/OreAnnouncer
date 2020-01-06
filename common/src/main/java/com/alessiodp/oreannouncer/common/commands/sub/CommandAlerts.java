@@ -8,7 +8,9 @@ import com.alessiodp.core.common.user.User;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.commands.utils.OACommandData;
 import com.alessiodp.oreannouncer.common.commands.utils.OreAnnouncerPermission;
+import com.alessiodp.oreannouncer.common.configuration.OAConfigurationManager;
 import com.alessiodp.oreannouncer.common.configuration.OAConstants;
+import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import com.alessiodp.oreannouncer.common.configuration.data.Messages;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 import lombok.Getter;
@@ -58,6 +60,8 @@ public class CommandAlerts extends ADPSubCommand {
 		player.setAlertsOn(alerts);
 		player.updatePlayer();
 		player.getLock().unlock(); // Unlock
+		
+		((OAConfigurationManager)plugin.getConfigurationManager()).getMessages().save();
 		
 		if (alerts) {
 			player.sendMessage(Messages.CMD_ALERTS_TOGGLEON);

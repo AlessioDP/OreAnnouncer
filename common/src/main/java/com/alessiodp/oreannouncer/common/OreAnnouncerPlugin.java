@@ -17,6 +17,7 @@ import com.alessiodp.oreannouncer.common.storage.OADatabaseManager;
 import com.alessiodp.oreannouncer.common.utils.MessageUtils;
 import com.alessiodp.oreannouncer.common.utils.OAPlayerUtils;
 import lombok.Getter;
+import lombok.Setter;
 
 public abstract class OreAnnouncerPlugin extends ADPPlugin {
 	// Plugin fields
@@ -26,9 +27,11 @@ public abstract class OreAnnouncerPlugin extends ADPPlugin {
 	
 	// OreAnnouncer fields
 	@Getter protected BlockManager blockManager;
-	@Getter protected PlayerManager playerManager;
+	@Getter @Setter protected PlayerManager playerManager;
 	@Getter protected MessageUtils messageUtils;
 	@Getter protected ADPMessenger messenger;
+	
+	@Getter @Setter protected Runnable onReloadEvent = () -> {};
 	
 	public OreAnnouncerPlugin(ADPBootstrap bootstrap) {
 		super(bootstrap);
@@ -56,7 +59,6 @@ public abstract class OreAnnouncerPlugin extends ADPPlugin {
 		ApiHandler api = new ApiHandler(this);
 		playerUtils = new OAPlayerUtils(this);
 		
-		getBlockManager().reload();
 		getPlayerManager().reload();
 		getCommandManager().setup();
 		getMessenger().reload();
@@ -77,13 +79,14 @@ public abstract class OreAnnouncerPlugin extends ADPPlugin {
 		reloadLoggerManager();
 		getDatabaseManager().reload();
 		
-		getBlockManager().reload();
 		getPlayerManager().reload();
 		getAddonManager().loadAddons();
 		getCommandManager().setup();
 		getMessenger().reload();
 		
 		reloadAdpUpdater();
+		
+		onReloadEvent.run();
 	}
 	
 	@Override

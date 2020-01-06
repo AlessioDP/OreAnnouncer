@@ -1,7 +1,6 @@
 package com.alessiodp.oreannouncer.bungeecord.blocks;
 
 import com.alessiodp.core.common.utils.ADPLocation;
-import com.alessiodp.oreannouncer.bungeecord.configuration.data.BungeeConfigMain;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.blocks.BlockManager;
 
@@ -14,12 +13,6 @@ public class BungeeBlockManager extends BlockManager {
 	}
 	
 	@Override
-	public void reload() {
-		super.reload();
-		allowedBlocks = BungeeConfigMain.BLOCKS_LISTALLOWED;
-	}
-	
-	@Override
 	public boolean existsMaterial(String materialName) {
 		// BungeeCord cannot check if a block is valid
 		// Return true if not empty (used on block list setup)
@@ -27,13 +20,19 @@ public class BungeeBlockManager extends BlockManager {
 	}
 	
 	@Override
-	public boolean markBlock(ADPLocation blockLocation, String material) {
+	public boolean isBlockMarked(ADPLocation blockLocation, String material, MarkType markType) {
 		// Nothing to do
 		return false;
 	}
 	
 	@Override
-	public void unmarkBlock(ADPLocation blockLocation) {
+	public boolean markBlock(ADPLocation blockLocation, String material, MarkType markType) {
+		// Nothing to do
+		return false;
+	}
+	
+	@Override
+	public void unmarkBlock(ADPLocation blockLocation, MarkType markType) {
 		// Nothing to do
 	}
 	

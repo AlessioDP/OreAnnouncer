@@ -17,7 +17,7 @@ public class BukkitOACommandManager extends OACommandManager {
 	
 	@Override
 	protected void prepareCommands() {
-		commandOrder = null; // Command order disabled
+		commandOrder = null;// Command order disabled
 		commandUtils = new BukkitCommandUtils(plugin, ConfigMain.COMMANDS_SUB_ON, ConfigMain.COMMANDS_SUB_OFF);
 		super.prepareCommands();
 	}

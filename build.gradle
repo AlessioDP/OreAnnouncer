@@ -3,18 +3,19 @@ buildscript {
         jcenter() // Shadow plugin
     }
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:5.1.0'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:5.2.0'
     }
 }
 
 defaultTasks 'clean', 'build', 'publish'
 
 allprojects {
-    apply plugin: 'java'
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
     apply plugin: 'com.github.johnrengelman.shadow' // Shadow jar
 
     group 'com.alessiodp.oreannouncer'
-    version '2.3.2'
+    version '2.4.0'
 
     // Info
     ext.pluginName = "OreAnnouncer"
@@ -23,13 +24,13 @@ allprojects {
     ext.pluginWebsite = "https://alessiodp.com/"
 
     // Development
-    ext.adpCore = '1.2.6'
-    ext.lombok = '1.18.8'
-    ext.powermock = '2.0.2'
+    ext.adpCore = '1.3.0'
+    ext.lombok = '1.18.10'
+    ext.powermock = '2.0.4'
 
     // Libraries
-    ext.lastLoginAPI = '1.3.0'
-    ext.placeholderApi = '2.10.3'
+    ext.lastLoginAPI = '1.3.5'
+    ext.placeholderApi = '2.10.4'
 
     // Misc
     sourceCompatibility = 1.8
@@ -55,32 +56,45 @@ allprojects {
         compileOnly group: 'org.projectlombok', name: 'lombok', version: project.ext.lombok
         annotationProcessor group: 'org.projectlombok', name: 'lombok', version: project.ext.lombok
 
-        testCompile group: 'org.powermock', name: 'powermock-module-junit4', version: project.ext.powermock
-        testCompile group: 'org.powermock', name: 'powermock-api-mockito2', version: project.ext.powermock
+        testImplementation group: 'org.powermock', name: 'powermock-module-junit4', version: project.ext.powermock
+        testImplementation group: 'org.powermock', name: 'powermock-api-mockito2', version: project.ext.powermock
+    }
+
+    if (it.name != 'oreannouncer-api') {
+        shadowJar {
+            archiveBaseName = project.ext.pluginName
+            archiveClassifier = null
+            dependencies {
+                include(dependency('com.alessiodp.oreannouncer:.*'))
+                include(dependency('com.alessiodp.core:.*'))
+            }
+
+            relocate 'com.alessiodp.core', 'com.alessiodp.oreannouncer.core'
+        }
+
+        publishing {
+            publications {
+                shadow(MavenPublication) { publication ->
+                    project.shadow.component(publication)
+                }
+            }
+
+            repositories {
+                mavenLocal()
+            }
+        }
     }
 }
 
 dependencies {
-    compile project(':oreannouncer-api')
-    compile project(':common')
-    compile project(':bukkit')
-    compile project(':bungeecord')
+    implementation project(':oreannouncer-api')
+    implementation project(':common')
+    implementation project(':bukkit')
+    implementation project(':bungeecord')
 }
 
 // Disable OreAnnouncer root project jar
 jar.enabled = false
-
-shadowJar {
-    archiveBaseName  = project.ext.pluginName
-    archiveClassifier = null
-    dependencies {
-        include(dependency('com.alessiodp.oreannouncer:.*'))
-        include(dependency('com.alessiodp.core:.*'))
-    }
-
-    relocate 'com.alessiodp.core', 'com.alessiodp.oreannouncer.core'
-}
-
 artifacts {
     archives shadowJar
 }

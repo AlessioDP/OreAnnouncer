@@ -10,7 +10,10 @@ public abstract class JoinLeaveListener {
 	
 	protected void onPlayerJoin(User user) {
 		// Make it async
-		plugin.getScheduler().runAsync(() -> plugin.getLoginAlertsManager().sendAlerts(user));
+		plugin.getScheduler().runAsync(() -> {
+			plugin.getPlayerManager().loadPlayer(user.getUUID());
+			plugin.getLoginAlertsManager().sendAlerts(user);
+		});
 	}
 	
 	protected void onPlayerQuit(User user) {

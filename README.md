@@ -1,7 +1,7 @@
 <p align="center"><img src="logo.png"></p>
 
 # OreAnnouncer
-<b>OreAnnouncer</b> is a plugin for Minecraft servers that collects data whenever a player digs an ore (can be sset with any block).  
+<b>OreAnnouncer</b> is a plugin for Minecraft servers that collects data whenever a player digs an ore (can be set with any block).  
 You can send an alert to users/admins or just store every block they destroy to easily track x-ray players.
 
 [Official project page here!](https://alessiodp.com/oreannouncer/)

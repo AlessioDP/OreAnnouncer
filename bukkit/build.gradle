@@ -1,17 +1,20 @@
 repositories {
+    mavenCentral()
+
     // PlaceholderAPI repository
-    maven { url = 'http://repo.extendedclip.com/content/repositories/placeholderapi/' }
+    maven { url = 'http://repo.extendedclip.com/content/repositories/placeholderapi/'; allowInsecureProtocol = true }
 }
 
 dependencies {
-    compile project(':common')
-    compile group: 'com.alessiodp.core', name: 'bukkit', version: project.ext.adpCore
+    api project(':common')
+    api group: 'com.alessiodp.core', name: 'bukkit', version: project.ext.adpCore
 
     compileOnly group: 'me.clip', name: 'placeholderapi', version: project.ext.placeholderApi
 }
 
 
 processResources {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE;
     from(sourceSets.main.resources.srcDirs) {
         include 'plugin.yml'
         expand([

@@ -42,9 +42,26 @@ public interface OreAnnouncerAPI {
 	
 	/**
 	 * Get top players
+	 * @deprecated Use getTopPlayersByDestroy(int) or getTopPlayersByFound(int)
+	 */
+	@Deprecated
+	default Set<OAPlayer> getTopPlayers(int numberOfPlayers) {
+		return getTopPlayersByDestroy(numberOfPlayers);
+	}
+	
+	/**
+	 * Get top players ordered by destroy
 	 *
 	 * @param numberOfPlayers Number of players to get
 	 * @return Returns a set of players
 	 */
-	Set<OAPlayer> getTopPlayers(int numberOfPlayers);
+	Set<OAPlayer> getTopPlayersByDestroy(int numberOfPlayers);
+	
+	/**
+	 * Get top players ordered by found
+	 *
+	 * @param numberOfPlayers Number of players to get
+	 * @return Returns a set of players
+	 */
+	Set<OAPlayer> getTopPlayersByFound(int numberOfPlayers);
 }

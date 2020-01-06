@@ -1,64 +1,68 @@
+# / ===================================================== \
+# |  This is the main configuration file of OreAnnouncer  |
+# \ ===================================================== /
 #
-# Main configuration file
-#
-# You can find a list of available tags here: https://alessiodp.com/docs/oreannouncer/placeholders/
+# For any problem be sure to:
+# - Read the entire documentation on: https://alessiodp.com/docs/oreannouncer/
+# - Join our Discord for further help: https://discord.alessiodp.com/
 #
 
-# / = = = = = = = = = = = = = = = = \
+# / =============================== \
 # |      OREANNOUNCER SETTINGS      |
-# \ = = = = = = = = = = = = = = = = /
+# \ =============================== /
 oreannouncer:
+  # [Check for plugins updates]
+  # OreAnnouncer will check for updates when the server finishes to load.
   updates:
-    # Check for updates, recommended. OreAnnouncer will check for updates when the server finish to load
     check: true
-    # Send a message to admins if an update is available
     warn: true
 
+  # [Enable logging system]
+  # => debug:      Print debug messages
+  # => save-file:  Save any log into a text file
   logging:
-    # Enable debug messages
     debug: false
     save-file:
-      # Save to file log messages
       enable: false
-      # Format of messages
       format: "%date% [%time%] %message%\n"
-      # Log file name
-      file: "log.txt"
+      file: log.txt
 
 
-# / = = = = = = = = = = = = = = = = \
+# / =============================== \
 # |        STORAGE  SETTINGS        |
-# \ = = = = = = = = = = = = = = = = /
+# \ =============================== /
 storage:
-  # What type of storage the plugin should use?
-  # Database storage types:
+  # [Database type]
+  # What type of storage the plugin should use? Database storage types:
   # => mysql      | [Remote] Save the data into a MySQL database
   # => sqlite     | [File]   Save the data into a SQLite database (default)
   database-storage-type: sqlite
 
   storage-settings:
-    # General settings of SQL databases
+    # [General SQL settings]
+    # General settings for sql databases, recommended to use default values
     general-sql-settings:
       varchar-size: 255
       upgrade:
         save-old-table: true
-        old-table-suffix: "_backup"
+        old-table-suffix: _backup
       tables:
-        players: "oreannouncer_players"
-        blocks: "oreannouncer_blocks"
-        versions: "oreannouncer_versions"
+        players: oreannouncer_players
+        blocks: oreannouncer_blocks
+        blocks-found: oreannouncer_blocks_found
+        versions: oreannouncer_versions
 
-    # SQLite settings
+    # [SQLite settings]
     sqlite:
-      database-file: "database.db"
+      database-file: database.db
 
-    # MySQL settings
+    # [MySQL settings]
     mysql:
-      address: "localhost"
-      port: "3306"
-      database: "database"
-      username: "username"
-      password: "password"
+      address: localhost
+      port: '3306'
+      database: database
+      username: username
+      password: password
       # Size of the connection pool
       pool-size: 10
       # Lifetime of each connection, in milliseconds (Default: 30 minutes = 1800000ms)
@@ -66,63 +70,84 @@ storage:
       # Property used to alert when the connection is not using a valid SSL certificate
       use-ssl: false
       # Charset used by tables
-      charset: "utf8"
+      charset: utf8
 
 
-# / = = = = = = = = = = = = = = = = \
+# / =============================== \
 # |         ALERTS SETTINGS         |
-# \ = = = = = = = = = = = = = = = = /
+# \ =============================== /
 alerts:
-  # Enable alerts system
-  # Whenever a player dig a block users/admins will receive a message
+  # [Enable alerts system]
+  # Whenever a player dig a block users/admins/console will receive a message
   enable: true
-  # Send an alert to the console
   console: true
 
 
-# / = = = = = = = = = = = = = = = = \
+
+# / =============================== \
 # |         BLOCKS SETTINGS         |
-# \ = = = = = = = = = = = = = = = = /
+# \ =============================== /
 blocks:
   # Allowed blocks to handle
   # You can use '*' to handle every block that is received from servers
   list-allowed:
     - '*'
 
-# / = = = = = = = = = = = = = = = = \
+
+# / =============================== \
 # |         STATS  SETTINGS         |
-# \ = = = = = = = = = = = = = = = = /
+# \ =============================== /
 stats:
-  # Enable statistics system
-  # Any block you put on blocks list will be registered into the database
-  # Choose which block by adding 'count-on-destroy' option
-  enable: false
+  # [Statistics system]
+  # Start to store any data about destroyed blocks, enables:
+  # => /oa stats:  Show destroyed blocks stats about a player
+  # => /oa top:    Show top players
+  # You can enable/disable every block manually with 'count-on-destroy' option
+  #
+  # [Advanced count]
+  # Store any data about found blocks, this will enable a time tracking logging
+  # of blocks for an improved anti x-ray system.
+  # You have to configure blocks options to use this.
+  enable: true
+  advanced-count:
+    enable: true
+    # Time format:
+    # => y          years
+    # => M          moths
+    # => d          days
+    # => H          hours
+    # => m          minutes
+    # => s          seconds
+    # => S          milliseconds
+    # => 'text'     arbitrary text content
+    default-time-format: "m' minutes'"
   top:
     enable: true
+    # Order by: destroy/found
+    order-by: destroy
     number-of-players: 5
     page-size: 5
 
 
-
-# / = = = = = = = = = = = = = = = = \
+# / =============================== \
 # |        COMMANDS SETTINGS        |
-# \ = = = = = = = = = = = = = = = = /
+# \ =============================== /
 commands:
   # Enable tab support (/oa <tab> to see every allowed command)
   tab-support: true
-  oa-description: "OreAnnouncer help page"
+  oa-description: OreAnnouncer help page
   main-commands:
-    help: "help"
-    oa: "oa"
-    alerts: "alerts"
-    reload: "reload"
-    stats: "stats"
-    top: "top"
-    version: "version"
+    help: help
+    oa: oa
+    alerts: alerts
+    reload: reload
+    stats: stats
+    top: top
+    version: version
   sub-commands:
-    on: "on"
-    off: "off"
+    word-on: 'on'
+    word-off: 'off'
 
 
 dont-edit-this:
-  version: 1
+  version: 2

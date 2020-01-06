@@ -12,6 +12,7 @@ import com.alessiodp.oreannouncer.common.configuration.OAConstants;
 import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import com.alessiodp.oreannouncer.common.configuration.data.Messages;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
+import com.alessiodp.oreannouncer.common.storage.OADatabaseManager;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -63,10 +64,19 @@ public class CommandTop extends ADPSubCommand {
 				return;
 			}
 		}
+		OADatabaseManager.TopOrderBy orderBy;
+		switch (ConfigMain.STATS_TOP_ORDER_BY.toLowerCase()) {
+			case "found":
+				orderBy = OADatabaseManager.TopOrderBy.FOUND;
+				break;
+			case "destroy":
+			default:
+				orderBy = OADatabaseManager.TopOrderBy.DESTROY;
+		}
 		
 		// Command starts
-		int numberPlayers = ((OreAnnouncerPlugin) plugin).getDatabaseManager().getTopPlayersNumber();
-		int limit = ConfigMain.STATS_TOP_PAGESIZE > ConfigMain.STATS_TOP_NUMPLAYERS ? ConfigMain.STATS_TOP_NUMPLAYERS : ConfigMain.STATS_TOP_PAGESIZE;
+		int numberPlayers = ((OreAnnouncerPlugin) plugin).getDatabaseManager().getTopPlayersNumber(orderBy);
+		int limit = Math.min(ConfigMain.STATS_TOP_PAGESIZE, ConfigMain.STATS_TOP_NUMPLAYERS);
 		int maxPages;
 		if (numberPlayers == 0)
 			maxPages = 1;
@@ -79,7 +89,7 @@ public class CommandTop extends ADPSubCommand {
 			selectedPage = maxPages;
 		
 		int offset = selectedPage > 1 ? limit * (selectedPage - 1) : 0;
-		ArrayList<OAPlayerImpl> players = ((OreAnnouncerPlugin) plugin).getDatabaseManager().getTopPlayersDestroyed(limit, offset);
+		ArrayList<OAPlayerImpl> players = ((OreAnnouncerPlugin) plugin).getDatabaseManager().getTopPlayersDestroyed(orderBy, limit, offset);
 		
 		sendMessage(player, Messages.CMD_TOP_HEADER
 				.replace("%total%", Integer.toString(numberPlayers))

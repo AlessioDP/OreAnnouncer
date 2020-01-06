@@ -43,7 +43,7 @@ public class CoordinateUtils {
 					// Randomly choose one of them
 					int chosen = (int) (Math.random() * visibleCoordinates.size());
 					
-					// Set choosen one into hidden
+					// Set chosen one into hidden
 					visibleCoordinates.get(chosen).hidden = true;
 				}
 			}

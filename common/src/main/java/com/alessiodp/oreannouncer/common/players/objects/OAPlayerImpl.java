@@ -1,6 +1,7 @@
 package com.alessiodp.oreannouncer.common.players.objects;
 
 import com.alessiodp.core.common.commands.list.ADPCommand;
+import com.alessiodp.core.common.commands.utils.ADPPermission;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.oreannouncer.api.interfaces.OAPlayer;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
@@ -80,7 +81,7 @@ public abstract class OAPlayerImpl implements OAPlayer {
 		return alertsOn;
 	}
 	
-	public void sendNoPermission(OreAnnouncerPermission perm) {
+	public void sendNoPermission(ADPPermission perm) {
 		sendMessage(Messages.OREANNOUNCER_NOPERMISSION
 				.replace("%permission%", perm.toString()));
 	}

@@ -1,95 +1,166 @@
 package com.alessiodp.oreannouncer.common.configuration.data;
 
+import com.alessiodp.core.common.configuration.ConfigOption;
 import com.alessiodp.core.common.configuration.ConfigurationFile;
-import com.alessiodp.core.common.configuration.adapter.ConfigurationAdapter;
-import com.alessiodp.core.common.configuration.adapter.ConfigurationSectionAdapter;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
-import com.alessiodp.oreannouncer.common.blocks.objects.OABlockImpl;
-import com.alessiodp.oreannouncer.common.configuration.OAConstants;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public abstract class ConfigMain extends ConfigurationFile {
 	// OreAnnouncer settings
+	@ConfigOption(path = "oreannouncer.updates.check")
 	public static boolean		OREANNOUNCER_UPDATES_CHECK;
+	@ConfigOption(path = "oreannouncer.updates.warn")
 	public static boolean		OREANNOUNCER_UPDATES_WARN;
+	@ConfigOption(path = "oreannouncer.logging.debug")
 	public static boolean		OREANNOUNCER_LOGGING_DEBUG;
+	@ConfigOption(path = "oreannouncer.logging.save-file.enable")
 	public static boolean		OREANNOUNCER_LOGGING_SAVE_ENABLE;
+	@ConfigOption(path = "oreannouncer.logging.save-file.format")
 	public static String		OREANNOUNCER_LOGGING_SAVE_FORMAT;
+	@ConfigOption(path = "oreannouncer.logging.save-file.file")
 	public static String		OREANNOUNCER_LOGGING_SAVE_FILE;
 	
 	// Storage settings
+	@ConfigOption(path = "storage.database-storage-type")
 	public static String		STORAGE_TYPE_DATABASE;
+	@ConfigOption(path = "storage.storage-settings.general-sql-settings.varchar-size")
 	public static int			STORAGE_SETTINGS_GENERAL_SQL_VARCHARSIZE;
+	@ConfigOption(path = "storage.storage-settings.general-sql-settings.upgrade.save-old-table")
 	public static boolean		STORAGE_SETTINGS_GENERAL_SQL_UPGRADE_SAVEOLD;
+	@ConfigOption(path = "storage.storage-settings.general-sql-settings.upgrade.old-table-suffix")
 	public static String		STORAGE_SETTINGS_GENERAL_SQL_UPGRADE_OLDSUFFIX;
+	@ConfigOption(path = "storage.storage-settings.general-sql-settings.tables.players")
 	public static String		STORAGE_SETTINGS_GENERAL_SQL_TABLES_PLAYERS;
+	@ConfigOption(path = "storage.storage-settings.general-sql-settings.tables.blocks")
 	public static String		STORAGE_SETTINGS_GENERAL_SQL_TABLES_BLOCKS;
+	@ConfigOption(path = "storage.storage-settings.general-sql-settings.tables.blocks-found")
+	public static String		STORAGE_SETTINGS_GENERAL_SQL_TABLES_BLOCKS_FOUND;
+	@ConfigOption(path = "storage.storage-settings.general-sql-settings.tables.versions")
 	public static String		STORAGE_SETTINGS_GENERAL_SQL_TABLES_VERSIONS;
+	@ConfigOption(path = "storage.storage-settings.sqlite.database-file")
 	public static String		STORAGE_SETTINGS_SQLITE_DBFILE;
+	@ConfigOption(path = "storage.storage-settings.mysql.address")
 	public static String		STORAGE_SETTINGS_MYSQL_ADDRESS;
+	@ConfigOption(path = "storage.storage-settings.mysql.port")
 	public static String		STORAGE_SETTINGS_MYSQL_PORT;
+	@ConfigOption(path = "storage.storage-settings.mysql.database")
 	public static String		STORAGE_SETTINGS_MYSQL_DATABASE;
+	@ConfigOption(path = "storage.storage-settings.mysql.username")
 	public static String		STORAGE_SETTINGS_MYSQL_USERNAME;
+	@ConfigOption(path = "storage.storage-settings.mysql.password")
 	public static String		STORAGE_SETTINGS_MYSQL_PASSWORD;
+	@ConfigOption(path = "storage.storage-settings.mysql.pool-size")
 	public static int			STORAGE_SETTINGS_MYSQL_POOLSIZE;
+	@ConfigOption(path = "storage.storage-settings.mysql.connection-lifetime")
 	public static int			STORAGE_SETTINGS_MYSQL_CONNLIFETIME;
+	@ConfigOption(path = "storage.storage-settings.mysql.use-ssl")
 	public static boolean		STORAGE_SETTINGS_MYSQL_USESSL;
+	@ConfigOption(path = "storage.storage-settings.mysql.charset")
 	public static String		STORAGE_SETTINGS_MYSQL_CHARSET;
 	
 	
 	// Alerts settings
+	@ConfigOption(path = "alerts.enable")
 	public static boolean		ALERTS_ENABLE;
+	@ConfigOption(path = "alerts.console")
 	public static boolean		ALERTS_CONSOLE;
-	public static float			ALERTS_SOUND_VOLUME;
-	public static float			ALERTS_SOUND_PITCH;
+	@ConfigOption(path = "alerts.sound.volume")
+	public static double		ALERTS_SOUND_VOLUME;
+	@ConfigOption(path = "alerts.sound.pitch")
+	public static double		ALERTS_SOUND_PITCH;
+	@ConfigOption(path = "alerts.sound.default")
+	public static String		ALERTS_SOUND_DEFAULT;
+	@ConfigOption(path = "alerts.coordinates.enable")
 	public static boolean		ALERTS_COORDINATES_ENABLE;
+	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.enable")
 	public static boolean		ALERTS_COORDINATES_HIDE_ENABLE;
+	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.count")
 	public static int			ALERTS_COORDINATES_HIDE_COUNT;
+	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.hidden-for.user")
 	public static boolean		ALERTS_COORDINATES_HIDE_HIDDENFOR_USER;
+	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.hidden-for.admin")
 	public static boolean		ALERTS_COORDINATES_HIDE_HIDDENFOR_ADMIN;
+	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.hidden-for.console")
 	public static boolean		ALERTS_COORDINATES_HIDE_HIDDENFOR_CONSOLE;
+	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.hide.x")
 	public static boolean		ALERTS_COORDINATES_HIDE_HIDE_X;
+	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.hide.y")
 	public static boolean		ALERTS_COORDINATES_HIDE_HIDE_Y;
+	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.hide.z")
 	public static boolean		ALERTS_COORDINATES_HIDE_HIDE_Z;
+	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.format.text")
 	public static String		ALERTS_COORDINATES_HIDE_FORMAT_TEXT;
+	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.format.json")
 	public static String		ALERTS_COORDINATES_HIDE_FORMAT_JSON;
+	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.obfuscation.enable")
 	public static boolean		ALERTS_COORDINATES_HIDE_OBFUSCATION_ENABLE;
+	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.obfuscation.character")
 	public static String		ALERTS_COORDINATES_HIDE_OBFUSCATION_CHARACTER;
+	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.obfuscation.fixed-length")
 	public static int			ALERTS_COORDINATES_HIDE_OBFUSCATION_FIXEDLENGTH;
 	
 	
 	// Blocks settings
-	public static boolean			BLOCKS_BYPASS_PLAYERBLOCKS;
-	public static boolean			BLOCKS_BYPASS_SILKTOUCH;
-	private static boolean			BLOCKS_WARNONWRONGBLOCKS;
-	public static boolean			BLOCKS_LIGHT_ENABLE;
-	public static boolean			BLOCKS_LIGHT_ALERTIFLOWER;
-	public static boolean			BLOCKS_LIGHT_COUNTIFLOWER;
-	public static Set<OABlockImpl>	BLOCKS_LIST;
+	@ConfigOption(path = "blocks.bypass-player-blocks")
+	public static boolean		BLOCKS_BYPASS_PLAYERBLOCKS;
+	@ConfigOption(path = "blocks.bypass-silk-touch")
+	public static boolean		BLOCKS_BYPASS_SILKTOUCH;
+	@ConfigOption(path = "blocks.bypass-secure-counter")
+	public static boolean		BLOCKS_BYPASS_SECURE_COUNTER;
+	@ConfigOption(path = "blocks.light-level.enable")
+	public static boolean		BLOCKS_LIGHT_ENABLE;
+	@ConfigOption(path = "blocks.light-level.alert-only-if-lower")
+	public static boolean		BLOCKS_LIGHT_ALERTIFLOWER;
+	@ConfigOption(path = "blocks.light-level.count-only-if-lower")
+	public static boolean		BLOCKS_LIGHT_COUNTIFLOWER;
+	@ConfigOption(path = "blocks.tnt-mining.alert-on-tnt-mining")
+	public static boolean		BLOCKS_TNT_MINING_ALERT_ON;
+	@ConfigOption(path = "blocks.tnt-mining.try-to-catch-player")
+	public static boolean		BLOCKS_TNT_MINING_CATCH_PLAYER;
+	@ConfigOption(path = "blocks.tnt-mining.count-on-destroy")
+	public static boolean		BLOCKS_TNT_MINING_COUNT_DESTROY;
 	
 	
 	// Stats settings
+	@ConfigOption(path = "stats.enable")
 	public static boolean		STATS_ENABLE;
+	@ConfigOption(path = "stats.advanced-count.enable")
+	public static boolean		STATS_ADVANCED_COUNT_ENABLE;
+	@ConfigOption(path = "stats.advanced-count.default-time-format")
+	public static String		STATS_ADVANCED_COUNT_TIME_FORMAT;
+	@ConfigOption(path = "stats.top.enable")
 	public static boolean		STATS_TOP_ENABLE;
+	@ConfigOption(path = "stats.top.order-by")
+	public static String		STATS_TOP_ORDER_BY;
+	@ConfigOption(path = "stats.top.number-of-players")
 	public static int			STATS_TOP_NUMPLAYERS;
+	@ConfigOption(path = "stats.top.page-size")
 	public static int			STATS_TOP_PAGESIZE;
 	
 	
 	// Commands settings
+	@ConfigOption(path = "commands.tab-support")
 	public static boolean		COMMANDS_TABSUPPORT;
+	@ConfigOption(path = "commands.oa-description")
 	public static String		COMMANDS_DESCRIPTION_OA;
 	
+	@ConfigOption(path = "commands.main-commands.help")
 	public static String		COMMANDS_CMD_HELP;
+	@ConfigOption(path = "commands.main-commands.oa")
 	public static String		COMMANDS_CMD_OA;
+	@ConfigOption(path = "commands.main-commands.alerts")
 	public static String		COMMANDS_CMD_ALERTS;
+	@ConfigOption(path = "commands.main-commands.reload")
 	public static String		COMMANDS_CMD_RELOAD;
+	@ConfigOption(path = "commands.main-commands.stats")
 	public static String		COMMANDS_CMD_STATS;
+	@ConfigOption(path = "commands.main-commands.top")
 	public static String		COMMANDS_CMD_TOP;
+	@ConfigOption(path = "commands.main-commands.version")
 	public static String		COMMANDS_CMD_VERSION;
 	
+	@ConfigOption(path = "commands.sub-commands.word-on")
 	public static String		COMMANDS_SUB_ON;
+	@ConfigOption(path = "commands.sub-commands.word-off")
 	public static String		COMMANDS_SUB_OFF;
 	
 	
@@ -99,218 +170,11 @@ public abstract class ConfigMain extends ConfigurationFile {
 	
 	@Override
 	public void loadDefaults() {
-		// General settings
-		OREANNOUNCER_UPDATES_CHECK = true;
-		OREANNOUNCER_UPDATES_WARN = true;
-		OREANNOUNCER_LOGGING_DEBUG = false;
-		OREANNOUNCER_LOGGING_SAVE_ENABLE = false;
-		OREANNOUNCER_LOGGING_SAVE_FORMAT = "%date% [%time%] %message%\n";
-		OREANNOUNCER_LOGGING_SAVE_FILE = "log.txt";
-		
-		
-		// Storage settings
-		STORAGE_TYPE_DATABASE = "sqlite";
-		STORAGE_SETTINGS_GENERAL_SQL_VARCHARSIZE = 255;
-		STORAGE_SETTINGS_GENERAL_SQL_UPGRADE_SAVEOLD = true;
-		STORAGE_SETTINGS_GENERAL_SQL_UPGRADE_OLDSUFFIX = "_backup";
-		STORAGE_SETTINGS_GENERAL_SQL_TABLES_PLAYERS = "oreannouncer_players";
-		STORAGE_SETTINGS_GENERAL_SQL_TABLES_BLOCKS = "oreannouncer_blocks";
-		STORAGE_SETTINGS_GENERAL_SQL_TABLES_VERSIONS = "oreannouncer_versions";
-		STORAGE_SETTINGS_SQLITE_DBFILE = "database.db";
-		STORAGE_SETTINGS_MYSQL_ADDRESS = "localhost";
-		STORAGE_SETTINGS_MYSQL_PORT = "3306";
-		STORAGE_SETTINGS_MYSQL_DATABASE = "database";
-		STORAGE_SETTINGS_MYSQL_USERNAME = "username";
-		STORAGE_SETTINGS_MYSQL_PASSWORD = "password";
-		STORAGE_SETTINGS_MYSQL_POOLSIZE = 10;
-		STORAGE_SETTINGS_MYSQL_CONNLIFETIME = 1800000;
-		STORAGE_SETTINGS_MYSQL_USESSL = false;
-		STORAGE_SETTINGS_MYSQL_CHARSET = "utf8";
-		
-		
-		// Alerts settings
-		ALERTS_ENABLE = true;
-		ALERTS_CONSOLE = true;
-		ALERTS_SOUND_VOLUME = 1;
-		ALERTS_SOUND_PITCH = 2;
-		ALERTS_COORDINATES_ENABLE = true;
-		ALERTS_COORDINATES_HIDE_ENABLE = false;
-		ALERTS_COORDINATES_HIDE_COUNT = 1;
-		ALERTS_COORDINATES_HIDE_HIDDENFOR_USER = true;
-		ALERTS_COORDINATES_HIDE_HIDDENFOR_ADMIN = false;
-		ALERTS_COORDINATES_HIDE_HIDDENFOR_CONSOLE = false;
-		ALERTS_COORDINATES_HIDE_HIDE_X = true;
-		ALERTS_COORDINATES_HIDE_HIDE_Y = true;
-		ALERTS_COORDINATES_HIDE_HIDE_Z = true;
-		ALERTS_COORDINATES_HIDE_FORMAT_TEXT = "&k%coordinate%";
-		ALERTS_COORDINATES_HIDE_FORMAT_JSON = "%coordinate%\",\"color\":\"gray\",\"obfuscated\":true},{\"text\":\"";
-		ALERTS_COORDINATES_HIDE_OBFUSCATION_ENABLE = true;
-		ALERTS_COORDINATES_HIDE_OBFUSCATION_CHARACTER = "?";
-		ALERTS_COORDINATES_HIDE_OBFUSCATION_FIXEDLENGTH = 0;
-		
-		
-		// Blocks settings
-		BLOCKS_BYPASS_PLAYERBLOCKS = false;
-		BLOCKS_BYPASS_SILKTOUCH = true;
-		BLOCKS_WARNONWRONGBLOCKS = true;
-		BLOCKS_LIGHT_ENABLE = false;
-		BLOCKS_LIGHT_ALERTIFLOWER = true;
-		BLOCKS_LIGHT_COUNTIFLOWER = false;
-		BLOCKS_LIST = new HashSet<>();
-		OABlockImpl temp = new OABlockImpl("DIAMOND_ORE");
-		temp.setAlertingUsers(true);
-		temp.setAlertingAdmins(true);
-		temp.setSingularName("diamond");
-		temp.setPluralName("diamonds");
-		temp.setSound("ENTITY_PLAYER_LEVELUP");
-		temp.setLightLevel(15);
-		temp.setCountingOnDestroy(true);
-		BLOCKS_LIST.add(temp);
-		temp = new OABlockImpl("EMERALD_ORE");
-		temp.setAlertingUsers(false);
-		temp.setAlertingAdmins(true);
-		temp.setSingularName("emerald");
-		temp.setPluralName("emeralds");
-		temp.setSound("ENTITY_PLAYER_LEVELUP");
-		temp.setLightLevel(6);
-		temp.setCountingOnDestroy(true);
-		BLOCKS_LIST.add(temp);
-		
-		
-		// Stats settings
-		STATS_ENABLE = false;
-		STATS_TOP_ENABLE = true;
-		STATS_TOP_NUMPLAYERS = 5;
-		STATS_TOP_PAGESIZE = 5;
-		
-		
-		// Commands settings
-		COMMANDS_TABSUPPORT = true;
-		COMMANDS_DESCRIPTION_OA = "OreAnnouncer help page";
-		COMMANDS_CMD_HELP = "help";
-		COMMANDS_CMD_OA = "oa";
-		COMMANDS_CMD_ALERTS = "alerts";
-		COMMANDS_CMD_RELOAD = "reload";
-		COMMANDS_CMD_STATS = "stats";
-		COMMANDS_CMD_TOP = "top";
-		COMMANDS_CMD_VERSION = "version";
-		
-		COMMANDS_SUB_ON = "on";
-		COMMANDS_SUB_OFF = "off";
+		loadDefaultConfigOptions();
 	}
 	
 	@Override
-	public void loadConfiguration(ConfigurationAdapter confAdapter) {
-		// OreAnnouncer settings
-		OREANNOUNCER_UPDATES_CHECK = confAdapter.getBoolean("oreannouncer.updates.check", OREANNOUNCER_UPDATES_CHECK);
-		OREANNOUNCER_UPDATES_WARN = confAdapter.getBoolean("oreannouncer.updates.warn", OREANNOUNCER_UPDATES_WARN);
-		OREANNOUNCER_LOGGING_DEBUG = confAdapter.getBoolean("oreannouncer.logging.debug", OREANNOUNCER_LOGGING_DEBUG);
-		OREANNOUNCER_LOGGING_SAVE_ENABLE = confAdapter.getBoolean("oreannouncer.logging.save-file.enable", OREANNOUNCER_LOGGING_SAVE_ENABLE);
-		OREANNOUNCER_LOGGING_SAVE_FORMAT = confAdapter.getString("oreannouncer.logging.save-file.format", OREANNOUNCER_LOGGING_SAVE_FORMAT);
-		OREANNOUNCER_LOGGING_SAVE_FILE = confAdapter.getString("oreannouncer.logging.save-file.file", OREANNOUNCER_LOGGING_SAVE_FILE);
-		
-		// Storage settings
-		STORAGE_TYPE_DATABASE = confAdapter.getString("storage.database-storage-type", STORAGE_TYPE_DATABASE);
-		STORAGE_SETTINGS_GENERAL_SQL_VARCHARSIZE = confAdapter.getInt("storage.storage-settings.general-sql-settings.varchar-size", STORAGE_SETTINGS_GENERAL_SQL_VARCHARSIZE);
-		STORAGE_SETTINGS_GENERAL_SQL_UPGRADE_SAVEOLD = confAdapter.getBoolean("storage.storage-settings.general-sql-settings.upgrade.save-old-table", STORAGE_SETTINGS_GENERAL_SQL_UPGRADE_SAVEOLD);
-		STORAGE_SETTINGS_GENERAL_SQL_UPGRADE_OLDSUFFIX = confAdapter.getString("storage.storage-settings.general-sql-settings.upgrade.old-table-suffix", STORAGE_SETTINGS_GENERAL_SQL_UPGRADE_OLDSUFFIX);
-		STORAGE_SETTINGS_GENERAL_SQL_TABLES_PLAYERS = confAdapter.getString("storage.storage-settings.general-sql-settings.tables.players", STORAGE_SETTINGS_GENERAL_SQL_TABLES_PLAYERS);
-		STORAGE_SETTINGS_GENERAL_SQL_TABLES_BLOCKS = confAdapter.getString("storage.storage-settings.general-sql-settings.tables.blocks", STORAGE_SETTINGS_GENERAL_SQL_TABLES_BLOCKS);
-		STORAGE_SETTINGS_GENERAL_SQL_TABLES_VERSIONS = confAdapter.getString("storage.storage-settings.general-sql-settings.tables.versions", STORAGE_SETTINGS_GENERAL_SQL_TABLES_VERSIONS);
-		STORAGE_SETTINGS_SQLITE_DBFILE = confAdapter.getString("storage.storage-settings.sqlite.database-file", STORAGE_SETTINGS_SQLITE_DBFILE);
-		STORAGE_SETTINGS_MYSQL_ADDRESS = confAdapter.getString("storage.storage-settings.mysql.address", STORAGE_SETTINGS_MYSQL_ADDRESS);
-		STORAGE_SETTINGS_MYSQL_PORT = confAdapter.getString("storage.storage-settings.mysql.port", STORAGE_SETTINGS_MYSQL_PORT);
-		STORAGE_SETTINGS_MYSQL_DATABASE = confAdapter.getString("storage.storage-settings.mysql.database", STORAGE_SETTINGS_MYSQL_DATABASE);
-		STORAGE_SETTINGS_MYSQL_USERNAME = confAdapter.getString("storage.storage-settings.mysql.username", STORAGE_SETTINGS_MYSQL_USERNAME);
-		STORAGE_SETTINGS_MYSQL_PASSWORD = confAdapter.getString("storage.storage-settings.mysql.password", STORAGE_SETTINGS_MYSQL_PASSWORD);
-		STORAGE_SETTINGS_MYSQL_POOLSIZE = confAdapter.getInt("storage.storage-settings.mysql.pool-size", STORAGE_SETTINGS_MYSQL_POOLSIZE);
-		STORAGE_SETTINGS_MYSQL_CONNLIFETIME = confAdapter.getInt("storage.storage-settings.mysql.connection-lifetime", STORAGE_SETTINGS_MYSQL_CONNLIFETIME);
-		STORAGE_SETTINGS_MYSQL_USESSL = confAdapter.getBoolean("storage.storage-settings.mysql.use-ssl", STORAGE_SETTINGS_MYSQL_USESSL);
-		STORAGE_SETTINGS_MYSQL_CHARSET = confAdapter.getString("storage.storage-settings.mysql.charset", STORAGE_SETTINGS_MYSQL_CHARSET);
-		
-		
-		// Alerts settings
-		ALERTS_ENABLE = confAdapter.getBoolean("alerts.enable", ALERTS_ENABLE);
-		ALERTS_CONSOLE = confAdapter.getBoolean("alerts.console", ALERTS_CONSOLE);
-		ALERTS_SOUND_VOLUME = (float) confAdapter.getDouble("alerts.sound.volume", ALERTS_SOUND_VOLUME);
-		ALERTS_SOUND_PITCH = (float) confAdapter.getDouble("alerts.sound.pitch", ALERTS_SOUND_PITCH);
-		ALERTS_COORDINATES_ENABLE = confAdapter.getBoolean("alerts.coordinates.enable", ALERTS_COORDINATES_ENABLE);
-		ALERTS_COORDINATES_HIDE_ENABLE = confAdapter.getBoolean("alerts.coordinates.hide-real-coordinates.enable", ALERTS_COORDINATES_HIDE_ENABLE);
-		ALERTS_COORDINATES_HIDE_COUNT = confAdapter.getInt("alerts.coordinates.hide-real-coordinates.count", ALERTS_COORDINATES_HIDE_COUNT);
-		ALERTS_COORDINATES_HIDE_HIDDENFOR_USER = confAdapter.getBoolean("alerts.coordinates.hide-real-coordinates.hidden-for.user", ALERTS_COORDINATES_HIDE_HIDDENFOR_USER);
-		ALERTS_COORDINATES_HIDE_HIDDENFOR_ADMIN = confAdapter.getBoolean("alerts.coordinates.hide-real-coordinates.hidden-for.admin", ALERTS_COORDINATES_HIDE_HIDDENFOR_ADMIN);
-		ALERTS_COORDINATES_HIDE_HIDDENFOR_CONSOLE = confAdapter.getBoolean("alerts.coordinates.hide-real-coordinates.hidden-for.console", ALERTS_COORDINATES_HIDE_HIDDENFOR_CONSOLE);
-		ALERTS_COORDINATES_HIDE_HIDE_X = confAdapter.getBoolean("alerts.coordinates.hide-real-coordinates.hide.x", ALERTS_COORDINATES_HIDE_HIDE_X);
-		ALERTS_COORDINATES_HIDE_HIDE_Y = confAdapter.getBoolean("alerts.coordinates.hide-real-coordinates.hide.y", ALERTS_COORDINATES_HIDE_HIDE_Y);
-		ALERTS_COORDINATES_HIDE_HIDE_Z = confAdapter.getBoolean("alerts.coordinates.hide-real-coordinates.hide.z", ALERTS_COORDINATES_HIDE_HIDE_Z);
-		ALERTS_COORDINATES_HIDE_FORMAT_TEXT = confAdapter.getString("alerts.coordinates.hide-real-coordinates.format.text", ALERTS_COORDINATES_HIDE_FORMAT_TEXT);
-		ALERTS_COORDINATES_HIDE_FORMAT_JSON = confAdapter.getString("alerts.coordinates.hide-real-coordinates.format.json", ALERTS_COORDINATES_HIDE_FORMAT_JSON);
-		ALERTS_COORDINATES_HIDE_OBFUSCATION_ENABLE = confAdapter.getBoolean("alerts.coordinates.hide-real-coordinates.obfuscation.enable", ALERTS_COORDINATES_HIDE_OBFUSCATION_ENABLE);
-		ALERTS_COORDINATES_HIDE_OBFUSCATION_CHARACTER = confAdapter.getString("alerts.coordinates.hide-real-coordinates.obfuscation.character", ALERTS_COORDINATES_HIDE_OBFUSCATION_CHARACTER);
-		ALERTS_COORDINATES_HIDE_OBFUSCATION_FIXEDLENGTH = confAdapter.getInt("alerts.coordinates.hide-real-coordinates.obfuscation.fixed-length", ALERTS_COORDINATES_HIDE_OBFUSCATION_FIXEDLENGTH);
-		
-		
-		// Blocks settings
-		BLOCKS_BYPASS_PLAYERBLOCKS = confAdapter.getBoolean("blocks.bypass-player-blocks", BLOCKS_BYPASS_PLAYERBLOCKS);
-		BLOCKS_BYPASS_SILKTOUCH = confAdapter.getBoolean("blocks.bypass-silk-touch", BLOCKS_BYPASS_SILKTOUCH);
-		BLOCKS_WARNONWRONGBLOCKS = confAdapter.getBoolean("blocks.warn-on-wrong-blocks", BLOCKS_WARNONWRONGBLOCKS);
-		BLOCKS_LIGHT_ENABLE = confAdapter.getBoolean("blocks.light-level.enable", BLOCKS_LIGHT_ENABLE);
-		BLOCKS_LIGHT_ALERTIFLOWER = confAdapter.getBoolean("blocks.light-level.alert-only-if-lower", BLOCKS_LIGHT_ALERTIFLOWER);
-		BLOCKS_LIGHT_COUNTIFLOWER = confAdapter.getBoolean("blocks.light-level.count-only-if-lower", BLOCKS_LIGHT_COUNTIFLOWER);
-		handleBlocks(confAdapter);
-		
-		
-		// Stats settings
-		STATS_ENABLE = confAdapter.getBoolean("stats.enable", STATS_ENABLE);
-		STATS_TOP_ENABLE = confAdapter.getBoolean("stats.top.enable", STATS_TOP_ENABLE);
-		STATS_TOP_NUMPLAYERS = confAdapter.getInt("stats.top.number-of-players", STATS_TOP_NUMPLAYERS);
-		STATS_TOP_PAGESIZE = confAdapter.getInt("stats.top.page-size", STATS_TOP_PAGESIZE);
-		
-		
-		// Commands settings
-		COMMANDS_TABSUPPORT = confAdapter.getBoolean("commands.tab-support", COMMANDS_TABSUPPORT);
-		COMMANDS_DESCRIPTION_OA = confAdapter.getString("commands.oa-description", COMMANDS_DESCRIPTION_OA);
-		
-		COMMANDS_CMD_HELP = confAdapter.getString("commands.main-commands.help", COMMANDS_CMD_HELP);
-		COMMANDS_CMD_OA = confAdapter.getString("commands.main-commands.oa", COMMANDS_CMD_OA);
-		COMMANDS_CMD_ALERTS = confAdapter.getString("commands.main-commands.alerts", COMMANDS_CMD_ALERTS);
-		COMMANDS_CMD_RELOAD = confAdapter.getString("commands.main-commands.reload", COMMANDS_CMD_RELOAD);
-		COMMANDS_CMD_STATS = confAdapter.getString("commands.main-commands.stats", COMMANDS_CMD_STATS);
-		COMMANDS_CMD_TOP = confAdapter.getString("commands.main-commands.top", COMMANDS_CMD_TOP);
-		COMMANDS_CMD_VERSION = confAdapter.getString("commands.main-commands.version", COMMANDS_CMD_VERSION);
-		
-		COMMANDS_SUB_ON = confAdapter.getString("commands.sub-commands.on", COMMANDS_SUB_ON);
-		COMMANDS_SUB_OFF = confAdapter.getString("commands.sub-commands.off", COMMANDS_SUB_OFF);
-	}
-	
-	private void handleBlocks(ConfigurationAdapter confAdapter) {
-		Set<OABlockImpl> blocks = new HashSet<>();
-		OABlockImpl block;
-		
-		ConfigurationSectionAdapter csBlocks = confAdapter.getConfigurationSection("blocks.list");
-		if (csBlocks != null) {
-			for (String key : csBlocks.getKeys()) {
-				if (((OreAnnouncerPlugin) plugin).getBlockManager().existsMaterial(key)) {
-					// Material exists
-					block = new OABlockImpl(key);
-					block.setAlertingUsers(csBlocks.getBoolean(key + ".alerts.user", false));
-					block.setAlertingAdmins(csBlocks.getBoolean(key + ".alerts.admin", false));
-					block.setSingularName(csBlocks.getString(key + ".name.singular", key));
-					block.setPluralName(csBlocks.getString(key + ".name.plural", key));
-					block.setMessageUser(csBlocks.getString(key + ".messages.user", null));
-					block.setMessageAdmin(csBlocks.getString(key + ".messages.admin", null));
-					block.setMessageConsole(csBlocks.getString(key + ".messages.console", null));
-					block.setSound(csBlocks.getString(key + ".sound", ""));
-					block.setLightLevel(csBlocks.getInt(key + ".light-level", 15));
-					block.setCountingOnDestroy(csBlocks.getBoolean(key + ".count-on-destroy", false));
-					blocks.add(block);
-				} else {
-					// Material doesn't exist
-					plugin.getLoggerManager().printError(OAConstants.DEBUG_CFG_WRONGBLOCK
-							.replace("{block}", key));
-				}
-			}
-			ConfigMain.BLOCKS_LIST = blocks;
-		}
+	public void loadConfiguration() {
+		loadConfigOptions();
 	}
 }

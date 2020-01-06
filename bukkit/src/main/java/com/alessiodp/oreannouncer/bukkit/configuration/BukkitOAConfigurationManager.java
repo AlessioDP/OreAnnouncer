@@ -1,14 +1,11 @@
 package com.alessiodp.oreannouncer.bukkit.configuration;
 
-import com.alessiodp.core.bukkit.configuration.adapter.BukkitConfigurationAdapter;
-import com.alessiodp.core.common.configuration.adapter.ConfigurationAdapter;
 import com.alessiodp.oreannouncer.bukkit.configuration.data.BukkitConfigMain;
 import com.alessiodp.oreannouncer.bukkit.configuration.data.BukkitMessages;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.addons.internal.OAPlaceholder;
 import com.alessiodp.oreannouncer.common.configuration.OAConfigurationManager;
-
-import java.nio.file.Path;
+import com.alessiodp.oreannouncer.common.configuration.data.Blocks;
 
 public class BukkitOAConfigurationManager extends OAConfigurationManager {
 	
@@ -17,11 +14,7 @@ public class BukkitOAConfigurationManager extends OAConfigurationManager {
 		
 		getConfigs().add(new BukkitConfigMain(plugin));
 		getConfigs().add(new BukkitMessages(plugin));
-	}
-
-	@Override
-	protected ConfigurationAdapter initializeConfigurationAdapter(Path configurationFile) {
-		return new BukkitConfigurationAdapter(configurationFile);
+		getConfigs().add(new Blocks(plugin));
 	}
 	
 	@Override

@@ -6,6 +6,7 @@ import com.alessiodp.oreannouncer.api.interfaces.OreAnnouncerAPI;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 import com.alessiodp.oreannouncer.common.players.objects.PlayerDataBlock;
+import com.alessiodp.oreannouncer.common.storage.OADatabaseManager;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
@@ -48,7 +49,12 @@ public class ApiHandler implements OreAnnouncerAPI {
 	}
 	
 	@Override
-	public Set<OAPlayer> getTopPlayers(int numberOfPlayers) {
-		return new HashSet<>(plugin.getDatabaseManager().getTopPlayersDestroyed(numberOfPlayers, 0));
+	public Set<OAPlayer> getTopPlayersByDestroy(int numberOfPlayers) {
+		return new HashSet<>(plugin.getDatabaseManager().getTopPlayersDestroyed(OADatabaseManager.TopOrderBy.DESTROY, numberOfPlayers, 0));
+	}
+	
+	@Override
+	public Set<OAPlayer> getTopPlayersByFound(int numberOfPlayers) {
+		return new HashSet<>(plugin.getDatabaseManager().getTopPlayersDestroyed(OADatabaseManager.TopOrderBy.FOUND, numberOfPlayers, 0));
 	}
 }

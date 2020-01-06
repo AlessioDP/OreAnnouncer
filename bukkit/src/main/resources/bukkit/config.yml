@@ -1,70 +1,74 @@
+# / ===================================================== \
+# |  This is the main configuration file of OreAnnouncer  |
+# \ ===================================================== /
 #
-# Main configuration file
-#
-# You can find a list of available tags here: https://alessiodp.com/docs/oreannouncer/placeholders/
+# For any problem be sure to:
+# - Read the entire documentation on: https://alessiodp.com/docs/oreannouncer/
+# - Join our Discord for further help: https://discord.alessiodp.com/
 #
 
-# / = = = = = = = = = = = = = = = = \
+# / =============================== \
 # |      OREANNOUNCER SETTINGS      |
-# \ = = = = = = = = = = = = = = = = /
+# \ =============================== /
 oreannouncer:
+  # [Check for plugins updates]
+  # OreAnnouncer will check for updates when the server finishes to load.
   updates:
-    # Check for updates, recommended. OreAnnouncer will check for updates when the server finish to load
     check: true
-    # Send a message to admins if an update is available
     warn: true
 
+  # [Enable logging system]
+  # => debug:      Print debug messages
+  # => save-file:  Save any log into a text file
   logging:
-    # Enable debug messages
     debug: false
     save-file:
-      # Save to file log messages
       enable: false
-      # Format of messages
       format: "%date% [%time%] %message%\n"
-      # Log file name
-      file: "log.txt"
+      file: log.txt
 
+  # [Enable BungeeCord support]
+  # Any destroyed block will be handled by OreAnnouncer on BungeeCord.
+  # In this server commands and storage features will be disabled.
   bungeecord:
-    # Enable BungeeCord support
-    # Commands and storage features will be disabled
-    # Destroyed blocks will be handled by OreAnnouncer into BungeeCord
     enable: false
 
 
-# / = = = = = = = = = = = = = = = = \
+# / =============================== \
 # |        STORAGE  SETTINGS        |
-# \ = = = = = = = = = = = = = = = = /
+# \ =============================== /
 storage:
-  # What type of storage the plugin should use?
-  # Database storage types:
+  # [Database type]
+  # What type of storage the plugin should use? Database storage types:
   # => mysql      | [Remote] Save the data into a MySQL database
   # => sqlite     | [File]   Save the data into a SQLite database (default)
   database-storage-type: sqlite
 
   storage-settings:
-    # General settings of SQL databases
+    # [General SQL settings]
+    # General settings for sql databases, recommended to use default values
     general-sql-settings:
       varchar-size: 255
       upgrade:
         save-old-table: true
-        old-table-suffix: "_backup"
+        old-table-suffix: _backup
       tables:
-        players: "oreannouncer_players"
-        blocks: "oreannouncer_blocks"
-        versions: "oreannouncer_versions"
+        players: oreannouncer_players
+        blocks: oreannouncer_blocks
+        blocks-found: oreannouncer_blocks_found
+        versions: oreannouncer_versions
 
-    # SQLite settings
+    # [SQLite settings]
     sqlite:
-      database-file: "database.db"
+      database-file: database.db
 
-    # MySQL settings
+    # [MySQL settings]
     mysql:
-      address: "localhost"
-      port: "3306"
-      database: "database"
-      username: "username"
-      password: "password"
+      address: localhost
+      port: '3306'
+      database: database
+      username: username
+      password: password
       # Size of the connection pool
       pool-size: 10
       # Lifetime of each connection, in milliseconds (Default: 30 minutes = 1800000ms)
@@ -72,149 +76,154 @@ storage:
       # Property used to alert when the connection is not using a valid SSL certificate
       use-ssl: false
       # Charset used by tables
-      charset: "utf8"
+      charset: utf8
 
 
-# / = = = = = = = = = = = = = = = = \
+# / =============================== \
 # |         ALERTS SETTINGS         |
-# \ = = = = = = = = = = = = = = = = /
+# \ =============================== /
 alerts:
-  # Enable alerts system
-  # Whenever a player dig a block users/admins will receive a message
+  # [Enable alerts system]
+  # Whenever a player dig a block users/admins/console will receive a message
   enable: true
-  # Send an alert to the console
   console: true
-  # Alert sound settings (not supported by BungeeCord)
+  # Edit the sound settings
+  # => volume:   The volume of the sound (0 to disable)
+  # => pitch:    The pitch of the sound
+  # => default:  Default sound of alerts ("" to disable)
   sound:
-    volume: 1
-    pitch: 2
-  # Get coordinates of the user when he digs an ore
+    volume: 1.0
+    pitch: 2.0
+    default: ""
+  # [Coordinates]
+  # Enable the coordinates system:
+  # Print the coordinates of the player on block destroy:
+  # => %x%, %y% and %z%: Be sure to add them into messages/commands
   coordinates:
-    # Enable parsing of %x%, %y% and %z%
-    # Required to show coordinates or use them into commands
     enable: true
-    # Hide a single, or every, coordinate
+    # [Hide real coordinates]
+    # Choose to hide/randomize the coordinates
+    # => count:        How many coordinates to hide
+    # => hidden-for:   Who should see hidden coordinates
+    # => hide:         Which coordinates to hide
+    # => format:       Set the format of an hidden coordinate
+    # => obfuscation:  Completely hide the hidden coordinate to bypass cheaters
     hide-real-coordinates:
       enable: false
-      # How many coordinates to hide
       # Coordinates are choose randomly if this number
       #   is lower than existing coordinates number into the format
       count: 1
-      # Hide coordinates only for users/admins
       hidden-for:
         user: true
         admin: false
         console: false
-      # Choose what to hide
       hide:
         x: true
         y: true
         z: true
-      # Format of a hidden coordinate
       format:
-        text: "&k%coordinate%"
+        text: '&k%coordinate%'
         # Warning: This is an advanced option, if you have problems
         # with JSON and obfuscation consider to ask for help on Discord!
         json: '%coordinate%","color":"gray","obfuscated":true},{"text":"'
       obfuscation:
-        # Completely remove hidden coordinate to bypass cheaters
         enable: true
         # Replace any hidden coordinate with this value
-        character: "?"
+        character: '?'
         # If greater than 0 replace the coordinate with exactly X character
         # Otherwise it will maintain the coordinate length
         fixed-length: 0
 
 
-# / = = = = = = = = = = = = = = = = \
+# / =============================== \
 # |         BLOCKS SETTINGS         |
-# \ = = = = = = = = = = = = = = = = /
+# \ =============================== /
 blocks:
-  # Do warn on blocks placed by players (until a server reload)
+  # [Blocks]
+  # Various settings about mining blocks
+  # => bypass-player-blocks:    Do not count blocks placed by players (until server reload)
+  # => bypass-silk-touch:       Do not count blocks broken by silk touch tool
+  # => bypass-secure-counter:   This is a kill-switch used to avoid server crash when
+  #                               the server is trying to calculate nearest blocks. Do
+  #                               not touch it if you don't know what you are doing
   bypass-player-blocks: false
-  # Do not count block broken with a silk touch tool
   bypass-silk-touch: true
-  # Send a warn message when there is a wrong configured block
-  warn-on-wrong-blocks: true
-  # Light level system is used to check light level when a player is digging a block
+  bypass-secure-counter: false
+  # [Light level system]
+  # Enable a light level check on block destroy
+  # Choose to alert/count blocks only if light level is lower than an X number
   light-level:
     enable: false
-    # Send the alert only when the light level is lower than the specified one
     alert-only-if-lower: true
-    # Count the block only when the light level is lower than the specified one
     count-only-if-lower: false
-  # Block list, structure:
-  # BLOCK_NAME:                       | Material name of the block
-  #   alerts:                         | Alert options of the block
-  #     user: true/false              |
-  #     admin: true/false             |
-  #   name:                           | Name of the block
-  #     singular: "block"             |
-  #     plural: "blocks"              |
-  #   messages:                       |
-  #     user: ""                      | Custom message for users
-  #     admin: ""                     | Custom message for admins
-  #     console: ""                   | Custom message for the console
-  #   sound: "SoundName"              | Sound to play (empty = no sound)
-  #   light-level: 0-15               | Set the light level
-  #   count-on-destroy: true/false    | Count this block
-  list:
-    DIAMOND_ORE:
-      alerts:
-        user: true
-        admin: true
-      name:
-        singular: "diamond"
-        plural: "diamonds"
-      sound: "ENTITY_PLAYER_LEVELUP"
-      light-level: 15
-      count-on-destroy: true
-    EMERALD_ORE:
-      alerts:
-        user: false
-        admin: true
-      name:
-        singular: "emerald"
-        plural: "emeralds"
-      sound: "ENTITY_PLAYER_LEVELUP"
-      light-level: 6
-      count-on-destroy: true
+  # [TNT Mining]
+  # Alert when blocks are destroyed by tnt instead of mining
+  # Unfortunately you won't be able to know who ignited indirectly the TNT
+  #   so it will be a generic alert message
+  # => alert-on-tnt-mining:   Send the alert
+  # => try-to-catch-player:  Try to get who ignites the tnt
+  # => count-on-destroy:     If the player is known, count the block destroy
+  tnt-mining:
+    alert-on-tnt-mining: true
+    try-to-catch-player: true
+    count-on-destroy: true
 
 
-# / = = = = = = = = = = = = = = = = \
+
+# / =============================== \
 # |         STATS  SETTINGS         |
-# \ = = = = = = = = = = = = = = = = /
+# \ =============================== /
 stats:
-  # Enable statistics system
-  # Any block you put on blocks list will be registered into the database
-  # Choose which block by adding 'count-on-destroy' option
-  enable: false
+  # [Statistics system]
+  # Start to store any data about destroyed blocks, enables:
+  # => /oa stats:  Show destroyed blocks stats about a player
+  # => /oa top:    Show top players
+  # You can enable/disable every block manually with 'count-on-destroy' option
+  #
+  # [Advanced count]
+  # Store any data about found blocks, this will enable a time tracking logging
+  # of blocks for an improved anti x-ray system.
+  # You have to configure blocks options to use this.
+  enable: true
+  advanced-count:
+    enable: true
+    # Time format:
+    # => y          years
+    # => M          moths
+    # => d          days
+    # => H          hours
+    # => m          minutes
+    # => s          seconds
+    # => S          milliseconds
+    # => 'text'     arbitrary text content
+    default-time-format: "m' minutes'"
   top:
     enable: true
+    # Order by: destroy/found
+    order-by: destroy
     number-of-players: 5
     page-size: 5
 
 
-
-# / = = = = = = = = = = = = = = = = \
+# / =============================== \
 # |        COMMANDS SETTINGS        |
-# \ = = = = = = = = = = = = = = = = /
+# \ =============================== /
 commands:
   # Enable tab support (/oa <tab> to see every allowed command)
   tab-support: true
-  oa-description: "OreAnnouncer help page"
+  oa-description: OreAnnouncer help page
   main-commands:
-    help: "help"
-    oa: "oa"
-    alerts: "alerts"
-    reload: "reload"
-    stats: "stats"
-    top: "top"
-    version: "version"
+    help: help
+    oa: oa
+    alerts: alerts
+    reload: reload
+    stats: stats
+    top: top
+    version: version
   sub-commands:
-    on: "on"
-    off: "off"
+    word-on: 'on'
+    word-off: 'off'
 
 
 dont-edit-this:
-  version: 3
+  version: 4

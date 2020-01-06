@@ -1,12 +1,27 @@
 package com.alessiodp.oreannouncer.api.interfaces;
 
 public interface OABlock {
+	
 	/**
 	 * Get material name
 	 *
 	 * @return Returns the material name as String
 	 */
 	String getMaterialName();
+	
+	/**
+	 * Is the block enabled?
+	 *
+	 * @return Returns true if its enabled
+	 */
+	boolean isEnabled();
+	
+	/**
+	 * Enable/disable the block
+	 *
+	 * @param enable True to enable
+	 */
+	void setEnabled(boolean enable);
 	
 	/**
 	 * Is alerting users option enabled?
@@ -65,6 +80,48 @@ public interface OABlock {
 	void setPluralName(String pluralName);
 	
 	/**
+	 * Get the count number
+	 *
+	 * @return Returns the count number of the block
+	 */
+	int getCountNumber();
+	
+	/**
+	 * Set the count number of the block
+	 *
+	 * @param number The count number of the block
+	 */
+	void setCountNumber(int number);
+	
+	/**
+	 * Get the count time
+	 *
+	 * @return Returns the count time of the block
+	 */
+	int getCountTime();
+	
+	/**
+	 * Set the count time of the block
+	 *
+	 * @param time The count time of the block
+	 */
+	void setCountTime(int time);
+	
+	/**
+	 * Get the count time format
+	 *
+	 * @return Returns the count time format of the block
+	 */
+	String getCountTimeFormat();
+	
+	/**
+	 * Set the count time format of the block
+	 *
+	 * @param countTimeFormat The count time format of the block
+	 */
+	void setCountTimeFormat(String countTimeFormat);
+	
+	/**
 	 * Get custom message for users
 	 *
 	 * @return Returns the alert message for users
@@ -107,6 +164,48 @@ public interface OABlock {
 	void setMessageConsole(String messageConsole);
 	
 	/**
+	 * Get custom count message for users
+	 *
+	 * @return Returns the count alert message for users
+	 */
+	String getCountMessageUser();
+	
+	/**
+	 * Set the custom count message for users
+	 *
+	 * @param countMessageUser The message to set
+	 */
+	void setCountMessageUser(String countMessageUser);
+	
+	/**
+	 * Get custom count message for admins
+	 *
+	 * @return Returns the count alert message for admins
+	 */
+	String getCountMessageAdmin();
+	
+	/**
+	 * Set the custom count message for admins
+	 *
+	 * @param countMessageAdmin The message to set
+	 */
+	void setCountMessageAdmin(String countMessageAdmin);
+	
+	/**
+	 * Get custom count message for the console
+	 *
+	 * @return Returns the count alert message for the console
+	 */
+	String getCountMessageConsole();
+	
+	/**
+	 * Set the custom message for the console
+	 *
+	 * @param countMessageConsole The message to set
+	 */
+	void setCountMessageConsole(String countMessageConsole);
+	
+	/**
 	 * Get sound name
 	 *
 	 * @return Returns the name of the sound
@@ -146,4 +245,18 @@ public interface OABlock {
 	 * @param countingOnDestroy True to enable count on destroy
 	 */
 	void setCountingOnDestroy(boolean countingOnDestroy);
+	
+	/**
+	 * Is TNT support enabled?
+	 *
+	 * @return Returns true if the option is enabled
+	 */
+	boolean isTNTEnabled();
+	
+	/**
+	 * Set TNT support option on/off
+	 *
+	 * @param tntEnabled True to enable TNT support
+	 */
+	void setTNTEnabled(boolean tntEnabled);
 }

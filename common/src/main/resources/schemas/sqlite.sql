@@ -14,6 +14,15 @@ CREATE TABLE '{table_blocks}' (
 	PRIMARY KEY ('player', 'material_name'));
 /*END_BLOCKS*/
 
+/*START_BLOCKS_FOUND*/
+CREATE TABLE '{table_blocks_found}' (
+	'id'				INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	'player'			VARCHAR({varcharsize}) NOT NULL,
+	'material_name'		VARCHAR({varcharsize}) NOT NULL,
+	'timestamp'			INTEGER NOT NULL,
+	'found'				INTEGER DEFAULT 0);
+/*END_BLOCKS_FOUND*/
+
 /*START_VERSIONS*/
 CREATE TABLE '{table_versions}' (
 	'name'		VARCHAR({varcharsize}) NOT NULL PRIMARY KEY,

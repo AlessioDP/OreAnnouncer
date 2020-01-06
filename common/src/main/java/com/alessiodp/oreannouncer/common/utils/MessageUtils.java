@@ -2,6 +2,7 @@ package com.alessiodp.oreannouncer.common.utils;
 
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.configuration.OAConstants;
+import com.alessiodp.oreannouncer.common.configuration.data.Blocks;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 import com.alessiodp.oreannouncer.common.players.objects.PlayerDataBlock;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +38,7 @@ public abstract class MessageUtils {
 				Matcher matcherMaterial = PLACEHOLDER_PATTERN_DESTROYED.matcher(identifier);
 				if (matcherMaterial.find()) {
 					String material = matcherMaterial.group(1);
-					if (plugin.getBlockManager().getListBlocks().containsKey(material.toUpperCase())) {
+					if (Blocks.LIST.containsKey(material.toUpperCase())) {
 						PlayerDataBlock pdb = player.getDataBlocks().get(material.toLowerCase());
 						if (pdb != null) {
 							ret = ret.replace(identifier, Integer.toString(pdb.getDestroyCount()));
