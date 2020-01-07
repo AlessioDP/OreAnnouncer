@@ -3,7 +3,6 @@ package com.alessiodp.oreannouncer.bukkit.listeners;
 import com.alessiodp.core.bukkit.user.BukkitUser;
 import com.alessiodp.core.common.utils.ADPLocation;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
-import com.alessiodp.oreannouncer.common.configuration.data.Blocks;
 import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import com.alessiodp.oreannouncer.common.listeners.BlockListener;
 import org.bukkit.Material;

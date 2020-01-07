@@ -6,7 +6,6 @@ import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import com.google.common.io.ByteStreams;
 import lombok.Getter;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;

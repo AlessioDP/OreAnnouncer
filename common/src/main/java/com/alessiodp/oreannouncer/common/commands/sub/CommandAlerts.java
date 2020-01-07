@@ -10,7 +10,6 @@ import com.alessiodp.oreannouncer.common.commands.utils.OACommandData;
 import com.alessiodp.oreannouncer.common.commands.utils.OreAnnouncerPermission;
 import com.alessiodp.oreannouncer.common.configuration.OAConfigurationManager;
 import com.alessiodp.oreannouncer.common.configuration.OAConstants;
-import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import com.alessiodp.oreannouncer.common.configuration.data.Messages;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 import lombok.Getter;
