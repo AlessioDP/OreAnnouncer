@@ -2,6 +2,7 @@ package com.alessiodp.oreannouncer.common.players;
 
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
+import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 import com.alessiodp.oreannouncer.common.players.objects.PlayerDataBlock;
 import lombok.Getter;
@@ -60,7 +61,9 @@ public abstract class PlayerManager {
 		int ret = 0;
 		if (player != null) {
 			for (PlayerDataBlock pdb : player.getDataBlocks().values()) {
-				ret += pdb.getDestroyCount();
+				if (!ConfigMain.STATS_BLACKLIST_BLOCKS.contains(pdb.getMaterialName())) {
+					ret += pdb.getDestroyCount();
+				}
 			}
 		}
 		return ret;

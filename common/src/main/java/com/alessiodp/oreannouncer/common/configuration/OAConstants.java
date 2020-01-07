@@ -32,10 +32,10 @@ public class OAConstants {
 	public static final String QUERY_PLAYER_INSERT_SQLITE = "INSERT OR REPLACE INTO {table_players} (`uuid`, `alerts`) VALUES (?,?);";
 	public static final String QUERY_PLAYER_DELETE = "DELETE FROM {table_players} WHERE `uuid`=?;";
 	public static final String QUERY_PLAYER_GET = "SELECT * FROM {table_players} WHERE `uuid`=?;";
-	public static final String QUERY_PLAYER_TOP_BLOCKS_DESTROY = "SELECT player, sum(destroyed) as total FROM {table_blocks} GROUP BY player ORDER BY total DESC LIMIT ? OFFSET ?;";
-	public static final String QUERY_PLAYER_TOP_NUMBER_DESTROY = "SELECT COUNT(DISTINCT player) as total FROM {table_blocks};";
-	public static final String QUERY_PLAYER_TOP_BLOCKS_FOUND = "SELECT player, sum(found) as total FROM {table_blocks_found} GROUP BY player ORDER BY total DESC LIMIT ? OFFSET ?;";
-	public static final String QUERY_PLAYER_TOP_NUMBER_FOUND = "SELECT COUNT(DISTINCT player) as total FROM {table_blocks_found};";
+	public static final String QUERY_PLAYER_TOP_BLOCKS_DESTROY = "SELECT player, sum(destroyed) as total FROM {table_blocks}{blacklist} GROUP BY player ORDER BY total DESC LIMIT ? OFFSET ?;";
+	public static final String QUERY_PLAYER_TOP_NUMBER_DESTROY = "SELECT COUNT(DISTINCT player) as total FROM {table_blocks}{blacklist};";
+	public static final String QUERY_PLAYER_TOP_BLOCKS_FOUND = "SELECT player, sum(found) as total FROM {table_blocks_found}{blacklist} GROUP BY player ORDER BY total DESC LIMIT ? OFFSET ?;";
+	public static final String QUERY_PLAYER_TOP_NUMBER_FOUND = "SELECT COUNT(DISTINCT player) as total FROM {table_blocks_found}{blacklist};";
 	
 	public static final String QUERY_BLOCK_INSERT_MYSQL = "INSERT INTO {table_blocks} (`player`, `material_name`, `destroyed`) VALUES (?,?,?) ON DUPLICATE KEY UPDATE `destroyed`=VALUES(`destroyed`);";
 	public static final String QUERY_BLOCK_INSERT_SQLITE = "INSERT OR REPLACE INTO {table_blocks} (`player`, `material_name`, `destroyed`) VALUES (?,?,?);";

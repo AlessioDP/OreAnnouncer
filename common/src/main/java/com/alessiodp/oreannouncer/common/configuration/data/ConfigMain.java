@@ -4,6 +4,8 @@ import com.alessiodp.core.common.configuration.ConfigOption;
 import com.alessiodp.core.common.configuration.ConfigurationFile;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 
+import java.util.List;
+
 public abstract class ConfigMain extends ConfigurationFile {
 	// OreAnnouncer settings
 	@ConfigOption(path = "oreannouncer.updates.check")
@@ -123,6 +125,8 @@ public abstract class ConfigMain extends ConfigurationFile {
 	// Stats settings
 	@ConfigOption(path = "stats.enable")
 	public static boolean		STATS_ENABLE;
+	@ConfigOption(path = "stats.blacklist-blocks")
+	public static List<String>	STATS_BLACKLIST_BLOCKS;
 	@ConfigOption(path = "stats.advanced-count.enable")
 	public static boolean		STATS_ADVANCED_COUNT_ENABLE;
 	@ConfigOption(path = "stats.advanced-count.default-time-format")

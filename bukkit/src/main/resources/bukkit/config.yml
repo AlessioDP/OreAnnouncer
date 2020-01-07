@@ -185,6 +185,9 @@ stats:
   # of blocks for an improved anti x-ray system.
   # You have to configure blocks options to use this.
   enable: true
+  # Insert any block that you want to blacklist from general listing like /oa top
+  blacklist-blocks:
+    - 'STONE'
   advanced-count:
     enable: true
     # Time format:
