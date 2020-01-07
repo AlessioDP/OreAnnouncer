@@ -49,7 +49,7 @@ alerts:
     admin: '[{"text":"TNT destroyed %number% %block%! ","color":"yellow"},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Click to teleport!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %x% %y% %z%"}}]'
     console: 'TNT destroyed %number% %block%! [x: %x%, y: %y%, z: %z%]'
     player-user: ''
-    player-admin: '[{"text":"TNT of %player% destroyed %number% %block%! ","color":"yellow"},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Click to teleport!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %x% %y% %z%"}}]'
+    player-admin: '[{"text":"TNT of ","color":"yellow"},{"text":"%player%","color":"gold"},{"text":" destroyed %number% %block%! ","color":"yellow"},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Click to teleport!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %x% %y% %z%"}}]'
     player-console: 'TNT of %player% destroyed %number% %block%! [x: %x%, y: %y%, z: %z%]'
 #/ =============================== \
 #|        COMMANDS MESSAGES        |
