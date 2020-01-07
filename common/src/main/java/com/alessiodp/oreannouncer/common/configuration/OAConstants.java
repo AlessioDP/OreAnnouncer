@@ -11,7 +11,7 @@ public class OAConstants {
 	public static final String PLUGIN_SPIGOTCODE = "33464";
 	
 	// Versions
-	public static final int VERSION_BUKKIT_CONFIG = 4;
+	public static final int VERSION_BUKKIT_CONFIG = 5;
 	public static final int VERSION_BUNGEE_CONFIG = 2;
 	public static final int VERSION_BUKKIT_MESSAGES = 5;
 	public static final int VERSION_BUNGEE_MESSAGES = 4;

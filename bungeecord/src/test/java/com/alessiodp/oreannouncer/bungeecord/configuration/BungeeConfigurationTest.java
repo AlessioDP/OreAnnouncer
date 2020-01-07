@@ -48,6 +48,7 @@ public class BungeeConfigurationTest {
 				"blocks.warn",
 				"blocks.light-level",
 				"blocks.tnt",
+				"stats.blacklist",
 				"stats.advanced-count.default"
 		);
 		
