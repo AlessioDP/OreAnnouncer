@@ -1,67 +1,71 @@
 ---
-#Messages configuration file
-#You can find a list of available tags here: https://alessiodp.com/docs/oreannouncer/placeholders/
-#/ = = = = = = = = = = = = = = = = \
+#/ =========================================== \
+#|  This is the messages file of OreAnnouncer  |
+#\ =========================================== /
+#For any problem be sure to:
+#- Read the entire documentation on: https://alessiodp.com/docs/oreannouncer/
+#- Join our Discord for further help: https://discord.alessiodp.com/
+#/ =============================== \
 #|      OREANNOUNCER MESSAGES      |
-#\ = = = = = = = = = = = = = = = = /
+#\ =============================== /
 oreannouncer:
-  #Special tags:
+  #[Special tags]
   #=> %version%     = New version found
   #=> %thisversion% = Version installed
-  update-available: "&2Dostępna jest nowa wersja OreAnnouncer: %version% (Obecna: %thisversion%)"
-  #Special tag:
+  update-available: '&2Dostępna jest nowa wersja OreAnnouncer: %version% (Obecna: %thisversion%)'
+  #[Special tags]
   #=> %config%      = The configuration file name that is outdated
-  configuration-outdated: "&cPlik konfiguracyjny '%config%' OreAnnouncer jest przestarzały!"
-  #Special tag:
+  configuration-outdated: '&cPlik konfiguracyjny ''%config%'' OreAnnouncer jest przestarzały!'
+  #[Special tags]
   #=> %permission%  = Missing permission
-  no-permission: "&cNie masz uprawnień do użycia tej komendy"
+  no-permission: '&cNie masz uprawnień do użycia tej komendy'
   common-messages:
-    invalid-command: "&cNiepoprawna komenda"
-    configuration-reloaded: "&aPrzeładowano konfigurację"
-#/ = = = = = = = = = = = = = = = = \
+    invalid-command: '&cNiepoprawna komenda'
+    configuration-reloaded: '&aPrzeładowano konfigurację'
+#/ =============================== \
 #|        COMMANDS MESSAGES        |
-#\ = = = = = = = = = = = = = = = = /
+#\ =============================== /
 commands:
   alerts:
-    toggle-on: "&aOd teraz będziesz otrzymywał powiadomienia"
-    toggle-off: "&aOd teraz nie będziesz otrzymywał powiadomień"
-    wrong-command: "&cBłędne użycie: Wpisz &7/oa alerts [on/off]"
+    toggle-on: '&aOd teraz będziesz otrzymywał powiadomienia'
+    toggle-off: '&aOd teraz nie będziesz otrzymywał powiadomień'
+    wrong-command: '&cBłędne użycie: Wpisz &7/oa alerts [on/off]'
   stats:
     content:
-      - "&2============ &lStatystyki gracza %player% &r&2============"
-      - "&bDiamenty&7: %player_destroyed_diamond_ore%"
-      - "&aSzmaragdy&7: %player_destroyed_emerald_ore%"
-    player-not-found: "&cGracz %player% nie odnaleziony!"
+      - '&2============ &lStatystyki gracza %player% &r&2============'
+      - '&bDiamenty&7: %player_destroyed_diamond_ore%'
+      - '&aSzmaragdy&7: %player_destroyed_emerald_ore%'
+    player-not-found: '&cGracz %player% nie odnaleziony!'
   top:
-    #Special tags:
+    #[Special tags]
     #=> %total%    = Total players
     #=> %page%     = Current list page
     #=> %maxpages% = How many pages exist
-    header: "&2============ &lNajlepsi Gracze &r&2============"
-    footer: ""
-    no-one: "&7Nikt"
+    header: '&2============ &lNajlepsi Gracze &r&2============'
+    footer: ''
+    no-one: '&7Nikt'
     #You can use JSON to shows per-block total on hover
     format-player: '&a%player%&7: %player_destroyed% bloki'
-    wrong-command: "&cBłędne użycie: Wpisz &7/oa top [strona]"
+    wrong-command: '&cBłędne użycie: Wpisz &7/oa top [strona]'
   version:
-    #Special tags:
+    #[Special tags]
     #=> %version%    = OreAnnouncer version
     #=> %newversion% = Latest OreAnnouncer version
     #=> %platform%   = Platform of the plugin (e.g. Bukkit, BungeeCord)
-    updated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Wydane przez &6AlessioDP"
+    updated: '&2&lOreAnnouncer &2%version% &7(%platform%) - Wydane przez &6AlessioDP'
     outdated: "&2&lOreAnnouncer &2%version% &7(%platform%) -Wydane przez &6AlessioDP\n&aDostępna nowa wersja: &2%newversion%"
-#/ = = = = = = = = = = = = = = = = \
+#/ =============================== \
 #|          HELP MESSAGES          |
-#\ = = = = = = = = = = = = = = = = /
+#\ =============================== /
 help:
-  header: "&2============ &lStrona Pomocy OreAnnouncer &r&2============"
-  footer: ""
+  header: '&2============ &lStrona Pomocy OreAnnouncer &r&2============'
+  footer: ''
   console-help:
-    - "Możesz wykonać tylko te komendy:"
-    - " > oa reload - Przeładuj konfigurację"
-    - " > oa stats <player> - Pokaż statystyki gracza"
-    - " > oa top - Lista najlepszych graczy"
-    - " > oa version - Pokaż informacje OreAnnouncer"
+    - 'Możesz wykonać tylko te komendy:'
+    - ' > oa reload - Przeładuj konfigurację'
+    - ' > oa stats <player> - Pokaż statystyki gracza'
+    - ' > oa top - Lista najlepszych graczy'
+    - ' > oa version - Pokaż informacje OreAnnouncer'
   commands:
     help: '{"text":"","extra":[{"text":"/oa help","color":"dark_green"},{"text":" - Pokaż strony pomocy","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa help "},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj polecenie","color":"gold"}}}'
     alerts: '{"text":"","extra":[{"text":"/oa alerts [on/off]","color":"dark_green"},{"text":" - Przełącz alerty","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa alerts "},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj polecenie","color":"gold"}}}'
@@ -70,4 +74,4 @@ help:
     top: '{"text":"","extra":[{"text":"/oa top [page]","color":"dark_green"},{"text":" - Lista najlepszych graczy","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa top "},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj polecenie","color":"gold"}}}'
     version: '{"text":"","extra":[{"text":"/oa version","color":"dark_green"},{"text":" - Pokaż informacje OreAnouncer","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa version"},"hoverEvent":{"action":"show_text","value":{"text":"Wykonaj polecenie","color":"gold"}}}'
 dont-edit-this:
-  version: 3
+  version: 4
