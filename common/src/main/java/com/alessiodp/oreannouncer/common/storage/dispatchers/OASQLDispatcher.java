@@ -194,6 +194,7 @@ public class OASQLDispatcher extends SQLDispatcher implements IOADatabaseDispatc
 					case DESTROY:
 					default:
 						query = OAConstants.QUERY_PLAYER_TOP_NUMBER_DESTROY;
+						break;
 				}
 				
 				try (

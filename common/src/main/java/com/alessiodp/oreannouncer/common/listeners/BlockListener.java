@@ -145,7 +145,7 @@ public abstract class BlockListener {
 		if (!plugin.getBlockManager().isBlockMarked(blockLocation, block.getMaterialName(), BlockManager.MarkType.FOUND)) {
 			if (block.getCountNumber() > 0 && (!ConfigMain.BLOCKS_LIGHT_ENABLE || !ConfigMain.BLOCKS_LIGHT_COUNTIFLOWER || lightLevel <= block.getLightLevel())) {
 				int numberOfBlocks = plugin.getBlockManager().countNearBlocks(blockLocation, block.getMaterialName(), BlockManager.MarkType.FOUND);
-				if (block.getCountNumber() > 0) {
+				if (numberOfBlocks > 0) {
 					plugin.getScheduler().runAsync(() -> {
 						OAPlayerImpl player = plugin.getPlayerManager().getPlayer(user.getUUID());
 						plugin.getBlockManager().handleBlockFound(block, player, blockLocation, numberOfBlocks);

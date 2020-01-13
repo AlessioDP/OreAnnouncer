@@ -72,6 +72,7 @@ public class CommandTop extends ADPSubCommand {
 			case "destroy":
 			default:
 				orderBy = OADatabaseManager.TopOrderBy.DESTROY;
+				break;
 		}
 		
 		// Command starts

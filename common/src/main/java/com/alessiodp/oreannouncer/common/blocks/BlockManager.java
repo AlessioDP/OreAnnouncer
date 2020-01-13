@@ -146,13 +146,15 @@ public abstract class BlockManager {
 	}
 	
 	public void handleBlockFound(OABlockImpl block, OAPlayerImpl player, ADPLocation blockLocation, int numberOfBlocks) {
-		BlockFound bf = new BlockFound(player.getPlayerUUID(), block, numberOfBlocks);
-		plugin.getDatabaseManager().insertBlocksFound(bf);
-		
-		BlockFound previousBf = plugin.getDatabaseManager().getLatestBlocksFound(player.getPlayerUUID(), block, block.getCountTime());
-		if (previousBf != null) {
-			bf = bf.merge(previousBf);
+		BlockFound newBf = new BlockFound(player.getPlayerUUID(), block, numberOfBlocks);
+		BlockFound bf = plugin.getDatabaseManager().getLatestBlocksFound(player.getPlayerUUID(), block, block.getCountTime());
+		if (bf != null) {
+			bf = bf.merge(newBf);
+		} else {
+			bf = newBf;
 		}
+		
+		plugin.getDatabaseManager().insertBlocksFound(newBf);
 		
 		if (bf.getFound() >= block.getCountNumber()) {
 			String countTimeFormat = block.getCountTimeFormat() != null ? block.getCountTimeFormat() : ConfigMain.STATS_ADVANCED_COUNT_TIME_FORMAT;
@@ -162,9 +164,9 @@ public abstract class BlockManager {
 			String adminMessage = block.getCountMessageAdmin() != null ? block.getCountMessageAdmin() : Messages.ALERTS_COUNT_ADMIN;
 			String consoleMessage = block.getCountMessageConsole() != null ? block.getCountMessageConsole() : Messages.ALERTS_COUNT_CONSOLE;
 			
-			userMessage = parseMessage(userMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_USER, numberOfBlocks, bf.getTimestamp(), countTimeFormat);
-			adminMessage = parseMessage(adminMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_ADMIN, numberOfBlocks, bf.getTimestamp(), countTimeFormat);
-			consoleMessage = parseMessage(consoleMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_CONSOLE, numberOfBlocks, bf.getTimestamp(), countTimeFormat);
+			userMessage = parseMessage(userMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_USER, bf.getFound(), bf.getTimestamp(), countTimeFormat);
+			adminMessage = parseMessage(adminMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_ADMIN, bf.getFound(), bf.getTimestamp(), countTimeFormat);
+			consoleMessage = parseMessage(consoleMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_CONSOLE, bf.getFound(), bf.getTimestamp(), countTimeFormat);
 			
 			if (plugin.isBungeeCordEnabled()) {
 				OAPacket packet = new OAPacket(plugin.getVersion());
