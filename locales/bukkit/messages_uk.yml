@@ -1,84 +1,100 @@
 ---
-#Messages configuration file
-#You can find a list of available tags here: https://alessiodp.com/docs/oreannouncer/placeholders/
-#/ = = = = = = = = = = = = = = = = \
+#/ =========================================== \
+#|  This is the messages file of OreAnnouncer  |
+#\ =========================================== /
+#For any problem be sure to:
+#- Read the entire documentation on: https://alessiodp.com/docs/oreannouncer/
+#- Join our Discord for further help: https://discord.alessiodp.com/
+#/ =============================== \
 #|      OREANNOUNCER MESSAGES      |
-#\ = = = = = = = = = = = = = = = = /
+#\ =============================== /
 oreannouncer:
-  #Special tags:
+  #[Special tags]
   #=> %version%     = New version found
   #=> %thisversion% = Version installed
-  update-available: "&2Нову версію плагіну 'OreAnnouncer' знайдено: %version% (Встановлено: %thisversion%)"
-  #Special tag:
+  update-available: '&2Нову версію плагіну ''OreAnnouncer'' знайдено: %version% (Встановлено: %thisversion%)'
+  #[Special tags]
   #=> %config%      = The configuration file name that is outdated
-  configuration-outdated: "&cФайл конфігурації '%config%' плагіна OreAnnouncer застарілий!"
-  #Special tag:
+  configuration-outdated: '&cФайл конфігурації ''%config%'' плагіна OreAnnouncer застарілий!'
+  #[Special tags]
   #=> %permission%  = Missing permission
-  no-permission: "&cУ вас немає доступу до цієї команди"
+  no-permission: '&cУ вас немає доступу до цієї команди'
   common-messages:
-    invalid-command: "&cНевірна команда"
-    configuration-reloaded: "&aКонфігурацію оновлено"
-#/ = = = = = = = = = = = = = = = = \
+    invalid-command: '&cНевірна команда'
+    configuration-reloaded: '&aКонфігурацію оновлено'
+#/ =============================== \
 #|         ALERTS MESSAGES         |
-#\ = = = = = = = = = = = = = = = = /
+#\ =============================== /
 alerts:
-  #Special tags:
+  #[Special tags]
   #%x%, %y% and %z% = Coordinates of the destroyed block
   #JSON tips:
   #- Make a single block for a coordinate (see below)
   #- Do not use obfuscation if you are using coordinates to run commands
   #Example:
   #{"text":"%x%","color":"gray"} - This is a single block for a coordinate
-  user: "&6%player% &eзнайшов %number% %block%!"
+  user: '&6%player% &eзнайшов %number% %block%!'
   #Without teleport:
   #admin: "&6%player% &efound %number% %block%! &7[x: %x%&7, z: %z%&7]"
   admin: '[{"text":"%player% ","color":"gold"},{"text":"знайдено %number% %block%! ","color":"yellow"},{"text":"Телепортація","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Натисніть для телепортації!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
   #No JSON for console
-  console: "%player% знайшов %number% %block%! [x: %x%, y: %y%, z: %z%]"
-#/ = = = = = = = = = = = = = = = = \
+  console: '%player% знайшов %number% %block%! [x: %x%, y: %y%, z: %z%]'
+  count:
+    user: ''
+    admin: '[{"text":"%player% ","color":"gold"},{"text":"found %number% %block% in %time%! ","color":"yellow"},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Click to teleport!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
+    #No JSON for console
+    console: '%player% found %number% %block% in %time%! [x: %x%, y: %y%, z: %z%]'
+  tnt:
+    user: ''
+    admin: '[{"text":"TNT destroyed %number% %block%! ","color":"yellow"},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Click to teleport!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %x% %y% %z%"}}]'
+    console: 'TNT destroyed %number% %block%! [x: %x%, y: %y%, z: %z%]'
+    player-user: ''
+    player-admin: '[{"text":"TNT of ","color":"yellow"},{"text":"%player%","color":"gold"},{"text":" destroyed %number% %block%! ","color":"yellow"},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Click to teleport!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %x% %y% %z%"}}]'
+    player-console: 'TNT of %player% destroyed %number% %block%! [x: %x%, y: %y%, z: %z%]'
+#/ =============================== \
 #|        COMMANDS MESSAGES        |
-#\ = = = = = = = = = = = = = = = = /
+#\ =============================== /
 commands:
   alerts:
-    toggle-on: "&aТепер Вам будуть показуватися повідомлення"
-    toggle-off: "&aТепер Вам не будуть показуватися повідомлення"
-    wrong-command: "&cНевірні дані: Введіть &7/oa alerts [on/off]"
+    toggle-on: '&aТепер Вам будуть показуватися повідомлення'
+    toggle-off: '&aТепер Вам не будуть показуватися повідомлення'
+    wrong-command: '&cНевірні дані: Введіть &7/oa alerts [on/off]'
   stats:
     content:
-      - "&2============ &lСтатистика %player%&r&2============"
-      - "&bДіамантів&7: %player_destroyed_diamond_ore%"
-      - "&aСмарагдів&7: %player_destroyed_emerald_ore%"
-    player-not-found: "&cНікмейм '%player%' не знайдено!"
+      - '&2============ &lСтатистика %player%&r&2============'
+      - '&bДіамантів&7: %player_destroyed_diamond_ore%'
+      - '&aСмарагдів&7: %player_destroyed_emerald_ore%'
+    player-not-found: '&cНікмейм ''%player%'' не знайдено!'
   top:
-    #Special tags:
+    #[Special tags]
     #=> %total%    = Total players
     #=> %page%     = Current list page
     #=> %maxpages% = How many pages exist
-    header: "&2============ &lНайкращі гравці &r&2============"
-    footer: ""
-    no-one: "&7Немає"
+    header: '&2============ &lНайкращі гравці &r&2============'
+    footer: ''
+    no-one: '&7Немає'
     #You can use JSON to shows per-block total on hover
     format-player: '&a%player%&7: %player_destroyed% блоків'
-    wrong-command: "&cНевірні дані: Введіть &7/oa top [сторінка]"
+    wrong-command: '&cНевірні дані: Введіть &7/oa top [сторінка]'
   version:
-    #Special tags:
+    #[Special tags]
     #=> %version%    = OreAnnouncer version
     #=> %newversion% = Latest OreAnnouncer version
     #=> %platform%   = Platform of the plugin (e.g. Bukkit, BungeeCord)
-    updated: "&2&lOreAnnouncer &2%version% &7(%platform%) - розроблено &6AlessioDP"
+    updated: '&2&lOreAnnouncer &2%version% &7(%platform%) - розроблено &6AlessioDP'
     outdated: "&2&lOreAnnouncer &2%version% &7(%platform%) - розроблено &6AlessioDP\n&aНову версію знайдено: &2%newversion%"
-#/ = = = = = = = = = = = = = = = = \
+#/ =============================== \
 #|          HELP MESSAGES          |
-#\ = = = = = = = = = = = = = = = = /
+#\ =============================== /
 help:
-  header: "&2============= &lДовідка OreAnnouncer &r&2============="
-  footer: ""
+  header: '&2============= &lДовідка OreAnnouncer &r&2============='
+  footer: ''
   console-help:
-    - "Ви можете виконувати тільки ці команди:"
-    - " > oa reload - Оновити файли конфігурації"
-    - " > oa stats <нікнейм> - Показати статистику гравця"
-    - " > oa top - Список кращих гравців"
-    - " > oa version - Показати інформацію про плагін 'OreAnnouncer'"
+    - 'Ви можете виконувати тільки ці команди:'
+    - ' > oa reload - Оновити файли конфігурації'
+    - ' > oa stats <нікнейм> - Показати статистику гравця'
+    - ' > oa top - Список кращих гравців'
+    - ' > oa version - Показати інформацію про плагін ''OreAnnouncer'''
   commands:
     help: '{"text":"","extra":[{"text":"/oa help","color":"dark_green"},{"text":" - Показати довідку","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa help "},"hoverEvent":{"action":"show_text","value":{"text":"Виконати команду","color":"gold"}}}'
     alerts: '{"text":"","extra":[{"text":"/oa alerts [on/off]","color":"dark_green"},{"text":" - Ввімкнути/вимкнути повідомлення","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa alerts "},"hoverEvent":{"action":"show_text","value":{"text":"Виконати команду","color":"gold"}}}'
@@ -87,4 +103,4 @@ help:
     top: '{"text":"","extra":[{"text":"/oa top [сторінка]","color":"dark_green"},{"text":" - Список кращих гравців","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa top "},"hoverEvent":{"action":"show_text","value":{"text":"Виконати команду","color":"gold"}}}'
     version: '{"text":"","extra":[{"text":"/oa version","color":"dark_green"},{"text":" - Показати інформацію про плагін ''OreAnnouncer''","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa version"},"hoverEvent":{"action":"show_text","value":{"text":"Виконати команду","color":"gold"}}}'
 dont-edit-this:
-  version: 4
+  version: 5

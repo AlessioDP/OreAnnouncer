@@ -1,84 +1,100 @@
 ---
-#Messages configuration file
-#You can find a list of available tags here: https://alessiodp.com/docs/oreannouncer/placeholders/
-#/ = = = = = = = = = = = = = = = = \
+#/ =========================================== \
+#|  This is the messages file of OreAnnouncer  |
+#\ =========================================== /
+#For any problem be sure to:
+#- Read the entire documentation on: https://alessiodp.com/docs/oreannouncer/
+#- Join our Discord for further help: https://discord.alessiodp.com/
+#/ =============================== \
 #|      OREANNOUNCER MESSAGES      |
-#\ = = = = = = = = = = = = = = = = /
+#\ =============================== /
 oreannouncer:
-  #Special tags:
+  #[Special tags]
   #=> %version%     = New version found
   #=> %thisversion% = Version installed
-  update-available: "&2Neue Version von OreAnnouncer gefunden: %version% (Aktuell: %thisversion%)"
-  #Special tag:
+  update-available: '&2Neue Version von OreAnnouncer gefunden: %version% (Aktuell: %thisversion%)'
+  #[Special tags]
   #=> %config%      = The configuration file name that is outdated
-  configuration-outdated: "&cDie Konfigurationsdatei '%config%' von OreAnnouncer ist veraltet!"
-  #Special tag:
+  configuration-outdated: '&cDie Konfigurationsdatei ''%config%'' von OreAnnouncer ist veraltet!'
+  #[Special tags]
   #=> %permission%  = Missing permission
-  no-permission: "&cDu hast keinen Zugriff auf diesen Befehl"
+  no-permission: '&cDu hast keinen Zugriff auf diesen Befehl'
   common-messages:
-    invalid-command: "&cUngültiger Befehl"
-    configuration-reloaded: "&aDie Konfigurationen wurden neu geladen"
-#/ = = = = = = = = = = = = = = = = \
+    invalid-command: '&cUngültiger Befehl'
+    configuration-reloaded: '&aDie Konfigurationen wurden neu geladen'
+#/ =============================== \
 #|         ALERTS MESSAGES         |
-#\ = = = = = = = = = = = = = = = = /
+#\ =============================== /
 alerts:
-  #Special tags:
+  #[Special tags]
   #%x%, %y% and %z% = Coordinates of the destroyed block
   #JSON tips:
   #- Make a single block for a coordinate (see below)
   #- Do not use obfuscation if you are using coordinates to run commands
   #Example:
   #{"text":"%x%","color":"gray"} - This is a single block for a coordinate
-  user: "&6%player% &efindet %number% %block%!"
+  user: '&6%player% &efindet %number% %block%!'
   #Without teleport:
   #admin: "&6%player% &efound %number% %block%! &7[x: %x%&7, z: %z%&7]"
   admin: '[{"text":"%player% ","color":"gold"},{"text":"findet %number% %block%! ","color":"yellow"},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Klicke hier, um sich zu teleportieren!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
   #No JSON for console
-  console: "%player% findet %number% %block%! [x: %x%, y: %y%, z: %z%]"
-#/ = = = = = = = = = = = = = = = = \
+  console: '%player% findet %number% %block%! [x: %x%, y: %y%, z: %z%]'
+  count:
+    user: ''
+    admin: '[{"text":"%player% ","color":"gold"},{"text":"found %number% %block% in %time%! ","color":"yellow"},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Click to teleport!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
+    #No JSON for console
+    console: '%player% found %number% %block% in %time%! [x: %x%, y: %y%, z: %z%]'
+  tnt:
+    user: ''
+    admin: '[{"text":"TNT destroyed %number% %block%! ","color":"yellow"},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Click to teleport!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %x% %y% %z%"}}]'
+    console: 'TNT destroyed %number% %block%! [x: %x%, y: %y%, z: %z%]'
+    player-user: ''
+    player-admin: '[{"text":"TNT of ","color":"yellow"},{"text":"%player%","color":"gold"},{"text":" destroyed %number% %block%! ","color":"yellow"},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Click to teleport!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %x% %y% %z%"}}]'
+    player-console: 'TNT of %player% destroyed %number% %block%! [x: %x%, y: %y%, z: %z%]'
+#/ =============================== \
 #|        COMMANDS MESSAGES        |
-#\ = = = = = = = = = = = = = = = = /
+#\ =============================== /
 commands:
   alerts:
-    toggle-on: "&aDu kannst jetzt die Warnungen sehen"
-    toggle-off: "&aDu wirst keine Warnungen mehr sehen"
-    wrong-command: "&cFalscher Ausdruck: Tippe &7/oa alerts [on/off]"
+    toggle-on: '&aDu kannst jetzt die Warnungen sehen'
+    toggle-off: '&aDu wirst keine Warnungen mehr sehen'
+    wrong-command: '&cFalscher Ausdruck: Tippe &7/oa alerts [on/off]'
   stats:
     content:
-      - "&2============ &l%player%'s Statistik &r&2============"
-      - "&bDiamanten&7: %player_destroyed_diamond_ore%"
-      - "&aSmaragde&7: %player_destroyed_emerald_ore%"
-    player-not-found: "&c%player% wurde nicht gefunden!"
+      - '&2============ &l%player%''s Statistik &r&2============'
+      - '&bDiamanten&7: %player_destroyed_diamond_ore%'
+      - '&aSmaragde&7: %player_destroyed_emerald_ore%'
+    player-not-found: '&c%player% wurde nicht gefunden!'
   top:
-    #Special tags:
+    #[Special tags]
     #=> %total%    = Total players
     #=> %page%     = Current list page
     #=> %maxpages% = How many pages exist
-    header: "&2============ &lTop Spieler &r&2============"
-    footer: ""
-    no-one: "&7Niemand"
+    header: '&2============ &lTop Spieler &r&2============'
+    footer: ''
+    no-one: '&7Niemand'
     #You can use JSON to shows per-block total on hover
     format-player: '&a%player%&7: %player_destroyed% Blöcke'
-    wrong-command: "&cFalscher Ausdruck: Tippe &7/oa top [seite]"
+    wrong-command: '&cFalscher Ausdruck: Tippe &7/oa top [seite]'
   version:
-    #Special tags:
+    #[Special tags]
     #=> %version%    = OreAnnouncer version
     #=> %newversion% = Latest OreAnnouncer version
     #=> %platform%   = Platform of the plugin (e.g. Bukkit, BungeeCord)
-    updated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Entwickelt von &6AlessioDP"
+    updated: '&2&lOreAnnouncer &2%version% &7(%platform%) - Entwickelt von &6AlessioDP'
     outdated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Entwickelt von &6AlessioDP\\n&aNeue Version gefunden: &2%newversion%"
-#/ = = = = = = = = = = = = = = = = \
+#/ =============================== \
 #|          HELP MESSAGES          |
-#\ = = = = = = = = = = = = = = = = /
+#\ =============================== /
 help:
-  header: "&2============ &lOreAnnouncer Hilfeseite &r&2============"
-  footer: ""
+  header: '&2============ &lOreAnnouncer Hilfeseite &r&2============'
+  footer: ''
   console-help:
-    - "Du kannst nur diese Befehle ausführen:"
-    - " > oa reload - Die Konfiguration neu laden"
-    - " > oa stats <spieler> - Spielerstatistik anzeigen"
-    - " > oa top - Liste der besten Spieler anzeigen"
-    - " > oa version - OreAnnouncer Informationen anzeigen"
+    - 'Du kannst nur diese Befehle ausführen:'
+    - ' > oa reload - Die Konfiguration neu laden'
+    - ' > oa stats <spieler> - Spielerstatistik anzeigen'
+    - ' > oa top - Liste der besten Spieler anzeigen'
+    - ' > oa version - OreAnnouncer Informationen anzeigen'
   commands:
     help: '{"text":"","extra":[{"text":"/oa help","color":"dark_green"},{"text":" - Hilfeseiten anzeigen","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa help "},"hoverEvent":{"action":"show_text","value":{"text":"Den Befehl ausführen","color":"gold"}}}'
     alerts: '{"text":"","extra":[{"text":"/oa alerts [on/off]","color":"dark_green"},{"text":" - Umschalten der Warnmeldungen","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa alerts "},"hoverEvent":{"action":"show_text","value":{"text":"Den Befehl ausführen","color":"gold"}}}'
@@ -87,4 +103,4 @@ help:
     top: '{"text":"","extra":[{"text":"/oa top [seite]","color":"dark_green"},{"text":" - Liste der besten Spieler anzeigen","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa top "},"hoverEvent":{"action":"show_text","value":{"text":"Den Befehl ausführen","color":"gold"}}}'
     version: '{"text":"","extra":[{"text":"/oa version","color":"dark_green"},{"text":" - OreAnnouncer Informationen anzeigen","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa version"},"hoverEvent":{"action":"show_text","value":{"text":"Den Befehl ausführen","color":"gold"}}}'
 dont-edit-this:
-  version: 4
+  version: 5
