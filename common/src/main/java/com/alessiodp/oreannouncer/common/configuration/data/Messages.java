@@ -21,29 +21,29 @@ public abstract class Messages extends ConfigurationFile {
 	public static String OREANNOUNCER_COMMON_CONFIGRELOAD;
 	
 	// Event messages
-	@ConfigOption(path = "alerts.user")
+	@ConfigOption(path = "alerts.user", nullable = true)
 	public static String ALERTS_USER;
-	@ConfigOption(path = "alerts.admin")
+	@ConfigOption(path = "alerts.admin", nullable = true)
 	public static String ALERTS_ADMIN;
-	@ConfigOption(path = "alerts.console")
+	@ConfigOption(path = "alerts.console", nullable = true)
 	public static String ALERTS_CONSOLE;
-	@ConfigOption(path = "alerts.count.user")
+	@ConfigOption(path = "alerts.count.user", nullable = true)
 	public static String ALERTS_COUNT_USER;
-	@ConfigOption(path = "alerts.count.admin")
+	@ConfigOption(path = "alerts.count.admin", nullable = true)
 	public static String ALERTS_COUNT_ADMIN;
-	@ConfigOption(path = "alerts.count.console")
+	@ConfigOption(path = "alerts.count.console", nullable = true)
 	public static String ALERTS_COUNT_CONSOLE;
-	@ConfigOption(path = "alerts.tnt.user")
+	@ConfigOption(path = "alerts.tnt.user", nullable = true)
 	public static String ALERTS_TNT_USER;
-	@ConfigOption(path = "alerts.tnt.admin")
+	@ConfigOption(path = "alerts.tnt.admin", nullable = true)
 	public static String ALERTS_TNT_ADMIN;
-	@ConfigOption(path = "alerts.tnt.console")
+	@ConfigOption(path = "alerts.tnt.console", nullable = true)
 	public static String ALERTS_TNT_CONSOLE;
-	@ConfigOption(path = "alerts.tnt.player-user")
+	@ConfigOption(path = "alerts.tnt.player-user", nullable = true)
 	public static String ALERTS_TNT_PLAYER_USER;
-	@ConfigOption(path = "alerts.tnt.player-admin")
+	@ConfigOption(path = "alerts.tnt.player-admin", nullable = true)
 	public static String ALERTS_TNT_PLAYER_ADMIN;
-	@ConfigOption(path = "alerts.tnt.player-console")
+	@ConfigOption(path = "alerts.tnt.player-console", nullable = true)
 	public static String ALERTS_TNT_PLAYER_CONSOLE;
 	
 	

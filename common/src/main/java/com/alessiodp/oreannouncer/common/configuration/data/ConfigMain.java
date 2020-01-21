@@ -65,67 +65,67 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static boolean		ALERTS_ENABLE;
 	@ConfigOption(path = "alerts.console")
 	public static boolean		ALERTS_CONSOLE;
-	@ConfigOption(path = "alerts.sound.volume")
+	@ConfigOption(path = "alerts.sound.volume", nullable = true)
 	public static double		ALERTS_SOUND_VOLUME;
-	@ConfigOption(path = "alerts.sound.pitch")
+	@ConfigOption(path = "alerts.sound.pitch", nullable = true)
 	public static double		ALERTS_SOUND_PITCH;
-	@ConfigOption(path = "alerts.sound.default")
+	@ConfigOption(path = "alerts.sound.default", nullable = true)
 	public static String		ALERTS_SOUND_DEFAULT;
-	@ConfigOption(path = "alerts.coordinates.enable")
+	@ConfigOption(path = "alerts.coordinates.enable", nullable = true)
 	public static boolean		ALERTS_COORDINATES_ENABLE;
-	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.enable")
+	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.enable", nullable = true)
 	public static boolean		ALERTS_COORDINATES_HIDE_ENABLE;
-	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.count")
+	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.count", nullable = true)
 	public static int			ALERTS_COORDINATES_HIDE_COUNT;
-	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.hidden-for.user")
+	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.hidden-for.user", nullable = true)
 	public static boolean		ALERTS_COORDINATES_HIDE_HIDDENFOR_USER;
-	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.hidden-for.admin")
+	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.hidden-for.admin", nullable = true)
 	public static boolean		ALERTS_COORDINATES_HIDE_HIDDENFOR_ADMIN;
-	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.hidden-for.console")
+	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.hidden-for.console", nullable = true)
 	public static boolean		ALERTS_COORDINATES_HIDE_HIDDENFOR_CONSOLE;
-	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.hide.x")
+	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.hide.x", nullable = true)
 	public static boolean		ALERTS_COORDINATES_HIDE_HIDE_X;
-	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.hide.y")
+	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.hide.y", nullable = true)
 	public static boolean		ALERTS_COORDINATES_HIDE_HIDE_Y;
-	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.hide.z")
+	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.hide.z", nullable = true)
 	public static boolean		ALERTS_COORDINATES_HIDE_HIDE_Z;
-	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.format.text")
+	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.format.text", nullable = true)
 	public static String		ALERTS_COORDINATES_HIDE_FORMAT_TEXT;
-	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.format.json")
+	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.format.json", nullable = true)
 	public static String		ALERTS_COORDINATES_HIDE_FORMAT_JSON;
-	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.obfuscation.enable")
+	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.obfuscation.enable", nullable = true)
 	public static boolean		ALERTS_COORDINATES_HIDE_OBFUSCATION_ENABLE;
-	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.obfuscation.character")
+	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.obfuscation.character", nullable = true)
 	public static String		ALERTS_COORDINATES_HIDE_OBFUSCATION_CHARACTER;
-	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.obfuscation.fixed-length")
+	@ConfigOption(path = "alerts.coordinates.hide-real-coordinates.obfuscation.fixed-length", nullable = true)
 	public static int			ALERTS_COORDINATES_HIDE_OBFUSCATION_FIXEDLENGTH;
 	
 	
 	// Blocks settings
-	@ConfigOption(path = "blocks.bypass-player-blocks")
+	@ConfigOption(path = "blocks.bypass-player-blocks", nullable = true)
 	public static boolean		BLOCKS_BYPASS_PLAYERBLOCKS;
-	@ConfigOption(path = "blocks.bypass-silk-touch")
+	@ConfigOption(path = "blocks.bypass-silk-touch", nullable = true)
 	public static boolean		BLOCKS_BYPASS_SILKTOUCH;
-	@ConfigOption(path = "blocks.bypass-secure-counter")
+	@ConfigOption(path = "blocks.bypass-secure-counter", nullable = true)
 	public static boolean		BLOCKS_BYPASS_SECURE_COUNTER;
-	@ConfigOption(path = "blocks.light-level.enable")
+	@ConfigOption(path = "blocks.light-level.enable", nullable = true)
 	public static boolean		BLOCKS_LIGHT_ENABLE;
-	@ConfigOption(path = "blocks.light-level.alert-only-if-lower")
+	@ConfigOption(path = "blocks.light-level.alert-only-if-lower", nullable = true)
 	public static boolean		BLOCKS_LIGHT_ALERTIFLOWER;
-	@ConfigOption(path = "blocks.light-level.count-only-if-lower")
+	@ConfigOption(path = "blocks.light-level.count-only-if-lower", nullable = true)
 	public static boolean		BLOCKS_LIGHT_COUNTIFLOWER;
-	@ConfigOption(path = "blocks.tnt-mining.alert-on-tnt-mining")
+	@ConfigOption(path = "blocks.tnt-mining.alert-on-tnt-mining", nullable = true)
 	public static boolean		BLOCKS_TNT_MINING_ALERT_ON;
-	@ConfigOption(path = "blocks.tnt-mining.try-to-catch-player")
+	@ConfigOption(path = "blocks.tnt-mining.try-to-catch-player", nullable = true)
 	public static boolean		BLOCKS_TNT_MINING_CATCH_PLAYER;
-	@ConfigOption(path = "blocks.tnt-mining.count-on-destroy")
+	@ConfigOption(path = "blocks.tnt-mining.count-on-destroy", nullable = true)
 	public static boolean		BLOCKS_TNT_MINING_COUNT_DESTROY;
 	
 	
 	// Stats settings
 	@ConfigOption(path = "stats.enable")
 	public static boolean		STATS_ENABLE;
-	@ConfigOption(path = "stats.blacklist-blocks")
+	@ConfigOption(path = "stats.blacklist-blocks", nullable = true)
 	public static List<String>	STATS_BLACKLIST_BLOCKS;
 	@ConfigOption(path = "stats.advanced-count.enable")
 	public static boolean		STATS_ADVANCED_COUNT_ENABLE;

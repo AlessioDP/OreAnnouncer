@@ -90,14 +90,16 @@ public enum SQLTable implements ISQLTable {
 	
 	private static String generateBlocksBlacklist() {
 		StringBuilder sb = new StringBuilder();
-		for (int c=0; c < ConfigMain.STATS_BLACKLIST_BLOCKS.size(); c++) {
-			if (c == 0)
-				sb.append(" WHERE ");
-			if (c > 0)
-				sb.append(" AND ");
-			sb.append("material_name != '")
-					.append(ConfigMain.STATS_BLACKLIST_BLOCKS.get(c))
-					.append("'");
+		if (ConfigMain.STATS_BLACKLIST_BLOCKS != null) { // Nullable on BungeeCord
+			for (int c = 0; c < ConfigMain.STATS_BLACKLIST_BLOCKS.size(); c++) {
+				if (c == 0)
+					sb.append(" WHERE ");
+				if (c > 0)
+					sb.append(" AND ");
+				sb.append("material_name != '")
+						.append(ConfigMain.STATS_BLACKLIST_BLOCKS.get(c))
+						.append("'");
+			}
 		}
 		return sb.toString();
 	}
