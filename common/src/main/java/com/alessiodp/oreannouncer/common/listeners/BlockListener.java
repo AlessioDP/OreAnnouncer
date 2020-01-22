@@ -21,7 +21,9 @@ public abstract class BlockListener {
 	protected final OreAnnouncerPlugin plugin;
 	
 	protected void onBlockBreak(User user, String blockType, int lightLevel, boolean hasSilkTouch, ADPLocation blockLocation) {
-		if (!(ConfigMain.BLOCKS_BYPASS_SILKTOUCH && hasSilkTouch) && (ConfigMain.STATS_ENABLE || ConfigMain.ALERTS_ENABLE)) {
+		if (!(ConfigMain.BLOCKS_BYPASS_SILKTOUCH && hasSilkTouch)
+				&& (ConfigMain.STATS_ENABLE || ConfigMain.ALERTS_ENABLE)
+				&& (!ConfigMain.BLOCKS_BYPASS_PLAYERBLOCKS || !plugin.getBlockManager().isBlockMarked(blockLocation, blockType, BlockManager.MarkType.STORE))) {
 			OABlockImpl block = Blocks.LIST.get(blockType);
 			if (block != null && block.isEnabled()) {
 				plugin.getLoggerManager().logDebug(OAConstants.DEBUG_EVENT_BLOCK_BREAK
@@ -45,11 +47,12 @@ public abstract class BlockListener {
 		// Unmark broken block to prevent metadata ghosting
 		plugin.getBlockManager().unmarkBlock(blockLocation, BlockManager.MarkType.ALERT);
 		plugin.getBlockManager().unmarkBlock(blockLocation, BlockManager.MarkType.FOUND);
+		plugin.getBlockManager().unmarkBlock(blockLocation, BlockManager.MarkType.STORE);
 	}
 	
 	protected void onBlockPlace(User user, String blockType, ADPLocation blockLocation) {
-		if (plugin.getBlockManager().isBlockMarked(blockLocation, blockType, BlockManager.MarkType.ALERT)
-				|| plugin.getBlockManager().isBlockMarked(blockLocation, blockType, BlockManager.MarkType.FOUND)) {
+		if (!plugin.getBlockManager().isBlockMarked(blockLocation, blockType, BlockManager.MarkType.ALERT)
+				|| !plugin.getBlockManager().isBlockMarked(blockLocation, blockType, BlockManager.MarkType.FOUND)) {
 			OABlockImpl block = Blocks.LIST.get(blockType);
 			if (block != null && block.isEnabled()) {
 				plugin.getLoggerManager().logDebug(OAConstants.DEBUG_EVENT_BLOCK_PLACE
@@ -59,6 +62,7 @@ public abstract class BlockListener {
 				// Mark block so it won't be counted
 				plugin.getBlockManager().markBlock(blockLocation, blockType, BlockManager.MarkType.ALERT);
 				plugin.getBlockManager().markBlock(blockLocation, blockType, BlockManager.MarkType.FOUND);
+				plugin.getBlockManager().markBlock(blockLocation, blockType, BlockManager.MarkType.STORE);
 			}
 		}
 	}

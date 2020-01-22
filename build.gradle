@@ -15,7 +15,7 @@ allprojects {
     apply plugin: 'com.github.johnrengelman.shadow' // Shadow jar
 
     group 'com.alessiodp.oreannouncer'
-    version '2.4.3'
+    version '2.4.4'
 
     // Info
     ext.pluginName = "OreAnnouncer"

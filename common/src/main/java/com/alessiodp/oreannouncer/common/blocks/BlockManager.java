@@ -285,7 +285,8 @@ public abstract class BlockManager {
 	
 	public enum MarkType {
 		ALERT("OreAnnouncer_alert"),
-		FOUND("OreAnnouncer_found");
+		FOUND("OreAnnouncer_found"),
+		STORE("OreAnnouncer_store");
 		
 		@Getter private final String mark;
 		
