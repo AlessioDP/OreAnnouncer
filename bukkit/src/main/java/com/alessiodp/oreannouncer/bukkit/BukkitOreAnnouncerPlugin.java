@@ -19,11 +19,14 @@ import com.alessiodp.oreannouncer.bukkit.messaging.BukkitOAMessenger;
 import com.alessiodp.oreannouncer.bukkit.players.BukkitPlayerManager;
 import com.alessiodp.oreannouncer.bukkit.utils.BukkitMessageUtils;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
+import com.alessiodp.oreannouncer.common.configuration.OAConstants;
+import lombok.Getter;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 
 public class BukkitOreAnnouncerPlugin extends OreAnnouncerPlugin {
+	@Getter private final int bstatsId = OAConstants.PLUGIN_BSTATS_BUKKIT_ID;
 	
 	public BukkitOreAnnouncerPlugin(ADPBootstrap bootstrap) {
 		super(bootstrap);

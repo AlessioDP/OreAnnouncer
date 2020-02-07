@@ -14,7 +14,7 @@ public class BukkitMetricsHandler extends MetricsHandler {
 	
 	@Override
 	protected void registerMetrics() {
-		Metrics metrics = new Metrics((Plugin) plugin.getBootstrap());
+		Metrics metrics = new Metrics((Plugin) plugin.getBootstrap(), plugin.getBstatsId());
 		
 		metrics.addCustomChart(new Metrics.SimplePie("type_of_announce_used", () -> {
 			if (ConfigMain.ALERTS_ENABLE) {

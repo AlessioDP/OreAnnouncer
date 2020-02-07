@@ -15,10 +15,13 @@ import com.alessiodp.oreannouncer.bungeecord.messaging.BungeeOAMessenger;
 import com.alessiodp.oreannouncer.bungeecord.players.BungeePlayerManager;
 import com.alessiodp.oreannouncer.bungeecord.utils.BungeeMessageUtils;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
+import com.alessiodp.oreannouncer.common.configuration.OAConstants;
+import lombok.Getter;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
 
 public class BungeeOreAnnouncerPlugin extends OreAnnouncerPlugin {
+	@Getter private final int bstatsId = OAConstants.PLUGIN_BSTATS_BUNGEE_ID;
 	
 	public BungeeOreAnnouncerPlugin(ADPBootstrap bootstrap) {
 		super(bootstrap);

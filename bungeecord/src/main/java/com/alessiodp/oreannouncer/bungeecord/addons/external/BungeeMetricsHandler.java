@@ -13,6 +13,6 @@ public class BungeeMetricsHandler extends MetricsHandler {
 	
 	@Override
 	protected void registerMetrics() {
-		new Metrics((Plugin) plugin.getBootstrap());
+		new Metrics((Plugin) plugin.getBootstrap(), plugin.getBstatsId());
 	}
 }

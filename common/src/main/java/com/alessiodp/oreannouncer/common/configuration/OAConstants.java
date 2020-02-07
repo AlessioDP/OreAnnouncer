@@ -9,6 +9,8 @@ public class OAConstants {
 	public static final String PLUGIN_FALLBACK = "oreannouncer";
 	public static final ConsoleColor PLUGIN_CONSOLECOLOR = ConsoleColor.GREEN;
 	public static final String PLUGIN_SPIGOTCODE = "33464";
+	public static final int PLUGIN_BSTATS_BUKKIT_ID = 1730;
+	public static final int PLUGIN_BSTATS_BUNGEE_ID = 4513;
 	
 	// Versions
 	public static final int VERSION_BUKKIT_CONFIG = 5;
