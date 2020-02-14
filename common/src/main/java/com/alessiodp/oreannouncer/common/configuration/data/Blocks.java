@@ -175,7 +175,11 @@ public class Blocks extends ConfigurationFile {
 		configuration.set("blocks." + block.getMaterialName() + ".count-on-destroy", block.isCountingOnDestroy());
 		configuration.set("blocks." + block.getMaterialName() + ".tnt", block.isTNTEnabled());
 		
-		save();
+		try {
+			configuration.saveWithComments();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		if (!existsBlock(block.getMaterialName())) {
 			LIST.put(block.getMaterialName().toUpperCase(), block);
