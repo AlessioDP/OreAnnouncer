@@ -65,7 +65,6 @@ public enum OAPlaceholder {
 	
 	public String formatPlaceholder(OAPlayerImpl player, String identifier) {
 		Matcher matcher;
-		String ret = null;
 		if (player != null) {
 			OABlockImpl tempBlock = null;
 			switch (this) {
@@ -95,9 +94,10 @@ public enum OAPlaceholder {
 							return Integer.toString(plugin.getPlayerManager().getTotalBlocksFound(player, tempBlock, sinceTimestamp));
 						} catch (NumberFormatException ignored) {}
 					}
+				default:
 					return null;
 			}
 		}
-		return ret;
+		return null;
 	}
 }
