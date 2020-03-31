@@ -7,14 +7,19 @@ import com.alessiodp.core.common.storage.StorageType;
 import com.alessiodp.core.common.storage.interfaces.IDatabaseDispatcher;
 import com.alessiodp.oreannouncer.api.interfaces.OABlock;
 import com.alessiodp.oreannouncer.common.blocks.objects.BlockFound;
+import com.alessiodp.oreannouncer.common.blocks.objects.OABlockImpl;
 import com.alessiodp.oreannouncer.common.configuration.OAConstants;
 import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
+import com.alessiodp.oreannouncer.common.configuration.data.Messages;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 import com.alessiodp.oreannouncer.common.players.objects.PlayerDataBlock;
 import com.alessiodp.oreannouncer.common.storage.dispatchers.OASQLDispatcher;
 import com.alessiodp.oreannouncer.common.storage.interfaces.IOADatabaseDispatcher;
+import com.alessiodp.oreannouncer.common.utils.BlocksFoundResult;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.UUID;
 
 public class OADatabaseManager extends DatabaseManager {
@@ -22,24 +27,19 @@ public class OADatabaseManager extends DatabaseManager {
 		super(plugin);
 	}
 	
-	public IDatabaseDispatcher initializeDispatcher(StorageType storageType) {
+	@Override
+	protected IDatabaseDispatcher initializeDispatcher(StorageType storageType) {
 		IDatabaseDispatcher ret = null;
 		switch (storageType) {
 			case MYSQL:
 			case SQLITE:
-				ret = new OASQLDispatcher(plugin);
+				ret = new OASQLDispatcher(plugin, storageType);
 				break;
 			default:
 				// Unsupported storage type
 				plugin.getLoggerManager().printError(Constants.DEBUG_DB_INIT_FAILED_UNSUPPORTED
 						.replace("{type}", ConfigMain.STORAGE_TYPE_DATABASE));
 				break;
-		}
-		
-		if (ret != null) {
-			ret.init(storageType);
-			if (ret.isFailed())
-				return null;
 		}
 		return ret;
 	}
@@ -63,23 +63,23 @@ public class OADatabaseManager extends DatabaseManager {
 		}).join();
 	}
 	
-	public ArrayList<OAPlayerImpl> getTopPlayersDestroyed(TopOrderBy orderBy, int limit, int offset) {
+	public HashMap<UUID, Integer> getTopPlayers(TopOrderBy orderBy, @Nullable OABlockImpl block, int limit, int offset) {
 		return plugin.getScheduler().runSupplyAsync(() -> {
-			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_TOP_PLAYERBLOCKS
+			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_TOP_BLOCKS_LIST
 					.replace("{order}", orderBy.name())
 					.replace("{limit}", Integer.toString(limit))
 					.replace("{offset}", Integer.toString(offset)), true);
 			
-			return ((IOADatabaseDispatcher) database).getTopPlayers(orderBy, limit, offset);
+			return ((IOADatabaseDispatcher) database).getTopPlayers(orderBy, block, limit, offset);
 		}).join();
 	}
 	
-	public Integer getTopPlayersNumber(TopOrderBy orderBy) {
+	public Integer getTopPlayersNumber(TopOrderBy orderBy, @Nullable OABlockImpl block) {
 		return plugin.getScheduler().runSupplyAsync(() -> {
-			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_TOP_NUMBER
+			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_TOP_BLOCKS_NUMBER
 					.replace("{order}", orderBy.name()), true);
 			
-			return ((IOADatabaseDispatcher) database).getTopPlayersNumber(orderBy);
+			return ((IOADatabaseDispatcher) database).getTopPlayersNumber(orderBy, block);
 		}).join();
 	}
 	
@@ -93,19 +93,19 @@ public class OADatabaseManager extends DatabaseManager {
 		}).join();
 	}
 	
-	public void insertBlocksFound(BlockFound blockFound) {
+	public void insertBlockFound(BlockFound blockFound) {
 		plugin.getScheduler().runAsync(() -> {
 			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_INSERT_BLOCKS_FOUND
 					.replace("{uuid}", blockFound.getPlayer().toString())
 					.replace("{block}", blockFound.getMaterialName()), true);
 			
-			((IOADatabaseDispatcher) database).insertBlocksFound(blockFound);
+			((IOADatabaseDispatcher) database).insertBlockFound(blockFound);
 		}).join();
 	}
 	
-	public BlockFound getLatestBlocksFound(UUID player, OABlock block, long rangeTime) {
+	public BlocksFoundResult getLatestBlocksFound(UUID player, OABlock block, long rangeTime) {
 		return plugin.getScheduler().runSupplyAsync(() -> {
-			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_LATEST_BLOCKS_FOUND
+			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_LATEST_BLOCK_FOUND
 					.replace("{uuid}", player.toString())
 					.replace("{block}", block.getMaterialName()), true);
 			
@@ -113,7 +113,35 @@ public class OADatabaseManager extends DatabaseManager {
 		}).join();
 	}
 	
+	public LinkedList<BlockFound> getLogBlocks(@Nullable OAPlayerImpl player, @Nullable OABlock block, int limit, int offset) {
+		return plugin.getScheduler().runSupplyAsync(() -> {
+			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_LOG_BLOCKS
+					.replace("{uuid}", player != null ? player.getPlayerUUID().toString() : "")
+					.replace("{block}", block != null ? block.getMaterialName() : ""), true);
+			
+			return ((IOADatabaseDispatcher) database).getLogBlocks(player, block, limit, offset);
+		}).join();
+	}
+	
+	public int getLogBlocksNumber(@Nullable OAPlayerImpl player, @Nullable OABlock block) {
+		return plugin.getScheduler().runSupplyAsync(() -> {
+			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_LOG_BLOCKS_NUMBER
+					.replace("{uuid}", player != null ? player.getPlayerUUID().toString() : "")
+					.replace("{block}", block != null ? block.getMaterialName() : ""), true);
+			
+			return ((IOADatabaseDispatcher) database).getLogBlocksNumber(player, block);
+		}).join();
+	}
+	
 	public enum TopOrderBy {
-		DESTROY, FOUND
+		DESTROY, FOUND;
+		
+		public static TopOrderBy parse(String order) {
+			if (order.equalsIgnoreCase(Messages.CMD_TOP_WORD_DESTROY))
+				return DESTROY;
+			else if (order.equalsIgnoreCase(Messages.CMD_TOP_WORD_FOUND))
+				return FOUND;
+			return null;
+		}
 	}
 }

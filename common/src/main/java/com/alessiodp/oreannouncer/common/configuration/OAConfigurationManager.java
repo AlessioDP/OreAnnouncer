@@ -5,7 +5,7 @@ import com.alessiodp.core.common.configuration.ConfigurationFile;
 import com.alessiodp.core.common.configuration.ConfigurationManager;
 import com.alessiodp.core.common.storage.StorageType;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
-import com.alessiodp.oreannouncer.common.commands.utils.OreAnnouncerPermission;
+import com.alessiodp.oreannouncer.common.utils.OreAnnouncerPermission;
 import com.alessiodp.oreannouncer.common.configuration.data.Blocks;
 import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import com.alessiodp.oreannouncer.common.configuration.data.Messages;

@@ -6,16 +6,20 @@ import com.alessiodp.oreannouncer.common.configuration.OAConfigurationManager;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.concurrent.locks.ReentrantLock;
 
 @EqualsAndHashCode
+@ToString
 public class OABlockImpl implements OABlock {
-	@EqualsAndHashCode.Exclude private final ADPPlugin plugin;
+	@EqualsAndHashCode.Exclude @ToString.Exclude private final ADPPlugin plugin;
 	
 	// Interface fields
 	@Getter private final String materialName;
 	@Getter private boolean enabled;
+	@Getter private String displayName;
+	@Getter private String displayColor;
 	@Getter private boolean alertingUsers;
 	@Getter private boolean alertingAdmins;
 	@Getter private String singularName;
@@ -33,14 +37,17 @@ public class OABlockImpl implements OABlock {
 	@Getter private int lightLevel;
 	@Getter private boolean countingOnDestroy;
 	private boolean tntEnabled;
+	@Getter private int priority;
 	
-	@EqualsAndHashCode.Exclude private final ReentrantLock lock = new ReentrantLock();
-	@EqualsAndHashCode.Exclude private boolean accessible = false;
+	@EqualsAndHashCode.Exclude @ToString.Exclude private final ReentrantLock lock = new ReentrantLock();
+	@EqualsAndHashCode.Exclude @ToString.Exclude private boolean accessible = false;
 	
 	public OABlockImpl(@NonNull ADPPlugin plugin, @NonNull String materialName) {
 		this.plugin = plugin;
 		this.materialName = materialName;
 		this.enabled = true;
+		this.displayName = null;
+		this.displayColor = "";
 		this.alertingUsers = false;
 		this.alertingAdmins = false;
 		this.singularName = "";
@@ -58,6 +65,7 @@ public class OABlockImpl implements OABlock {
 		this.lightLevel = 15;
 		this.countingOnDestroy = false;
 		this.tntEnabled = true;
+		this.priority = 0;
 	}
 	
 	public void setAccessible(boolean accessible) {
@@ -89,6 +97,20 @@ public class OABlockImpl implements OABlock {
 	public void setEnabled(boolean enable) {
 		updateValue(() -> {
 			this.enabled = enable;
+		});
+	}
+	
+	@Override
+	public void setDisplayName(String displayName) {
+		updateValue(() -> {
+			this.displayName = displayName;
+		});
+	}
+	
+	@Override
+	public void setDisplayColor(String displayColor) {
+		updateValue(() -> {
+			this.displayColor = displayColor;
 		});
 	}
 	
@@ -214,5 +236,12 @@ public class OABlockImpl implements OABlock {
 	@Override
 	public boolean isTNTEnabled() {
 		return tntEnabled;
+	}
+	
+	@Override
+	public void setPriority(int priority) {
+		updateValue(() -> {
+			this.priority = priority;
+		});
 	}
 }

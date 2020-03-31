@@ -4,6 +4,8 @@
 # Complete syntax of a block:
 # MATERIAL_NAME:                  | The material name of the block
 #  enabled: true/false            | Enable/disable the block
+#  display-name: ""               | Display name of the block
+#  display-color: ""              | Display color of the block
 #  alerts:
 #    user: true/false             | Alert users
 #    admin: true/false            | Alert admins
@@ -26,9 +28,12 @@
 #  light-level: 0-15              | Light level from 0 to 15
 #  count-on-destroy: true/false   | Count this block for statistics system
 #  tnt: true/false                | Handle destroy with TNT
+#  priority: #                    | Priority number (-1 to disable) default 0
 blocks:
   DIAMOND_ORE:
     enabled: true
+    display-name: "Diamond Ore"
+    display-color: "aqua"
     alerts:
       user: true
       admin: true
@@ -41,8 +46,11 @@ blocks:
     sound: ENTITY_PLAYER_LEVELUP
     light-level: 15
     count-on-destroy: true
+    priority: 90
   EMERALD_ORE:
     enabled: true
+    display-name: "Emerald Ore"
+    display-color: "green"
     alerts:
       user: true
       admin: true
@@ -52,8 +60,11 @@ blocks:
     sound: ENTITY_PLAYER_LEVELUP
     light-level: 15
     count-on-destroy: true
+    priority: 100
   GOLD_ORE:
     enabled: true
+    display-name: "Gold Ore"
+    display-color: "gold"
     alerts:
       user: false
       admin: false
@@ -65,8 +76,11 @@ blocks:
       time: 600
     light-level: 15
     count-on-destroy: false
+    priority: 80
   REDSTONE_ORE:
     enabled: false
+    display-name: "Redstone Ore"
+    display-color: "red"
     alerts:
       user: true
       admin: true
@@ -75,8 +89,11 @@ blocks:
       plural: redstones
     light-level: 15
     count-on-destroy: false
+    priority: -1
   IRON_ORE:
     enabled: false
+    display-name: "Iron Ore"
+    display-color: "white"
     alerts:
       user: false
       admin: false
@@ -85,8 +102,11 @@ blocks:
       plural: irons
     light-level: 15
     count-on-destroy: false
+    priority: -1
   NETHER_QUARTZ_ORE:
     enabled: false
+    display-name: "Quartz Ore"
+    display-color: "dark_red"
     alerts:
       user: true
       admin: true
@@ -95,6 +115,7 @@ blocks:
       plural: quartzes
     light-level: 15
     count-on-destroy: false
+    priority: 60
 
 dont-edit-this:
   version: 1

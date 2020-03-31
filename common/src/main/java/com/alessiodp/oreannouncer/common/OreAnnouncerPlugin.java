@@ -8,7 +8,7 @@ import com.alessiodp.core.common.messaging.ADPMessenger;
 import com.alessiodp.oreannouncer.api.OreAnnouncer;
 import com.alessiodp.oreannouncer.common.api.ApiHandler;
 import com.alessiodp.oreannouncer.common.blocks.BlockManager;
-import com.alessiodp.oreannouncer.common.commands.utils.OreAnnouncerPermission;
+import com.alessiodp.oreannouncer.common.utils.OreAnnouncerPermission;
 import com.alessiodp.oreannouncer.common.configuration.OAConstants;
 import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import com.alessiodp.oreannouncer.common.configuration.data.Messages;
@@ -24,6 +24,7 @@ public abstract class OreAnnouncerPlugin extends ADPPlugin {
 	@Getter private final String pluginName = OAConstants.PLUGIN_NAME;
 	@Getter private final String pluginFallbackName = OAConstants.PLUGIN_FALLBACK;
 	@Getter private final ConsoleColor consoleColor = OAConstants.PLUGIN_CONSOLECOLOR;
+	@Getter private final String packageName = OAConstants.PLUGIN_PACKAGENAME;
 	
 	// OreAnnouncer fields
 	@Getter protected BlockManager blockManager;

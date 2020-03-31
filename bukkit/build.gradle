@@ -12,7 +12,6 @@ dependencies {
     compileOnly group: 'me.clip', name: 'placeholderapi', version: project.ext.placeholderApi
 }
 
-
 processResources {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE;
     from(sourceSets.main.resources.srcDirs) {

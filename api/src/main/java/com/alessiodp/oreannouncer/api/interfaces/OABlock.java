@@ -24,6 +24,34 @@ public interface OABlock {
 	void setEnabled(boolean enable);
 	
 	/**
+	 * Get display name
+	 *
+	 * @return Returns the display name
+	 */
+	String getDisplayName();
+	
+	/**
+	 * Set the display name
+	 *
+	 * @param displayName The display name to set
+	 */
+	void setDisplayName(String displayName);
+	
+	/**
+	 * Get display color
+	 *
+	 * @return Returns the display color
+	 */
+	String getDisplayColor();
+	
+	/**
+	 * Set the display color code
+	 *
+	 * @param displayColor The display color to set
+	 */
+	void setDisplayColor(String displayColor);
+	
+	/**
 	 * Is alerting users option enabled?
 	 *
 	 * @return Returns true if the option is enabled
@@ -259,4 +287,18 @@ public interface OABlock {
 	 * @param tntEnabled True to enable TNT support
 	 */
 	void setTNTEnabled(boolean tntEnabled);
+	
+	/**
+	 * Get priority value
+	 *
+	 * @return Returns the priority
+	 */
+	int getPriority();
+	
+	/**
+	 * Set the priority value
+	 *
+	 * @param priority The priority to set
+	 */
+	void setPriority(int priority);
 }

@@ -8,49 +8,25 @@ public class OAConstants {
 	public static final String PLUGIN_NAME = "OreAnnouncer";
 	public static final String PLUGIN_FALLBACK = "oreannouncer";
 	public static final ConsoleColor PLUGIN_CONSOLECOLOR = ConsoleColor.GREEN;
+	public static final String PLUGIN_PACKAGENAME = "com.alessiodp.oreannouncer";
 	public static final String PLUGIN_SPIGOTCODE = "33464";
 	public static final int PLUGIN_BSTATS_BUKKIT_ID = 1730;
 	public static final int PLUGIN_BSTATS_BUNGEE_ID = 4513;
 	
 	// Versions
-	public static final int VERSION_BUKKIT_CONFIG = 5;
-	public static final int VERSION_BUNGEE_CONFIG = 2;
-	public static final int VERSION_BUKKIT_MESSAGES = 5;
-	public static final int VERSION_BUNGEE_MESSAGES = 4;
+	public static final int VERSION_BUKKIT_CONFIG = 6;
+	public static final int VERSION_BUNGEE_CONFIG = 3;
+	public static final int VERSION_BUKKIT_MESSAGES = 6;
+	public static final int VERSION_BUNGEE_MESSAGES = 5;
 	public static final int VERSION_BLOCKS = 1;
-	public static final int VERSION_DATABASE_MYSQL = 2;
-	public static final int VERSION_DATABASE_SQLITE = 2;
 	
-	
-	// Placeholders
-	public static final String PLACEHOLDER_PLAYER_NAME = "%player%";
-	public static final String PLACEHOLDER_PLAYER_DESTROYED = "%player_destroyed%";
-	public static final String PLACEHOLDER_PLAYER_DESTROYED_MATERIAL = "%player_destroyed_{material}%";
-	public static final String PLACEHOLDER_PLAYER_DESTROYED_MATERIAL_REGEX = "%player_destroyed_([^%]+)%";
-	
-	
-	// SQL queries
-	public static final String QUERY_PLAYER_INSERT_MYSQL = "INSERT INTO {table_players} (`uuid`, `alerts`) VALUES (?,?) ON DUPLICATE KEY UPDATE `alerts`=VALUES(`alerts`);";
-	public static final String QUERY_PLAYER_INSERT_SQLITE = "INSERT OR REPLACE INTO {table_players} (`uuid`, `alerts`) VALUES (?,?);";
-	public static final String QUERY_PLAYER_DELETE = "DELETE FROM {table_players} WHERE `uuid`=?;";
-	public static final String QUERY_PLAYER_GET = "SELECT * FROM {table_players} WHERE `uuid`=?;";
-	public static final String QUERY_PLAYER_TOP_BLOCKS_DESTROY = "SELECT player, sum(destroyed) as total FROM {table_blocks}{blacklist} GROUP BY player ORDER BY total DESC LIMIT ? OFFSET ?;";
-	public static final String QUERY_PLAYER_TOP_NUMBER_DESTROY = "SELECT COUNT(DISTINCT player) as total FROM {table_blocks}{blacklist};";
-	public static final String QUERY_PLAYER_TOP_BLOCKS_FOUND = "SELECT player, sum(found) as total FROM {table_blocks_found}{blacklist} GROUP BY player ORDER BY total DESC LIMIT ? OFFSET ?;";
-	public static final String QUERY_PLAYER_TOP_NUMBER_FOUND = "SELECT COUNT(DISTINCT player) as total FROM {table_blocks_found}{blacklist};";
-	
-	public static final String QUERY_BLOCK_INSERT_MYSQL = "INSERT INTO {table_blocks} (`player`, `material_name`, `destroyed`) VALUES (?,?,?) ON DUPLICATE KEY UPDATE `destroyed`=VALUES(`destroyed`);";
-	public static final String QUERY_BLOCK_INSERT_SQLITE = "INSERT OR REPLACE INTO {table_blocks} (`player`, `material_name`, `destroyed`) VALUES (?,?,?);";
-	public static final String QUERY_BLOCK_GET_PLAYER = "SELECT * FROM {table_blocks} WHERE `player`=?;";
-	
-	public static final String QUERY_BLOCK_FOUND_INSERT_MYSQL = "INSERT INTO {table_blocks_found} (`player`, `material_name`, `timestamp`, `found`) VALUES (?,?,?,?);";
-	public static final String QUERY_BLOCK_FOUND_INSERT_SQLITE = "INSERT OR REPLACE INTO {table_blocks_found} (`player`, `material_name`, `timestamp`, `found`) VALUES (?,?,?,?);";
-	public static final String QUERY_BLOCK_FOUND_GET_LATEST = "SELECT MIN(timestamp), SUM(found) FROM {table_blocks_found} WHERE player=? AND material_name=? AND timestamp >= ?;";
 	
 	// Debug messages
 	public static final String DEBUG_CFG_WRONGBLOCK = "Cannot find the block '{block}'";
 	public static final String DEBUG_CMD_ALERTS = "{player} performed alerts command with toggle '{toggle}'";
 	public static final String DEBUG_CMD_HELP = "{player} performed help command with page '{page}'";
+	public static final String DEBUG_CMD_LOG = "{player} performed log command";
+	public static final String DEBUG_CMD_LOG_CONSOLE = "Console performed log command";
 	public static final String DEBUG_CMD_RELOAD = "{player} performed reload command";
 	public static final String DEBUG_CMD_RELOAD_CONSOLE = "Console performed reload command";
 	public static final String DEBUG_CMD_RELOADED = "Configuration reloaded by {player}";
@@ -64,10 +40,14 @@ public class OAConstants {
 	public static final String DEBUG_DB_UPDATEPLAYER = "Update player for {player} [{uuid}]";
 	public static final String DEBUG_DB_GETPLAYER = "Get player request for '{uuid}'";
 	public static final String DEBUG_DB_UPDATEDATABLOCK = "Update data block for '{uuid}' of {block}";
-	public static final String DEBUG_DB_TOP_PLAYERBLOCKS = "Getting top players with limit {limit} and offset {offset}";
-	public static final String DEBUG_DB_TOP_NUMBER = "Getting number of top players";
+	public static final String DEBUG_DB_TOP_BLOCKS_LIST = "Getting top players with limit {limit} and offset {offset}";
+	public static final String DEBUG_DB_TOP_BLOCKS_NUMBER = "Getting number of top players";
+	public static final String DEBUG_DB_TOP_BLOCK_LIST = "Getting top players by block {block} with limit {limit} and offset {offset}";
+	public static final String DEBUG_DB_TOP_BLOCK_NUMBER = "Getting number of top players by block {block}";
 	public static final String DEBUG_DB_INSERT_BLOCKS_FOUND = "Inserting blocks found for '{uuid}' of {block}";
-	public static final String DEBUG_DB_LATEST_BLOCKS_FOUND = "Getting latest blocks found for '{uuid}' of {block}";
+	public static final String DEBUG_DB_LATEST_BLOCK_FOUND = "Getting latest blocks found for '{uuid}' of {block}";
+	public static final String DEBUG_DB_LOG_BLOCKS = "Getting log blocks for '{uuid}' of '{block}'";
+	public static final String DEBUG_DB_LOG_BLOCKS_NUMBER = "Getting number of log blocks for '{uuid}' of '{block}'";
 	public static final String DEBUG_EVENT_BLOCK_BREAK = "{player} broke a block of '{block}'";
 	public static final String DEBUG_EVENT_BLOCK_PLACE = "{player} placed a marked block '{block}'";
 	public static final String DEBUG_EVENT_BLOCK_TNT = "{player} destroyed {number} blocks with TNT";
@@ -80,8 +60,11 @@ public class OAConstants {
 	public static final String DEBUG_MESSAGING_SEND_ALERT_COUNT_FAILED = "Failed to send a count alert packet";
 	public static final String DEBUG_MESSAGING_SEND_DESTROY = "Sent a destroy packet";
 	public static final String DEBUG_MESSAGING_SEND_DESTROY_FAILED = "Failed to send a destroy packet";
+	public static final String DEBUG_MESSAGING_SEND_FOUND = "Sent a found packet";
+	public static final String DEBUG_MESSAGING_SEND_FOUND_FAILED = "Failed to send a found packet";
 	public static final String DEBUG_MESSAGING_RECEIVED = "Received an OreAnnouncer packet of type '{type}'";
 	public static final String DEBUG_MESSAGING_RECEIVED_WRONG = "Received a wrong OreAnnouncer packet";
 	public static final String DEBUG_MESSAGING_DESTROY_UUID_EMPTY = "Received an OreAnnouncer destroy packet with an empty UUID";
+	public static final String DEBUG_MESSAGING_FOUND_UUID_EMPTY = "Received an OreAnnouncer found packet with an empty UUID";
 	public static final String DEBUG_PLAYER_LOADBLOCKS = "Loaded {number} blocks of '{uuid}'";
 }

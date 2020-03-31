@@ -6,24 +6,55 @@ import com.alessiodp.core.common.commands.utils.ADPSubCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
+import com.alessiodp.oreannouncer.common.blocks.objects.OABlockImpl;
+import com.alessiodp.oreannouncer.common.commands.list.CommonCommands;
 import com.alessiodp.oreannouncer.common.commands.utils.OACommandData;
-import com.alessiodp.oreannouncer.common.commands.utils.OreAnnouncerPermission;
+import com.alessiodp.oreannouncer.common.utils.OreAnnouncerPermission;
 import com.alessiodp.oreannouncer.common.configuration.OAConstants;
+import com.alessiodp.oreannouncer.common.configuration.data.Blocks;
 import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import com.alessiodp.oreannouncer.common.configuration.data.Messages;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 import com.alessiodp.oreannouncer.common.storage.OADatabaseManager;
-import lombok.Getter;
 import lombok.NonNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class CommandTop extends ADPSubCommand {
-	@Getter private final boolean executableByConsole = true;
 	
 	public CommandTop(ADPPlugin plugin, ADPMainCommand mainCommand) {
-		super(plugin, mainCommand);
+		super(
+				plugin,
+				mainCommand,
+				CommonCommands.TOP,
+				OreAnnouncerPermission.USER_TOP.toString(),
+				ConfigMain.COMMANDS_CMD_TOP,
+				true
+		);
+		
+		if (ConfigMain.STATS_TOP_CHANGE_ORDER) {
+			syntax = String.format("%s [%s] [%s] [%s]",
+					baseSyntax(),
+					Messages.OREANNOUNCER_SYNTAX_ORDER,
+					Messages.OREANNOUNCER_SYNTAX_BLOCK,
+					Messages.OREANNOUNCER_SYNTAX_PAGE
+			);
+		} else {
+			syntax = String.format("%s [%s] [%s]",
+					baseSyntax(),
+					Messages.OREANNOUNCER_SYNTAX_BLOCK,
+					Messages.OREANNOUNCER_SYNTAX_PAGE
+			);
+		}
+		
+		runCommand = baseSyntax() + " ";
+		
+		description = Messages.HELP_CMD_DESCRIPTIONS_TOP;
+		help = Messages.HELP_CMD_TOP;
 	}
 	
 	@Override
@@ -55,28 +86,97 @@ public class CommandTop extends ADPSubCommand {
 			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_CMD_TOP_CONSOLE, true);
 		
 		// Command handling
+		List<String> blacklist = new ArrayList<>();
+		ConfigMain.STATS_BLACKLIST_BLOCKS_TOP.forEach((str) -> blacklist.add(str.toUpperCase()));
+		
 		int selectedPage = 1;
-		if (commandData.getArgs().length == 2) {
-			try {
-				selectedPage = Integer.parseInt(commandData.getArgs()[1]);
-			} catch(NumberFormatException ex) {
-				sendMessage(player, Messages.CMD_TOP_WRONGCMD);
-				return;
+		OADatabaseManager.TopOrderBy orderBy = OADatabaseManager.TopOrderBy.DESTROY;
+		OABlockImpl block = null;
+		if (commandData.getArgs().length > 1) {
+			String[] args = Arrays.copyOfRange(commandData.getArgs(), 1, commandData.getArgs().length);
+			
+			if (args.length > 2) {
+				// All
+				try {
+					selectedPage = Integer.parseInt(args[2]);
+				} catch(NumberFormatException ex) {
+					sendMessage(player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
+							.replace("%syntax%", syntax));
+					return;
+				}
+				
+				block = Blocks.LIST.get(args[1].toUpperCase());
+				if (block == null || !block.isEnabled() || blacklist.contains(block.getMaterialName())) {
+					sendMessage(player, Messages.CMD_TOP_INVALID_BLOCK);
+					return;
+				}
+				
+				
+				orderBy = OADatabaseManager.TopOrderBy.parse(args[0]);
+				if (orderBy == null) {
+					sendMessage(player, Messages.CMD_TOP_INVALID_ORDER);
+					return;
+				}
+				
+				
+			} else if (args.length > 1) {
+				// Check if page
+				try {
+					selectedPage = Integer.parseInt(args[1]);
+					
+					// Check for or order or block
+					OADatabaseManager.TopOrderBy temp = OADatabaseManager.TopOrderBy.parse(args[0]);
+					
+					if (temp == null) {
+						block = Blocks.LIST.get(args[0].toUpperCase());
+						if (block == null) {
+							sendMessage(player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
+									.replace("%syntax%", syntax));
+							return;
+						}
+					} else {
+						orderBy = temp;
+					}
+				} catch (NumberFormatException ignored) {
+					// Check for both order and block
+					block = Blocks.LIST.get(args[1].toUpperCase());
+					if (block == null || !block.isEnabled() || blacklist.contains(block.getMaterialName())) {
+						sendMessage(player, Messages.CMD_TOP_INVALID_BLOCK);
+						return;
+					}
+					
+					
+					orderBy = OADatabaseManager.TopOrderBy.parse(args[0]);
+					if (orderBy == null) {
+						sendMessage(player, Messages.CMD_TOP_INVALID_ORDER);
+						return;
+					}
+				}
+			} else {
+				// Check if page
+				try {
+					selectedPage = Integer.parseInt(args[0]);
+				} catch (NumberFormatException ignored) {
+					// Check if order
+					OADatabaseManager.TopOrderBy temp = OADatabaseManager.TopOrderBy.parse(args[0]);
+					
+					if (temp == null) {
+						// Check if block
+						block = Blocks.LIST.get(args[0].toUpperCase());
+						if (block == null) {
+							sendMessage(player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
+									.replace("%syntax%", syntax));
+							return;
+						}
+					} else {
+						orderBy = temp;
+					}
+				}
 			}
-		}
-		OADatabaseManager.TopOrderBy orderBy;
-		switch (ConfigMain.STATS_TOP_ORDER_BY.toLowerCase()) {
-			case "found":
-				orderBy = OADatabaseManager.TopOrderBy.FOUND;
-				break;
-			case "destroy":
-			default:
-				orderBy = OADatabaseManager.TopOrderBy.DESTROY;
-				break;
 		}
 		
 		// Command starts
-		int numberPlayers = ((OreAnnouncerPlugin) plugin).getDatabaseManager().getTopPlayersNumber(orderBy);
+		int numberPlayers = ((OreAnnouncerPlugin) plugin).getDatabaseManager().getTopPlayersNumber(orderBy, block);
 		int limit = Math.min(ConfigMain.STATS_TOP_PAGESIZE, ConfigMain.STATS_TOP_NUMPLAYERS);
 		int maxPages;
 		if (numberPlayers == 0)
@@ -90,7 +190,7 @@ public class CommandTop extends ADPSubCommand {
 			selectedPage = maxPages;
 		
 		int offset = selectedPage > 1 ? limit * (selectedPage - 1) : 0;
-		ArrayList<OAPlayerImpl> players = ((OreAnnouncerPlugin) plugin).getDatabaseManager().getTopPlayersDestroyed(orderBy, limit, offset);
+		HashMap<UUID, Integer> players = ((OreAnnouncerPlugin) plugin).getDatabaseManager().getTopPlayers(orderBy, block, limit, offset);
 		
 		sendMessage(player, Messages.CMD_TOP_HEADER
 				.replace("%total%", Integer.toString(numberPlayers))
@@ -98,9 +198,11 @@ public class CommandTop extends ADPSubCommand {
 				.replace("%maxpages%", Integer.toString(maxPages)));
 		
 		if (players.size() > 0) {
-			for (OAPlayerImpl p : players) {
-				sendMessage(player, ((OreAnnouncerPlugin) plugin).getMessageUtils().convertPlayerPlaceholders(Messages.CMD_TOP_FORMATPLAYER, p));
-			}
+			players.forEach((id, number) -> {
+				OAPlayerImpl p = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(id);
+				sendMessage(player, ((OreAnnouncerPlugin) plugin).getMessageUtils().convertPlayerPlaceholders(Messages.CMD_TOP_FORMATPLAYER
+						.replace("%value%", Integer.toString(number)), p));
+			});
 		} else {
 			sendMessage(player, Messages.CMD_TOP_NOONE);
 		}

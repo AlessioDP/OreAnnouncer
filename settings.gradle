@@ -3,8 +3,8 @@ include (
     ':api' ,
     ':common',
     ':bukkit',
-    'bungeecord'
+    ':bungeecord',
+    ':jpa'
 )
 
 project(':api').name = 'oreannouncer-api'
-

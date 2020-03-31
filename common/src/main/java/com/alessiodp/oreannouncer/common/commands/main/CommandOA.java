@@ -1,11 +1,14 @@
 package com.alessiodp.oreannouncer.common.commands.main;
 
+import com.alessiodp.core.common.commands.list.ADPCommand;
+import com.alessiodp.core.common.commands.utils.ADPExecutableCommand;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.commands.list.CommonCommands;
 import com.alessiodp.oreannouncer.common.commands.sub.CommandAlerts;
 import com.alessiodp.oreannouncer.common.commands.sub.CommandHelp;
+import com.alessiodp.oreannouncer.common.commands.sub.CommandLog;
 import com.alessiodp.oreannouncer.common.commands.sub.CommandReload;
 import com.alessiodp.oreannouncer.common.commands.sub.CommandStats;
 import com.alessiodp.oreannouncer.common.commands.sub.CommandTop;
@@ -13,31 +16,33 @@ import com.alessiodp.oreannouncer.common.commands.sub.CommandVersion;
 import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import com.alessiodp.oreannouncer.common.configuration.data.Messages;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class CommandOA extends ADPMainCommand {
 	
 	public CommandOA(OreAnnouncerPlugin plugin) {
-		super(plugin);
+		super(plugin, CommonCommands.OA, ConfigMain.COMMANDS_CMD_OA, true);
 		
-		commandName = ConfigMain.COMMANDS_CMD_OA;
 		description = ConfigMain.COMMANDS_DESCRIPTION_OA;
 		subCommands = new HashMap<>();
-		enabledSubCommands = new ArrayList<>();
+		subCommandsByEnum = new HashMap<>();
 		tabSupport = ConfigMain.COMMANDS_TABSUPPORT;
 		
-		register(CommonCommands.HELP, new CommandHelp(plugin, this));
-		register(CommonCommands.RELOAD, new CommandReload(plugin, this));
-		register(CommonCommands.VERSION, new CommandVersion(plugin, this));
+		register(new CommandHelp(plugin, this));
+		register(new CommandReload(plugin, this));
+		register(new CommandVersion(plugin, this));
 		
 		if (ConfigMain.ALERTS_ENABLE)
-			register(CommonCommands.ALERTS, new CommandAlerts(plugin, this));
+			register(new CommandAlerts(plugin, this));
 		
 		if (ConfigMain.STATS_ENABLE) {
-			register(CommonCommands.STATS, new CommandStats(plugin, this));
+			register(new CommandStats(plugin, this));
 			if (ConfigMain.STATS_TOP_ENABLE)
-				register(CommonCommands.TOP, new CommandTop(plugin, this));
+				register(new CommandTop(plugin, this));
+			
+			if (ConfigMain.STATS_ADVANCED_COUNT_ENABLE && ConfigMain.STATS_ADVANCED_COUNT_LOG_ENABLE)
+				register(new CommandLog(plugin, this));
 		}
 	}
 	
@@ -47,7 +52,7 @@ public class CommandOA extends ADPMainCommand {
 		if (sender.isPlayer()) {
 			if (args.length == 0) {
 				// Set /oa to /oa help
-				subCommand = CommonCommands.HELP.getCommand().toLowerCase();
+				subCommand = ConfigMain.COMMANDS_CMD_HELP;
 			} else {
 				subCommand = args[0].toLowerCase();
 			}
@@ -68,8 +73,13 @@ public class CommandOA extends ADPMainCommand {
 				}
 			} else {
 				// Print help
-				for (String str : Messages.HELP_CONSOLEHELP) {
-					plugin.logConsole(str, false);
+				plugin.logConsole(Messages.HELP_CONSOLEHELP_HEADER, false);
+				for(Map.Entry<ADPCommand, ADPExecutableCommand> e : plugin.getCommandManager().getOrderedCommands().entrySet()) {
+					if (e.getValue().isExecutableByConsole()  && e.getValue().isListedInHelp()) {
+						plugin.logConsole(Messages.HELP_CONSOLEHELP_COMMAND
+								.replace("%command%", e.getValue().getConsoleSyntax())
+								.replace("%description%", e.getValue().getDescription()), false);
+					}
 				}
 			}
 		}

@@ -5,6 +5,7 @@ import com.alessiodp.core.common.utils.ADPLocation;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.blocks.BlockManager;
 import com.alessiodp.oreannouncer.common.blocks.objects.OABlockImpl;
+import com.alessiodp.oreannouncer.common.utils.OreAnnouncerPermission;
 import com.alessiodp.oreannouncer.common.configuration.OAConstants;
 import com.alessiodp.oreannouncer.common.configuration.data.Blocks;
 import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
@@ -32,12 +33,14 @@ public abstract class BlockListener {
 				
 				// Store information into database
 				if (ConfigMain.STATS_ENABLE) {
+					if (!user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_DESTROY.toString()))
 					store(user, block, lightLevel);
-					if (ConfigMain.STATS_ADVANCED_COUNT_ENABLE)
+					
+					if (ConfigMain.STATS_ADVANCED_COUNT_ENABLE && !user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_FOUND.toString()))
 						found(user, block, blockLocation, lightLevel);
 				}
 				
-				if (ConfigMain.ALERTS_ENABLE) {
+				if (ConfigMain.ALERTS_ENABLE && !user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_ALERTS.toString())) {
 					// Handle alerts
 					alert(user, block, blockLocation, lightLevel);
 				}
@@ -96,10 +99,15 @@ public abstract class BlockListener {
 							&& ConfigMain.BLOCKS_TNT_MINING_COUNT_DESTROY
 							&& e.getKey().isCountingOnDestroy()) {
 						OAPlayerImpl player = plugin.getPlayerManager().getPlayer(user.getUUID());
-						plugin.getBlockManager().handleBlockDestroy(e.getKey(), player, e.getValue());
+						if (!user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_DESTROY.toString()))
+							plugin.getBlockManager().handleBlockDestroy(e.getKey(), player, e.getValue());
+						
+						if (ConfigMain.STATS_ADVANCED_COUNT_ENABLE && !user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_FOUND.toString())) {
+							plugin.getBlockManager().handleBlockFound(e.getKey(), player, blockLocation, e.getValue());
+						}
 					}
 					
-					if (ConfigMain.ALERTS_ENABLE) {
+					if (ConfigMain.ALERTS_ENABLE && (user == null || !user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_ALERTS.toString()))) {
 						OAPlayerImpl player = user != null ? plugin.getPlayerManager().getPlayer(user.getUUID()) : null;
 						plugin.getBlockManager().handleTNTDestroy(player, e.getKey(), blockLocation, e.getValue());
 					}
@@ -147,7 +155,7 @@ public abstract class BlockListener {
 	
 	private void found(User user, OABlockImpl block, ADPLocation blockLocation, int lightLevel) {
 		if (!plugin.getBlockManager().isBlockMarked(blockLocation, block.getMaterialName(), BlockManager.MarkType.FOUND)) {
-			if (block.getCountNumber() > 0 && (!ConfigMain.BLOCKS_LIGHT_ENABLE || !ConfigMain.BLOCKS_LIGHT_COUNTIFLOWER || lightLevel <= block.getLightLevel())) {
+			if (!ConfigMain.BLOCKS_LIGHT_ENABLE || !ConfigMain.BLOCKS_LIGHT_COUNTIFLOWER || lightLevel <= block.getLightLevel()) {
 				int numberOfBlocks = plugin.getBlockManager().countNearBlocks(blockLocation, block.getMaterialName(), BlockManager.MarkType.FOUND);
 				if (numberOfBlocks > 0) {
 					plugin.getScheduler().runAsync(() -> {

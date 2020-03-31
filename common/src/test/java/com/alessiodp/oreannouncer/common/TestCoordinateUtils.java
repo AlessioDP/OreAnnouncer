@@ -13,7 +13,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
+import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 
@@ -22,6 +22,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 		ADPLocation.class,
 		ConfigMain.class,
 		CoordinateUtils.class,
+		JsonHandler.class,
 		Messages.class,
 		OreAnnouncerPlugin.class
 })

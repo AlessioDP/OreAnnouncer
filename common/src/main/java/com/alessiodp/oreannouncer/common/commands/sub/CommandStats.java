@@ -7,23 +7,53 @@ import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.addons.external.LLAPIHandler;
+import com.alessiodp.oreannouncer.common.blocks.objects.OABlockImpl;
+import com.alessiodp.oreannouncer.common.commands.list.CommonCommands;
 import com.alessiodp.oreannouncer.common.commands.utils.OACommandData;
-import com.alessiodp.oreannouncer.common.commands.utils.OreAnnouncerPermission;
+import com.alessiodp.oreannouncer.common.utils.OreAnnouncerPermission;
 import com.alessiodp.oreannouncer.common.configuration.OAConstants;
+import com.alessiodp.oreannouncer.common.configuration.data.Blocks;
+import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import com.alessiodp.oreannouncer.common.configuration.data.Messages;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
-import lombok.Getter;
 import lombok.NonNull;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class CommandStats extends ADPSubCommand {
-	@Getter private final boolean executableByConsole = true;
 	
 	public CommandStats(ADPPlugin plugin, ADPMainCommand mainCommand) {
-		super(plugin, mainCommand);
+		super(
+				plugin,
+				mainCommand,
+				CommonCommands.STATS,
+				OreAnnouncerPermission.USER_STATS.toString(),
+				ConfigMain.COMMANDS_CMD_STATS,
+				true
+		);
+		
+		syntax = String.format("%s [%s]",
+				baseSyntax(),
+				Messages.OREANNOUNCER_SYNTAX_PLAYER
+		);
+		
+		runCommand = baseSyntax() + " ";
+		
+		description = Messages.HELP_CMD_DESCRIPTIONS_STATS;
+		help = Messages.HELP_CMD_STATS;
+	}
+	
+	@Override
+	public String getConsoleSyntax() {
+		return baseSyntax();
 	}
 	
 	@Override
@@ -75,18 +105,50 @@ public class CommandStats extends ADPSubCommand {
 		if (targetPlayer == null) {
 			if (player == null) {
 				plugin.logConsole(plugin.getColorUtils().removeColors(Messages.CMD_STATS_PLAYERNOTFOUND
-						.replace("%player%", "")), false);
+						.replace("%player%", "Player")), false);
 				return;
 			} else
 				targetPlayer = player;
 		}
 		
 		// Command starts
-		for (String line : Messages.CMD_STATS_CONTENT) {
-			sendMessage(player, ((OreAnnouncerPlugin) plugin).getMessageUtils().convertPlayerPlaceholders(line, targetPlayer));
+		List<String> blacklist = new ArrayList<>();
+		ConfigMain.STATS_BLACKLIST_BLOCKS_STATS.forEach((str) -> blacklist.add(str.toUpperCase()));
+		
+		sendMessage(player, ((OreAnnouncerPlugin) plugin).getMessageUtils().convertPlayerPlaceholders(Messages.CMD_STATS_HEADER, targetPlayer));
+		
+		if (targetPlayer.getDataBlocks().size() > 0) {
+			HashMap<OABlockImpl, Integer> map = new HashMap<>();
+			targetPlayer.getDataBlocks().forEach((name, playerDataBlock) -> {
+				if (!blacklist.contains(playerDataBlock.getMaterialName()) && playerDataBlock.getDestroyCount() > 0) {
+					OABlockImpl block = Blocks.LIST.get(playerDataBlock.getMaterialName());
+					if (block != null && block.isEnabled()) {
+						map.put(block, playerDataBlock.getDestroyCount());
+					}
+				}
+			});
+			
+			Comparator<Map.Entry<OABlockImpl, Integer>> sorter = Map.Entry.comparingByValue(Comparator.reverseOrder());
+			if (ConfigMain.STATS_ORDER_BY.equalsIgnoreCase("priority")) {
+				sorter = Comparator.comparingInt(b -> b.getKey().getPriority());
+				sorter = sorter.reversed();
+			}
+			
+			LinkedHashMap<OABlockImpl, Integer> result = map.entrySet().stream()
+					.sorted(sorter)
+					.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+			
+			result.forEach((block, number) -> {
+				sendMessage(player, Messages.CMD_STATS_FORMATPLAYER
+						.replace("%block_color%", block.getDisplayColor() != null ? plugin.getColorUtils().convertColorByName(block.getDisplayColor()) : "")
+						.replace("%block%", block.getDisplayName() != null ? block.getDisplayName() : block.getSingularName())
+						.replace("%value%", Integer.toString(number)));
+			});
+		} else {
+			sendMessage(player, ((OreAnnouncerPlugin) plugin).getMessageUtils().convertPlayerPlaceholders(Messages.CMD_STATS_NOTHING, targetPlayer));
 		}
 		
-		
+		sendMessage(player, ((OreAnnouncerPlugin) plugin).getMessageUtils().convertPlayerPlaceholders(Messages.CMD_STATS_FOOTER, targetPlayer));
 	}
 	
 	private void sendMessage(OAPlayerImpl player, String message) {

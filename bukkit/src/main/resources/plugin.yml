@@ -4,7 +4,7 @@ author: ${pluginAuthor}
 website: ${pluginWebsite}
 version: ${pluginVersion}
 main: com.alessiodp.oreannouncer.bukkit.bootstrap.BukkitOreAnnouncerBootstrap
-api-version: 1.13
+api-version: 1.15
 softdepend: [LastLoginAPI, PlaceholderAPI]
 permissions:
   oreannouncer.user.alerts.see:
@@ -19,6 +19,12 @@ permissions:
     description: Allow access to /oa top
   oreannouncer.admin.alerts.see:
     description: See admin alerts
+  oreannouncer.admin.bypass.alerts:
+    description: Bypass alerts on block destroy
+  oreannouncer.admin.bypass.destroy:
+    description: Bypass destroy count on block destroy
+  oreannouncer.admin.bypass.found:
+    description: Bypass found count on block destroy
   oreannouncer.admin.reload:
     description: Allow access to /oa reload
   oreannouncer.admin.stats.other:

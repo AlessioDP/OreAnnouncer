@@ -1,0 +1,11 @@
+dependencies {
+    implementation group: 'org.jooq', name: 'jooq-meta-extensions', version: project.ext.jooq
+}
+
+jar {
+    enabled = true
+}
+
+shadowJar {
+    enabled = false
+}

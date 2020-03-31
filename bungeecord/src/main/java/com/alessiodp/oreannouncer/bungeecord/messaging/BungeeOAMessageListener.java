@@ -56,6 +56,17 @@ public class BungeeOAMessageListener extends BungeeMessageListener {
 							plugin.getLoggerManager().printError(OAConstants.DEBUG_MESSAGING_DESTROY_UUID_EMPTY);
 						}
 						break;
+					case FOUND:
+						if (!packet.getPlayerUuid().isEmpty()) {
+							OAPlayerImpl player = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(UUID.fromString(packet.getPlayerUuid()));
+							((OreAnnouncerPlugin) plugin).getBlockManager().updateFoundBlock(
+									player,
+									packet.getMaterialName(),
+									packet.getDestroyCount());
+						} else {
+							plugin.getLoggerManager().printError(OAConstants.DEBUG_MESSAGING_FOUND_UUID_EMPTY);
+						}
+						break;
 					default:
 						// Not supported packet type
 				}

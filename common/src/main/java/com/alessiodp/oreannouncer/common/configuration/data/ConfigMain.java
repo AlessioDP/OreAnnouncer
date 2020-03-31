@@ -24,20 +24,10 @@ public abstract class ConfigMain extends ConfigurationFile {
 	// Storage settings
 	@ConfigOption(path = "storage.database-storage-type")
 	public static String		STORAGE_TYPE_DATABASE;
-	@ConfigOption(path = "storage.storage-settings.general-sql-settings.varchar-size")
-	public static int			STORAGE_SETTINGS_GENERAL_SQL_VARCHARSIZE;
-	@ConfigOption(path = "storage.storage-settings.general-sql-settings.upgrade.save-old-table")
-	public static boolean		STORAGE_SETTINGS_GENERAL_SQL_UPGRADE_SAVEOLD;
-	@ConfigOption(path = "storage.storage-settings.general-sql-settings.upgrade.old-table-suffix")
-	public static String		STORAGE_SETTINGS_GENERAL_SQL_UPGRADE_OLDSUFFIX;
-	@ConfigOption(path = "storage.storage-settings.general-sql-settings.tables.players")
-	public static String		STORAGE_SETTINGS_GENERAL_SQL_TABLES_PLAYERS;
-	@ConfigOption(path = "storage.storage-settings.general-sql-settings.tables.blocks")
-	public static String		STORAGE_SETTINGS_GENERAL_SQL_TABLES_BLOCKS;
-	@ConfigOption(path = "storage.storage-settings.general-sql-settings.tables.blocks-found")
-	public static String		STORAGE_SETTINGS_GENERAL_SQL_TABLES_BLOCKS_FOUND;
-	@ConfigOption(path = "storage.storage-settings.general-sql-settings.tables.versions")
-	public static String		STORAGE_SETTINGS_GENERAL_SQL_TABLES_VERSIONS;
+	@ConfigOption(path = "storage.storage-settings.general-sql-settings.prefix")
+	public static String		STORAGE_SETTINGS_GENERAL_SQL_PREFIX;
+	@ConfigOption(path = "storage.storage-settings.general-sql-settings.charset")
+	public static String		STORAGE_SETTINGS_GENERAL_SQL_CHARSET;
 	@ConfigOption(path = "storage.storage-settings.sqlite.database-file")
 	public static String		STORAGE_SETTINGS_SQLITE_DBFILE;
 	@ConfigOption(path = "storage.storage-settings.mysql.address")
@@ -56,8 +46,6 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static int			STORAGE_SETTINGS_MYSQL_CONNLIFETIME;
 	@ConfigOption(path = "storage.storage-settings.mysql.use-ssl")
 	public static boolean		STORAGE_SETTINGS_MYSQL_USESSL;
-	@ConfigOption(path = "storage.storage-settings.mysql.charset")
-	public static String		STORAGE_SETTINGS_MYSQL_CHARSET;
 	
 	
 	// Alerts settings
@@ -125,16 +113,34 @@ public abstract class ConfigMain extends ConfigurationFile {
 	// Stats settings
 	@ConfigOption(path = "stats.enable")
 	public static boolean		STATS_ENABLE;
-	@ConfigOption(path = "stats.blacklist-blocks", nullable = true)
-	public static List<String>	STATS_BLACKLIST_BLOCKS;
+	@ConfigOption(path = "stats.order-by")
+	public static String		STATS_ORDER_BY;
+	@ConfigOption(path = "stats.blacklist-blocks.log", nullable = true)
+	public static List<String>	STATS_BLACKLIST_BLOCKS_LOG;
+	@ConfigOption(path = "stats.blacklist-blocks.stats", nullable = true)
+	public static List<String>	STATS_BLACKLIST_BLOCKS_STATS;
+	@ConfigOption(path = "stats.blacklist-blocks.top", nullable = true)
+	public static List<String>	STATS_BLACKLIST_BLOCKS_TOP;
 	@ConfigOption(path = "stats.advanced-count.enable")
 	public static boolean		STATS_ADVANCED_COUNT_ENABLE;
 	@ConfigOption(path = "stats.advanced-count.default-time-format")
 	public static String		STATS_ADVANCED_COUNT_TIME_FORMAT;
+	@ConfigOption(path = "stats.advanced-count.log-command.enable")
+	public static boolean		STATS_ADVANCED_COUNT_LOG_ENABLE;
+	@ConfigOption(path = "stats.advanced-count.log-command.format-date")
+	public static String		STATS_ADVANCED_COUNT_LOG_FORMAT_DATE;
+	@ConfigOption(path = "stats.advanced-count.log-command.format-date-elapsed")
+	public static String		STATS_ADVANCED_COUNT_LOG_FORMAT_DATE_ELAPSED;
+	@ConfigOption(path = "stats.advanced-count.log-command.number-of-blocks")
+	public static int			STATS_ADVANCED_COUNT_LOG_NUMBLOCKS;
+	@ConfigOption(path = "stats.advanced-count.log-command.page-size")
+	public static int			STATS_ADVANCED_COUNT_LOG_PAGESIZE;
 	@ConfigOption(path = "stats.top.enable")
 	public static boolean		STATS_TOP_ENABLE;
 	@ConfigOption(path = "stats.top.order-by")
 	public static String		STATS_TOP_ORDER_BY;
+	@ConfigOption(path = "stats.top.change-order")
+	public static boolean		STATS_TOP_CHANGE_ORDER;
 	@ConfigOption(path = "stats.top.number-of-players")
 	public static int			STATS_TOP_NUMPLAYERS;
 	@ConfigOption(path = "stats.top.page-size")
@@ -153,6 +159,8 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static String		COMMANDS_CMD_OA;
 	@ConfigOption(path = "commands.main-commands.alerts")
 	public static String		COMMANDS_CMD_ALERTS;
+	@ConfigOption(path = "commands.main-commands.log")
+	public static String		COMMANDS_CMD_LOG;
 	@ConfigOption(path = "commands.main-commands.reload")
 	public static String		COMMANDS_CMD_RELOAD;
 	@ConfigOption(path = "commands.main-commands.stats")
@@ -162,10 +170,17 @@ public abstract class ConfigMain extends ConfigurationFile {
 	@ConfigOption(path = "commands.main-commands.version")
 	public static String		COMMANDS_CMD_VERSION;
 	
+	@ConfigOption(path = "commands.sub-commands.block")
+	public static String		COMMANDS_SUB_BLOCK;
+	@ConfigOption(path = "commands.sub-commands.player")
+	public static String		COMMANDS_SUB_PLAYER;
 	@ConfigOption(path = "commands.sub-commands.word-on")
 	public static String		COMMANDS_SUB_ON;
 	@ConfigOption(path = "commands.sub-commands.word-off")
 	public static String		COMMANDS_SUB_OFF;
+	
+	@ConfigOption(path = "commands.order")
+	public static List<String>	COMMANDS_ORDER;
 	
 	
 	protected ConfigMain(OreAnnouncerPlugin plugin) {

@@ -2,26 +2,45 @@ package com.alessiodp.oreannouncer.common.commands.sub;
 
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.list.ADPCommand;
+import com.alessiodp.core.common.commands.utils.ADPExecutableCommand;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.ADPSubCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
+import com.alessiodp.oreannouncer.common.commands.list.CommonCommands;
 import com.alessiodp.oreannouncer.common.commands.utils.OACommandData;
-import com.alessiodp.oreannouncer.common.commands.utils.OreAnnouncerPermission;
+import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
+import com.alessiodp.oreannouncer.common.utils.OreAnnouncerPermission;
 import com.alessiodp.oreannouncer.common.configuration.OAConstants;
 import com.alessiodp.oreannouncer.common.configuration.data.Messages;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
-import lombok.Getter;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class CommandHelp extends ADPSubCommand {
-	@Getter private final boolean executableByConsole = false;
 	
 	public CommandHelp(ADPPlugin plugin, ADPMainCommand mainCommand) {
-		super(plugin, mainCommand);
+		super(
+				plugin,
+				mainCommand,
+				CommonCommands.HELP,
+				OreAnnouncerPermission.USER_HELP.toString(),
+				ConfigMain.COMMANDS_CMD_HELP,
+				false
+		);
+		
+		syntax = String.format("%s [%s/%s]",
+				baseSyntax(),
+				ConfigMain.COMMANDS_SUB_ON,
+				ConfigMain.COMMANDS_SUB_OFF
+		);
+		
+		runCommand = baseSyntax() + " ";
+		
+		description = Messages.HELP_CMD_DESCRIPTIONS_HELP;
+		help = Messages.HELP_CMD_HELP;
 	}
 	
 	@Override
@@ -48,19 +67,19 @@ public class CommandHelp extends ADPSubCommand {
 				.replace("{page}", commandData.getArgs().length > 1 ? commandData.getArgs()[1] : ""), true);
 		
 		// Command starts
-		// Get all allowed commands
-		List<String> list = new ArrayList<>();
-		for (ADPCommand cmd : player.getAllowedCommands()) {
-			if (mainCommand.getEnabledSubCommands().contains(cmd))
-				list.add(cmd.getHelp());
-		}
-		
-		
-		// Start printing
 		player.sendMessage(Messages.HELP_HEADER);
-		for (String string : list) {
-			player.sendMessage(string);
+		
+		List<ADPCommand> allowedCommands = player.getAllowedCommands();
+		for(Map.Entry<ADPCommand, ADPExecutableCommand> e : plugin.getCommandManager().getOrderedCommands().entrySet()) {
+			if (allowedCommands.contains(e.getKey()) && e.getValue().isListedInHelp()) {
+				player.sendMessage(e.getValue().getHelp()
+						.replace("%syntax%", e.getValue().getSyntax())
+						.replace("%description%", e.getValue().getDescription())
+						.replace("%run_command%", e.getValue().getRunCommand())
+						.replace("%perform_command%", Messages.HELP_PERFORM_COMMAND));
+			}
 		}
+		
 		player.sendMessage(Messages.HELP_FOOTER);
 	}
 }

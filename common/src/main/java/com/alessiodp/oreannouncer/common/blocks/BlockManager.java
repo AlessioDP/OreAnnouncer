@@ -5,13 +5,15 @@ import com.alessiodp.core.common.utils.ADPLocation;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.blocks.objects.BlockFound;
 import com.alessiodp.oreannouncer.common.blocks.objects.OABlockImpl;
-import com.alessiodp.oreannouncer.common.commands.utils.OreAnnouncerPermission;
+import com.alessiodp.oreannouncer.common.utils.OreAnnouncerPermission;
 import com.alessiodp.oreannouncer.common.configuration.OAConstants;
+import com.alessiodp.oreannouncer.common.configuration.data.Blocks;
 import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import com.alessiodp.oreannouncer.common.configuration.data.Messages;
 import com.alessiodp.oreannouncer.common.messaging.OAPacket;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 import com.alessiodp.oreannouncer.common.players.objects.PlayerDataBlock;
+import com.alessiodp.oreannouncer.common.utils.BlocksFoundResult;
 import com.alessiodp.oreannouncer.common.utils.CoordinateUtils;
 import lombok.Getter;
 import org.apache.commons.lang.time.DurationFormatUtils;
@@ -87,6 +89,16 @@ public abstract class BlockManager {
 		player.getLock().unlock(); // Unlock player
 	}
 	
+	public void updateFoundBlock(OAPlayerImpl player, String materialName, int numberOfBlocks) {
+		if (ConfigMain.STATS_ADVANCED_COUNT_ENABLE) {
+			OABlockImpl block = Blocks.LIST.get(materialName);
+			if (block != null) {
+				BlockFound bf = new BlockFound(player.getPlayerUUID(), block, numberOfBlocks);
+				plugin.getDatabaseManager().insertBlockFound(bf);
+			}
+		}
+	}
+	
 	public abstract boolean existsMaterial(String materialName);
 	
 	public abstract boolean isBlockMarked(ADPLocation blockLocation, String material, MarkType markType);
@@ -135,10 +147,26 @@ public abstract class BlockManager {
 					.setType(OAPacket.PacketType.DESTROY)
 					.setPlayerUuid(player.getPlayerUUID())
 					.setDestroyCount(numberOfBlocks);
+			
 			if (plugin.getMessenger().getMessageDispatcher().sendPacket(packet)) {
 				plugin.getLoggerManager().logDebug(OAConstants.DEBUG_MESSAGING_SEND_DESTROY, true);
 			} else {
 				plugin.getLoggerManager().printError(OAConstants.DEBUG_MESSAGING_SEND_DESTROY_FAILED);
+			}
+			
+			if (ConfigMain.STATS_ADVANCED_COUNT_ENABLE) {
+				packet = new OAPacket(plugin.getVersion());
+				packet
+						.setMaterialName(block.getMaterialName())
+						.setType(OAPacket.PacketType.FOUND)
+						.setPlayerUuid(player.getPlayerUUID())
+						.setDestroyCount(numberOfBlocks);
+				
+				if (plugin.getMessenger().getMessageDispatcher().sendPacket(packet)) {
+					plugin.getLoggerManager().logDebug(OAConstants.DEBUG_MESSAGING_SEND_FOUND, true);
+				} else {
+					plugin.getLoggerManager().printError(OAConstants.DEBUG_MESSAGING_SEND_FOUND_FAILED);
+				}
 			}
 		} else {
 			updateBlock(player, block.getMaterialName(), numberOfBlocks);
@@ -147,16 +175,19 @@ public abstract class BlockManager {
 	
 	public void handleBlockFound(OABlockImpl block, OAPlayerImpl player, ADPLocation blockLocation, int numberOfBlocks) {
 		BlockFound newBf = new BlockFound(player.getPlayerUUID(), block, numberOfBlocks);
-		BlockFound bf = plugin.getDatabaseManager().getLatestBlocksFound(player.getPlayerUUID(), block, block.getCountTime());
-		if (bf != null) {
-			bf = bf.merge(newBf);
+		BlocksFoundResult bfr = plugin.getDatabaseManager().getLatestBlocksFound(player.getPlayerUUID(), block, block.getCountTime());
+		if (bfr != null) {
+			bfr.setTimestamp(Math.min(bfr.getTimestamp(), newBf.getTimestamp()));
+			bfr.setTotal(bfr.getTotal() + newBf.getFound());
 		} else {
-			bf = newBf;
+			bfr = new BlocksFoundResult(newBf.getTimestamp(), newBf.getFound());
 		}
 		
-		plugin.getDatabaseManager().insertBlocksFound(newBf);
+		plugin.getDatabaseManager().insertBlockFound(newBf);
 		
-		if (bf.getFound() >= block.getCountNumber()) {
+		// If count number enabled handle alerts
+		if (block.getCountNumber() > 0 && bfr.getTotal() >= block.getCountNumber()) {
+			
 			String countTimeFormat = block.getCountTimeFormat() != null ? block.getCountTimeFormat() : ConfigMain.STATS_ADVANCED_COUNT_TIME_FORMAT;
 			
 			// Alert
@@ -164,9 +195,9 @@ public abstract class BlockManager {
 			String adminMessage = block.getCountMessageAdmin() != null ? block.getCountMessageAdmin() : Messages.ALERTS_COUNT_ADMIN;
 			String consoleMessage = block.getCountMessageConsole() != null ? block.getCountMessageConsole() : Messages.ALERTS_COUNT_CONSOLE;
 			
-			userMessage = parseMessage(userMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_USER, bf.getFound(), bf.getTimestamp(), countTimeFormat);
-			adminMessage = parseMessage(adminMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_ADMIN, bf.getFound(), bf.getTimestamp(), countTimeFormat);
-			consoleMessage = parseMessage(consoleMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_CONSOLE, bf.getFound(), bf.getTimestamp(), countTimeFormat);
+			userMessage = parseMessage(userMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_USER, bfr.getTotal(), bfr.getTimestamp(), countTimeFormat);
+			adminMessage = parseMessage(adminMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_ADMIN, bfr.getTotal(), bfr.getTimestamp(), countTimeFormat);
+			consoleMessage = parseMessage(consoleMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_CONSOLE, bfr.getTotal(), bfr.getTimestamp(), countTimeFormat);
 			
 			if (plugin.isBungeeCordEnabled()) {
 				OAPacket packet = new OAPacket(plugin.getVersion());

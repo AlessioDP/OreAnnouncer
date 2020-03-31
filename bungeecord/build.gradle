@@ -3,7 +3,6 @@ dependencies {
     api group: 'com.alessiodp.core', name: 'bungeecord', version: project.ext.adpCore
 }
 
-
 processResources {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE;
     from(sourceSets.main.resources.srcDirs) {

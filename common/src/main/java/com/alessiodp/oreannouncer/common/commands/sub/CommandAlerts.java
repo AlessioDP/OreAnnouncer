@@ -6,22 +6,40 @@ import com.alessiodp.core.common.commands.utils.ADPSubCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
+import com.alessiodp.oreannouncer.common.commands.list.CommonCommands;
 import com.alessiodp.oreannouncer.common.commands.utils.OACommandData;
-import com.alessiodp.oreannouncer.common.commands.utils.OreAnnouncerPermission;
+import com.alessiodp.oreannouncer.common.utils.OreAnnouncerPermission;
 import com.alessiodp.oreannouncer.common.configuration.OAConfigurationManager;
 import com.alessiodp.oreannouncer.common.configuration.OAConstants;
+import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import com.alessiodp.oreannouncer.common.configuration.data.Messages;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
-import lombok.Getter;
 import lombok.NonNull;
 
 import java.util.List;
 
 public class CommandAlerts extends ADPSubCommand {
-	@Getter private final boolean executableByConsole = false;
 	
 	public CommandAlerts(ADPPlugin plugin, ADPMainCommand mainCommand) {
-		super(plugin, mainCommand);
+		super(
+				plugin,
+				mainCommand,
+				CommonCommands.ALERTS,
+				OreAnnouncerPermission.USER_ALERTS_TOGGLE.toString(),
+				ConfigMain.COMMANDS_CMD_ALERTS,
+				false
+		);
+		
+		syntax = String.format("%s [%s/%s]",
+				baseSyntax(),
+				ConfigMain.COMMANDS_SUB_ON,
+				ConfigMain.COMMANDS_SUB_OFF
+		);
+		
+		runCommand = baseSyntax() + " ";
+		
+		description = Messages.HELP_CMD_DESCRIPTIONS_ALERTS;
+		help = Messages.HELP_CMD_ALERTS;
 	}
 	
 	@Override
@@ -51,7 +69,8 @@ public class CommandAlerts extends ADPSubCommand {
 		player.getLock().lock(); // Lock
 		Boolean alerts = plugin.getCommandManager().getCommandUtils().handleOnOffCommand(player.haveAlertsOn(), commandData.getArgs());
 		if (alerts == null) {
-			player.sendMessage(Messages.CMD_ALERTS_WRONGCMD);
+			player.sendMessage(Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
+					.replace("%syntax%", syntax));
 			return;
 		}
 		

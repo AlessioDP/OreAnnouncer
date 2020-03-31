@@ -10,6 +10,7 @@ import lombok.NonNull;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class Blocks extends ConfigurationFile {
@@ -28,6 +29,8 @@ public class Blocks extends ConfigurationFile {
 		OABlockImpl blockDiamond = new OABlockImpl(plugin, "DIAMOND_ORE");
 		blockDiamond.setAccessible(true);
 		blockDiamond.setEnabled(true);
+		blockDiamond.setDisplayName("Diamond Ore");
+		blockDiamond.setDisplayColor("&b");
 		blockDiamond.setAlertingUsers(true);
 		blockDiamond.setAlertingAdmins(true);
 		blockDiamond.setSingularName("diamond");
@@ -36,53 +39,69 @@ public class Blocks extends ConfigurationFile {
 		blockDiamond.setCountTime(600);
 		blockDiamond.setSound("ENTITY_PLAYER_LEVELUP");
 		blockDiamond.setCountingOnDestroy(true);
+		blockDiamond.setPriority(90);
 		blockDiamond.setAccessible(false);
 		
 		OABlockImpl blockEmerald = new OABlockImpl(plugin, "EMERALD_ORE");
 		blockEmerald.setAccessible(true);
 		blockEmerald.setEnabled(true);
+		blockEmerald.setDisplayName("Emerald Ore");
+		blockEmerald.setDisplayColor("&a");
 		blockEmerald.setAlertingUsers(true);
 		blockEmerald.setAlertingAdmins(true);
 		blockEmerald.setSingularName("emerald");
 		blockEmerald.setPluralName("emeralds");
 		blockEmerald.setSound("ENTITY_PLAYER_LEVELUP");
 		blockEmerald.setCountingOnDestroy(true);
+		blockEmerald.setPriority(100);
 		blockEmerald.setAccessible(false);
 		
 		OABlockImpl blockGold = new OABlockImpl(plugin, "GOLD_ORE");
-		blockEmerald.setAccessible(true);
-		blockEmerald.setEnabled(true);
-		blockEmerald.setAlertingUsers(false);
-		blockEmerald.setAlertingAdmins(false);
-		blockEmerald.setSingularName("gold");
-		blockEmerald.setPluralName("golds");
-		blockEmerald.setAccessible(false);
+		blockGold.setAccessible(true);
+		blockGold.setEnabled(true);
+		blockGold.setDisplayName("Gold Ore");
+		blockGold.setDisplayColor("&6");
+		blockGold.setAlertingUsers(false);
+		blockGold.setAlertingAdmins(false);
+		blockGold.setSingularName("gold");
+		blockGold.setPluralName("golds");
+		blockGold.setPriority(80);
+		blockGold.setAccessible(false);
 		
 		OABlockImpl blockRedstone = new OABlockImpl(plugin, "REDSTONE_ORE");
 		blockRedstone.setAccessible(true);
 		blockRedstone.setEnabled(false);
+		blockRedstone.setDisplayName("Redstone Ore");
+		blockRedstone.setDisplayColor("&c");
 		blockRedstone.setAlertingUsers(true);
 		blockRedstone.setAlertingAdmins(true);
 		blockRedstone.setSingularName("redstone");
 		blockRedstone.setPluralName("redstones");
+		blockRedstone.setPriority(-1);
 		blockRedstone.setAccessible(false);
 		
-		OABlockImpl blockIron = new OABlockImpl(plugin, "REDSTONE_ORE");
+		OABlockImpl blockIron = new OABlockImpl(plugin, "IRON_ORE");
 		blockIron.setAccessible(true);
 		blockIron.setEnabled(false);
+		blockIron.setDisplayName("Iron Ore");
+		blockIron.setDisplayColor("&f");
 		blockIron.setAlertingUsers(false);
 		blockIron.setAlertingAdmins(false);
 		blockIron.setSingularName("iron");
 		blockIron.setPluralName("irons");
+		blockIron.setPriority(-1);
 		blockIron.setAccessible(false);
 		
 		OABlockImpl blockQuartz = new OABlockImpl(plugin, "NETHER_QUARTZ_ORE");
 		blockQuartz.setAccessible(true);
 		blockQuartz.setEnabled(false);
+		blockQuartz.setDisplayName("Quartz Ore");
+		blockQuartz.setDisplayColor("&4");
 		blockQuartz.setAlertingUsers(true);
 		blockQuartz.setAlertingAdmins(true);
 		blockQuartz.setSingularName("quartz");
 		blockQuartz.setPluralName("quartzes");
+		blockQuartz.setPriority(60);
 		blockQuartz.setAccessible(false);
 		
 		LIST = new HashMap<>();
@@ -107,6 +126,8 @@ public class Blocks extends ConfigurationFile {
 					block = new OABlockImpl(plugin, key);
 					block.setAccessible(true);
 					block.setEnabled(csBlocks.getBoolean(key + ".enabled", true));
+					block.setDisplayName(csBlocks.getString(key + ".display-name", null));
+					block.setDisplayColor(csBlocks.getString(key + ".display-color", null));
 					block.setAlertingUsers(csBlocks.getBoolean(key + ".alerts.user", false));
 					block.setAlertingAdmins(csBlocks.getBoolean(key + ".alerts.admin", false));
 					block.setSingularName(csBlocks.getString(key + ".name.singular", key));
@@ -124,6 +145,8 @@ public class Blocks extends ConfigurationFile {
 					block.setLightLevel(csBlocks.getInt(key + ".light-level", 15));
 					block.setCountingOnDestroy(csBlocks.getBoolean(key + ".count-on-destroy", false));
 					block.setTNTEnabled(csBlocks.getBoolean(key + ".tnt", true));
+					block.setPriority(csBlocks.getInt(key + ".priority", 0));
+					
 					block.setAccessible(false);
 					blocks.put(key.toUpperCase(), block);
 				} else {
@@ -137,11 +160,13 @@ public class Blocks extends ConfigurationFile {
 	}
 	
 	public boolean existsBlock(@NonNull String materialName) {
-		return LIST.containsKey(materialName.toUpperCase());
+		return LIST.containsKey(materialName.toUpperCase(Locale.ENGLISH));
 	}
 	
 	public void updateBlock(@NonNull OABlockImpl block) {
 		configuration.set("blocks." + block.getMaterialName() + ".enabled", block.isEnabled());
+		configuration.set("blocks." + block.getMaterialName() + ".display-name", block.getDisplayName());
+		configuration.set("blocks." + block.getMaterialName() + ".display-color", block.getDisplayColor());
 		configuration.set("blocks." + block.getMaterialName() + ".alerts.user", block.isAlertingUsers());
 		configuration.set("blocks." + block.getMaterialName() + ".alerts.admin", block.isAlertingAdmins());
 		configuration.set("blocks." + block.getMaterialName() + ".name.singular", block.getSingularName());
@@ -182,7 +207,7 @@ public class Blocks extends ConfigurationFile {
 		}
 		
 		if (!existsBlock(block.getMaterialName())) {
-			LIST.put(block.getMaterialName().toUpperCase(), block);
+			LIST.put(block.getMaterialName().toUpperCase(Locale.ENGLISH), block);
 		}
 	}
 	

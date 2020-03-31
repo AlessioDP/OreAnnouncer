@@ -6,18 +6,32 @@ import com.alessiodp.core.common.commands.utils.ADPSubCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
+import com.alessiodp.oreannouncer.common.commands.list.CommonCommands;
 import com.alessiodp.oreannouncer.common.commands.utils.OACommandData;
-import com.alessiodp.oreannouncer.common.commands.utils.OreAnnouncerPermission;
+import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
+import com.alessiodp.oreannouncer.common.utils.OreAnnouncerPermission;
 import com.alessiodp.oreannouncer.common.configuration.OAConstants;
 import com.alessiodp.oreannouncer.common.configuration.data.Messages;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
-import lombok.Getter;
 
 public class CommandVersion extends ADPSubCommand {
-	@Getter private final boolean executableByConsole = true;
 	
 	public CommandVersion(ADPPlugin plugin, ADPMainCommand mainCommand) {
-		super(plugin, mainCommand);
+		super(
+				plugin,
+				mainCommand,
+				CommonCommands.VERSION,
+				OreAnnouncerPermission.ADMIN_VERSION.toString(),
+				ConfigMain.COMMANDS_CMD_VERSION,
+				true
+		);
+		
+		syntax = baseSyntax();
+		
+		runCommand = baseSyntax();
+		
+		description = Messages.HELP_CMD_DESCRIPTIONS_VERSION;
+		help = Messages.HELP_CMD_VERSION;
 	}
 	
 	@Override

@@ -1,5 +1,11 @@
 package com.alessiodp.oreannouncer.api.interfaces;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
+
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.Set;
 import java.util.UUID;
 
@@ -46,22 +52,159 @@ public interface OreAnnouncerAPI {
 	 */
 	@Deprecated
 	default Set<OAPlayer> getTopPlayers(int numberOfPlayers) {
-		return getTopPlayersByDestroy(numberOfPlayers);
+		return new LinkedHashSet<>(getTopPlayersByDestroy(numberOfPlayers).keySet());
 	}
 	
 	/**
 	 * Get top players ordered by destroy
 	 *
 	 * @param numberOfPlayers Number of players to get
-	 * @return Returns a set of players
+	 * @return Returns a map of {@link OAPlayer} and {@link Integer}
 	 */
-	Set<OAPlayer> getTopPlayersByDestroy(int numberOfPlayers);
+	default LinkedHashMap<OAPlayer, Integer> getTopPlayersByDestroy(int numberOfPlayers) {
+		return getTopPlayersByDestroy(numberOfPlayers, null, 0);
+	}
+	
+	/**
+	 * Get top players ordered by given block destroy
+	 *
+	 * @param numberOfPlayers Number of players to get
+	 * @param block The block to use as filter
+	 * @return Returns a map of {@link OAPlayer} and {@link Integer}
+	 */
+	default LinkedHashMap<OAPlayer, Integer> getTopPlayersByDestroy(int numberOfPlayers, OABlock block) {
+		return getTopPlayersByDestroy(numberOfPlayers, block, 0);
+	}
+	
+	/**
+	 * Get top players ordered by destroy
+	 *
+	 * @param numberOfPlayers Number of players to get
+	 * @param offset Offset of players list
+	 * @return Returns a map of {@link OAPlayer} and {@link Integer}
+	 */
+	default LinkedHashMap<OAPlayer, Integer> getTopPlayersByDestroy(int numberOfPlayers, int offset) {
+		return getTopPlayersByDestroy(numberOfPlayers, null, offset);
+	}
+	
+	/**
+	 * Get top players ordered by block destroy
+	 *
+	 * @param numberOfPlayers Number of players to get
+	 * @param block The block to use as filter
+	 * @param offset Offset of players list
+	 * @return Returns a map of {@link OAPlayer} and {@link Integer}
+	 */
+	LinkedHashMap<OAPlayer, Integer> getTopPlayersByDestroy(int numberOfPlayers, OABlock block, int offset);
 	
 	/**
 	 * Get top players ordered by found
 	 *
 	 * @param numberOfPlayers Number of players to get
-	 * @return Returns a set of players
+	 * @return Returns a map of {@link OAPlayer} and {@link Integer}
 	 */
-	Set<OAPlayer> getTopPlayersByFound(int numberOfPlayers);
+	default LinkedHashMap<OAPlayer, Integer> getTopPlayersByFound(int numberOfPlayers) {
+		return getTopPlayersByFound(numberOfPlayers, null, 0);
+	}
+	
+	/**
+	 * Get top players ordered by block found
+	 *
+	 * @param numberOfPlayers Number of players to get
+	 * @param block The block to use as filter
+	 * @return Returns a map of {@link OAPlayer} and {@link Integer}
+	 */
+	default LinkedHashMap<OAPlayer, Integer> getTopPlayersByFound(int numberOfPlayers, OABlock block) {
+		return getTopPlayersByFound(numberOfPlayers, block, 0);
+	}
+	
+	/**
+	 * Get top players ordered by found
+	 *
+	 * @param numberOfPlayers Number of players to get
+	 * @param offset Offset of players list
+	 * @return Returns a map of {@link OAPlayer} and {@link Integer}
+	 */
+	default LinkedHashMap<OAPlayer, Integer> getTopPlayersByFound(int numberOfPlayers, int offset) {
+		return getTopPlayersByFound(numberOfPlayers, null, offset);
+	}
+	
+	/**
+	 * Get top players ordered by block found
+	 *
+	 * @param numberOfPlayers Number of players to get
+	 * @param block The block to use as filter
+	 * @param offset Offset the result list
+	 * @return Returns a map of {@link OAPlayer} and {@link Integer}
+	 */
+	LinkedHashMap<OAPlayer, Integer> getTopPlayersByFound(int numberOfPlayers, OABlock block, int offset);
+	
+	/**
+	 * Get latest blocks found
+	 *
+	 * @param limit The result number limit
+	 * @return Returns a set of {@link OABlockFound}
+	 */
+	default LinkedList<OABlockFound> getLogBlocks(int limit) {
+		return getLogBlocks(limit, null, null, 0);
+	}
+	
+	/**
+	 * Get latest blocks found by {@code player}
+	 *
+	 * @param limit The result number limit
+	 * @param player The player to use as filter
+	 * @return Returns a set of {@link OABlockFound}
+	 */
+	default LinkedList<OABlockFound> getLogBlocks(int limit, OAPlayer player) {
+		return getLogBlocks(limit, player, null, 0);
+	}
+	
+	/**
+	 * Get latest blocks of {@code block} found
+	 *
+	 * @param limit The result number limit
+	 * @param block The block to use as filter
+	 * @return Returns a set of {@link OABlockFound}
+	 */
+	default LinkedList<OABlockFound> getLogBlocks(int limit, OABlock block) {
+		return getLogBlocks(limit, null, block, 0);
+	}
+	
+	/**
+	 * Get latest blocks of {@code block} found by {@code player}
+	 *
+	 * @param limit The result number limit
+	 * @param player The player to use as filter
+	 * @param block The block to use as filter
+	 * @return Returns a set of {@link OABlockFound}
+	 */
+	default LinkedList<OABlockFound> getLogBlocks(int limit, OAPlayer player, OABlock block) {
+		return getLogBlocks(limit, player, block, 0);
+	}
+	
+	/**
+	 * Get latest blocks of {@code block} found by {@code player}
+	 *
+	 * @param limit The result number limit
+	 * @param player The player to use as filter
+	 * @param block The block to use as filter
+	 * @param offset Offset the result list
+	 * @return Returns a set of {@link OABlockFound}
+	 */
+	LinkedList<OABlockFound> getLogBlocks(int limit, OAPlayer player, OABlock block, int offset);
+	
+	/**
+	 * Add a block to the configuration
+	 *
+	 * @return Returns a new block or null if already exists
+	 */
+	@Nullable OABlock addBlock(@NonNull String materialName);
+	
+	/**
+	 * Remove the block from the configuration
+	 *
+	 * @param block The block to remove
+	 */
+	void removeBlock(@NonNull OABlock block);
 }

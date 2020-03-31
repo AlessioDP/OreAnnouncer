@@ -16,14 +16,13 @@ public class BungeeOACommandManager extends OACommandManager {
 	}
 	
 	@Override
-	protected void prepareCommands() {
-		commandOrder = null; // Command order disabled
-		commandUtils = new BungeeCommandUtils(plugin, ConfigMain.COMMANDS_SUB_ON, ConfigMain.COMMANDS_SUB_OFF);
+	public void prepareCommands() {
 		super.prepareCommands();
+		commandUtils = new BungeeCommandUtils(plugin, ConfigMain.COMMANDS_SUB_ON, ConfigMain.COMMANDS_SUB_OFF);
 	}
 	
 	@Override
-	protected void registerCommands() {
+	public void registerCommands() {
 		mainCommands = new ArrayList<>();
 		mainCommands.add(new BungeeCommandOA((OreAnnouncerPlugin) plugin));
 	}

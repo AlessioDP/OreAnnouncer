@@ -48,15 +48,9 @@ storage:
     # [General SQL settings]
     # General settings for sql databases, recommended to use default values
     general-sql-settings:
-      varchar-size: 255
-      upgrade:
-        save-old-table: true
-        old-table-suffix: _backup
-      tables:
-        players: oreannouncer_players
-        blocks: oreannouncer_blocks
-        blocks-found: oreannouncer_blocks_found
-        versions: oreannouncer_versions
+      prefix: 'oreannouncer_'
+      # Available: UTF-8, UTF-16le & UTF-16be
+      charset: 'UTF-8'
 
     # [SQLite settings]
     sqlite:
@@ -75,8 +69,6 @@ storage:
       connection-lifetime: 1800000
       # Property used to alert when the connection is not using a valid SSL certificate
       use-ssl: false
-      # Charset used by tables
-      charset: utf8
 
 
 # / =============================== \
@@ -169,7 +161,6 @@ blocks:
     count-on-destroy: true
 
 
-
 # / =============================== \
 # |         STATS  SETTINGS         |
 # \ =============================== /
@@ -185,14 +176,21 @@ stats:
   # of blocks for an improved anti x-ray system.
   # You have to configure blocks options to use this.
   enable: true
-  # Insert any block that you want to blacklist from general listing like /oa top
+  # Order by:
+  # => priority = Block priority number
+  # => value    = Value
+  order-by: priority
+  # Insert any block that you want to blacklist from general listing
   blacklist-blocks:
-    - 'STONE'
+    log: []
+    stats: []
+    top:
+      - 'STONE'
   advanced-count:
     enable: true
     # Time format:
     # => y          years
-    # => M          moths
+    # => M          months
     # => d          days
     # => H          hours
     # => m          minutes
@@ -200,10 +198,22 @@ stats:
     # => S          milliseconds
     # => 'text'     arbitrary text content
     default-time-format: "m' minutes'"
+
+    log-command:
+      enable: true
+      # Simple date format
+      format-date: 'yyyy-MM-dd at HH:mm'
+      # See time format above
+      format-date-elapsed: "d'd' H'h' m'm'"
+      blocks-per-page: 8
+      number-of-blocks: 8
+      page-size: 5
   top:
     enable: true
     # Order by: destroy/found
     order-by: destroy
+    # Allow order change with the command
+    change-order: false
     number-of-players: 5
     page-size: 5
 
@@ -219,14 +229,25 @@ commands:
     help: help
     oa: oa
     alerts: alerts
+    log: log
     reload: reload
     stats: stats
     top: top
     version: version
   sub-commands:
+    block: 'block'
+    player: 'player'
     word-on: 'on'
     word-off: 'off'
+  order:
+    - help
+    - alerts
+    - log
+    - stats
+    - top
+    - reload
+    - version
 
 
 dont-edit-this:
-  version: 5
+  version: 6

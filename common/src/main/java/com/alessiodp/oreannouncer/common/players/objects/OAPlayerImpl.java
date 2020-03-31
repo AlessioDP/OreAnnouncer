@@ -7,9 +7,10 @@ import com.alessiodp.oreannouncer.api.interfaces.OAPlayer;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.addons.external.LLAPIHandler;
 import com.alessiodp.oreannouncer.common.commands.list.CommonCommands;
-import com.alessiodp.oreannouncer.common.commands.utils.OreAnnouncerPermission;
+import com.alessiodp.oreannouncer.common.utils.OreAnnouncerPermission;
 import com.alessiodp.oreannouncer.common.configuration.OAConstants;
 import com.alessiodp.oreannouncer.common.configuration.data.Messages;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,15 +20,16 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.locks.ReentrantLock;
 
+@EqualsAndHashCode(doNotUseGetters = true)
 public abstract class OAPlayerImpl implements OAPlayer {
-	protected final OreAnnouncerPlugin plugin;
-	@Getter private final HashMap<String, PlayerDataBlock> dataBlocks = new HashMap<>();
+	@EqualsAndHashCode.Exclude protected final OreAnnouncerPlugin plugin;
+	@EqualsAndHashCode.Exclude @Getter private final HashMap<String, PlayerDataBlock> dataBlocks = new HashMap<>();
 	
 	@Getter @Setter private UUID playerUUID;
 	@Setter private boolean alertsOn;
-	@Getter private String name;
+	@EqualsAndHashCode.Exclude @Getter private String name;
 	
-	@Getter private final ReentrantLock lock = new ReentrantLock();
+	@EqualsAndHashCode.Exclude @Getter private final ReentrantLock lock = new ReentrantLock();
 	
 	protected OAPlayerImpl(OreAnnouncerPlugin plugin, UUID uuid) {
 		this.plugin = plugin;
@@ -70,6 +72,8 @@ public abstract class OAPlayerImpl implements OAPlayer {
 			ret.add(CommonCommands.STATS);
 		if (player.hasPermission(OreAnnouncerPermission.USER_TOP.toString()))
 			ret.add(CommonCommands.TOP);
+		if (player.hasPermission(OreAnnouncerPermission.ADMIN_LOG.toString()))
+			ret.add(CommonCommands.LOG);
 		if (player.hasPermission(OreAnnouncerPermission.ADMIN_VERSION.toString()))
 			ret.add(CommonCommands.VERSION);
 		
