@@ -197,6 +197,7 @@ public interface OreAnnouncerAPI {
 	/**
 	 * Add a block to the configuration
 	 *
+	 * @param materialName The block name to add
 	 * @return Returns a new block or null if already exists
 	 */
 	@Nullable OABlock addBlock(@NonNull String materialName);
