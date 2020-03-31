@@ -119,7 +119,7 @@ help:
     #=> %description%     = Description
     #=> %run_command%     = Command run syntax
     #=> %perform_command% = Perform command message
-    help: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command%"},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
+    help: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
     alerts: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
     log: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
     reload: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/%run_command%"},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
