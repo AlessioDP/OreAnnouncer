@@ -36,11 +36,11 @@ commands:
     toggle-on: '&aOra sarai in grado di vedere gli avvisi'
     toggle-off: '&aNon vedrai più gli avvisi'
   log:
-    header-player: '&2============ &l%player%''s Log (%page%/%maxpages%) &r&2============'
+    header-player: '&2============ &lLog di %player% (%page%/%maxpages%) &r&2============'
     footer-player: ''
-    header-block: '&2============= &l%block%''s Log (%page%/%maxpages%) &r&2============='
+    header-block: '&2============= &lLog di %block% (%page%/%maxpages%) &r&2============='
     footer-block: ''
-    header-block-general: '&2================ &lBlocks Log (%page%/%maxpages%) &r&2================'
+    header-block-general: '&2============== &lLog dei Blocchi (%page%/%maxpages%) &r&2=============='
     footer-block-general: ''
     format-player-block: '["",{"text":"%number% %block_color%%block% ","color":"gold"},{"text":"%date_elapsed% fa!","color":"gray","hoverEvent":{"action":"show_text","value":["",{"text":"%date%","color":"gold"}]}}]'
     format-general-block: '["",{"text":"%number% %block_color%%block% ","color":"gold"},{"text":"da %player% ","color":"dark_gray"},{"text":"%date_elapsed% fa!","color":"gray","hoverEvent":{"action":"show_text","value":["",{"text":"%date%","color":"gold"}]}}]'
@@ -48,7 +48,7 @@ commands:
     player-not-found: '&c%player% non trovato!'
     invalid-block: '&cBlocco non valido'
   stats:
-    header: '&2============== &l%player%''s Stats &r&2=============='
+    header: '&2=========== &lStatistiche di %player% &r&2==========='
     footer: ''
     nothing: '&7Niente'
     format-block: '%block_color%%block%&7: %value%'
@@ -58,7 +58,7 @@ commands:
     #=> %total%    = Total players
     #=> %page%     = Current list page
     #=> %maxpages% = How many pages exist
-    header: '&2=================== &lTop Players &r&2==================='
+    header: '&2================ &lMigliori Giocatori &r&2================'
     footer: ''
     no-one: '&7Nessuno'
     #You can use JSON to shows per-block total on hover
@@ -78,7 +78,7 @@ commands:
 #|          HELP MESSAGES          |
 #\ =============================== /
 help:
-  header: '&2============= &lOreAnnouncer Help Page &r&2============='
+  header: '&2========= &lPagina d''Aiuto di OreAnnouncer &r&2========='
   footer: ''
   perform-command: 'Esegui il comando'
   console-help:
