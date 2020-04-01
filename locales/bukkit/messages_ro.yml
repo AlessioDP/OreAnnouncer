@@ -22,6 +22,12 @@ oreannouncer:
   common-messages:
     invalid-command: '&cInvalid command'
     configuration-reloaded: '&aConfiguration reloaded'
+  syntax:
+    wrong-message: '&cWrong syntax: Type &7/%syntax%'
+    block: 'block'
+    order: 'order'
+    player: 'player'
+    page: 'page'
 #/ =============================== \
 #|         ALERTS MESSAGES         |
 #\ =============================== /
@@ -58,24 +64,38 @@ commands:
   alerts:
     toggle-on: '&aNow you will be able to see alerts'
     toggle-off: '&aYou won''t see alerts anymore'
-    wrong-command: '&cWrong variables: Type &7/oa alerts [on/off]'
+  log:
+    header-player: '&2============ &l%player%''s Log (%page%/%maxpages%) &r&2============'
+    footer-player: ''
+    header-block: '&2============= &l%block%''s Log (%page%/%maxpages%) &r&2============='
+    footer-block: ''
+    header-block-general: '&2================ &lBlocks Log (%page%/%maxpages%) &r&2================'
+    footer-block-general: ''
+    format-player-block: '["",{"text":"%number% %block_color%%block% ","color":"gold"},{"text":"%date_elapsed% ago!","color":"gray","hoverEvent":{"action":"show_text","value":["",{"text":"%date%","color":"gold"}]}}]'
+    format-general-block: '["",{"text":"%number% %block_color%%block% ","color":"gold"},{"text":"by %player% ","color":"dark_gray"},{"text":"%date_elapsed% ago!","color":"gray","hoverEvent":{"action":"show_text","value":["",{"text":"%date%","color":"gold"}]}}]'
+    nothing: '&7Nothing'
+    player-not-found: '&c%player% not found!'
+    invalid-block: '&cInvalid block'
   stats:
-    content:
-      - '&2============ &l%player%''s Stats &r&2============'
-      - '&bDiamonds&7: %player_destroyed_diamond_ore%'
-      - '&aEmeralds&7: %player_destroyed_emerald_ore%'
+    header: '&2============== &l%player%''s Stats &r&2=============='
+    footer: ''
+    nothing: '&7Nothing'
+    format-block: '%block_color%%block%&7: %value%'
     player-not-found: '&c%player% not found!'
   top:
     #[Special tags]
     #=> %total%    = Total players
     #=> %page%     = Current list page
     #=> %maxpages% = How many pages exist
-    header: '&2============ &lTop Players &r&2============'
+    header: '&2=================== &lTop Players &r&2==================='
     footer: ''
     no-one: '&7No one'
     #You can use JSON to shows per-block total on hover
-    format-player: '&a%player%&7: %player_destroyed% blocks'
-    wrong-command: '&cWrong variables: Type &7/oa top [page]'
+    format-player: '&a%player%&7: %value% blocks'
+    word-destroy: 'destroy'
+    word-found: 'found'
+    invalid-order: '&cInvalid order type'
+    invalid-block: '&cInvalid block'
   version:
     #[Special tags]
     #=> %version%    = OreAnnouncer version
@@ -87,20 +107,32 @@ commands:
 #|          HELP MESSAGES          |
 #\ =============================== /
 help:
-  header: '&2============ &lOreAnnouncer Help Page &r&2============'
+  header: '&2============= &lOreAnnouncer Help Page &r&2============='
   footer: ''
+  perform-command: 'Perform the command'
   console-help:
-    - 'You can only make these commands:'
-    - ' > oa reload - Reload the configuration'
-    - ' > oa stats <player> - Show player stats'
-    - ' > oa top - List of top players'
-    - ' > oa version - Show OreAnnouncer information'
+    header: 'You can only make these commands:'
+    command: ' > %command% - %description%'
   commands:
-    help: '{"text":"","extra":[{"text":"/oa help","color":"dark_green"},{"text":" - Show help pages","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa help "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    alerts: '{"text":"","extra":[{"text":"/oa alerts [on/off]","color":"dark_green"},{"text":" - Toggle alerts","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa alerts "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    reload: '{"text":"","extra":[{"text":"/oa reload","color":"dark_green"},{"text":" - Reload OreAnnouncer configuration files","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa reload"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    stats: '{"text":"","extra":[{"text":"/oa stats [player]","color":"dark_green"},{"text":" - Show player stats","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa stats "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    top: '{"text":"","extra":[{"text":"/oa top [page]","color":"dark_green"},{"text":" - List of top players","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa top "},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
-    version: '{"text":"","extra":[{"text":"/oa version","color":"dark_green"},{"text":" - Show OreAnnouncer information","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa version"},"hoverEvent":{"action":"show_text","value":{"text":"Perform the command","color":"gold"}}}'
+    #[Special tags]
+    #=> %syntax%          = Command syntax
+    #=> %description%     = Description
+    #=> %run_command%     = Command run syntax
+    #=> %perform_command% = Perform command message
+    help: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
+    alerts: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
+    log: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
+    reload: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/%run_command%"},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
+    stats: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
+    top: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
+    version: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/%run_command%"},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
+  command-descriptions:
+    help: 'Show help pages'
+    alerts: 'Toggle alerts'
+    log: 'Show logs'
+    reload: 'Reload OreAnnouncer configuration files'
+    stats: 'Show player stats'
+    top: 'Show top players'
+    version: 'Show OreAnnouncer information'
 dont-edit-this:
-  version: 5
+  version: 6

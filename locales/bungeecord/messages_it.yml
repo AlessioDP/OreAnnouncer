@@ -22,6 +22,12 @@ oreannouncer:
   common-messages:
     invalid-command: '&cComando non valido'
     configuration-reloaded: '&aConfigurazione ricaricata'
+  syntax:
+    wrong-message: '&cSintassi errata: Digita &7/%syntax%'
+    block: 'blocco'
+    order: 'ordine'
+    player: 'giocatore'
+    page: 'pagina'
 #/ =============================== \
 #|        COMMANDS MESSAGES        |
 #\ =============================== /
@@ -29,24 +35,38 @@ commands:
   alerts:
     toggle-on: '&aOra sarai in grado di vedere gli avvisi'
     toggle-off: '&aNon vedrai più gli avvisi'
-    wrong-command: '&cComando sbagliato: Esegui &7/oa alerts [on/off]'
+  log:
+    header-player: '&2============ &l%player%''s Log (%page%/%maxpages%) &r&2============'
+    footer-player: ''
+    header-block: '&2============= &l%block%''s Log (%page%/%maxpages%) &r&2============='
+    footer-block: ''
+    header-block-general: '&2================ &lBlocks Log (%page%/%maxpages%) &r&2================'
+    footer-block-general: ''
+    format-player-block: '["",{"text":"%number% %block_color%%block% ","color":"gold"},{"text":"%date_elapsed% fa!","color":"gray","hoverEvent":{"action":"show_text","value":["",{"text":"%date%","color":"gold"}]}}]'
+    format-general-block: '["",{"text":"%number% %block_color%%block% ","color":"gold"},{"text":"da %player% ","color":"dark_gray"},{"text":"%date_elapsed% fa!","color":"gray","hoverEvent":{"action":"show_text","value":["",{"text":"%date%","color":"gold"}]}}]'
+    nothing: '&7Niente'
+    player-not-found: '&c%player% non trovato!'
+    invalid-block: '&cBlocco non valido'
   stats:
-    content:
-      - '&2======== &l Statistiche di %player% &r&2========'
-      - '&bDiamanti&7: %player_destroyed_diamond_ore%'
-      - '&aSmeraldi&7: %player_destroyed_emerald_ore%'
+    header: '&2============== &l%player%''s Stats &r&2=============='
+    footer: ''
+    nothing: '&7Niente'
+    format-block: '%block_color%%block%&7: %value%'
     player-not-found: '&c%player% non trovato!'
   top:
     #[Special tags]
     #=> %total%    = Total players
     #=> %page%     = Current list page
     #=> %maxpages% = How many pages exist
-    header: '&2============ &lMiglior giocatori &r&2============'
+    header: '&2=================== &lTop Players &r&2==================='
     footer: ''
     no-one: '&7Nessuno'
     #You can use JSON to shows per-block total on hover
-    format-player: '&a%player%&7: %player_destroyed% blocchi'
-    wrong-command: '&cComando sbagliato: Esegui &7/oa top [page]'
+    format-player: '&a%player%&7: %value% blocchi'
+    word-destroy: 'distrutti'
+    word-found: 'trovati'
+    invalid-order: '&cTipo di ordine non valido'
+    invalid-block: '&cBlocco non valido'
   version:
     #[Special tags]
     #=> %version%    = OreAnnouncer version
@@ -58,20 +78,32 @@ commands:
 #|          HELP MESSAGES          |
 #\ =============================== /
 help:
-  header: '&2======= &lPagina d''aiuto di OreAnnouncer &r&2======='
+  header: '&2============= &lOreAnnouncer Help Page &r&2============='
   footer: ''
+  perform-command: 'Esegui il comando'
   console-help:
-    - 'Puoi solamente far questi comandi:'
-    - ' > oa reload - Ricarica la configurazione'
-    - ' > oa stats <player> - Mostra le statistiche del giocatore'
-    - ' > oa top - Lista migliori giocatori'
-    - ' > oa version - Mostra informazioni su OreAnnouncer'
+    header: 'Puoi solamente far questi comandi:'
+    command: ' > %command% - %description%'
   commands:
-    help: '{"text":"","extra":[{"text":"/oa help","color":"dark_green"},{"text":" - Mostra la pagina d''aiuto","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa help "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
-    alerts: '{"text":"","extra":[{"text":"/oa alerts [on/off]","color":"dark_green"},{"text":" - Attiva/disattiva avvisi","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa alerts "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
-    reload: '{"text":"","extra":[{"text":"/oa reload","color":"dark_green"},{"text":" - Ricarica file di configurazione","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa reload"},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
-    stats: '{"text":"","extra":[{"text":"/oa stats [player]","color":"dark_green"},{"text":" - Mostra statistiche del giocatore","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa stats "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
-    top: '{"text":"","extra":[{"text":"/oa top [page]","color":"dark_green"},{"text":" - Lista migliori giocatori","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa top "},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
-    version: '{"text":"","extra":[{"text":"/oa version","color":"dark_green"},{"text":" - Mostra informazioni su OreAnnouncer","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/oa version"},"hoverEvent":{"action":"show_text","value":{"text":"Esegui il comando","color":"gold"}}}'
+    #[Special tags]
+    #=> %syntax%          = Command syntax
+    #=> %description%     = Description
+    #=> %run_command%     = Command run syntax
+    #=> %perform_command% = Perform command message
+    help: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
+    alerts: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
+    log: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
+    reload: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/%run_command%"},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
+    stats: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
+    top: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
+    version: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/%run_command%"},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
+  command-descriptions:
+    help: 'Mostra le pagine d''aiuto'
+    alerts: 'Attiva/disattiva avvisi'
+    log: 'Mostra i log'
+    reload: 'Ricarica i file di configurazione di OreAnnouncer'
+    stats: 'Mostra statistiche giocatore'
+    top: 'Mostra i migliori giocatori'
+    version: 'Mostra le informazioni di OreAnnouncer'
 dont-edit-this:
-  version: 4
+  version: 5
