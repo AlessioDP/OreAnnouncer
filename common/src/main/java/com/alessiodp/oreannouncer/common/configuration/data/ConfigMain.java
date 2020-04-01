@@ -129,12 +129,16 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static boolean		STATS_ADVANCED_COUNT_LOG_ENABLE;
 	@ConfigOption(path = "stats.advanced-count.log-command.format-date")
 	public static String		STATS_ADVANCED_COUNT_LOG_FORMAT_DATE;
-	@ConfigOption(path = "stats.advanced-count.log-command.format-date-elapsed")
-	public static String		STATS_ADVANCED_COUNT_LOG_FORMAT_DATE_ELAPSED;
+	@ConfigOption(path = "stats.advanced-count.log-command.format-date-elapsed-large")
+	public static String		STATS_ADVANCED_COUNT_LOG_FORMAT_DATE_ELAPSED_LARGE;
+	@ConfigOption(path = "stats.advanced-count.log-command.format-date-elapsed-medium")
+	public static String		STATS_ADVANCED_COUNT_LOG_FORMAT_DATE_ELAPSED_MEDIUM;
+	@ConfigOption(path = "stats.advanced-count.log-command.format-date-elapsed-small")
+	public static String		STATS_ADVANCED_COUNT_LOG_FORMAT_DATE_ELAPSED_SMALL;
+	@ConfigOption(path = "stats.advanced-count.log-command.format-date-elapsed-smallest")
+	public static String		STATS_ADVANCED_COUNT_LOG_FORMAT_DATE_ELAPSED_SMALLEST;
 	@ConfigOption(path = "stats.advanced-count.log-command.number-of-blocks")
 	public static int			STATS_ADVANCED_COUNT_LOG_NUMBLOCKS;
-	@ConfigOption(path = "stats.advanced-count.log-command.page-size")
-	public static int			STATS_ADVANCED_COUNT_LOG_PAGESIZE;
 	@ConfigOption(path = "stats.top.enable")
 	public static boolean		STATS_TOP_ENABLE;
 	@ConfigOption(path = "stats.top.order-by")
@@ -143,8 +147,6 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static boolean		STATS_TOP_CHANGE_ORDER;
 	@ConfigOption(path = "stats.top.number-of-players")
 	public static int			STATS_TOP_NUMPLAYERS;
-	@ConfigOption(path = "stats.top.page-size")
-	public static int			STATS_TOP_PAGESIZE;
 	
 	
 	// Commands settings

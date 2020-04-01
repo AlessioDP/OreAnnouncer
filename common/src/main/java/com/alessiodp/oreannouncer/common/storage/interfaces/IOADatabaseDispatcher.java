@@ -10,14 +10,14 @@ import com.alessiodp.oreannouncer.common.storage.OADatabaseManager;
 import com.alessiodp.oreannouncer.common.utils.BlocksFoundResult;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.UUID;
 
 public interface IOADatabaseDispatcher extends IDatabaseDispatcher {
 	void updatePlayer(OAPlayerImpl player);
 	OAPlayerImpl getPlayer(UUID playerUuid);
-	HashMap<UUID, Integer> getTopPlayers(OADatabaseManager.TopOrderBy orderBy, @Nullable OABlockImpl block, int limit, int offset);
+	LinkedHashMap<UUID, Integer> getTopPlayers(OADatabaseManager.TopOrderBy orderBy, @Nullable OABlockImpl block, int limit, int offset);
 	int getTopPlayersNumber(OADatabaseManager.TopOrderBy orderBy, @Nullable OABlockImpl block);
 	
 	void updateDataBlock(PlayerDataBlock playerDataBlock);

@@ -202,12 +202,17 @@ stats:
     log-command:
       enable: true
       # Simple date format
-      format-date: 'yyyy-MM-dd at HH:mm'
+      format-date: "yyyy-MM-dd 'at' HH:mm"
       # See time format above
-      format-date-elapsed: "d'd' H'h' m'm'"
-      blocks-per-page: 8
+      # => large     = More than 1 day
+      # => medium    = More than 1 hour
+      # => small     = More than 1 minute
+      # => smallest  = More than 0
+      format-date-elapsed-large: "d'd' H'h'"
+      format-date-elapsed-medium: "H'h' m'm'"
+      format-date-elapsed-small: "m'm' s's'"
+      format-date-elapsed-smallest: "s's'"
       number-of-blocks: 8
-      page-size: 5
   top:
     enable: true
     # Order by: destroy/found
@@ -215,7 +220,6 @@ stats:
     # Allow order change with the command
     change-order: false
     number-of-players: 5
-    page-size: 5
 
 
 # / =============================== \

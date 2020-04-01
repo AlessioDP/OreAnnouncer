@@ -2,6 +2,8 @@ package com.alessiodp.oreannouncer.common.utils;
 
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.addons.internal.OAPlaceholder;
+import com.alessiodp.oreannouncer.common.configuration.OAConstants;
+import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.time.DurationFormatUtils;
@@ -46,19 +48,27 @@ public abstract class MessageUtils {
 		return ret;
 	}
 	
-	public String formatDate(long timestamp, String format) {
+	public String formatDate(long timestamp) {
 		Instant instant = Instant.ofEpochSecond(timestamp);
 		LocalDateTime date = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
 		
-		String ret = format;
+		String ret = ConfigMain.STATS_ADVANCED_COUNT_LOG_FORMAT_DATE;
 		try {
-			ret = DateTimeFormatter.ofPattern(format).format(date);
-		} catch (IllegalArgumentException ignored) {}
+			ret = DateTimeFormatter.ofPattern(ret).format(date);
+		} catch (IllegalArgumentException ex) {
+			plugin.getLoggerManager().printErrorStacktrace(OAConstants.DEBUG_CMD_LOG_FAILED_PARSE_DATE, ex);
+		}
 		return ret;
 	}
 	
-	public String formatElapsed(long timestamp, String format) {
-		return DurationFormatUtils.formatDuration(System.currentTimeMillis() - (timestamp * 1000L), format);
+	public String formatElapsed(long timestamp) {
+		long elapsed = System.currentTimeMillis() - (timestamp * 1000L);
+		String format = elapsed >= 86400000 ?
+				ConfigMain.STATS_ADVANCED_COUNT_LOG_FORMAT_DATE_ELAPSED_LARGE
+				: (elapsed >= 3600000 ? ConfigMain.STATS_ADVANCED_COUNT_LOG_FORMAT_DATE_ELAPSED_MEDIUM
+						: (elapsed >= 60000 ? ConfigMain.STATS_ADVANCED_COUNT_LOG_FORMAT_DATE_ELAPSED_SMALL
+								: ConfigMain.STATS_ADVANCED_COUNT_LOG_FORMAT_DATE_ELAPSED_SMALLEST));
+		return DurationFormatUtils.formatDuration(elapsed, format);
 	}
 	
 	public String stripPlaceholder(String placeholder) {

@@ -18,7 +18,7 @@ import com.alessiodp.oreannouncer.common.storage.interfaces.IOADatabaseDispatche
 import com.alessiodp.oreannouncer.common.utils.BlocksFoundResult;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.UUID;
 
@@ -63,7 +63,7 @@ public class OADatabaseManager extends DatabaseManager {
 		}).join();
 	}
 	
-	public HashMap<UUID, Integer> getTopPlayers(TopOrderBy orderBy, @Nullable OABlockImpl block, int limit, int offset) {
+	public LinkedHashMap<UUID, Integer> getTopPlayers(TopOrderBy orderBy, @Nullable OABlockImpl block, int limit, int offset) {
 		return plugin.getScheduler().runSupplyAsync(() -> {
 			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_TOP_BLOCKS_LIST
 					.replace("{order}", orderBy.name())

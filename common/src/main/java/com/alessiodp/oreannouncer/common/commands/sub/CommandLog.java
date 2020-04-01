@@ -254,8 +254,8 @@ public class CommandLog extends ADPSubCommand {
 							.replace("%number%", Integer.toString(bf.getFound()))
 							.replace("%block%", b.getDisplayName() != null ? b.getDisplayName() : b.getSingularName())
 							.replace("%block_color%", b.getDisplayColor() != null ? plugin.getColorUtils().convertColorByName(b.getDisplayColor()) : "")
-							.replace("%date_elapsed%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatElapsed(bf.getTimestamp(), ConfigMain.STATS_ADVANCED_COUNT_LOG_FORMAT_DATE_ELAPSED))
-							.replace("%date%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatDate(bf.getTimestamp(), ConfigMain.STATS_ADVANCED_COUNT_LOG_FORMAT_DATE)));
+							.replace("%date_elapsed%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatElapsed(bf.getTimestamp()))
+							.replace("%date%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatDate(bf.getTimestamp())));
 				}
 			}
 		}

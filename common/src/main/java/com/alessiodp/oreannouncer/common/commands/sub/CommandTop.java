@@ -20,7 +20,7 @@ import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -90,7 +90,8 @@ public class CommandTop extends ADPSubCommand {
 		ConfigMain.STATS_BLACKLIST_BLOCKS_TOP.forEach((str) -> blacklist.add(str.toUpperCase()));
 		
 		int selectedPage = 1;
-		OADatabaseManager.TopOrderBy orderBy = OADatabaseManager.TopOrderBy.DESTROY;
+		OADatabaseManager.TopOrderBy orderBy = OADatabaseManager.TopOrderBy.parse(ConfigMain.STATS_TOP_ORDER_BY);
+		if (orderBy == null) orderBy = OADatabaseManager.TopOrderBy.DESTROY;
 		OABlockImpl block = null;
 		if (commandData.getArgs().length > 1) {
 			String[] args = Arrays.copyOfRange(commandData.getArgs(), 1, commandData.getArgs().length);
@@ -177,7 +178,7 @@ public class CommandTop extends ADPSubCommand {
 		
 		// Command starts
 		int numberPlayers = ((OreAnnouncerPlugin) plugin).getDatabaseManager().getTopPlayersNumber(orderBy, block);
-		int limit = Math.min(ConfigMain.STATS_TOP_PAGESIZE, ConfigMain.STATS_TOP_NUMPLAYERS);
+		int limit = Math.max(1, ConfigMain.STATS_TOP_NUMPLAYERS);
 		int maxPages;
 		if (numberPlayers == 0)
 			maxPages = 1;
@@ -190,7 +191,7 @@ public class CommandTop extends ADPSubCommand {
 			selectedPage = maxPages;
 		
 		int offset = selectedPage > 1 ? limit * (selectedPage - 1) : 0;
-		HashMap<UUID, Integer> players = ((OreAnnouncerPlugin) plugin).getDatabaseManager().getTopPlayers(orderBy, block, limit, offset);
+		LinkedHashMap<UUID, Integer> players = ((OreAnnouncerPlugin) plugin).getDatabaseManager().getTopPlayers(orderBy, block, limit, offset);
 		
 		sendMessage(player, Messages.CMD_TOP_HEADER
 				.replace("%total%", Integer.toString(numberPlayers))
@@ -222,6 +223,25 @@ public class CommandTop extends ADPSubCommand {
 	
 	@Override
 	public List<String> onTabComplete(@NonNull User sender, String[] args) {
-		return plugin.getCommandManager().getCommandUtils().tabCompleteOnOff(args);
+		List<String> ret = new ArrayList<>();
+		if (sender.hasPermission(permission)) {
+			if (args.length == 2) {
+				if (ConfigMain.STATS_TOP_CHANGE_ORDER) {
+					for (OADatabaseManager.TopOrderBy ord : OADatabaseManager.TopOrderBy.values())
+						ret.add(ord.name().toLowerCase());
+				} else {
+					for (OABlockImpl block : Blocks.LIST.values()) {
+						if (block.isEnabled())
+							ret.add(block.getMaterialName());
+					}
+				}
+			} else if (args.length == 3 && ConfigMain.STATS_TOP_CHANGE_ORDER) {
+				for (OABlockImpl block : Blocks.LIST.values()) {
+					if (block.isEnabled())
+						ret.add(block.getMaterialName());
+				}
+			}
+		}
+		return ret;
 	}
 }

@@ -339,29 +339,29 @@ public class SQLDispatcherTest {
 		assertEquals(dispatcher.getLogBlocksNumber(null, null), 6);
 		
 		assertEquals(blocks.size(), 6);
-		assertEquals(blocks.get(0), bf1player1);
-		assertEquals(blocks.get(3), bf1player2);
+		assertEquals(blocks.get(0), bf4player2);
+		assertEquals(blocks.get(3), bf4player1);
 		
 		ConfigMain.STATS_BLACKLIST_BLOCKS_LOG = Collections.emptyList();
 		blocks = dispatcher.getLogBlocks(oaPlayer1, null, 10,0);
 		assertEquals(dispatcher.getLogBlocksNumber(oaPlayer1, null), 4);
 		
 		assertEquals(blocks.size(), 4);
-		assertEquals(blocks.get(0), bf1player1);
-		assertEquals(blocks.get(3), bf4player1);
+		assertEquals(blocks.get(0), bf4player1);
+		assertEquals(blocks.get(3), bf1player1);
 		
 		blocks = dispatcher.getLogBlocks(null, block3, 10,0);
 		assertEquals(dispatcher.getLogBlocksNumber(null, block3), 4);
 		
 		assertEquals(blocks.size(), 4);
-		assertEquals(blocks.get(0), bf3player1);
-		assertEquals(blocks.get(3), bf4player2);
+		assertEquals(blocks.get(0), bf4player2);
+		assertEquals(blocks.get(3), bf3player1);
 		
 		blocks = dispatcher.getLogBlocks(oaPlayer1, block3, 10,0);
 		assertEquals(dispatcher.getLogBlocksNumber(oaPlayer1, block3), 2);
 		
 		assertEquals(blocks.size(), 2);
-		assertEquals(blocks.get(0), bf3player1);
-		assertEquals(blocks.get(1), bf4player1);
+		assertEquals(blocks.get(0), bf4player1);
+		assertEquals(blocks.get(1), bf3player1);
 	}
 }

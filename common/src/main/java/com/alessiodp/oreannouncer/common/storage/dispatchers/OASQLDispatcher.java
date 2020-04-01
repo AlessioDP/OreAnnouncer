@@ -32,7 +32,7 @@ import org.jooq.Table;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -222,13 +222,13 @@ public class OASQLDispatcher extends SQLDispatcher implements IOADatabaseDispatc
 				.from(BLOCKS_FOUND)
 				.where(condition)
 				.groupBy(field("player"))
-				.orderBy(field("total"))
+				.orderBy(field("total").desc())
 				.limit(limit).offset(offset);
 	}
 	
 	@Override
-	public HashMap<UUID, Integer> getTopPlayers(OADatabaseManager.TopOrderBy orderBy, @Nullable OABlockImpl block, int limit, int offset) {
-		HashMap<UUID, Integer> ret = new HashMap<>();
+	public LinkedHashMap<UUID, Integer> getTopPlayers(OADatabaseManager.TopOrderBy orderBy, @Nullable OABlockImpl block, int limit, int offset) {
+		LinkedHashMap<UUID, Integer> ret = new LinkedHashMap<>();
 		try {
 			Result<?> r;
 			if (orderBy.equals(OADatabaseManager.TopOrderBy.FOUND)) {
@@ -367,7 +367,7 @@ public class OASQLDispatcher extends SQLDispatcher implements IOADatabaseDispatc
 		return database.getQueryBuilder()
 				.selectFrom(BLOCKS_FOUND)
 				.where(condition)
-				.orderBy(BLOCKS_FOUND.TIMESTAMP)
+				.orderBy(BLOCKS_FOUND.TIMESTAMP.desc())
 				.limit(limit).offset(offset);
 	}
 	

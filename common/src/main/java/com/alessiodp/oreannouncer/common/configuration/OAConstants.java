@@ -27,6 +27,7 @@ public class OAConstants {
 	public static final String DEBUG_CMD_HELP = "{player} performed help command with page '{page}'";
 	public static final String DEBUG_CMD_LOG = "{player} performed log command";
 	public static final String DEBUG_CMD_LOG_CONSOLE = "Console performed log command";
+	public static final String DEBUG_CMD_LOG_FAILED_PARSE_DATE = "Failed to parse format date: {message}";
 	public static final String DEBUG_CMD_RELOAD = "{player} performed reload command";
 	public static final String DEBUG_CMD_RELOAD_CONSOLE = "Console performed reload command";
 	public static final String DEBUG_CMD_RELOADED = "Configuration reloaded by {player}";
@@ -42,8 +43,6 @@ public class OAConstants {
 	public static final String DEBUG_DB_UPDATEDATABLOCK = "Update data block for '{uuid}' of {block}";
 	public static final String DEBUG_DB_TOP_BLOCKS_LIST = "Getting top players with limit {limit} and offset {offset}";
 	public static final String DEBUG_DB_TOP_BLOCKS_NUMBER = "Getting number of top players";
-	public static final String DEBUG_DB_TOP_BLOCK_LIST = "Getting top players by block {block} with limit {limit} and offset {offset}";
-	public static final String DEBUG_DB_TOP_BLOCK_NUMBER = "Getting number of top players by block {block}";
 	public static final String DEBUG_DB_INSERT_BLOCKS_FOUND = "Inserting blocks found for '{uuid}' of {block}";
 	public static final String DEBUG_DB_LATEST_BLOCK_FOUND = "Getting latest blocks found for '{uuid}' of {block}";
 	public static final String DEBUG_DB_LOG_BLOCKS = "Getting log blocks for '{uuid}' of '{block}'";
