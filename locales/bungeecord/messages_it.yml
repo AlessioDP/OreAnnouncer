@@ -28,6 +28,7 @@ oreannouncer:
     order: 'ordine'
     player: 'giocatore'
     page: 'pagina'
+    unknown: 'unknown'
 #/ =============================== \
 #|        COMMANDS MESSAGES        |
 #\ =============================== /
