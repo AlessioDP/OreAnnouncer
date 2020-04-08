@@ -28,6 +28,7 @@ oreannouncer:
     order: 'ordine'
     player: 'giocatore'
     page: 'pagina'
+    unknown: 'sconosciuto'
 #/ =============================== \
 #|         ALERTS MESSAGES         |
 #\ =============================== /
@@ -135,4 +136,4 @@ help:
     top: 'Mostra i migliori giocatori'
     version: 'Mostra le informazioni di OreAnnouncer'
 dont-edit-this:
-  version: 6
+  version: 7

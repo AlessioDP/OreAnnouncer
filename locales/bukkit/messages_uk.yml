@@ -28,6 +28,7 @@ oreannouncer:
     order: 'order'
     player: 'player'
     page: 'page'
+    unknown: 'unknown'
 #/ =============================== \
 #|         ALERTS MESSAGES         |
 #\ =============================== /
@@ -135,4 +136,4 @@ help:
     top: 'Show top players'
     version: 'Show OreAnnouncer information'
 dont-edit-this:
-  version: 6
+  version: 7
