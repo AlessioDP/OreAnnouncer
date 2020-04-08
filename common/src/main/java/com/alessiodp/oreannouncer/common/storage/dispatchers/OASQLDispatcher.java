@@ -4,12 +4,15 @@ import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.core.common.storage.StorageType;
 import com.alessiodp.core.common.storage.dispatchers.SQLDispatcher;
+import com.alessiodp.core.common.storage.interfaces.IDatabaseDispatcher;
 import com.alessiodp.core.common.storage.interfaces.IDatabaseSQL;
+import com.alessiodp.core.common.storage.sql.h2.H2Dao;
 import com.alessiodp.core.common.storage.sql.mysql.MySQLDao;
 import com.alessiodp.core.common.storage.sql.mysql.MySQLHikariConfiguration;
 import com.alessiodp.core.common.storage.sql.sqlite.SQLiteDao;
 import com.alessiodp.oreannouncer.api.interfaces.OABlock;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
+import com.alessiodp.oreannouncer.common.blocks.objects.BlockDestroy;
 import com.alessiodp.oreannouncer.common.blocks.objects.BlockFound;
 import com.alessiodp.oreannouncer.common.blocks.objects.OABlockImpl;
 import com.alessiodp.oreannouncer.common.configuration.data.Blocks;
@@ -18,12 +21,12 @@ import com.alessiodp.oreannouncer.common.jpa.tables.records.BlocksFoundRecord;
 import com.alessiodp.oreannouncer.common.jpa.tables.records.BlocksRecord;
 import com.alessiodp.oreannouncer.common.jpa.tables.records.PlayersRecord;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
-import com.alessiodp.oreannouncer.common.players.objects.PlayerDataBlock;
 import com.alessiodp.oreannouncer.common.storage.OADatabaseManager;
-import com.alessiodp.oreannouncer.common.storage.interfaces.IOADatabaseDispatcher;
+import com.alessiodp.oreannouncer.common.storage.interfaces.IOADatabase;
 import com.alessiodp.oreannouncer.common.utils.BlocksFoundResult;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.jooq.Condition;
+import org.jooq.InsertOnDuplicateSetStep;
 import org.jooq.Record;
 import org.jooq.Record2;
 import org.jooq.Result;
@@ -31,16 +34,17 @@ import org.jooq.SelectForUpdateStep;
 import org.jooq.Table;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import static com.alessiodp.oreannouncer.common.jpa.Tables.*;
 import static org.jooq.impl.DSL.*;
 
-public class OASQLDispatcher extends SQLDispatcher implements IOADatabaseDispatcher {
+public class OASQLDispatcher extends SQLDispatcher implements IOADatabase, IDatabaseDispatcher {
 	
 	public OASQLDispatcher(ADPPlugin plugin, StorageType storageType) {
 		super(plugin, storageType);
@@ -68,6 +72,9 @@ public class OASQLDispatcher extends SQLDispatcher implements IOADatabaseDispatc
 				break;
 			case SQLITE:
 				ret = new SQLiteDao(plugin, ConfigMain.STORAGE_SETTINGS_SQLITE_DBFILE);
+				break;
+			case H2:
+				ret = new H2Dao(plugin, ConfigMain.STORAGE_SETTINGS_H2_DBFILE);
 				break;
 			default:
 				// Unsupported storage type
@@ -98,7 +105,7 @@ public class OASQLDispatcher extends SQLDispatcher implements IOADatabaseDispatc
 	public void updatePlayer(OAPlayerImpl player) {
 		try {
 			boolean existData = false;
-			if (!player.haveAlertsOn() || player.getDataBlocks().size() > 0)
+			if (!player.haveAlertsOn())
 				existData = true;
 			
 			if (existData) {
@@ -137,32 +144,9 @@ public class OASQLDispatcher extends SQLDispatcher implements IOADatabaseDispatc
 				String uuid = pr.getUuid();
 				try {
 					ret = ((OreAnnouncerPlugin) plugin).getPlayerManager().initializePlayer(UUID.fromString(uuid));
+					ret.setAccessible(true);
 					ret.setAlertsOn(pr.getAlerts());
-					
-					ArrayList<PlayerDataBlock> blocks = new ArrayList<>();
-					Result<BlocksRecord> blocksResult = database.getQueryBuilder()
-							.selectFrom(BLOCKS)
-							.where(BLOCKS.PLAYER.eq(playerUuid.toString())).fetch();
-					
-					if (blocksResult != null) {
-						for (BlocksRecord br : blocksResult) {
-							try {
-								PlayerDataBlock pdb = new PlayerDataBlock();
-								pdb.setPlayer(UUID.fromString(br.getPlayer()));
-								pdb.setMaterialName(br.getMaterialName());
-								pdb.setDestroyCount(br.getDestroyed());
-								
-								blocks.add(pdb);
-							} catch (IllegalArgumentException ex) {
-								plugin.getLoggerManager().printErrorStacktrace(Constants.DEBUG_SQL_ERROR_UUID
-										.replace("{uuid}", uuid), ex);
-							} catch (Exception ex) {
-								plugin.getLoggerManager().printErrorStacktrace(Constants.DEBUG_SQL_ERROR, ex);
-							}
-							
-						}
-					}
-					ret.loadBlocks(blocks);
+					ret.setAccessible(false);
 				} catch (IllegalArgumentException ex) {
 					plugin.getLoggerManager().printErrorStacktrace(Constants.DEBUG_SQL_ERROR_UUID
 							.replace("{uuid}", uuid.isEmpty() ? "empty" : uuid), ex);
@@ -187,16 +171,16 @@ public class OASQLDispatcher extends SQLDispatcher implements IOADatabaseDispatc
 		}
 		
 		if (count) {
-			return database.getQueryBuilder().select(countDistinct(BLOCKS.PLAYER).as("total"))
+			return database.getQueryBuilder().select(countDistinct(BLOCKS.PLAYER).as("TOTAL"))
 					.from(BLOCKS)
 					.where(condition);
 		}
 		return database.getQueryBuilder()
-				.select(BLOCKS.PLAYER.as("player"), sum(BLOCKS.DESTROYED).as("total"))
+				.select(BLOCKS.PLAYER.as("PLAYER"), sum(BLOCKS.DESTROYED).as("TOTAL"))
 				.from(BLOCKS)
 				.where(condition)
-				.groupBy(field("player"))
-				.orderBy(field("total").desc())
+				.groupBy(field("PLAYER"))
+				.orderBy(field("TOTAL").desc())
 				.limit(limit).offset(offset);
 	}
 	
@@ -213,16 +197,16 @@ public class OASQLDispatcher extends SQLDispatcher implements IOADatabaseDispatc
 		}
 		
 		if (count) {
-			return database.getQueryBuilder().select(countDistinct(BLOCKS_FOUND.PLAYER).as("total"))
+			return database.getQueryBuilder().select(countDistinct(BLOCKS_FOUND.PLAYER).as("TOTAL"))
 					.from(BLOCKS_FOUND)
 					.where(condition);
 		}
 		return database.getQueryBuilder()
-				.select(BLOCKS_FOUND.PLAYER.as("player"), sum(BLOCKS_FOUND.FOUND).as("total"))
+				.select(BLOCKS_FOUND.PLAYER.as("PLAYER"), sum(BLOCKS_FOUND.FOUND).as("TOTAL"))
 				.from(BLOCKS_FOUND)
 				.where(condition)
-				.groupBy(field("player"))
-				.orderBy(field("total").desc())
+				.groupBy(field("PLAYER"))
+				.orderBy(field("TOTAL").desc())
 				.limit(limit).offset(offset);
 	}
 	
@@ -243,8 +227,8 @@ public class OASQLDispatcher extends SQLDispatcher implements IOADatabaseDispatc
 			for (Record rec : r) {
 				try {
 					ret.put(
-							UUID.fromString((String) rec.get("player")),
-							((BigDecimal) rec.get("total")).intValue()
+							UUID.fromString((String) rec.get("PLAYER")),
+							((BigDecimal) rec.get("TOTAL")).intValue()
 					);
 				} catch (IllegalArgumentException ex) {
 					plugin.getLoggerManager().printErrorStacktrace(Constants.DEBUG_SQL_ERROR_UUID
@@ -271,7 +255,7 @@ public class OASQLDispatcher extends SQLDispatcher implements IOADatabaseDispatc
 				rec = getTopPlayersByDestroy(block, 0, 0, true).fetchAny();
 			}
 			
-			ret = (int) rec.get("total");
+			ret = (int) rec.get("TOTAL");
 		} catch (Exception ex) {
 			plugin.getLoggerManager().printErrorStacktrace(Constants.DEBUG_SQL_ERROR, ex);
 		}
@@ -279,23 +263,90 @@ public class OASQLDispatcher extends SQLDispatcher implements IOADatabaseDispatc
 	}
 	
 	@Override
-	public void updateDataBlock(PlayerDataBlock playerDataBlock) {
+	public void updateBlockDestroy(BlockDestroy blockDestroy) {
+		setBlockDestroy(blockDestroy, true);
+	}
+	
+	@Override
+	public void setBlockDestroy(BlockDestroy blockDestroy) {
+		setBlockDestroy(blockDestroy, false);
+	}
+	
+	private void setBlockDestroy(BlockDestroy blockDestroy, boolean sum) {
 		try {
-			database.getQueryBuilder()
+			InsertOnDuplicateSetStep<BlocksRecord> query = database.getQueryBuilder()
 					.insertInto(BLOCKS,
 							BLOCKS.PLAYER,
 							BLOCKS.MATERIAL_NAME,
 							BLOCKS.DESTROYED
 					).values(
-							playerDataBlock.getPlayer().toString(),
-							playerDataBlock.getMaterialName(),
-							playerDataBlock.getDestroyCount()
-					).onDuplicateKeyUpdate()
-					.set(BLOCKS.DESTROYED, playerDataBlock.getDestroyCount())
-					.execute();
+							blockDestroy.getPlayer().toString(),
+							blockDestroy.getMaterialName(),
+							blockDestroy.getDestroyCount()
+					).onDuplicateKeyUpdate();
+			
+			if (sum)
+				query.set(BLOCKS.DESTROYED, BLOCKS.DESTROYED.add(blockDestroy.getDestroyCount())).execute();
+			else
+				query.set(BLOCKS.DESTROYED, blockDestroy.getDestroyCount()).execute();
 		} catch (Exception ex) {
 			plugin.getLoggerManager().printErrorStacktrace(Constants.DEBUG_SQL_ERROR, ex);
 		}
+	}
+	
+	@Override
+	public BlockDestroy getBlockDestroy(UUID player, OABlock block) {
+		BlockDestroy ret = null;
+		try {
+			
+			BlocksRecord br = database.getQueryBuilder()
+					.selectFrom(BLOCKS)
+					.where(
+							BLOCKS.PLAYER.eq(player.toString()),
+							BLOCKS.MATERIAL_NAME.eq(block.getMaterialName())
+					)
+					.fetchAny();
+			
+			if (br != null && br.value1() != null && br.value2() != null && br.value3() != null) {
+				ret = new BlockDestroy(UUID.fromString(br.getPlayer()), br.getMaterialName(), br.getDestroyed());
+			}
+		} catch (Exception ex) {
+			plugin.getLoggerManager().printErrorStacktrace(Constants.DEBUG_SQL_ERROR, ex);
+		}
+		return ret;
+	}
+	
+	@Override
+	public Set<BlockDestroy> getAllBlockDestroy(UUID player) {
+		Set<BlockDestroy> ret = new HashSet<>();
+		try {
+			Condition condition = BLOCKS.PLAYER.eq(player.toString());
+			for (OABlockImpl b : Blocks.LIST.values()) {
+				if (b.isEnabled() && !ConfigMain.STATS_BLACKLIST_BLOCKS_STATS.contains(b.getMaterialName())) {
+					condition = condition != null ? condition.or(BLOCKS.MATERIAL_NAME.eq(b.getMaterialName())) : BLOCKS.MATERIAL_NAME.eq(b.getMaterialName());
+				}
+			}
+			
+			Result<BlocksRecord> res = database.getQueryBuilder()
+					.selectFrom(BLOCKS)
+					.where(condition)
+					.fetch();
+			
+			for (BlocksRecord br : res) {
+				try {
+					ret.add(new BlockDestroy(
+							UUID.fromString(br.getPlayer()),
+							br.getMaterialName(),
+							br.getDestroyed()
+					));
+				} catch (IllegalArgumentException ex) {
+					ex.printStackTrace();
+				}
+			}
+		} catch (Exception ex) {
+			plugin.getLoggerManager().printErrorStacktrace(Constants.DEBUG_SQL_ERROR, ex);
+		}
+		return ret;
 	}
 	
 	@Override
@@ -319,7 +370,7 @@ public class OASQLDispatcher extends SQLDispatcher implements IOADatabaseDispatc
 	}
 	
 	@Override
-	public BlocksFoundResult getLatestBlocksFound(UUID player, OABlock block, long sinceTimestamp) {
+	public BlocksFoundResult getBlockFound(UUID player, OABlock block, long sinceTimestamp) {
 		BlocksFoundResult ret = null;
 		try {
 			Condition blockCondition = block != null ? BLOCKS_FOUND.MATERIAL_NAME.eq(block.getMaterialName()) : null;
@@ -360,7 +411,7 @@ public class OASQLDispatcher extends SQLDispatcher implements IOADatabaseDispatc
 		
 		if (count) {
 			return database.getQueryBuilder()
-					.select(count().as("total"))
+					.select(count().as("TOTAL"))
 					.from(BLOCKS_FOUND)
 					.where(condition);
 		}
@@ -401,10 +452,15 @@ public class OASQLDispatcher extends SQLDispatcher implements IOADatabaseDispatc
 		try {
 			Record rec = getLogBlocks(player, block, 0, 0, true).fetchAny();
 			
-			ret = (int) rec.get("total");
+			ret = (int) rec.get("TOTAL");
 		} catch (Exception ex) {
 			plugin.getLoggerManager().printErrorStacktrace(Constants.DEBUG_SQL_ERROR, ex);
 		}
 		return ret;
+	}
+	
+	@Override
+	protected int getBackwardMigration() {
+		return storageType == StorageType.H2 ? -1 : 0;
 	}
 }

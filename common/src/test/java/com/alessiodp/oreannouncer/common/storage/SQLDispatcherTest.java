@@ -7,13 +7,13 @@ import com.alessiodp.core.common.storage.StorageType;
 import com.alessiodp.core.common.storage.sql.migrations.Migrator;
 import com.alessiodp.core.common.user.OfflineUser;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
+import com.alessiodp.oreannouncer.common.blocks.objects.BlockDestroy;
 import com.alessiodp.oreannouncer.common.blocks.objects.BlockFound;
 import com.alessiodp.oreannouncer.common.blocks.objects.OABlockImpl;
 import com.alessiodp.oreannouncer.common.configuration.data.Blocks;
 import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import com.alessiodp.oreannouncer.common.players.PlayerManager;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
-import com.alessiodp.oreannouncer.common.players.objects.PlayerDataBlock;
 import com.alessiodp.oreannouncer.common.storage.dispatchers.OASQLDispatcher;
 import com.alessiodp.oreannouncer.common.utils.BlocksFoundResult;
 import org.junit.After;
@@ -107,8 +107,7 @@ public class SQLDispatcherTest {
 	
 	@Test
 	public void testPlayer() {
-		PlayerDataBlock pdb = new PlayerDataBlock("test_material", UUID.randomUUID(), 5);
-		OAPlayerImpl player = new OAPlayerImpl(mockPlugin, pdb.getPlayer()) {};
+		OAPlayerImpl player = new OAPlayerImpl(mockPlugin, UUID.randomUUID()) {};
 		OAPlayerImpl mockPlayer = mock(player.getClass());
 		doNothing().when(mockPlayer).updatePlayer();
 		
@@ -119,37 +118,23 @@ public class SQLDispatcherTest {
 		);
 		
 		
+		player.setAccessible(true);
 		player.setAlertsOn(false);
+		player.setAccessible(false);
 		assertEquals(dispatcher.getDatabase().getQueryBuilder().fetchCount(PLAYERS), 0);
 		dispatcher.updatePlayer(player);
-		dispatcher.updateDataBlock(pdb);
 		assertEquals(dispatcher.getDatabase().getQueryBuilder().fetchCount(PLAYERS), 1);
 		
 		OAPlayerImpl newPlayer = dispatcher.getPlayer(player.getPlayerUUID());
 		
 		assertEquals(player, newPlayer);
-		assertEquals(pdb, newPlayer.getDataBlocks().get(pdb.getMaterialName()));
 		
 		// Player remove
+		player.setAccessible(true);
 		player.setAlertsOn(true);
+		player.setAccessible(false);
 		dispatcher.updatePlayer(player);
 		assertEquals(dispatcher.getDatabase().getQueryBuilder().fetchCount(PLAYERS), 0);
-	}
-	
-	@Test
-	public void testDataBlock() {
-		PlayerDataBlock pdb = new PlayerDataBlock(
-				"testMaterial",
-				UUID.randomUUID(),
-				5
-		);
-		
-		assertEquals(dispatcher.getDatabase().getQueryBuilder().fetchCount(BLOCKS), 0);
-		dispatcher.updateDataBlock(pdb);
-		assertEquals(dispatcher.getDatabase().getQueryBuilder().fetchCount(BLOCKS), 1);
-		pdb.setDestroyCount(10);
-		dispatcher.updateDataBlock(pdb);
-		assertEquals(dispatcher.getDatabase().getQueryBuilder().fetchCount(BLOCKS), 1);
 	}
 	
 	@Test
@@ -166,24 +151,24 @@ public class SQLDispatcherTest {
 		Blocks.LIST.put(block2.getMaterialName(), block2);
 		Blocks.LIST.put(block3.getMaterialName(), block3);
 		
-		PlayerDataBlock pdb1player1 = new PlayerDataBlock(block1.getMaterialName(), player1, 5);
-		PlayerDataBlock pdb2player1 = new PlayerDataBlock(block2.getMaterialName(), player1, 10);
-		PlayerDataBlock pdb3player1 = new PlayerDataBlock(block3.getMaterialName(), player1, 20);
+		BlockDestroy bd1player1 = new BlockDestroy(player1, block1.getMaterialName(), 5);
+		BlockDestroy bd2player1 = new BlockDestroy(player1, block2.getMaterialName(), 10);
+		BlockDestroy bd3player1 = new BlockDestroy(player1, block3.getMaterialName(), 20);
 		
-		PlayerDataBlock pdb1player2 = new PlayerDataBlock(block1.getMaterialName(), player2, 1);
-		PlayerDataBlock pdb2player2 = new PlayerDataBlock(block2.getMaterialName(), player2, 5);
-		PlayerDataBlock pdb3player2 = new PlayerDataBlock(block3.getMaterialName(), player2, 10);
+		BlockDestroy bd1player2 = new BlockDestroy(player2, block1.getMaterialName(), 1);
+		BlockDestroy bd2player2 = new BlockDestroy(player2, block2.getMaterialName(), 5);
+		BlockDestroy bd3player2 = new BlockDestroy(player2, block3.getMaterialName(), 10);
 		
-		PlayerDataBlock pdb1player3 = new PlayerDataBlock(block1.getMaterialName(), player3, 20);
+		BlockDestroy bd1player3 = new BlockDestroy(player3, block1.getMaterialName(), 20);
 		
 		assertEquals(dispatcher.getDatabase().getQueryBuilder().fetchCount(BLOCKS), 0);
-		dispatcher.updateDataBlock(pdb1player1);
-		dispatcher.updateDataBlock(pdb2player1);
-		dispatcher.updateDataBlock(pdb3player1);
-		dispatcher.updateDataBlock(pdb1player2);
-		dispatcher.updateDataBlock(pdb2player2);
-		dispatcher.updateDataBlock(pdb3player2);
-		dispatcher.updateDataBlock(pdb1player3);
+		dispatcher.updateBlockDestroy(bd1player1);
+		dispatcher.updateBlockDestroy(bd2player1);
+		dispatcher.updateBlockDestroy(bd3player1);
+		dispatcher.updateBlockDestroy(bd1player2);
+		dispatcher.updateBlockDestroy(bd2player2);
+		dispatcher.updateBlockDestroy(bd3player2);
+		dispatcher.updateBlockDestroy(bd1player3);
 		assertEquals(dispatcher.getDatabase().getQueryBuilder().fetchCount(BLOCKS), 7);
 		
 		ConfigMain.STATS_BLACKLIST_BLOCKS_TOP = Collections.singletonList(block2.getMaterialName());
@@ -231,10 +216,10 @@ public class SQLDispatcherTest {
 		
 		OABlockImpl block = new OABlockImpl(mockPlugin, bf.getMaterialName());
 		
-		BlocksFoundResult bfr = dispatcher.getLatestBlocksFound(bf.getPlayer(), block, time - 5);
+		BlocksFoundResult bfr = dispatcher.getBlockFound(bf.getPlayer(), block, time - 5);
 		assertEquals(bfr.getTotal(), 10);
 		
-		bfr = dispatcher.getLatestBlocksFound(bf.getPlayer(), block, time - 200);
+		bfr = dispatcher.getBlockFound(bf.getPlayer(), block, time - 200);
 		assertEquals(bfr.getTotal(), 20);
 	}
 	

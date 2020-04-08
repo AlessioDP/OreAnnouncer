@@ -13,10 +13,8 @@ import com.alessiodp.oreannouncer.common.utils.OreAnnouncerPermission;
 import com.alessiodp.oreannouncer.common.configuration.OAConstants;
 import com.alessiodp.oreannouncer.common.configuration.data.Messages;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
-import lombok.Getter;
 
 public class CommandReload extends ADPSubCommand {
-	@Getter private final boolean executableByConsole = true;
 	
 	public CommandReload(ADPPlugin plugin, ADPMainCommand mainCommand) {
 		super(
@@ -30,10 +28,13 @@ public class CommandReload extends ADPSubCommand {
 		
 		syntax = baseSyntax();
 		
-		runCommand = baseSyntax();
-		
 		description = Messages.HELP_CMD_DESCRIPTIONS_RELOAD;
 		help = Messages.HELP_CMD_RELOAD;
+	}
+	
+	@Override
+	public String getRunCommand() {
+		return baseSyntax();
 	}
 	
 	@Override
@@ -43,7 +44,7 @@ public class CommandReload extends ADPSubCommand {
 			// If the sender is a player
 			OAPlayerImpl player = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 			
-			if (player != null && !sender.hasPermission(OreAnnouncerPermission.ADMIN_RELOAD.toString())) {
+			if (player != null && !sender.hasPermission(permission)) {
 				player.sendNoPermission(OreAnnouncerPermission.ADMIN_RELOAD);
 				return false;
 			}

@@ -28,6 +28,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String OREANNOUNCER_SYNTAX_PLAYER;
 	@ConfigOption(path = "oreannouncer.syntax.page")
 	public static String OREANNOUNCER_SYNTAX_PAGE;
+	@ConfigOption(path = "oreannouncer.syntax.unknown")
+	public static String OREANNOUNCER_SYNTAX_UNKNOWN;
 	
 	// Event messages
 	@ConfigOption(path = "alerts.user", nullable = true)

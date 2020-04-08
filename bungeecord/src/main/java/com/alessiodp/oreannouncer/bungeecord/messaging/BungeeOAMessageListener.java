@@ -4,6 +4,7 @@ import com.alessiodp.core.bungeecord.messaging.BungeeMessageListener;
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.oreannouncer.bungeecord.configuration.data.BungeeConfigMain;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
+import com.alessiodp.oreannouncer.common.blocks.objects.BlockFound;
 import com.alessiodp.oreannouncer.common.configuration.OAConstants;
 import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import com.alessiodp.oreannouncer.common.messaging.OAPacket;
@@ -33,7 +34,8 @@ public class BungeeOAMessageListener extends BungeeMessageListener {
 									packet.getMessageUsers(),
 									packet.getMessageAdmins(),
 									packet.getMessageConsole(),
-									"");
+									"",
+									packet.getServerId());
 						}
 						break;
 					case ALERT_COUNT:
@@ -42,13 +44,14 @@ public class BungeeOAMessageListener extends BungeeMessageListener {
 									packet.getMessageUsers(),
 									packet.getMessageAdmins(),
 									packet.getMessageConsole(),
-									"");
+									"",
+									packet.getServerId());
 						}
 						break;
 					case DESTROY:
 						if (!packet.getPlayerUuid().isEmpty()) {
 							OAPlayerImpl player = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(UUID.fromString(packet.getPlayerUuid()));
-							((OreAnnouncerPlugin) plugin).getBlockManager().updateBlock(
+							((OreAnnouncerPlugin) plugin).getBlockManager().updateBlockDestroy(
 									player,
 									packet.getMaterialName(),
 									packet.getDestroyCount());
@@ -58,11 +61,7 @@ public class BungeeOAMessageListener extends BungeeMessageListener {
 						break;
 					case FOUND:
 						if (!packet.getPlayerUuid().isEmpty()) {
-							OAPlayerImpl player = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(UUID.fromString(packet.getPlayerUuid()));
-							((OreAnnouncerPlugin) plugin).getBlockManager().updateFoundBlock(
-									player,
-									packet.getMaterialName(),
-									packet.getDestroyCount());
+							((OreAnnouncerPlugin) plugin).getBlockManager().updateBlockFound(new BlockFound(UUID.fromString(packet.getPlayerUuid()), packet.getMaterialName(), packet.getDestroyCount()));
 						} else {
 							plugin.getLoggerManager().printError(OAConstants.DEBUG_MESSAGING_FOUND_UUID_EMPTY);
 						}

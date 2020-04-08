@@ -14,6 +14,10 @@ public class BukkitConfigMain extends ConfigMain {
 	// OreAnnouncer settings
 	@ConfigOption(path = "oreannouncer.bungeecord.enable")
 	public static boolean		OREANNOUNCER_BUNGEECORD_ENABLE;
+	@ConfigOption(path = "oreannouncer.bungeecord.server-name")
+	public static String		OREANNOUNCER_BUNGEECORD_SERVER_NAME;
+	@ConfigOption(path = "oreannouncer.bungeecord.server-id")
+	public static String		OREANNOUNCER_BUNGEECORD_SERVER_ID;
 	
 	public BukkitConfigMain(OreAnnouncerPlugin plugin) {
 		super(plugin);

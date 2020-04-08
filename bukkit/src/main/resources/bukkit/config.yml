@@ -30,8 +30,11 @@ oreannouncer:
   # [Enable BungeeCord support]
   # Any destroyed block will be handled by OreAnnouncer on BungeeCord.
   # In this server commands and storage features will be disabled.
+  # Edit server-name to use it in permissions and server-id to use it as placeholder
   bungeecord:
     enable: false
+    server-name: ServerName
+    server-id: server
 
 
 # / =============================== \
@@ -42,6 +45,7 @@ storage:
   # What type of storage the plugin should use? Database storage types:
   # => mysql      | [Remote] Save the data into a MySQL database
   # => sqlite     | [File]   Save the data into a SQLite database (default)
+  # => h2         | [File]   Save the data into a H2 database
   database-storage-type: sqlite
 
   storage-settings:
@@ -55,6 +59,10 @@ storage:
     # [SQLite settings]
     sqlite:
       database-file: database.db
+
+    # [H2 settings]
+    h2:
+      database-file: database
 
     # [MySQL settings]
     mysql:
@@ -254,4 +262,4 @@ commands:
 
 
 dont-edit-this:
-  version: 6
+  version: 7

@@ -30,6 +30,7 @@ oreannouncer:
     order: 'order'
     player: 'player'
     page: 'page'
+    unknown: 'unknown'
 
 # / =============================== \
 # |        COMMANDS MESSAGES        |

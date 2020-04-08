@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 public class CommandTop extends ADPSubCommand {
@@ -51,8 +52,6 @@ public class CommandTop extends ADPSubCommand {
 			);
 		}
 		
-		runCommand = baseSyntax() + " ";
-		
 		description = Messages.HELP_CMD_DESCRIPTIONS_TOP;
 		help = Messages.HELP_CMD_TOP;
 	}
@@ -64,7 +63,7 @@ public class CommandTop extends ADPSubCommand {
 			OAPlayerImpl player = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 			
 			// Checks for command prerequisites
-			if (!sender.hasPermission(OreAnnouncerPermission.USER_TOP.toString())) {
+			if (!sender.hasPermission(permission)) {
 				player.sendNoPermission(OreAnnouncerPermission.USER_TOP);
 				return false;
 			}
@@ -80,14 +79,13 @@ public class CommandTop extends ADPSubCommand {
 		
 		if (player != null)
 			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_CMD_TOP
-					.replace("{player}", player.getName())
-					.replace("{page}", commandData.getArgs().length > 1 ? commandData.getArgs()[1] : ""), true);
+					.replace("{player}", player.getName()), true);
 		else
 			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_CMD_TOP_CONSOLE, true);
 		
 		// Command handling
 		List<String> blacklist = new ArrayList<>();
-		ConfigMain.STATS_BLACKLIST_BLOCKS_TOP.forEach((str) -> blacklist.add(str.toUpperCase()));
+		ConfigMain.STATS_BLACKLIST_BLOCKS_TOP.forEach((str) -> blacklist.add(str.toUpperCase(Locale.ENGLISH)));
 		
 		int selectedPage = 1;
 		OADatabaseManager.TopOrderBy orderBy = OADatabaseManager.TopOrderBy.parse(ConfigMain.STATS_TOP_ORDER_BY);

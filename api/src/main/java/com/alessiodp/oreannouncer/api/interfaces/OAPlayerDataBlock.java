@@ -2,12 +2,14 @@ package com.alessiodp.oreannouncer.api.interfaces;
 
 import java.util.UUID;
 
+@Deprecated
 public interface OAPlayerDataBlock {
 	/**
 	 * Get the material name of the block
 	 *
 	 * @return Returns the name of the block
 	 */
+	@Deprecated
 	String getMaterialName();
 	
 	/**
@@ -15,6 +17,7 @@ public interface OAPlayerDataBlock {
 	 *
 	 * @return Returns the {@link UUID} of the player
 	 */
+	@Deprecated
 	UUID getPlayer();
 	
 	/**
@@ -22,6 +25,7 @@ public interface OAPlayerDataBlock {
 	 *
 	 * @return Returns the number of destroyed blocks
 	 */
+	@Deprecated
 	int getDestroyCount();
 	
 	/**
@@ -29,5 +33,6 @@ public interface OAPlayerDataBlock {
 	 *
 	 * @param destroyCount The number to set
 	 */
+	@Deprecated
 	void setDestroyCount(int destroyCount);
 }

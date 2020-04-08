@@ -4,7 +4,7 @@ author: ${pluginAuthor}
 website: ${pluginWebsite}
 version: ${pluginVersion}
 main: com.alessiodp.oreannouncer.bukkit.bootstrap.BukkitOreAnnouncerBootstrap
-api-version: 1.15
+api-version: 1.13
 softdepend: [LastLoginAPI, PlaceholderAPI]
 permissions:
   oreannouncer.user.alerts.see:

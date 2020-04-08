@@ -10,7 +10,7 @@ import lombok.ToString;
 
 import java.util.concurrent.locks.ReentrantLock;
 
-@EqualsAndHashCode
+@EqualsAndHashCode(doNotUseGetters = true)
 @ToString
 public class OABlockImpl implements OABlock {
 	@EqualsAndHashCode.Exclude @ToString.Exclude private final ADPPlugin plugin;

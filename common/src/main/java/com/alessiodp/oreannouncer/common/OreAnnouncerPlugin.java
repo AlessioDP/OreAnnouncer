@@ -117,4 +117,7 @@ public abstract class OreAnnouncerPlugin extends ADPPlugin {
 	}
 	
 	public abstract boolean isBungeeCordEnabled();
+	
+	public abstract String getServerName();
+	public abstract String getServerId();
 }

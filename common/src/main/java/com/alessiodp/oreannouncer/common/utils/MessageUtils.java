@@ -4,6 +4,7 @@ import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.addons.internal.OAPlaceholder;
 import com.alessiodp.oreannouncer.common.configuration.OAConstants;
 import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
+import com.alessiodp.oreannouncer.common.configuration.data.Messages;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.time.DurationFormatUtils;
@@ -31,7 +32,7 @@ public abstract class MessageUtils {
 				// Match basic placeholders
 				switch (identifier.toLowerCase(Locale.ENGLISH)) {
 					case "%player%":
-						replacement = player.getName();
+						replacement = !player.getName().isEmpty() ? player.getName() : Messages.OREANNOUNCER_SYNTAX_UNKNOWN;
 						ret = ret.replace(identifier, replacement);
 						break;
 					default: // Nothing to do

@@ -21,6 +21,7 @@ public interface OreAnnouncerAPI {
 	 *
 	 * @param player The {@link OAPlayer} to save
 	 */
+	@Deprecated
 	void updatePlayer(OAPlayer player);
 	
 	/**
@@ -37,6 +38,7 @@ public interface OreAnnouncerAPI {
 	 * @param uuid The {@link UUID} of the player
 	 * @return Returns a set of data blocks
 	 */
+	@Deprecated
 	Set<OAPlayerDataBlock> getPlayerBlocks(UUID uuid);
 	
 	/**
@@ -44,6 +46,7 @@ public interface OreAnnouncerAPI {
 	 *
 	 * @param block The {@link OAPlayerDataBlock} to save
 	 */
+	@Deprecated
 	void updatePlayerDataBlock(OAPlayerDataBlock block);
 	
 	/**
@@ -195,6 +198,14 @@ public interface OreAnnouncerAPI {
 	LinkedList<OABlockFound> getLogBlocks(int limit, OAPlayer player, OABlock block, int offset);
 	
 	/**
+	 * Get the block from the configuration
+	 *
+	 * @param materialName The block to get
+	 * @return Returns the block or null if not exists
+	 */
+	@Nullable OABlock getBlock(@NonNull String materialName);
+	
+	/**
 	 * Add a block to the configuration
 	 *
 	 * @param materialName The block name to add
@@ -208,4 +219,14 @@ public interface OreAnnouncerAPI {
 	 * @param block The block to remove
 	 */
 	void removeBlock(@NonNull OABlock block);
+	
+	/**
+	 * Make a new {@link OABlockDestroy}
+	 *
+	 * @param playerUuid The player UUID
+	 * @param block The block
+	 * @param destroyCount The number of destroyed blocks
+	 * @return Returns a new instance of {@link OABlockDestroy}
+	 */
+	OABlockDestroy makeBlockDestroy(@NonNull UUID playerUuid, @NonNull OABlock block, int destroyCount);
 }

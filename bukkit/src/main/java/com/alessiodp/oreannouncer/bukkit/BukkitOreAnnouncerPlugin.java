@@ -81,4 +81,14 @@ public class BukkitOreAnnouncerPlugin extends OreAnnouncerPlugin {
 	public boolean isBungeeCordEnabled() {
 		return BukkitConfigMain.OREANNOUNCER_BUNGEECORD_ENABLE;
 	}
+	
+	@Override
+	public String getServerName() {
+		return BukkitConfigMain.OREANNOUNCER_BUNGEECORD_SERVER_NAME;
+	}
+	
+	@Override
+	public String getServerId() {
+		return BukkitConfigMain.OREANNOUNCER_BUNGEECORD_SERVER_ID;
+	}
 }

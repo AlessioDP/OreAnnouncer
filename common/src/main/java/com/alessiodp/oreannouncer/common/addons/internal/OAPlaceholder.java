@@ -15,7 +15,9 @@ public enum OAPlaceholder {
 	PLAYER_FOUND,
 	PLAYER_FOUND_BLOCK (true),
 	PLAYER_FOUNDIN_RANGE (true),
-	PLAYER_FOUNDIN_RANGE_BLOCK (true);
+	PLAYER_FOUNDIN_RANGE_BLOCK (true),
+	SERVER_NAME,
+	SERVER_ID;
 	
 	private final OreAnnouncerPlugin plugin;
 	private final boolean custom; // Ignore placeholder auto-matching by name
@@ -94,6 +96,11 @@ public enum OAPlaceholder {
 							return Integer.toString(plugin.getPlayerManager().getTotalBlocksFound(player, tempBlock, sinceTimestamp));
 						} catch (NumberFormatException ignored) {}
 					}
+					return null;
+				case SERVER_NAME:
+					return plugin.getServerName();
+				case SERVER_ID:
+					return plugin.getServerId();
 				default:
 					return null;
 			}

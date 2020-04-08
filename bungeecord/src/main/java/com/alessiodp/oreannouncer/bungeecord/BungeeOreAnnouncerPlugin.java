@@ -29,6 +29,10 @@ public class BungeeOreAnnouncerPlugin extends OreAnnouncerPlugin {
 	
 	@Override
 	protected void initializeCore() {
+		// Setup Apache Commons, required for DurationFormatUtils
+		// Since BC 1.14+ commons is not shaded in BC anymore
+		getLibraryManager().setupApacheCommons();
+		
 		scheduler = new ADPBungeeScheduler(this);
 		configurationManager = new BungeeOAConfigurationManager(this);
 		messageUtils = new BungeeMessageUtils(this);
@@ -72,6 +76,16 @@ public class BungeeOreAnnouncerPlugin extends OreAnnouncerPlugin {
 	@Override
 	public boolean isBungeeCordEnabled() {
 		return false;
+	}
+	
+	@Override
+	public String getServerName() {
+		return "";
+	}
+	
+	@Override
+	public String getServerId() {
+		return "";
 	}
 }
 

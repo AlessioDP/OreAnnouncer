@@ -31,13 +31,7 @@ public class CommandHelp extends ADPSubCommand {
 				false
 		);
 		
-		syntax = String.format("%s [%s/%s]",
-				baseSyntax(),
-				ConfigMain.COMMANDS_SUB_ON,
-				ConfigMain.COMMANDS_SUB_OFF
-		);
-		
-		runCommand = baseSyntax() + " ";
+		syntax = baseSyntax();
 		
 		description = Messages.HELP_CMD_DESCRIPTIONS_HELP;
 		help = Messages.HELP_CMD_HELP;
@@ -49,7 +43,7 @@ public class CommandHelp extends ADPSubCommand {
 		OAPlayerImpl player = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 		
 		// Checks for command prerequisites
-		if (!sender.hasPermission(OreAnnouncerPermission.USER_HELP.toString())) {
+		if (!sender.hasPermission(permission)) {
 			player.sendNoPermission(OreAnnouncerPermission.USER_HELP);
 			return false;
 		}
@@ -63,8 +57,7 @@ public class CommandHelp extends ADPSubCommand {
 		OAPlayerImpl player = ((OACommandData) commandData).getPlayer();
 		
 		plugin.getLoggerManager().logDebug(OAConstants.DEBUG_CMD_HELP
-				.replace("{player}", player.getName())
-				.replace("{page}", commandData.getArgs().length > 1 ? commandData.getArgs()[1] : ""), true);
+				.replace("{player}", player.getName()), true);
 		
 		// Command starts
 		player.sendMessage(Messages.HELP_HEADER);
@@ -73,7 +66,7 @@ public class CommandHelp extends ADPSubCommand {
 		for(Map.Entry<ADPCommand, ADPExecutableCommand> e : plugin.getCommandManager().getOrderedCommands().entrySet()) {
 			if (allowedCommands.contains(e.getKey()) && e.getValue().isListedInHelp()) {
 				player.sendMessage(e.getValue().getHelp()
-						.replace("%syntax%", e.getValue().getSyntax())
+						.replace("%syntax%", e.getValue().getSyntaxForUser(commandData.getSender()))
 						.replace("%description%", e.getValue().getDescription())
 						.replace("%run_command%", e.getValue().getRunCommand())
 						.replace("%perform_command%", Messages.HELP_PERFORM_COMMAND));

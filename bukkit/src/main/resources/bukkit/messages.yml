@@ -30,6 +30,7 @@ oreannouncer:
     order: 'order'
     player: 'player'
     page: 'page'
+    unknown: 'unknown'
 
 
 # / =============================== \
@@ -152,4 +153,4 @@ help:
 
 
 dont-edit-this:
-  version: 6
+  version: 7

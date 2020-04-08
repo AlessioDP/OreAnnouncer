@@ -36,8 +36,6 @@ public class CommandAlerts extends ADPSubCommand {
 				ConfigMain.COMMANDS_SUB_OFF
 		);
 		
-		runCommand = baseSyntax() + " ";
-		
 		description = Messages.HELP_CMD_DESCRIPTIONS_ALERTS;
 		help = Messages.HELP_CMD_ALERTS;
 	}
@@ -48,7 +46,7 @@ public class CommandAlerts extends ADPSubCommand {
 		OAPlayerImpl player = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 		
 		// Checks for command prerequisites
-		if (!sender.hasPermission(OreAnnouncerPermission.USER_ALERTS_TOGGLE.toString())) {
+		if (!sender.hasPermission(permission)) {
 			player.sendNoPermission(OreAnnouncerPermission.USER_ALERTS_TOGGLE);
 			return false;
 		}

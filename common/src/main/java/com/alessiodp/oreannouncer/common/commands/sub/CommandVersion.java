@@ -28,10 +28,13 @@ public class CommandVersion extends ADPSubCommand {
 		
 		syntax = baseSyntax();
 		
-		runCommand = baseSyntax();
-		
 		description = Messages.HELP_CMD_DESCRIPTIONS_VERSION;
 		help = Messages.HELP_CMD_VERSION;
+	}
+	
+	@Override
+	public String getRunCommand() {
+		return baseSyntax();
 	}
 	
 	@Override
@@ -41,7 +44,7 @@ public class CommandVersion extends ADPSubCommand {
 			OAPlayerImpl player = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 			
 			// Checks for command prerequisites
-			if (!sender.hasPermission(OreAnnouncerPermission.ADMIN_VERSION.toString())) {
+			if (!sender.hasPermission(permission)) {
 				player.sendNoPermission(OreAnnouncerPermission.ADMIN_VERSION);
 				return false;
 			}
@@ -73,7 +76,10 @@ public class CommandVersion extends ADPSubCommand {
 					.replace("%newversion%", newVersion)
 					.replace("%platform%", plugin.getPlatform()));
 		} else {
-			plugin.logConsole(plugin.getColorUtils().removeColors(message), false);
+			plugin.logConsole(plugin.getColorUtils().removeColors(message)
+					.replace("%version%", version)
+					.replace("%newversion%", newVersion)
+					.replace("%platform%", plugin.getPlatform()), false);
 		}
 	}
 }

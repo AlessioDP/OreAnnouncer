@@ -7,6 +7,7 @@ import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.addons.external.LLAPIHandler;
+import com.alessiodp.oreannouncer.common.blocks.objects.BlockDestroy;
 import com.alessiodp.oreannouncer.common.blocks.objects.OABlockImpl;
 import com.alessiodp.oreannouncer.common.commands.list.CommonCommands;
 import com.alessiodp.oreannouncer.common.commands.utils.OACommandData;
@@ -18,7 +19,6 @@ import com.alessiodp.oreannouncer.common.configuration.data.Messages;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 import lombok.NonNull;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -29,6 +29,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class CommandStats extends ADPSubCommand {
+	private final String syntaxOthers;
 	
 	public CommandStats(ADPPlugin plugin, ADPMainCommand mainCommand) {
 		super(
@@ -40,20 +41,27 @@ public class CommandStats extends ADPSubCommand {
 				true
 		);
 		
-		syntax = String.format("%s [%s]",
+		syntax = baseSyntax();
+		
+		syntaxOthers = String.format("%s [%s]",
 				baseSyntax(),
 				Messages.OREANNOUNCER_SYNTAX_PLAYER
 		);
-		
-		runCommand = baseSyntax() + " ";
 		
 		description = Messages.HELP_CMD_DESCRIPTIONS_STATS;
 		help = Messages.HELP_CMD_STATS;
 	}
 	
 	@Override
+	public String getSyntaxForUser(User user) {
+		if (user.hasPermission(OreAnnouncerPermission.ADMIN_STATS_OTHER.toString()))
+			return syntaxOthers;
+		return syntax;
+	}
+	
+	@Override
 	public String getConsoleSyntax() {
-		return baseSyntax();
+		return syntaxOthers;
 	}
 	
 	@Override
@@ -63,7 +71,7 @@ public class CommandStats extends ADPSubCommand {
 			OAPlayerImpl player = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 			
 			// Checks for command prerequisites
-			if (!sender.hasPermission(OreAnnouncerPermission.USER_STATS.toString())) {
+			if (!sender.hasPermission(permission)) {
 				player.sendNoPermission(OreAnnouncerPermission.USER_ALERTS_TOGGLE);
 				return false;
 			}
@@ -88,43 +96,45 @@ public class CommandStats extends ADPSubCommand {
 		
 		// Command handling
 		OAPlayerImpl targetPlayer = null;
-		if (commandData.getArgs().length > 1
-				&& commandData.havePermission(OreAnnouncerPermission.ADMIN_STATS_OTHER)) {
-			Set<UUID> targetPlayersUuid = LLAPIHandler.getPlayerByName(commandData.getArgs()[1]);
-			if (targetPlayersUuid.size() > 0) {
-				UUID targetPlayerUuid = targetPlayersUuid.iterator().next();
-				targetPlayer = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(targetPlayerUuid);
+		if (commandData.getArgs().length > 1) {
+			if (commandData.havePermission(OreAnnouncerPermission.ADMIN_STATS_OTHER)) {
+				Set<UUID> targetPlayersUuid = LLAPIHandler.getPlayerByName(commandData.getArgs()[1]);
+				if (targetPlayersUuid.size() > 0) {
+					UUID targetPlayerUuid = targetPlayersUuid.iterator().next();
+					targetPlayer = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(targetPlayerUuid);
+				} else {
+					// Not found
+					sendMessage(player, Messages.CMD_STATS_PLAYERNOTFOUND
+							.replace("%player%", commandData.getArgs()[1]));
+					return;
+				}
 			} else {
-				// Not found
-				sendMessage(player, Messages.CMD_STATS_PLAYERNOTFOUND
-						.replace("%player%", commandData.getArgs()[1]));
+				sendMessage(player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
+						.replace("%syntax%", getSyntaxForUser(commandData.getSender())));
 				return;
 			}
 		}
 		
 		if (targetPlayer == null) {
 			if (player == null) {
-				plugin.logConsole(plugin.getColorUtils().removeColors(Messages.CMD_STATS_PLAYERNOTFOUND
-						.replace("%player%", "Player")), false);
+				sendMessage(player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
+						.replace("%syntax%", getSyntaxForUser(commandData.getSender())));
 				return;
 			} else
 				targetPlayer = player;
 		}
 		
 		// Command starts
-		List<String> blacklist = new ArrayList<>();
-		ConfigMain.STATS_BLACKLIST_BLOCKS_STATS.forEach((str) -> blacklist.add(str.toUpperCase()));
+		Set<BlockDestroy> blocks = ((OreAnnouncerPlugin) plugin).getDatabaseManager().getAllBlockDestroy(targetPlayer.getPlayerUUID());
 		
 		sendMessage(player, ((OreAnnouncerPlugin) plugin).getMessageUtils().convertPlayerPlaceholders(Messages.CMD_STATS_HEADER, targetPlayer));
 		
-		if (targetPlayer.getDataBlocks().size() > 0) {
+		if (blocks.size() > 0) {
 			HashMap<OABlockImpl, Integer> map = new HashMap<>();
-			targetPlayer.getDataBlocks().forEach((name, playerDataBlock) -> {
-				if (!blacklist.contains(playerDataBlock.getMaterialName()) && playerDataBlock.getDestroyCount() > 0) {
-					OABlockImpl block = Blocks.LIST.get(playerDataBlock.getMaterialName());
-					if (block != null && block.isEnabled()) {
-						map.put(block, playerDataBlock.getDestroyCount());
-					}
+			blocks.forEach((b) -> {
+				OABlockImpl block = Blocks.LIST.get(b.getMaterialName());
+				if (block != null && block.isEnabled()) {
+					map.put(block, b.getDestroyCount());
 				}
 			});
 			

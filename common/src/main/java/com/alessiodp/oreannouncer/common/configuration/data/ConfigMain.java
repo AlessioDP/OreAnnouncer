@@ -30,6 +30,8 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static String		STORAGE_SETTINGS_GENERAL_SQL_CHARSET;
 	@ConfigOption(path = "storage.storage-settings.sqlite.database-file")
 	public static String		STORAGE_SETTINGS_SQLITE_DBFILE;
+	@ConfigOption(path = "storage.storage-settings.h2.database-file")
+	public static String		STORAGE_SETTINGS_H2_DBFILE;
 	@ConfigOption(path = "storage.storage-settings.mysql.address")
 	public static String		STORAGE_SETTINGS_MYSQL_ADDRESS;
 	@ConfigOption(path = "storage.storage-settings.mysql.port")

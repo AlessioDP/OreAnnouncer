@@ -3,33 +3,37 @@ package com.alessiodp.oreannouncer.common.players.objects;
 import com.alessiodp.core.common.commands.list.ADPCommand;
 import com.alessiodp.core.common.commands.utils.ADPPermission;
 import com.alessiodp.core.common.user.User;
+import com.alessiodp.oreannouncer.api.interfaces.OABlock;
+import com.alessiodp.oreannouncer.api.interfaces.OABlockDestroy;
 import com.alessiodp.oreannouncer.api.interfaces.OAPlayer;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.addons.external.LLAPIHandler;
+import com.alessiodp.oreannouncer.common.blocks.objects.BlockDestroy;
 import com.alessiodp.oreannouncer.common.commands.list.CommonCommands;
 import com.alessiodp.oreannouncer.common.utils.OreAnnouncerPermission;
-import com.alessiodp.oreannouncer.common.configuration.OAConstants;
 import com.alessiodp.oreannouncer.common.configuration.data.Messages;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.locks.ReentrantLock;
 
 @EqualsAndHashCode(doNotUseGetters = true)
 public abstract class OAPlayerImpl implements OAPlayer {
 	@EqualsAndHashCode.Exclude protected final OreAnnouncerPlugin plugin;
-	@EqualsAndHashCode.Exclude @Getter private final HashMap<String, PlayerDataBlock> dataBlocks = new HashMap<>();
 	
 	@Getter @Setter private UUID playerUUID;
-	@Setter private boolean alertsOn;
+	private boolean alertsOn;
 	@EqualsAndHashCode.Exclude @Getter private String name;
 	
 	@EqualsAndHashCode.Exclude @Getter private final ReentrantLock lock = new ReentrantLock();
+	@EqualsAndHashCode.Exclude @ToString.Exclude private boolean accessible = false;
 	
 	protected OAPlayerImpl(OreAnnouncerPlugin plugin, UUID uuid) {
 		this.plugin = plugin;
@@ -37,25 +41,27 @@ public abstract class OAPlayerImpl implements OAPlayer {
 		playerUUID = uuid;
 		alertsOn = true;
 		name = plugin.getOfflinePlayer(uuid).getName();
-		if (name == null)
+		if (name == null || name.isEmpty())
 			name = LLAPIHandler.getPlayerName(playerUUID); // Use LastLoginAPI to get the name
+	}
+	
+	public void setAccessible(boolean accessible) {
+		this.accessible = accessible;
 	}
 	
 	public void updatePlayer() {
 		plugin.getDatabaseManager().updatePlayer(this);
 	}
 	
-	public void loadBlocks(ArrayList<PlayerDataBlock> blocks) {
-		lock.lock(); // Lock
-		getDataBlocks().clear();
-		for (PlayerDataBlock pdb : blocks) {
-			getDataBlocks().put(pdb.getMaterialName().toLowerCase(), pdb);
+	private void updateValue(Runnable runnable) {
+		if (accessible) {
+			runnable.run();
+		} else {
+			lock.lock();
+			runnable.run();
+			updatePlayer();
+			lock.unlock();
 		}
-		lock.unlock(); // Unlock
-		
-		plugin.getLoggerManager().logDebug(OAConstants.DEBUG_PLAYER_LOADBLOCKS
-				.replace("{uuid}", getPlayerUUID().toString())
-				.replace("{number}", Integer.toString(getDataBlocks().size())), true);
 	}
 	
 	public List<ADPCommand> getAllowedCommands() {
@@ -83,6 +89,26 @@ public abstract class OAPlayerImpl implements OAPlayer {
 	@Override
 	public boolean haveAlertsOn(){
 		return alertsOn;
+	}
+	
+	@Override
+	public void setAlertsOn(boolean alerts) {
+		updateValue(() -> this.alertsOn = alerts);
+	}
+	
+	@Override
+	public OABlockDestroy getBlockDestroy(OABlock block) {
+		return plugin.getDatabaseManager().getBlockDestroy(playerUUID, block);
+	}
+	
+	@Override
+	public void setBlockDestroy(OABlockDestroy blockDestroy) {
+		plugin.getDatabaseManager().setBlockDestroy((BlockDestroy) blockDestroy);
+	}
+	
+	@Override
+	public Set<OABlockDestroy> getAllBlockDestroy() {
+		return new HashSet<>(plugin.getDatabaseManager().getAllBlockDestroy(playerUUID));
 	}
 	
 	public void sendNoPermission(ADPPermission perm) {

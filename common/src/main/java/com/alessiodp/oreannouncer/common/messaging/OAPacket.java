@@ -14,6 +14,8 @@ public class OAPacket extends ADPPacket {
 	// Common
 	@Getter private String materialName = "";
 	@Getter private PacketType type;
+	@Getter private String serverName;
+	@Getter private String serverId;
 	
 	// Alert
 	@Getter private String messageUsers = "";
@@ -23,7 +25,6 @@ public class OAPacket extends ADPPacket {
 	// Destroy
 	@Getter private String playerUuid = "";
 	@Getter private int destroyCount;
-	
 	
 	public OAPacket(String version) {
 		super(version);
@@ -37,6 +38,8 @@ public class OAPacket extends ADPPacket {
 			output.writeUTF(getVersion());
 			output.writeUTF(materialName);
 			output.writeUTF(type.name());
+			output.writeUTF(serverName);
+			output.writeUTF(serverId);
 			output.writeUTF(messageUsers);
 			output.writeUTF(messageAdmins);
 			output.writeUTF(messageConsole);
@@ -59,6 +62,8 @@ public class OAPacket extends ADPPacket {
 				OAPacket packet = new OAPacket(foundVersion);
 				packet.materialName = input.readUTF();
 				packet.type = PacketType.valueOf(input.readUTF());
+				packet.serverName = input.readUTF();
+				packet.serverId = input.readUTF();
 				packet.messageUsers = input.readUTF();
 				packet.messageAdmins = input.readUTF();
 				packet.messageConsole = input.readUTF();
@@ -84,6 +89,16 @@ public class OAPacket extends ADPPacket {
 	
 	public OAPacket setType(PacketType type) {
 		this.type = type;
+		return this;
+	}
+	
+	public OAPacket setServerName(String serverName) {
+		this.serverName = serverName;
+		return this;
+	}
+	
+	public OAPacket setServerId(String serverId) {
+		this.serverId = serverId;
 		return this;
 	}
 	

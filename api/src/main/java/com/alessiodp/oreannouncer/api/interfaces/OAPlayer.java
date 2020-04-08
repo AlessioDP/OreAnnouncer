@@ -1,5 +1,6 @@
 package com.alessiodp.oreannouncer.api.interfaces;
 
+import java.util.Set;
 import java.util.UUID;
 
 public interface OAPlayer {
@@ -30,4 +31,10 @@ public interface OAPlayer {
 	 * @param alerts True to enable alerts
 	 */
 	void setAlertsOn(boolean alerts);
+	
+	OABlockDestroy getBlockDestroy(OABlock block);
+	
+	void setBlockDestroy(OABlockDestroy blockDestroy);
+	
+	Set<OABlockDestroy> getAllBlockDestroy();
 }

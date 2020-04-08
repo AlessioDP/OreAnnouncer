@@ -58,8 +58,6 @@ public class CommandLog extends ADPSubCommand {
 				Messages.OREANNOUNCER_SYNTAX_PAGE
 		);
 		
-		runCommand = baseSyntax() + " ";
-		
 		description = Messages.HELP_CMD_DESCRIPTIONS_LOG;
 		help = Messages.HELP_CMD_LOG;
 	}
@@ -72,7 +70,7 @@ public class CommandLog extends ADPSubCommand {
 			// If the sender is a player
 			player = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 			
-			if (player != null && !sender.hasPermission(OreAnnouncerPermission.ADMIN_LOG.toString())) {
+			if (player != null && !sender.hasPermission(permission)) {
 				player.sendNoPermission(OreAnnouncerPermission.ADMIN_LOG);
 				return false;
 			}
@@ -100,7 +98,7 @@ public class CommandLog extends ADPSubCommand {
 		
 		// Command handling
 		int selectedPage = 1;
-		String playerName = "";
+		String playerName;
 		OAPlayerImpl targetPlayer = null;
 		OABlockImpl block = null;
 		boolean isGeneralCommand;
@@ -227,7 +225,7 @@ public class CommandLog extends ADPSubCommand {
 		if (isGeneralCommand) {
 			if (block != null) {
 				sendMessage(player, Messages.CMD_LOG_HEADER_BLOCK
-						.replace("%block%", block.getDisplayName())
+						.replace("%block%", block.getDisplayName() != null ? block.getDisplayName() : block.getSingularName())
 						.replace("%page%", Integer.toString(selectedPage))
 						.replace("%maxpages%", Integer.toString(maxPages))
 						.replace("%total%", Integer.toString(numberBlocks)));
@@ -238,11 +236,13 @@ public class CommandLog extends ADPSubCommand {
 						.replace("%total%", Integer.toString(numberBlocks)));
 			}
 		} else {
-			sendMessage(player, Messages.CMD_LOG_HEADER_PLAYER
-					.replace("%player%", targetPlayer != null ? targetPlayer.getName() : playerName)
-					.replace("%page%", Integer.toString(selectedPage))
-					.replace("%maxpages%", Integer.toString(maxPages))
-					.replace("%total%", Integer.toString(numberBlocks)));
+			sendMessage(player, ((OreAnnouncerPlugin) plugin).getMessageUtils().convertPlayerPlaceholders(
+					Messages.CMD_LOG_HEADER_PLAYER
+						.replace("%page%", Integer.toString(selectedPage))
+						.replace("%maxpages%", Integer.toString(maxPages))
+						.replace("%total%", Integer.toString(numberBlocks)),
+					targetPlayer
+			));
 		}
 		
 		if (blocks.size() > 0) {
@@ -250,12 +250,16 @@ public class CommandLog extends ADPSubCommand {
 				OABlockImpl b = Blocks.LIST.get(bf.getMaterialName());
 				if (b != null && b.isEnabled()) {
 					empty = false;
-					sendMessage(player, (isGeneralCommand ? Messages.CMD_LOG_FORMAT_GENERAL_BLOCK : Messages.CMD_LOG_FORMAT_PLAYER_BLOCK)
-							.replace("%number%", Integer.toString(bf.getFound()))
-							.replace("%block%", b.getDisplayName() != null ? b.getDisplayName() : b.getSingularName())
-							.replace("%block_color%", b.getDisplayColor() != null ? plugin.getColorUtils().convertColorByName(b.getDisplayColor()) : "")
-							.replace("%date_elapsed%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatElapsed(bf.getTimestamp()))
-							.replace("%date%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatDate(bf.getTimestamp())));
+					OAPlayerImpl bPlayer = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(bf.getPlayer());
+					sendMessage(player, ((OreAnnouncerPlugin) plugin).getMessageUtils().convertPlayerPlaceholders(
+							(isGeneralCommand ? Messages.CMD_LOG_FORMAT_GENERAL_BLOCK : Messages.CMD_LOG_FORMAT_PLAYER_BLOCK)
+								.replace("%number%", Integer.toString(bf.getFound()))
+								.replace("%block%", b.getDisplayName() != null ? b.getDisplayName() : b.getSingularName())
+								.replace("%block_color%", b.getDisplayColor() != null ? plugin.getColorUtils().convertColorByName(b.getDisplayColor()) : "")
+								.replace("%date_elapsed%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatElapsed(bf.getTimestamp()))
+								.replace("%date%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatDate(bf.getTimestamp())),
+							bPlayer
+					));
 				}
 			}
 		}
@@ -267,7 +271,7 @@ public class CommandLog extends ADPSubCommand {
 		if (isGeneralCommand) {
 			if (block != null) {
 				sendMessage(player, Messages.CMD_LOG_FOOTER_BLOCK
-						.replace("%block%", block.getDisplayName())
+						.replace("%block%", block.getDisplayName() != null ? block.getDisplayName() : block.getSingularName())
 						.replace("%page%", Integer.toString(selectedPage))
 						.replace("%maxpages%", Integer.toString(maxPages))
 						.replace("%total%", Integer.toString(numberBlocks)));
@@ -278,10 +282,13 @@ public class CommandLog extends ADPSubCommand {
 						.replace("%total%", Integer.toString(numberBlocks)));
 			}
 		} else {
-			sendMessage(player, Messages.CMD_LOG_FOOTER_PLAYER
-					.replace("%page%", Integer.toString(selectedPage))
-					.replace("%maxpages%", Integer.toString(maxPages))
-					.replace("%total%", Integer.toString(numberBlocks)));
+			sendMessage(player, ((OreAnnouncerPlugin) plugin).getMessageUtils().convertPlayerPlaceholders(
+					Messages.CMD_LOG_FOOTER_PLAYER
+							.replace("%page%", Integer.toString(selectedPage))
+							.replace("%maxpages%", Integer.toString(maxPages))
+							.replace("%total%", Integer.toString(numberBlocks)),
+					targetPlayer
+			));
 		}
 	}
 	
@@ -295,7 +302,7 @@ public class CommandLog extends ADPSubCommand {
 	@Override
 	public List<String> onTabComplete(@NonNull User sender, String[] args) {
 		List<String> ret = new ArrayList<>();
-		if (sender.hasPermission(OreAnnouncerPermission.ADMIN_LOG.toString())) {
+		if (sender.hasPermission(permission)) {
 			if (args.length == 2) {
 				ret.add(ConfigMain.COMMANDS_SUB_BLOCK);
 				ret.add(ConfigMain.COMMANDS_SUB_PLAYER);
