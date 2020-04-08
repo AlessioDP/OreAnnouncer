@@ -28,7 +28,7 @@ oreannouncer:
     order: 'orden'
     player: 'jugador'
     page: 'página'
-    unknown: 'unknown'
+    unknown: 'desconocido'
 #/ =============================== \
 #|         ALERTS MESSAGES         |
 #\ =============================== /
