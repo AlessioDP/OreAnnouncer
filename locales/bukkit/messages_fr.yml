@@ -66,21 +66,21 @@ commands:
     toggle-on: '&aVous pourrez maintenant voir les alertes'
     toggle-off: '&aVous ne pourrez plus voir les alertes'
   log:
-    header-player: '&2============ &l%player%''s Log (%page%/%maxpages%) &r&2============'
+    header-player: '&2========== &lJournal de %player% (%page%/%maxpages%) &r&2=========='
     footer-player: ''
-    header-block: '&2============= &l%block%''s Log (%page%/%maxpages%) &r&2============='
+    header-block: '&2========== &l Journal de %block%(%page%/%maxpages%) &r&2==========='
     footer-block: ''
-    header-block-general: '&2================ &lBlocks Log (%page%/%maxpages%) &r&2================'
+    header-block-general: '&2============= &lJournal des Blocs (%page%/%maxpages%) &r&2============='
     footer-block-general: ''
-    format-player-block: '["",{"text":"%number% %block_color%%block% ","color":"gold"},{"text":"%date_elapsed% ago!","color":"gray","hoverEvent":{"action":"show_text","value":["",{"text":"%date%","color":"gold"}]}}]'
-    format-general-block: '["",{"text":"%number% %block_color%%block% ","color":"gold"},{"text":"by %player% ","color":"dark_gray"},{"text":"%date_elapsed% ago!","color":"gray","hoverEvent":{"action":"show_text","value":["",{"text":"%date%","color":"gold"}]}}]'
-    nothing: '&7Nothing'
+    format-player-block: '["",{"text":"%number% %block_color%%block% ","color":"gold"},{"text":"il y a %date_elapsed%!","color":"gray","hoverEvent":{"action":"show_text","value":["",{"text":"%date%","color":"gold"}]}}]'
+    format-general-block: '["",{"text":"%number% %block_color%%block% ","color":"gold"},{"text":"par %player% ","color":"dark_gray"},{"text":" il y a %date_elapsed% !","color":"gray","hoverEvent":{"action":"show_text","value":["",{"text":"%date%","color":"gold"}]}}]'
+    nothing: '&7Rien'
     player-not-found: '&c%player% introuvable !'
-    invalid-block: '&cInvalid block'
+    invalid-block: '&cBloc invalide'
   stats:
     header: '&2========== &l Statistiques de %player% &r&2=========='
     footer: ''
-    nothing: '&7Nothing'
+    nothing: '&7Rien'
     format-block: '%block_color%%block%&7: %value%'
     player-not-found: '&c%player% introuvable !'
   top:
@@ -95,8 +95,8 @@ commands:
     format-player: '&a%player%&7: %value% blocs'
     word-destroy: 'détruire'
     word-found: 'trouvé'
-    invalid-order: '&cInvalid order type'
-    invalid-block: '&cInvalid block'
+    invalid-order: '&cType d'' ordre non valide'
+    invalid-block: '&cBloc invalide'
   version:
     #[Special tags]
     #=> %version%    = OreAnnouncer version
