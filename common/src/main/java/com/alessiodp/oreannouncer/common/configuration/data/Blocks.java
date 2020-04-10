@@ -134,7 +134,6 @@ public class Blocks extends ConfigurationFile {
 					block.setPluralName(csBlocks.getString(key + ".name.plural", key));
 					block.setCountNumber(csBlocks.getInt(key + ".count.number", 0));
 					block.setCountTime(csBlocks.getInt(key + ".count.time", 0));
-					block.setCountTimeFormat(csBlocks.getString(key + ".count.time-format", null));
 					block.setMessageUser(csBlocks.getString(key + ".messages.user", null));
 					block.setMessageAdmin(csBlocks.getString(key + ".messages.admin", null));
 					block.setMessageConsole(csBlocks.getString(key + ".messages.console", null));
@@ -148,7 +147,7 @@ public class Blocks extends ConfigurationFile {
 					block.setPriority(csBlocks.getInt(key + ".priority", 0));
 					
 					block.setAccessible(false);
-					blocks.put(key.toUpperCase(), block);
+					blocks.put(key.toUpperCase(Locale.ENGLISH), block);
 				} else {
 					// Material doesn't exist
 					plugin.getLoggerManager().printError(OAConstants.DEBUG_CFG_WRONGBLOCK
@@ -172,11 +171,9 @@ public class Blocks extends ConfigurationFile {
 		configuration.set("blocks." + block.getMaterialName() + ".name.singular", block.getSingularName());
 		configuration.set("blocks." + block.getMaterialName() + ".name.plural", block.getPluralName());
 		if (block.getCountNumber() != 0
-				|| block.getCountTime() != 0
-				|| block.getCountTimeFormat() != null) {
+				|| block.getCountTime() != 0) {
 			configuration.set("blocks." + block.getMaterialName() + ".count.number", block.getCountNumber());
 			configuration.set("blocks." + block.getMaterialName() + ".count.time", block.getCountTime());
-			configuration.set("blocks." + block.getMaterialName() + ".count.time-format", block.getCountTimeFormat());
 		} else {
 			configuration.set("blocks." + block.getMaterialName() + ".count", null);
 		}
@@ -220,6 +217,6 @@ public class Blocks extends ConfigurationFile {
 			e.printStackTrace();
 		}
 		
-		LIST.remove(block.getMaterialName().toUpperCase());
+		LIST.remove(block.getMaterialName().toUpperCase(Locale.ENGLISH));
 	}
 }

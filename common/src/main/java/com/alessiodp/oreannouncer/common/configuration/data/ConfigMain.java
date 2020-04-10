@@ -125,8 +125,12 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static List<String>	STATS_BLACKLIST_BLOCKS_TOP;
 	@ConfigOption(path = "stats.advanced-count.enable")
 	public static boolean		STATS_ADVANCED_COUNT_ENABLE;
-	@ConfigOption(path = "stats.advanced-count.default-time-format")
-	public static String		STATS_ADVANCED_COUNT_TIME_FORMAT;
+	@ConfigOption(path = "stats.advanced-count.default-time-format-large")
+	public static String		STATS_ADVANCED_COUNT_TIME_FORMAT_LARGE;
+	@ConfigOption(path = "stats.advanced-count.default-time-format-medium")
+	public static String		STATS_ADVANCED_COUNT_TIME_FORMAT_MEDIUM;
+	@ConfigOption(path = "stats.advanced-count.default-time-format-small")
+	public static String		STATS_ADVANCED_COUNT_TIME_FORMAT_SMALL;
 	@ConfigOption(path = "stats.advanced-count.log-command.enable")
 	public static boolean		STATS_ADVANCED_COUNT_LOG_ENABLE;
 	@ConfigOption(path = "stats.advanced-count.log-command.format-date")
@@ -147,6 +151,8 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static String		STATS_TOP_ORDER_BY;
 	@ConfigOption(path = "stats.top.change-order")
 	public static boolean		STATS_TOP_CHANGE_ORDER;
+	@ConfigOption(path = "stats.top.change-block")
+	public static boolean		STATS_TOP_CHANGE_BLOCK;
 	@ConfigOption(path = "stats.top.number-of-players")
 	public static int			STATS_TOP_NUMPLAYERS;
 	

@@ -176,16 +176,14 @@ public abstract class BlockManager {
 		// If count number enabled handle alerts
 		if (block.getCountNumber() > 0 && bfr.getTotal() >= block.getCountNumber()) {
 			
-			String countTimeFormat = block.getCountTimeFormat() != null ? block.getCountTimeFormat() : ConfigMain.STATS_ADVANCED_COUNT_TIME_FORMAT;
-			
 			// Alert
 			String userMessage = block.getCountMessageUser() != null ? block.getCountMessageUser() : Messages.ALERTS_COUNT_USER;
 			String adminMessage = block.getCountMessageAdmin() != null ? block.getCountMessageAdmin() : Messages.ALERTS_COUNT_ADMIN;
 			String consoleMessage = block.getCountMessageConsole() != null ? block.getCountMessageConsole() : Messages.ALERTS_COUNT_CONSOLE;
 			
-			userMessage = parseMessage(userMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_USER, bfr.getTotal(), bfr.getTimestamp(), countTimeFormat);
-			adminMessage = parseMessage(adminMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_ADMIN, bfr.getTotal(), bfr.getTimestamp(), countTimeFormat);
-			consoleMessage = parseMessage(consoleMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_CONSOLE, bfr.getTotal(), bfr.getTimestamp(), countTimeFormat);
+			userMessage = parseMessage(userMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_USER, bfr.getTotal(), bfr.getTimestamp());
+			adminMessage = parseMessage(adminMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_ADMIN, bfr.getTotal(), bfr.getTimestamp());
+			consoleMessage = parseMessage(consoleMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_CONSOLE, bfr.getTotal(), bfr.getTimestamp());
 			
 			if (plugin.isBungeeCordEnabled()) {
 				OAPacket packet = new OAPacket(plugin.getVersion());
@@ -273,10 +271,10 @@ public abstract class BlockManager {
 	}
 	
 	protected String parseMessage(String message, OAPlayerImpl player, OABlockImpl block, ADPLocation blockLocation, boolean hiddenCoordinates, int numberOfBlocks) {
-		return parseMessage(message, player, block, blockLocation, hiddenCoordinates, numberOfBlocks, 0, "");
+		return parseMessage(message, player, block, blockLocation, hiddenCoordinates, numberOfBlocks, 0);
 	}
 	
-	protected String parseMessage(String message, @Nullable OAPlayerImpl player, OABlockImpl block, ADPLocation blockLocation, boolean hiddenCoordinates, int numberOfBlocks, long elapsed, String elapsedFormat) {
+	protected String parseMessage(String message, @Nullable OAPlayerImpl player, OABlockImpl block, ADPLocation blockLocation, boolean hiddenCoordinates, int numberOfBlocks, long elapsed) {
 		// Replace placeholders
 		String pPlayer = player != null ? player.getName() : "unknown";
 		String pNumber = Integer.toString(numberOfBlocks);
@@ -286,7 +284,7 @@ public abstract class BlockManager {
 				.replace("%player%", pPlayer)
 				.replace("%number%", pNumber)
 				.replace("%block%", pBlock)
-				.replace("%time%", formatElapsed(elapsed, elapsedFormat));
+				.replace("%time%", formatElapsed(elapsed));
 		
 		String ret = plugin.getMessageUtils().convertPlayerPlaceholders(repl.apply(message), player);
 		
@@ -296,8 +294,12 @@ public abstract class BlockManager {
 		return player != null ? parsePAPI(player.getPlayerUUID(), ret) : ret;
 	}
 	
-	private String formatElapsed(long timestamp, String format) {
-		return DurationFormatUtils.formatDuration(System.currentTimeMillis() - (timestamp * 1000L), format);
+	private String formatElapsed(long timestamp) {
+		long elapsed = System.currentTimeMillis() - (timestamp * 1000L);
+		String format = elapsed >= 3600000 ? ConfigMain.STATS_ADVANCED_COUNT_TIME_FORMAT_LARGE
+				: (elapsed >= 60000 ? ConfigMain.STATS_ADVANCED_COUNT_TIME_FORMAT_MEDIUM
+				: ConfigMain.STATS_ADVANCED_COUNT_TIME_FORMAT_SMALL);
+		return DurationFormatUtils.formatDuration(elapsed, format);
 	}
 	
 	protected abstract String parsePAPI(UUID playerUuid, String message);

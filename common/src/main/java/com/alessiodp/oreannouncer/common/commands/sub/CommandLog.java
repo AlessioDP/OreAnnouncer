@@ -22,6 +22,7 @@ import lombok.NonNull;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
@@ -108,7 +109,7 @@ public class CommandLog extends ADPSubCommand {
 			if (commandData.getArgs().length > 2) {
 				if (commandData.getArgs().length > 3) {
 					// oa block <BLOCK> <page>
-					OABlockImpl b = Blocks.LIST.get(commandData.getArgs()[2].toUpperCase());
+					OABlockImpl b = Blocks.LIST.get(commandData.getArgs()[2].toUpperCase(Locale.ENGLISH));
 					if (b != null && b.isEnabled()) {
 						block = b;
 					} else {
@@ -130,7 +131,7 @@ public class CommandLog extends ADPSubCommand {
 						selectedPage = Integer.parseInt(commandData.getArgs()[2]);
 					} catch (NumberFormatException ex) {
 						// oa block <BLOCK/page>
-						OABlockImpl b = Blocks.LIST.get(commandData.getArgs()[2].toUpperCase());
+						OABlockImpl b = Blocks.LIST.get(commandData.getArgs()[2].toUpperCase(Locale.ENGLISH));
 						if (b != null && b.isEnabled()) {
 							block = b;
 						} else {
@@ -160,7 +161,7 @@ public class CommandLog extends ADPSubCommand {
 				if (commandData.getArgs().length > 3) {
 					if (commandData.getArgs().length > 4) {
 						// oa player <player> <BLOCK> <page>
-						OABlockImpl b = Blocks.LIST.get(commandData.getArgs()[3].toUpperCase());
+						OABlockImpl b = Blocks.LIST.get(commandData.getArgs()[3].toUpperCase(Locale.ENGLISH));
 						if (b != null && b.isEnabled()) {
 							block = b;
 						} else {
@@ -182,7 +183,7 @@ public class CommandLog extends ADPSubCommand {
 							selectedPage = Integer.parseInt(commandData.getArgs()[3]);
 						} catch (NumberFormatException ex) {
 							// oa player <player> <BLOCK/page>
-							OABlockImpl b = Blocks.LIST.get(commandData.getArgs()[3].toUpperCase());
+							OABlockImpl b = Blocks.LIST.get(commandData.getArgs()[3].toUpperCase(Locale.ENGLISH));
 							if (b != null && b.isEnabled()) {
 								block = b;
 							} else {

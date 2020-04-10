@@ -126,7 +126,13 @@ stats:
     # => s          seconds
     # => S          milliseconds
     # => 'text'     arbitrary text content
-    default-time-format: "m' minutes'"
+    # Formats:
+    # => large   = More than 1 hour
+    # => medium  = More than 1 minute
+    # => small   = More than 1 second
+    default-time-format-large: "h' hours'"
+    default-time-format-medium: "m' minutes'"
+    default-time-format-small: "s' seconds'"
 
     log-command:
       enable: true
@@ -148,6 +154,8 @@ stats:
     order-by: destroy
     # Allow order change with the command
     change-order: false
+    # Allow block change with the command
+    change-block: true
     number-of-players: 5
 
 
@@ -183,4 +191,4 @@ commands:
 
 
 dont-edit-this:
-  version: 4
+  version: 5

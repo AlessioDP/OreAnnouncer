@@ -26,7 +26,6 @@ public class OABlockImpl implements OABlock {
 	@Getter private String pluralName;
 	@Getter private int countNumber;
 	@Getter private int countTime;
-	@Getter private String countTimeFormat;
 	@Getter private String messageUser;
 	@Getter private String messageAdmin;
 	@Getter private String messageConsole;
@@ -54,7 +53,6 @@ public class OABlockImpl implements OABlock {
 		this.pluralName = "";
 		this.countNumber = 0;
 		this.countTime = 0;
-		this.countTimeFormat = null;
 		this.messageUser = null;
 		this.messageAdmin = null;
 		this.messageConsole = null;
@@ -153,13 +151,6 @@ public class OABlockImpl implements OABlock {
 	public void setCountTime(int countTime) {
 		updateValue(() -> {
 			this.countTime = countTime;
-		});
-	}
-	
-	@Override
-	public void setCountTimeFormat(String countTimeFormat) {
-		updateValue(() -> {
-			this.countTimeFormat = countTimeFormat;
 		});
 	}
 	

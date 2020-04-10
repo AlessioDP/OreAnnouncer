@@ -16,7 +16,6 @@
 #  count:
 #    number: #                    | Number of blocks to destroy in X time
 #    time: #                      | X time in seconds
-#    time-format: ""              | Custom time format for count message, more info in config.yml
 #  messages:
 #    user: ""                     | Override user message
 #    admin: ""                    | Override admin message

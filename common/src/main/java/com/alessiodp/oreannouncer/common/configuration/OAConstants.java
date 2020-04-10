@@ -14,8 +14,8 @@ public class OAConstants {
 	public static final int PLUGIN_BSTATS_BUNGEE_ID = 4513;
 	
 	// Versions
-	public static final int VERSION_BUKKIT_CONFIG = 7;
-	public static final int VERSION_BUNGEE_CONFIG = 4;
+	public static final int VERSION_BUKKIT_CONFIG = 8;
+	public static final int VERSION_BUNGEE_CONFIG = 5;
 	public static final int VERSION_BUKKIT_MESSAGES = 7;
 	public static final int VERSION_BUNGEE_MESSAGES = 5;
 	public static final int VERSION_BLOCKS = 1;

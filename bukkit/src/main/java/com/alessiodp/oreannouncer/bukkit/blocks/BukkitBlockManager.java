@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.metadata.FixedMetadataValue;
 
+import java.util.Locale;
 import java.util.UUID;
 
 public class BukkitBlockManager extends BlockManager {
@@ -21,7 +22,7 @@ public class BukkitBlockManager extends BlockManager {
 	
 	@Override
 	public boolean existsMaterial(String materialName) {
-		return Material.getMaterial(materialName.toUpperCase()) != null;
+		return Material.getMaterial(materialName.toUpperCase(Locale.ENGLISH)) != null;
 	}
 	
 	@SuppressWarnings("ConstantConditions")

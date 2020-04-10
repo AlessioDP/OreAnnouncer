@@ -37,19 +37,36 @@ public class CommandTop extends ADPSubCommand {
 				true
 		);
 		
-		if (ConfigMain.STATS_TOP_CHANGE_ORDER) {
-			syntax = String.format("%s [%s] [%s] [%s]",
-					baseSyntax(),
-					Messages.OREANNOUNCER_SYNTAX_ORDER,
-					Messages.OREANNOUNCER_SYNTAX_BLOCK,
-					Messages.OREANNOUNCER_SYNTAX_PAGE
-			);
-		} else {
-			syntax = String.format("%s [%s] [%s]",
-					baseSyntax(),
-					Messages.OREANNOUNCER_SYNTAX_BLOCK,
-					Messages.OREANNOUNCER_SYNTAX_PAGE
-			);
+		switch (CommandUsage.getCurrentUsage()) {
+			case FULL:
+				syntax = String.format("%s [%s] [%s] [%s]",
+						baseSyntax(),
+						Messages.OREANNOUNCER_SYNTAX_ORDER,
+						Messages.OREANNOUNCER_SYNTAX_BLOCK,
+						Messages.OREANNOUNCER_SYNTAX_PAGE
+				);
+				break;
+			case ONLY_BLOCK:
+				syntax = String.format("%s [%s] [%s]",
+						baseSyntax(),
+						Messages.OREANNOUNCER_SYNTAX_BLOCK,
+						Messages.OREANNOUNCER_SYNTAX_PAGE
+				);
+				break;
+			case ONLY_ORDER:
+				syntax = String.format("%s [%s] [%s]",
+						baseSyntax(),
+						Messages.OREANNOUNCER_SYNTAX_ORDER,
+						Messages.OREANNOUNCER_SYNTAX_PAGE
+				);
+				break;
+			case BASE:
+			default:
+				syntax = String.format("%s [%s]",
+						baseSyntax(),
+						Messages.OREANNOUNCER_SYNTAX_PAGE
+				);
+				break;
 		}
 		
 		description = Messages.HELP_CMD_DESCRIPTIONS_TOP;
@@ -93,52 +110,19 @@ public class CommandTop extends ADPSubCommand {
 		OABlockImpl block = null;
 		if (commandData.getArgs().length > 1) {
 			String[] args = Arrays.copyOfRange(commandData.getArgs(), 1, commandData.getArgs().length);
-			
-			if (args.length > 2) {
-				// All
-				try {
-					selectedPage = Integer.parseInt(args[2]);
-				} catch(NumberFormatException ex) {
-					sendMessage(player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
-							.replace("%syntax%", syntax));
-					return;
-				}
-				
-				block = Blocks.LIST.get(args[1].toUpperCase());
-				if (block == null || !block.isEnabled() || blacklist.contains(block.getMaterialName())) {
-					sendMessage(player, Messages.CMD_TOP_INVALID_BLOCK);
-					return;
-				}
-				
-				
-				orderBy = OADatabaseManager.TopOrderBy.parse(args[0]);
-				if (orderBy == null) {
-					sendMessage(player, Messages.CMD_TOP_INVALID_ORDER);
-					return;
-				}
-				
-				
-			} else if (args.length > 1) {
-				// Check if page
-				try {
-					selectedPage = Integer.parseInt(args[1]);
-					
-					// Check for or order or block
-					OADatabaseManager.TopOrderBy temp = OADatabaseManager.TopOrderBy.parse(args[0]);
-					
-					if (temp == null) {
-						block = Blocks.LIST.get(args[0].toUpperCase());
-						if (block == null) {
-							sendMessage(player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
-									.replace("%syntax%", syntax));
-							return;
-						}
-					} else {
-						orderBy = temp;
+			CommandUsage commandUsage = CommandUsage.getCurrentUsage();
+			if (args.length == 3) {
+				// Full command
+				if (commandUsage == CommandUsage.FULL) {
+					try {
+						selectedPage = Integer.parseInt(args[2]);
+					} catch(NumberFormatException ex) {
+						sendMessage(player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
+								.replace("%syntax%", syntax));
+						return;
 					}
-				} catch (NumberFormatException ignored) {
-					// Check for both order and block
-					block = Blocks.LIST.get(args[1].toUpperCase());
+					
+					block = Blocks.LIST.get(args[1].toUpperCase(Locale.ENGLISH));
 					if (block == null || !block.isEnabled() || blacklist.contains(block.getMaterialName())) {
 						sendMessage(player, Messages.CMD_TOP_INVALID_BLOCK);
 						return;
@@ -150,25 +134,108 @@ public class CommandTop extends ADPSubCommand {
 						sendMessage(player, Messages.CMD_TOP_INVALID_ORDER);
 						return;
 					}
+				} else {
+					sendMessage(player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
+							.replace("%syntax%", syntax));
+					return;
 				}
-			} else {
+			} else if (args.length == 2) {
+				// Fail if command usage is BASE
+				if (commandUsage == CommandUsage.BASE) {
+					sendMessage(player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
+							.replace("%syntax%", syntax));
+					return;
+				}
+				
 				// Check if page
 				try {
-					selectedPage = Integer.parseInt(args[0]);
-				} catch (NumberFormatException ignored) {
-					// Check if order
-					OADatabaseManager.TopOrderBy temp = OADatabaseManager.TopOrderBy.parse(args[0]);
+					selectedPage = Integer.parseInt(args[1]);
 					
-					if (temp == null) {
-						// Check if block
-						block = Blocks.LIST.get(args[0].toUpperCase());
+					if (commandUsage == CommandUsage.FULL) {
+						// Check for or order or block
+						OADatabaseManager.TopOrderBy temp = OADatabaseManager.TopOrderBy.parse(args[0]);
+						
+						if (temp == null) {
+							block = Blocks.LIST.get(args[0].toUpperCase(Locale.ENGLISH));
+							if (block == null) {
+								sendMessage(player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
+										.replace("%syntax%", syntax));
+								return;
+							}
+						} else {
+							orderBy = temp;
+						}
+					} else if (commandUsage == CommandUsage.ONLY_BLOCK) {
+						// Check for block
+						block = Blocks.LIST.get(args[0].toUpperCase(Locale.ENGLISH));
 						if (block == null) {
 							sendMessage(player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
 									.replace("%syntax%", syntax));
 							return;
 						}
 					} else {
-						orderBy = temp;
+						// Check for order
+						orderBy = OADatabaseManager.TopOrderBy.parse(args[0]);
+						if (orderBy == null) {
+							sendMessage(player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
+									.replace("%syntax%", syntax));
+							return;
+						}
+					}
+					
+				} catch (NumberFormatException ignored) {
+					if (commandUsage == CommandUsage.FULL) {
+						// Check for or order or block
+						block = Blocks.LIST.get(args[1].toUpperCase(Locale.ENGLISH));
+						if (block == null || !block.isEnabled() || blacklist.contains(block.getMaterialName())) {
+							sendMessage(player, Messages.CMD_TOP_INVALID_BLOCK);
+							return;
+						}
+						
+						
+						orderBy = OADatabaseManager.TopOrderBy.parse(args[0]);
+						if (orderBy == null) {
+							sendMessage(player, Messages.CMD_TOP_INVALID_ORDER);
+							return;
+						}
+					} else {
+						sendMessage(player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
+								.replace("%syntax%", syntax));
+						return;
+					}
+				}
+			} else if (args.length == 1) {
+				// Check if page
+				try {
+					selectedPage = Integer.parseInt(args[0]);
+				} catch (NumberFormatException ignored) {
+					if (commandUsage == CommandUsage.FULL) {
+						// Check for or order or block
+						orderBy = OADatabaseManager.TopOrderBy.parse(args[0]);
+						if (orderBy == null) {
+							block = Blocks.LIST.get(args[0].toUpperCase(Locale.ENGLISH));
+							if (block == null || !block.isEnabled() || blacklist.contains(block.getMaterialName())) {
+								sendMessage(player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
+										.replace("%syntax%", syntax));
+								return;
+							}
+						}
+					} else if (commandUsage == CommandUsage.ONLY_BLOCK) {
+						block = Blocks.LIST.get(args[0].toUpperCase(Locale.ENGLISH));
+						if (block == null || !block.isEnabled() || blacklist.contains(block.getMaterialName())) {
+							sendMessage(player, Messages.CMD_TOP_INVALID_BLOCK);
+							return;
+						}
+					} else if (commandUsage == CommandUsage.ONLY_ORDER) {
+						orderBy = OADatabaseManager.TopOrderBy.parse(args[0]);
+						if (orderBy == null) {
+							sendMessage(player, Messages.CMD_TOP_INVALID_ORDER);
+							return;
+						}
+					} else {
+						sendMessage(player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
+								.replace("%syntax%", syntax));
+						return;
 					}
 				}
 			}
@@ -223,23 +290,57 @@ public class CommandTop extends ADPSubCommand {
 	public List<String> onTabComplete(@NonNull User sender, String[] args) {
 		List<String> ret = new ArrayList<>();
 		if (sender.hasPermission(permission)) {
+			CommandUsage commandUsage = CommandUsage.getCurrentUsage();
 			if (args.length == 2) {
-				if (ConfigMain.STATS_TOP_CHANGE_ORDER) {
-					for (OADatabaseManager.TopOrderBy ord : OADatabaseManager.TopOrderBy.values())
-						ret.add(ord.name().toLowerCase());
-				} else {
-					for (OABlockImpl block : Blocks.LIST.values()) {
-						if (block.isEnabled())
-							ret.add(block.getMaterialName());
-					}
+				switch (commandUsage) {
+					case FULL:
+					case ONLY_ORDER:
+						for (OADatabaseManager.TopOrderBy ord : OADatabaseManager.TopOrderBy.values())
+							ret.add(ord.name().toLowerCase());
+						break;
+					case ONLY_BLOCK:
+						for (OABlockImpl block : Blocks.LIST.values()) {
+							if (block.isEnabled())
+								ret.add(block.getMaterialName());
+						}
+						break;
+					case BASE:
+					default:
+						// Nothing to do
+						break;
 				}
-			} else if (args.length == 3 && ConfigMain.STATS_TOP_CHANGE_ORDER) {
-				for (OABlockImpl block : Blocks.LIST.values()) {
-					if (block.isEnabled())
-						ret.add(block.getMaterialName());
+			} else if (args.length == 3) {
+				switch (commandUsage) {
+					case FULL:
+						for (OABlockImpl block : Blocks.LIST.values()) {
+							if (block.isEnabled())
+								ret.add(block.getMaterialName());
+						}
+						break;
+					case ONLY_ORDER:
+					case ONLY_BLOCK:
+					case BASE:
+					default:
+						// Nothing to do
+						break;
 				}
 			}
 		}
 		return ret;
+	}
+	
+	private enum CommandUsage {
+		FULL, ONLY_BLOCK, ONLY_ORDER, BASE;
+		
+		private static CommandUsage getCurrentUsage() {
+			if (ConfigMain.STATS_TOP_CHANGE_ORDER && ConfigMain.STATS_TOP_CHANGE_BLOCK) {
+				return FULL;
+			} else if (ConfigMain.STATS_TOP_CHANGE_BLOCK) {
+				return ONLY_BLOCK;
+			} else if (ConfigMain.STATS_TOP_CHANGE_ORDER) {
+				return ONLY_ORDER;
+			}
+			return BASE;
+		}
 	}
 }
