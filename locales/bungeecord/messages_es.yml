@@ -23,14 +23,14 @@ oreannouncer:
     invalid-command: '&cComando inválido'
     configuration-reloaded: '&aLa configuración ha sido reiniciada'
   blocks:
-    enabled: '&aEnabled'
-    disabled: '&cDisabled'
+    enabled: '&aHabilitado'
+    disabled: '&cDeshabilitado'
     toggled-on: '&aOn'
     toggled-off: '&cOff'
-    word-yes: '&aYes'
+    word-yes: '&aSí'
     word-no: '&cNo'
-    empty: '&8Empty'
-    none: '&8None'
+    empty: '&8Vacío'
+    none: '&8Ninguno'
   syntax:
     wrong-message: '&cSintaxis incorrecta: Escribe &7/%syntax%'
     block: 'bloque'
@@ -39,7 +39,7 @@ oreannouncer:
     order: 'orden'
     page: 'página'
     player: 'jugador'
-    type: 'type'
+    type: 'tipo'
     unknown: 'desconocido'
 #/ =============================== \
 #|        COMMANDS MESSAGES        |
@@ -81,8 +81,8 @@ commands:
     footer-block: ''
     header-block-general: '&2=============== &lBloques Log (%page%/%maxpages%) &r&2==============='
     footer-block-general: ''
-    format-player-block: '[{"text":"&6%number% %display_color%%display_name% "},{"text":"&7%date_elapsed% ago!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
-    format-general-block: '[{"text":"&6%number% %display_color%%display_name% &8by %player% "},{"text":"&7%date_elapsed% ago!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
+    format-player-block: '[{"text":"&7¡&6%number% %display_color%%display_name% "},{"text":"&7hace %date_elapsed%!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
+    format-general-block: '[{"text":"&7¡&6%number% %display_color%%display_name% &8por %player% "},{"text":"&7hace %date_elapsed%!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
     nothing: '&7Nada'
     player-not-found: '&c%player% no localizado!'
     invalid-block: '&cBloque no válido'
@@ -91,7 +91,7 @@ commands:
     footer: ''
     nothing: '&7Nada'
     format-block: '%display_color%%display_name%&7: %value%'
-    invalid-type: '&cInvalid value type'
+    invalid-type: '&cTipo de valor inválido'
     player-not-found: '&c%player% no localizado!'
   top:
     #[Special tags]
@@ -139,7 +139,7 @@ help:
   command-descriptions:
     help: 'Mostrar paginas de ayuda'
     alerts: 'Alternar alertas'
-    debug: 'Debug issues'
+    debug: 'Debug problemas'
     log: 'Mostrar logs'
     reload: 'Recargar archivos de configuración de OreAnnouncer'
     stats: 'Mostrar estadísticas del jugador'
