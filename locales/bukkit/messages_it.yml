@@ -23,14 +23,14 @@ oreannouncer:
     invalid-command: '&cComando non valido'
     configuration-reloaded: '&aConfigurazione ricaricata'
   blocks:
-    enabled: '&aEnabled'
-    disabled: '&cDisabled'
+    enabled: '&aAttivo'
+    disabled: '&cInattivo'
     toggled-on: '&aOn'
     toggled-off: '&cOff'
-    word-yes: '&aYes'
+    word-yes: '&aSì'
     word-no: '&cNo'
-    empty: '&8Empty'
-    none: '&8None'
+    empty: '&8Vuoto'
+    none: '&8Nessuno'
   syntax:
     wrong-message: '&cSintassi errata: Digita &7/%syntax%'
     block: 'blocco'
@@ -39,7 +39,7 @@ oreannouncer:
     order: 'ordine'
     page: 'pagina'
     player: 'giocatore'
-    type: 'type'
+    type: 'tipo'
     unknown: 'sconosciuto'
 #/ =============================== \
 #|         ALERTS MESSAGES         |
@@ -52,23 +52,23 @@ alerts:
   #- Do not use obfuscation if you are using coordinates to run commands
   #Example:
   #{"text":"%x%","color":"gray"} - This is a single block for a coordinate
-  user: '&6%player% &efound %number% %display_color%%block%!'
+  user: '&6%player% &eha trovato %number% %display_color%%block%!'
   #Without teleport:
   #admin: "&6%player% &efound %number% %block%! &7[x: %x%&7, z: %z%&7]"
-  admin: '[{"text":"&6%player% &efound %number% %display_color%%block%&e! "},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Click to teleport!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
+  admin: '[{"text":"&6%player% &eha trovato %number% %display_color%%block%&e! "},{"text":"Teletrasportati","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Clicca per teletrasportarti!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
   #No JSON for console
   console: '%player% ha trovato %number% %block%! [x: %x%, y: %y%, z: %z%]'
   count:
     user: ''
-    admin: '[{"text":"&6%player% &efound %number% %display_color%%block%&e in %time%! "},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Click to teleport!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
+    admin: '[{"text":"&6%player% &eha trovato %number% %display_color%%block%&e in %time%! "},{"text":"Teletrasportati","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Clicca per teletrasportarti!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
     #No JSON for console
     console: '%player% ha trovato %number% %block% in %time%! [x: %x%, y: %y%, z: %z%]'
   tnt:
     user: ''
-    admin: '[{"text":"&eTNT destroyed %number% %display_color%%block%&e! "},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Click to teleport!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %x% %y% %z%"}}]'
+    admin: '[{"text":"&eDella TNT ha distrutto %number% %display_color%%block%&e! "},{"text":"Teletrasportati","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Clicca per teletrasportati!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %x% %y% %z%"}}]'
     console: 'TNT ha distrutto %number% %block%! [x: %x%, y: %y%, z: %z%]'
     player-user: ''
-    player-admin: '[{"text":"&eTNT of &6%player% &edestroyed %number% %display_color%%block%&e! ","color":"yellow"},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Click to teleport!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %x% %y% %z%"}}]'
+    player-admin: '[{"text":"&eLa TNT di &6%player% &eha distrutto %number% %display_color%%block%&e! ","color":"yellow"},{"text":"Teletrasportati","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Clicca per teletrasportati!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %x% %y% %z%"}}]'
     player-console: 'TNT di %player% ha distrutto %number% %block%! [x: %x%, y: %y%, z: %z%]'
 #/ =============================== \
 #|        COMMANDS MESSAGES        |
@@ -111,8 +111,8 @@ commands:
     footer-block: ''
     header-block-general: '&2============== &lLog dei Blocchi (%page%/%maxpages%) &r&2=============='
     footer-block-general: ''
-    format-player-block: '[{"text":"&6%number% %display_color%%display_name% "},{"text":"&7%date_elapsed% ago!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
-    format-general-block: '[{"text":"&6%number% %display_color%%display_name% &8by %player% "},{"text":"&7%date_elapsed% ago!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
+    format-player-block: '[{"text":"&6%number% %display_color%%display_name% "},{"text":"&7%date_elapsed% fa!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
+    format-general-block: '[{"text":"&6%number% %display_color%%display_name% &8da %player% "},{"text":"&7%date_elapsed% fa!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
     nothing: '&7Niente'
     player-not-found: '&c%player% non trovato!'
     invalid-block: '&cBlocco non valido'
@@ -121,7 +121,7 @@ commands:
     footer: ''
     nothing: '&7Niente'
     format-block: '%display_color%%display_name%&7: %value%'
-    invalid-type: '&cInvalid value type'
+    invalid-type: '&cTipo di valore non valido'
     player-not-found: '&c%player% non trovato!'
   top:
     #[Special tags]
@@ -169,7 +169,7 @@ help:
   command-descriptions:
     help: 'Mostra le pagine d''aiuto'
     alerts: 'Attiva/disattiva avvisi'
-    debug: 'Debug issues'
+    debug: 'Debug problemi'
     log: 'Mostra i log'
     reload: 'Ricarica i file di configurazione di OreAnnouncer'
     stats: 'Mostra statistiche giocatore'
