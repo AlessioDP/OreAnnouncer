@@ -22,12 +22,24 @@ oreannouncer:
   common-messages:
     invalid-command: '&cComando non valido'
     configuration-reloaded: '&aConfigurazione ricaricata'
+  blocks:
+    enabled: '&aEnabled'
+    disabled: '&cDisabled'
+    toggled-on: '&aOn'
+    toggled-off: '&cOff'
+    word-yes: '&aYes'
+    word-no: '&cNo'
+    empty: '&8Empty'
+    none: '&8None'
   syntax:
     wrong-message: '&cSintassi errata: Digita &7/%syntax%'
     block: 'blocco'
+    destroy: 'distrutti'
+    found: 'trovati'
     order: 'ordine'
-    player: 'giocatore'
     page: 'pagina'
+    player: 'giocatore'
+    type: 'type'
     unknown: 'sconosciuto'
 #/ =============================== \
 #|        COMMANDS MESSAGES        |
@@ -36,6 +48,32 @@ commands:
   alerts:
     toggle-on: '&aOra sarai in grado di vedere gli avvisi'
     toggle-off: '&aNon vedrai più gli avvisi'
+  debug:
+    block:
+      header: '&2=================== &lDebug Blocks &r&2==================='
+      text:
+        - "&6%material_name% &7(%display_name%&7) (%enabled%&7):"
+        - "   &7Alert users/admins: %alert_users%&7/%alert_admins%"
+        - "    number/time: &f%count_number%&7/%count_time%"
+      invalid-block: '&cBlocco non valido'
+    config:
+      header: '&2================== &lDebug Config &r&2=================='
+      text:
+        - "&6Alerts&7: %alerts%&7,  &6Coordinates&7: %coordinates%"
+        - "&6Bypass player/silk/counter&7: %bypass_player%&7/%bypass_silk%&7/%bypass_counter%"
+        - "&6Stats&7: %stats% &7(%stats_values%)"
+        - "  &6Blacklist log&7: %blacklist_log%"
+        - "  &6Blacklist stats&7: %blacklist_stats%"
+        - "  &6Blacklist top&7: %blacklist_top%"
+        - "&6Advanced count&7: %advanced_count%"
+        - "  &6Log command&7: %log_command%"
+        - "&6Top command&7: %top_command%"
+    player:
+      header: '&2================ &lDebug %player% &r&2================'
+      text:
+        - "&6Bypass alerts/destroy/found&7: %permission_bypass_alerts%&7/%permission_bypass_destroy%&7/%permission_bypass_found%"
+        - "&6See alerts of users/admins/others&7: %see_alerts_users%&7/%see_alerts_admins%&7/%see_alerts_others%"
+      player-offline: "&cThe player '%player%' must be online"
   log:
     header-player: '&2============ &lLog di %player% (%page%/%maxpages%) &r&2============'
     footer-player: ''
@@ -43,8 +81,8 @@ commands:
     footer-block: ''
     header-block-general: '&2============== &lLog dei Blocchi (%page%/%maxpages%) &r&2=============='
     footer-block-general: ''
-    format-player-block: '["",{"text":"%number% %block_color%%block% ","color":"gold"},{"text":"%date_elapsed% fa!","color":"gray","hoverEvent":{"action":"show_text","value":["",{"text":"%date%","color":"gold"}]}}]'
-    format-general-block: '["",{"text":"%number% %block_color%%block% ","color":"gold"},{"text":"da %player% ","color":"dark_gray"},{"text":"%date_elapsed% fa!","color":"gray","hoverEvent":{"action":"show_text","value":["",{"text":"%date%","color":"gold"}]}}]'
+    format-player-block: '["",{"text":"%number% %display_color%%display_name% ","color":"gold"},{"text":"%date_elapsed% ago!","color":"gray","hoverEvent":{"action":"show_text","value":["",{"text":"%date%","color":"gold"}]}}]'
+    format-general-block: '["",{"text":"%number% %display_color%%display_name% ","color":"gold"},{"text":"by %player% ","color":"dark_gray"},{"text":"%date_elapsed% ago!","color":"gray","hoverEvent":{"action":"show_text","value":["",{"text":"%date%","color":"gold"}]}}]'
     nothing: '&7Niente'
     player-not-found: '&c%player% non trovato!'
     invalid-block: '&cBlocco non valido'
@@ -52,7 +90,8 @@ commands:
     header: '&2=========== &lStatistiche di %player% &r&2==========='
     footer: ''
     nothing: '&7Niente'
-    format-block: '%block_color%%block%&7: %value%'
+    format-block: '%display_color%%display_name%&7: %value%'
+    invalid-type: '&cInvalid value type'
     player-not-found: '&c%player% non trovato!'
   top:
     #[Special tags]
@@ -64,8 +103,6 @@ commands:
     no-one: '&7Nessuno'
     #You can use JSON to shows per-block total on hover
     format-player: '&a%player%&7: %value% blocchi'
-    word-destroy: 'distrutti'
-    word-found: 'trovati'
     invalid-order: '&cTipo di ordine non valido'
     invalid-block: '&cBlocco non valido'
   version:
@@ -93,6 +130,7 @@ help:
     #=> %perform_command% = Perform command message
     help: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
     alerts: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
+    debug: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
     log: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
     reload: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/%run_command%"},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
     stats: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
@@ -101,10 +139,11 @@ help:
   command-descriptions:
     help: 'Mostra le pagine d''aiuto'
     alerts: 'Attiva/disattiva avvisi'
+    debug: 'Debug issues'
     log: 'Mostra i log'
     reload: 'Ricarica i file di configurazione di OreAnnouncer'
     stats: 'Mostra statistiche giocatore'
     top: 'Mostra i migliori giocatori'
     version: 'Mostra le informazioni di OreAnnouncer'
 dont-edit-this:
-  version: 5
+  version: 6
