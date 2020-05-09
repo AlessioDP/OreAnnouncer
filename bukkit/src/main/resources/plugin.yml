@@ -15,8 +15,20 @@ permissions:
     description: Allow access to /oa help
   oreannouncer.user.stats:
     description: Allow access to /oa stats
+  oreannouncer.user.stats.destroy:
+    description: Allow access to only /oa stats with destroy type
+    default: false
+  oreannouncer.user.stats.found:
+    description: Allow access to only /oa stats with found type
+    default: false
   oreannouncer.user.top:
     description: Allow access to /oa top
+  oreannouncer.user.top.destroy:
+    description: Allow access to only /oa top with destroy order
+    default: false
+  oreannouncer.user.top.found:
+    description: Allow access to only /oa top with found order
+    default: false
   oreannouncer.admin.alerts.see:
     description: See admin alerts
   oreannouncer.admin.bypass.alerts:
@@ -25,6 +37,10 @@ permissions:
     description: Bypass destroy count on block destroy
   oreannouncer.admin.bypass.found:
     description: Bypass found count on block destroy
+  oreannouncer.admin.debug:
+    description: Allow access to /oa debug
+  oreannouncer.admin.log:
+    description: Allow access to /oa log
   oreannouncer.admin.reload:
     description: Allow access to /oa reload
   oreannouncer.admin.stats.other:
@@ -40,16 +56,20 @@ permissions:
     children:
       oreannouncer.user.alerts.see: true
       oreannouncer.user.alerts.toggle: true
+      oreannouncer.user.help: true
       oreannouncer.user.stats: true
       oreannouncer.user.top: true
-      oreannouncer.user.help: true
   oreannouncer.admin.*:
     default: op
     description: All admin permissions
     children:
       oreannouncer.user.*: true
       oreannouncer.admin.alerts.see: true
-      oreannouncer.admin.migrate: true
+      oreannouncer.admin.bypass.alerts: true
+      oreannouncer.admin.bypass.destroy: true
+      oreannouncer.admin.bypass.found: true
+      oreannouncer.admin.debug: true
+      oreannouncer.admin.log: true
       oreannouncer.admin.reload: true
       oreannouncer.admin.stats.other: true
       oreannouncer.admin.version: true

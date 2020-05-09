@@ -14,10 +14,10 @@ public class OAConstants {
 	public static final int PLUGIN_BSTATS_BUNGEE_ID = 4513;
 	
 	// Versions
-	public static final int VERSION_BUKKIT_CONFIG = 8;
-	public static final int VERSION_BUNGEE_CONFIG = 5;
-	public static final int VERSION_BUKKIT_MESSAGES = 7;
-	public static final int VERSION_BUNGEE_MESSAGES = 5;
+	public static final int VERSION_BUKKIT_CONFIG = 9;
+	public static final int VERSION_BUNGEE_CONFIG = 6;
+	public static final int VERSION_BUKKIT_MESSAGES = 8;
+	public static final int VERSION_BUNGEE_MESSAGES = 6;
 	public static final int VERSION_BLOCKS = 1;
 	
 	
@@ -25,6 +25,7 @@ public class OAConstants {
 	public static final String DEBUG_CFG_WRONGBLOCK = "Cannot find the block '{block}'";
 	public static final String DEBUG_CMD_ALERTS = "{player} performed alerts command with toggle '{toggle}'";
 	public static final String DEBUG_CMD_HELP = "{player} performed help command";
+	public static final String DEBUG_CMD_DEBUG = "{player} performed debug command";
 	public static final String DEBUG_CMD_LOG = "{player} performed log command";
 	public static final String DEBUG_CMD_LOG_CONSOLE = "Console performed log command";
 	public static final String DEBUG_CMD_LOG_FAILED_PARSE_DATE = "Failed to parse format date: {message}";
@@ -42,6 +43,7 @@ public class OAConstants {
 	public static final String DEBUG_DB_GETPLAYER = "Get player request for '{uuid}'";
 	public static final String DEBUG_DB_TOP_BLOCKS_LIST = "Getting top players with limit {limit} and offset {offset}";
 	public static final String DEBUG_DB_TOP_BLOCKS_NUMBER = "Getting number of top players";
+	public static final String DEBUG_DB_STATS_PLAYER = "Getting stats of player '{player}' with value {type}";
 	public static final String DEBUG_DB_UPDATE_BLOCK_DESTROY = "Updating block destroy for '{uuid}' of {block}";
 	public static final String DEBUG_DB_SET_BLOCK_DESTROY = "Setting block destroy for '{uuid}' of {block}";
 	public static final String DEBUG_DB_GET_BLOCK_DESTROY = "Getting block destroy for '{uuid}' of {block}";

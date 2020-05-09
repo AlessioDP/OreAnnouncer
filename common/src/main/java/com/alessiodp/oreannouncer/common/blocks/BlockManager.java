@@ -2,6 +2,7 @@ package com.alessiodp.oreannouncer.common.blocks;
 
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.core.common.utils.ADPLocation;
+import com.alessiodp.core.common.utils.DurationUtils;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.blocks.objects.BlockDestroy;
 import com.alessiodp.oreannouncer.common.blocks.objects.BlockFound;
@@ -16,7 +17,6 @@ import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 import com.alessiodp.oreannouncer.common.utils.BlocksFoundResult;
 import com.alessiodp.oreannouncer.common.utils.CoordinateUtils;
 import lombok.Getter;
-import org.apache.commons.lang.time.DurationFormatUtils;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.UUID;
@@ -280,11 +280,12 @@ public abstract class BlockManager {
 		String pNumber = Integer.toString(numberOfBlocks);
 		String pBlock = numberOfBlocks > 1 ? block.getPluralName() : block.getSingularName();
 		
-		Function<String, String> repl = (msg) -> msg
-				.replace("%player%", pPlayer)
-				.replace("%number%", pNumber)
-				.replace("%block%", pBlock)
-				.replace("%time%", formatElapsed(elapsed));
+		Function<String, String> repl = (msg) -> plugin.getMessageUtils().convertBlockPlaceholders(msg
+					.replace("%player%", pPlayer)
+					.replace("%number%", pNumber)
+					.replace("%block%", pBlock)
+					.replace("%time%", formatElapsed(elapsed)
+				), block);
 		
 		String ret = plugin.getMessageUtils().convertPlayerPlaceholders(repl.apply(message), player);
 		
@@ -295,11 +296,12 @@ public abstract class BlockManager {
 	}
 	
 	private String formatElapsed(long timestamp) {
-		long elapsed = System.currentTimeMillis() - (timestamp * 1000L);
-		String format = elapsed >= 3600000 ? ConfigMain.STATS_ADVANCED_COUNT_TIME_FORMAT_LARGE
-				: (elapsed >= 60000 ? ConfigMain.STATS_ADVANCED_COUNT_TIME_FORMAT_MEDIUM
-				: ConfigMain.STATS_ADVANCED_COUNT_TIME_FORMAT_SMALL);
-		return DurationFormatUtils.formatDuration(elapsed, format);
+		return DurationUtils.formatWith(
+				(System.currentTimeMillis() / 1000L) - timestamp,
+				ConfigMain.STATS_ADVANCED_COUNT_TIME_FORMAT_LARGE,
+				ConfigMain.STATS_ADVANCED_COUNT_TIME_FORMAT_MEDIUM,
+				ConfigMain.STATS_ADVANCED_COUNT_TIME_FORMAT_SMALL
+		);
 	}
 	
 	protected abstract String parsePAPI(UUID playerUuid, String message);

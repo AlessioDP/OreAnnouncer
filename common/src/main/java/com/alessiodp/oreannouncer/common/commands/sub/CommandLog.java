@@ -5,6 +5,7 @@ import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.ADPSubCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
+import com.alessiodp.core.common.utils.Color;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.addons.external.LLAPIHandler;
 import com.alessiodp.oreannouncer.common.blocks.objects.BlockFound;
@@ -20,7 +21,6 @@ import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 import lombok.NonNull;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -221,7 +221,7 @@ public class CommandLog extends ADPSubCommand {
 			selectedPage = maxPages;
 		
 		int offset = selectedPage > 1 ? limit * (selectedPage - 1) : 0;
-		LinkedList<BlockFound> blocks = ((OreAnnouncerPlugin) plugin).getDatabaseManager().getLogBlocks(targetPlayer, block, limit, offset);
+		List<BlockFound> blocks = ((OreAnnouncerPlugin) plugin).getDatabaseManager().getLogBlocks(targetPlayer, block, limit, offset);
 		
 		if (isGeneralCommand) {
 			if (block != null) {
@@ -253,13 +253,11 @@ public class CommandLog extends ADPSubCommand {
 					empty = false;
 					OAPlayerImpl bPlayer = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(bf.getPlayer());
 					sendMessage(player, ((OreAnnouncerPlugin) plugin).getMessageUtils().convertPlayerPlaceholders(
-							(isGeneralCommand ? Messages.CMD_LOG_FORMAT_GENERAL_BLOCK : Messages.CMD_LOG_FORMAT_PLAYER_BLOCK)
+							((OreAnnouncerPlugin) plugin).getMessageUtils().convertBlockPlaceholders((isGeneralCommand ? Messages.CMD_LOG_FORMAT_GENERAL_BLOCK : Messages.CMD_LOG_FORMAT_PLAYER_BLOCK)
 								.replace("%number%", Integer.toString(bf.getFound()))
-								.replace("%block%", b.getDisplayName() != null ? b.getDisplayName() : b.getSingularName())
-								.replace("%block_color%", b.getDisplayColor() != null ? plugin.getColorUtils().convertColorByName(b.getDisplayColor()) : "")
 								.replace("%date_elapsed%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatElapsed(bf.getTimestamp()))
-								.replace("%date%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatDate(bf.getTimestamp())),
-							bPlayer
+								.replace("%date%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatDate(bf.getTimestamp()))
+							, b), bPlayer
 					));
 				}
 			}
@@ -297,7 +295,7 @@ public class CommandLog extends ADPSubCommand {
 		if (player != null)
 			player.sendMessage(message);
 		else
-			plugin.logConsole(plugin.getColorUtils().removeColors(plugin.getJsonHandler().removeJson(message)), false);
+			plugin.logConsole(Color.translateAndStripColor(plugin.getJsonHandler().removeJson(message)), false);
 	}
 	
 	@Override

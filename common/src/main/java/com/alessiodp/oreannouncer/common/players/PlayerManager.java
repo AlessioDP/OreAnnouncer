@@ -2,14 +2,14 @@ package com.alessiodp.oreannouncer.common.players;
 
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
-import com.alessiodp.oreannouncer.common.blocks.objects.BlockDestroy;
 import com.alessiodp.oreannouncer.common.blocks.objects.OABlockImpl;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
+import com.alessiodp.oreannouncer.common.storage.OADatabaseManager;
 import lombok.Getter;
 import lombok.NonNull;
 
 import java.util.HashMap;
-import java.util.Set;
+import java.util.Map;
 import java.util.UUID;
 
 public abstract class PlayerManager {
@@ -61,14 +61,10 @@ public abstract class PlayerManager {
 	public int getTotalBlocksDestroy(OAPlayerImpl player, OABlockImpl block) {
 		int ret = 0;
 		if (player != null) {
-			if (block != null) {
-				BlockDestroy bd = plugin.getDatabaseManager().getBlockDestroy(player.getPlayerUUID(), block);
-				if (bd != null)
-					ret = bd.getDestroyCount();
-			} else {
-				Set<BlockDestroy> blocks = plugin.getDatabaseManager().getAllBlockDestroy(player.getPlayerUUID());
-				for (BlockDestroy bd : blocks)
-					ret = ret + bd.getDestroyCount();
+			Map<OABlockImpl, Integer> blocks = plugin.getDatabaseManager().getStatsPlayer(OADatabaseManager.ValueType.DESTROY, player.getPlayerUUID());
+			for (Map.Entry<OABlockImpl, Integer> e : blocks.entrySet()) {
+				if (block == null || block.equals(e.getKey()))
+				ret = ret + e.getValue();
 			}
 		}
 		return ret;

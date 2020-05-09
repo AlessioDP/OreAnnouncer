@@ -1,5 +1,3 @@
-apply plugin: 'nu.studer.jooq'
-
 dependencies {
     api project(':oreannouncer-api')
     api group: 'com.alessiodp.core', name: 'common', version: project.ext.adpCore
@@ -10,38 +8,8 @@ dependencies {
     // Loggers
     implementation group: 'org.slf4j', name: 'slf4j-api', version: project.ext.slf4j
     implementation group: 'org.slf4j', name: 'slf4j-simple', version: project.ext.slf4j
-
-    // JOOQ
-    jooqRuntime(project(":jpa"))
-    jooqRuntime("org.jooq:jooq-meta-extensions")
 }
 
 processResources {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE;
-}
-
-jooq {
-    version = project.ext.jooq
-    setup(sourceSets.main) {
-        generator {
-            name = 'org.jooq.codegen.DefaultGenerator'
-            database {
-                name = 'org.jooq.meta.extensions.jpa.JPADatabase'
-                includes = '.*'
-                excludes = ''
-                properties {
-                    property {
-                        key = 'packages'
-                        value = 'com.alessiodp.oreannouncer.jpa.tables'
-                    }
-                }
-            }
-            generate {
-            }
-            target {
-                packageName = 'com.alessiodp.oreannouncer.common.jpa'
-                directory = 'src/generated/java'
-            }
-        }
-    }
 }

@@ -4,7 +4,6 @@ include (
     ':common',
     ':bukkit',
     ':bungeecord',
-    ':jpa'
 )
 
 project(':api').name = 'oreannouncer-api'

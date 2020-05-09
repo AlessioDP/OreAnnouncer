@@ -3,6 +3,7 @@ package com.alessiodp.oreannouncer.common.players.objects;
 import com.alessiodp.core.common.commands.list.ADPCommand;
 import com.alessiodp.core.common.commands.utils.ADPPermission;
 import com.alessiodp.core.common.user.User;
+import com.alessiodp.core.common.utils.Color;
 import com.alessiodp.oreannouncer.api.interfaces.OABlock;
 import com.alessiodp.oreannouncer.api.interfaces.OABlockDestroy;
 import com.alessiodp.oreannouncer.api.interfaces.OAPlayer;
@@ -76,7 +77,9 @@ public abstract class OAPlayerImpl implements OAPlayer {
 			ret.add(CommonCommands.RELOAD);
 		if (player.hasPermission(OreAnnouncerPermission.USER_STATS.toString()))
 			ret.add(CommonCommands.STATS);
-		if (player.hasPermission(OreAnnouncerPermission.USER_TOP.toString()))
+		if (player.hasPermission(OreAnnouncerPermission.USER_TOP.toString())
+				|| player.hasPermission(OreAnnouncerPermission.USER_TOP_DESTROY.toString())
+				|| player.hasPermission(OreAnnouncerPermission.USER_TOP_FOUND.toString()))
 			ret.add(CommonCommands.TOP);
 		if (player.hasPermission(OreAnnouncerPermission.ADMIN_LOG.toString()))
 			ret.add(CommonCommands.LOG);
@@ -125,7 +128,7 @@ public abstract class OAPlayerImpl implements OAPlayer {
 			return;
 		
 		String formattedMessage = plugin.getMessageUtils().convertPlayerPlaceholders(message, victim);
-		formattedMessage = plugin.getColorUtils().convertColors(formattedMessage);
+		formattedMessage = Color.translateAlternateColorCodes(formattedMessage);
 		sendDirect(formattedMessage);
 	}
 	

@@ -27,6 +27,10 @@ oreannouncer:
       format: "%date% [%time%] %message%\n"
       file: log.txt
 
+  # [Enable debug command]
+  # Useful to debug problems related to the plugin
+  debug-command: true
+
 
 # / =============================== \
 # |        STORAGE  SETTINGS        |
@@ -35,17 +39,15 @@ storage:
   # [Database type]
   # What type of storage the plugin should use? Database storage types:
   # => mysql      | [Remote] Save the data into a MySQL database
-  # => sqlite     | [File]   Save the data into a SQLite database (default)
-  # => h2         | [File]   Save the data into a H2 database
-  database-storage-type: sqlite
+  # => sqlite     | [File]   Save the data into a SQLite database
+  # => h2         | [File]   Save the data into a H2 database (default)
+  database-storage-type: h2
 
   storage-settings:
     # [General SQL settings]
     # General settings for sql databases, recommended to use default values
     general-sql-settings:
       prefix: 'oreannouncer_'
-      # Available: UTF-8, UTF-16le & UTF-16be
-      charset: 'UTF-8'
 
     # [SQLite settings]
     sqlite:
@@ -68,6 +70,7 @@ storage:
       connection-lifetime: 1800000
       # Property used to alert when the connection is not using a valid SSL certificate
       use-ssl: false
+      charset: 'utf8'
 
 
 # / =============================== \
@@ -99,22 +102,25 @@ stats:
   # => /oa stats:  Show destroyed blocks stats about a player
   # => /oa top:    Show top players
   # You can enable/disable every block manually with 'count-on-destroy' option
-  #
-  # [Advanced count]
-  # Store any data about found blocks, this will enable a time tracking logging
-  # of blocks for an improved anti x-ray system.
-  # You have to configure blocks options to use this.
   enable: true
   # Order by:
   # => priority = Block priority number
   # => value    = Value
   order-by: priority
+  # Values: destroy/found
+  values: destroy
+  # Allow values change with the command
+  change-values: false
   # Insert any block that you want to blacklist from general listing
   blacklist-blocks:
     log: []
     stats: []
     top:
       - 'STONE'
+  # [Advanced count]
+  # Store any data about found blocks, this will enable a time tracking logging
+  # of blocks for an improved anti x-ray system.
+  # You have to configure blocks options to use this.
   advanced-count:
     enable: true
     # Time format:
@@ -170,13 +176,16 @@ commands:
     help: help
     oa: oab
     alerts: alerts
+    debug: debug
     log: log
     reload: reload
     stats: stats
     top: top
     version: version
   sub-commands:
+    all: 'all'
     block: 'block'
+    config: 'config'
     player: 'player'
     word-on: 'on'
     word-off: 'off'
@@ -187,8 +196,9 @@ commands:
     - stats
     - top
     - reload
+    - debug
     - version
 
 
 dont-edit-this:
-  version: 5
+  version: 6

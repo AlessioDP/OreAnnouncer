@@ -4,9 +4,11 @@ import com.alessiodp.core.common.commands.list.ADPCommand;
 import com.alessiodp.core.common.commands.utils.ADPExecutableCommand;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.user.User;
+import com.alessiodp.core.common.utils.Color;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.commands.list.CommonCommands;
 import com.alessiodp.oreannouncer.common.commands.sub.CommandAlerts;
+import com.alessiodp.oreannouncer.common.commands.sub.CommandDebug;
 import com.alessiodp.oreannouncer.common.commands.sub.CommandHelp;
 import com.alessiodp.oreannouncer.common.commands.sub.CommandLog;
 import com.alessiodp.oreannouncer.common.commands.sub.CommandReload;
@@ -32,6 +34,9 @@ public class CommandOA extends ADPMainCommand {
 		register(new CommandHelp(plugin, this));
 		register(new CommandReload(plugin, this));
 		register(new CommandVersion(plugin, this));
+		
+		if (ConfigMain.OREANNOUNCER_DEBUG_COMMAND)
+			register(new CommandDebug(plugin, this));
 		
 		if (ConfigMain.ALERTS_ENABLE)
 			register(new CommandAlerts(plugin, this));
@@ -69,7 +74,7 @@ public class CommandOA extends ADPMainCommand {
 				if (exists(subCommand) && getSubCommand(subCommand).isExecutableByConsole()) {
 					plugin.getCommandManager().getCommandUtils().executeCommand(sender, getCommandName(), getSubCommand(subCommand), args);
 				} else {
-					plugin.logConsole(plugin.getColorUtils().removeColors(Messages.OREANNOUNCER_COMMON_INVALIDCMD), false);
+					plugin.logConsole(Color.translateAndStripColor(Messages.OREANNOUNCER_COMMON_INVALIDCMD), false);
 				}
 			} else {
 				// Print help

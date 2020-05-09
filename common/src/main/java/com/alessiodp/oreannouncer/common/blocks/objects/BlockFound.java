@@ -5,12 +5,14 @@ import com.alessiodp.oreannouncer.api.interfaces.OABlockFound;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.Locale;
 import java.util.UUID;
 
 @AllArgsConstructor
 @EqualsAndHashCode(doNotUseGetters = true)
+@ToString
 public class BlockFound implements OABlockFound {
 	@Getter private final UUID player;
 	@Getter private final String materialName;

@@ -9,7 +9,6 @@ import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.commands.list.CommonCommands;
 import com.alessiodp.oreannouncer.common.commands.utils.OACommandData;
 import com.alessiodp.oreannouncer.common.utils.OreAnnouncerPermission;
-import com.alessiodp.oreannouncer.common.configuration.OAConfigurationManager;
 import com.alessiodp.oreannouncer.common.configuration.OAConstants;
 import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import com.alessiodp.oreannouncer.common.configuration.data.Messages;
@@ -64,7 +63,6 @@ public class CommandAlerts extends ADPSubCommand {
 				.replace("{toggle}", commandData.getArgs().length > 1 ? commandData.getArgs()[1] : ""), true);
 		
 		// Command handling
-		player.getLock().lock(); // Lock
 		Boolean alerts = plugin.getCommandManager().getCommandUtils().handleOnOffCommand(player.haveAlertsOn(), commandData.getArgs());
 		if (alerts == null) {
 			player.sendMessage(Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
@@ -74,10 +72,6 @@ public class CommandAlerts extends ADPSubCommand {
 		
 		// Command starts
 		player.setAlertsOn(alerts);
-		player.updatePlayer();
-		player.getLock().unlock(); // Unlock
-		
-		((OAConfigurationManager)plugin.getConfigurationManager()).getMessages().save();
 		
 		if (alerts) {
 			player.sendMessage(Messages.CMD_ALERTS_TOGGLEON);

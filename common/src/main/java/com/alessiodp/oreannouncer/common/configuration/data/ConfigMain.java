@@ -20,14 +20,14 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static String		OREANNOUNCER_LOGGING_SAVE_FORMAT;
 	@ConfigOption(path = "oreannouncer.logging.save-file.file")
 	public static String		OREANNOUNCER_LOGGING_SAVE_FILE;
+	@ConfigOption(path = "oreannouncer.debug-command")
+	public static boolean		OREANNOUNCER_DEBUG_COMMAND;
 	
 	// Storage settings
 	@ConfigOption(path = "storage.database-storage-type")
 	public static String		STORAGE_TYPE_DATABASE;
 	@ConfigOption(path = "storage.storage-settings.general-sql-settings.prefix")
 	public static String		STORAGE_SETTINGS_GENERAL_SQL_PREFIX;
-	@ConfigOption(path = "storage.storage-settings.general-sql-settings.charset")
-	public static String		STORAGE_SETTINGS_GENERAL_SQL_CHARSET;
 	@ConfigOption(path = "storage.storage-settings.sqlite.database-file")
 	public static String		STORAGE_SETTINGS_SQLITE_DBFILE;
 	@ConfigOption(path = "storage.storage-settings.h2.database-file")
@@ -48,6 +48,8 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static int			STORAGE_SETTINGS_MYSQL_CONNLIFETIME;
 	@ConfigOption(path = "storage.storage-settings.mysql.use-ssl")
 	public static boolean		STORAGE_SETTINGS_MYSQL_USESSL;
+	@ConfigOption(path = "storage.storage-settings.mysql.charset")
+	public static String		STORAGE_SETTINGS_MYSQL_CHARSET;
 	
 	
 	// Alerts settings
@@ -117,6 +119,10 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static boolean		STATS_ENABLE;
 	@ConfigOption(path = "stats.order-by")
 	public static String		STATS_ORDER_BY;
+	@ConfigOption(path = "stats.values")
+	public static String		STATS_VALUES;
+	@ConfigOption(path = "stats.change-values")
+	public static boolean		STATS_CHANGE_VALUES;
 	@ConfigOption(path = "stats.blacklist-blocks.log", nullable = true)
 	public static List<String>	STATS_BLACKLIST_BLOCKS_LOG;
 	@ConfigOption(path = "stats.blacklist-blocks.stats", nullable = true)
@@ -169,6 +175,8 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static String		COMMANDS_CMD_OA;
 	@ConfigOption(path = "commands.main-commands.alerts")
 	public static String		COMMANDS_CMD_ALERTS;
+	@ConfigOption(path = "commands.main-commands.debug")
+	public static String		COMMANDS_CMD_DEBUG;
 	@ConfigOption(path = "commands.main-commands.log")
 	public static String		COMMANDS_CMD_LOG;
 	@ConfigOption(path = "commands.main-commands.reload")
@@ -180,8 +188,12 @@ public abstract class ConfigMain extends ConfigurationFile {
 	@ConfigOption(path = "commands.main-commands.version")
 	public static String		COMMANDS_CMD_VERSION;
 	
+	@ConfigOption(path = "commands.sub-commands.all")
+	public static String		COMMANDS_SUB_ALL;
 	@ConfigOption(path = "commands.sub-commands.block")
 	public static String		COMMANDS_SUB_BLOCK;
+	@ConfigOption(path = "commands.sub-commands.config")
+	public static String		COMMANDS_SUB_CONFIG;
 	@ConfigOption(path = "commands.sub-commands.player")
 	public static String		COMMANDS_SUB_PLAYER;
 	@ConfigOption(path = "commands.sub-commands.word-on")

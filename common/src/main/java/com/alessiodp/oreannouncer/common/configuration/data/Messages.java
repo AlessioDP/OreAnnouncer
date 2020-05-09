@@ -4,6 +4,8 @@ import com.alessiodp.core.common.configuration.ConfigOption;
 import com.alessiodp.core.common.configuration.ConfigurationFile;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 
+import java.util.List;
+
 public abstract class Messages extends ConfigurationFile {
 	// OreAnnouncer messages
 	@ConfigOption(path = "oreannouncer.update-available")
@@ -18,16 +20,39 @@ public abstract class Messages extends ConfigurationFile {
 	@ConfigOption(path = "oreannouncer.common-messages.configuration-reloaded")
 	public static String OREANNOUNCER_COMMON_CONFIGRELOAD;
 	
+	@ConfigOption(path = "oreannouncer.blocks.enabled")
+	public static String OREANNOUNCER_BLOCKS_ENABLED;
+	@ConfigOption(path = "oreannouncer.blocks.disabled")
+	public static String OREANNOUNCER_BLOCKS_DISABLED;
+	@ConfigOption(path = "oreannouncer.blocks.toggled-on")
+	public static String OREANNOUNCER_BLOCKS_TOGGLED_ON;
+	@ConfigOption(path = "oreannouncer.blocks.toggled-off")
+	public static String OREANNOUNCER_BLOCKS_TOGGLED_OFF;
+	@ConfigOption(path = "oreannouncer.blocks.word-yes")
+	public static String OREANNOUNCER_BLOCKS_WORD_YES;
+	@ConfigOption(path = "oreannouncer.blocks.word-no")
+	public static String OREANNOUNCER_BLOCKS_WORD_NO;
+	@ConfigOption(path = "oreannouncer.blocks.empty")
+	public static String OREANNOUNCER_BLOCKS_EMPTY;
+	@ConfigOption(path = "oreannouncer.blocks.none")
+	public static String OREANNOUNCER_BLOCKS_NONE;
+	
 	@ConfigOption(path = "oreannouncer.syntax.wrong-message")
 	public static String OREANNOUNCER_SYNTAX_WRONGMESSAGE;
 	@ConfigOption(path = "oreannouncer.syntax.block")
 	public static String OREANNOUNCER_SYNTAX_BLOCK;
+	@ConfigOption(path = "oreannouncer.syntax.destroy")
+	public static String OREANNOUNCER_SYNTAX_DESTROY;
+	@ConfigOption(path = "oreannouncer.syntax.found")
+	public static String OREANNOUNCER_SYNTAX_FOUND;
 	@ConfigOption(path = "oreannouncer.syntax.order")
 	public static String OREANNOUNCER_SYNTAX_ORDER;
-	@ConfigOption(path = "oreannouncer.syntax.player")
-	public static String OREANNOUNCER_SYNTAX_PLAYER;
 	@ConfigOption(path = "oreannouncer.syntax.page")
 	public static String OREANNOUNCER_SYNTAX_PAGE;
+	@ConfigOption(path = "oreannouncer.syntax.player")
+	public static String OREANNOUNCER_SYNTAX_PLAYER;
+	@ConfigOption(path = "oreannouncer.syntax.type")
+	public static String OREANNOUNCER_SYNTAX_TYPE;
 	@ConfigOption(path = "oreannouncer.syntax.unknown")
 	public static String OREANNOUNCER_SYNTAX_UNKNOWN;
 	
@@ -64,6 +89,25 @@ public abstract class Messages extends ConfigurationFile {
 	@ConfigOption(path = "commands.alerts.toggle-off")
 	public static String CMD_ALERTS_TOGGLEOFF;
 	
+	@ConfigOption(path = "commands.debug.block.header")
+	public static String CMD_DEBUG_BLOCK_HEADER;
+	@ConfigOption(path = "commands.debug.block.text")
+	public static List<String> CMD_DEBUG_BLOCK_TEXT;
+	@ConfigOption(path = "commands.debug.block.invalid-block")
+	public static String CMD_DEBUG_BLOCK_INVALID_BLOCK;
+	
+	@ConfigOption(path = "commands.debug.config.header")
+	public static String CMD_DEBUG_CONFIG_HEADER;
+	@ConfigOption(path = "commands.debug.config.text")
+	public static List<String> CMD_DEBUG_CONFIG_TEXT;
+	
+	@ConfigOption(path = "commands.debug.player.header")
+	public static String CMD_DEBUG_PLAYER_HEADER;
+	@ConfigOption(path = "commands.debug.player.text")
+	public static List<String> CMD_DEBUG_PLAYER_TEXT;
+	@ConfigOption(path = "commands.debug.player.player-offline")
+	public static String CMD_DEBUG_PLAYER_PLAYER_OFFLINE;
+	
 	@ConfigOption(path = "commands.log.header-player")
 	public static String CMD_LOG_HEADER_PLAYER;
 	@ConfigOption(path = "commands.log.footer-player")
@@ -95,6 +139,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String CMD_STATS_NOTHING;
 	@ConfigOption(path = "commands.stats.format-block")
 	public static String CMD_STATS_FORMATPLAYER;
+	@ConfigOption(path = "commands.stats.invalid-type")
+	public static String CMD_STATS_INVALID_TYPE;
 	@ConfigOption(path = "commands.stats.player-not-found")
 	public static String CMD_STATS_PLAYERNOTFOUND;
 	
@@ -106,10 +152,6 @@ public abstract class Messages extends ConfigurationFile {
 	public static String CMD_TOP_NOONE;
 	@ConfigOption(path = "commands.top.format-player")
 	public static String CMD_TOP_FORMATPLAYER;
-	@ConfigOption(path = "commands.top.word-destroy")
-	public static String CMD_TOP_WORD_DESTROY;
-	@ConfigOption(path = "commands.top.word-found")
-	public static String CMD_TOP_WORD_FOUND;
 	@ConfigOption(path = "commands.top.invalid-order")
 	public static String CMD_TOP_INVALID_ORDER;
 	@ConfigOption(path = "commands.top.invalid-block")
@@ -137,6 +179,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String HELP_CMD_HELP;
 	@ConfigOption(path = "help.commands.alerts")
 	public static String HELP_CMD_ALERTS;
+	@ConfigOption(path = "help.commands.debug")
+	public static String HELP_CMD_DEBUG;
 	@ConfigOption(path = "help.commands.log")
 	public static String HELP_CMD_LOG;
 	@ConfigOption(path = "help.commands.reload")
@@ -152,6 +196,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String HELP_CMD_DESCRIPTIONS_HELP;
 	@ConfigOption(path = "help.command-descriptions.alerts")
 	public static String HELP_CMD_DESCRIPTIONS_ALERTS;
+	@ConfigOption(path = "help.command-descriptions.debug")
+	public static String HELP_CMD_DESCRIPTIONS_DEBUG;
 	@ConfigOption(path = "help.command-descriptions.log")
 	public static String HELP_CMD_DESCRIPTIONS_LOG;
 	@ConfigOption(path = "help.command-descriptions.reload")

@@ -2,7 +2,6 @@ package com.alessiodp.oreannouncer.bungeecord;
 
 import com.alessiodp.core.bungeecord.addons.internal.json.BungeeJsonHandler;
 import com.alessiodp.core.bungeecord.scheduling.ADPBungeeScheduler;
-import com.alessiodp.core.bungeecord.utils.BungeeColorUtils;
 import com.alessiodp.core.common.bootstrap.ADPBootstrap;
 import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.oreannouncer.bungeecord.addons.BungeeOAAddonManager;
@@ -29,10 +28,6 @@ public class BungeeOreAnnouncerPlugin extends OreAnnouncerPlugin {
 	
 	@Override
 	protected void initializeCore() {
-		// Setup Apache Commons, required for DurationFormatUtils
-		// Since BC 1.14+ commons is not shaded in BC anymore
-		getLibraryManager().setupApacheCommons();
-		
 		scheduler = new ADPBungeeScheduler(this);
 		configurationManager = new BungeeOAConfigurationManager(this);
 		messageUtils = new BungeeMessageUtils(this);
@@ -52,7 +47,6 @@ public class BungeeOreAnnouncerPlugin extends OreAnnouncerPlugin {
 	
 	@Override
 	protected void postHandle() {
-		colorUtils = new BungeeColorUtils();
 		addonManager = new BungeeOAAddonManager(this);
 		
 		super.postHandle();

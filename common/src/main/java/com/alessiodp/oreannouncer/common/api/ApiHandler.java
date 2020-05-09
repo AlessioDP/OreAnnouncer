@@ -69,15 +69,15 @@ public class ApiHandler implements OreAnnouncerAPI {
 	
 	@Override
 	public LinkedHashMap<OAPlayer, Integer> getTopPlayersByDestroy(int numberOfPlayers, OABlock block, int offset) {
-		return getTopPlayers(OADatabaseManager.TopOrderBy.DESTROY, numberOfPlayers, block, offset);
+		return getTopPlayers(OADatabaseManager.ValueType.DESTROY, numberOfPlayers, block, offset);
 	}
 	
 	@Override
 	public LinkedHashMap<OAPlayer, Integer> getTopPlayersByFound(int numberOfPlayers, OABlock block, int offset) {
-		return getTopPlayers(OADatabaseManager.TopOrderBy.FOUND, numberOfPlayers, block, offset);
+		return getTopPlayers(OADatabaseManager.ValueType.FOUND, numberOfPlayers, block, offset);
 	}
 	
-	private LinkedHashMap<OAPlayer, Integer> getTopPlayers(OADatabaseManager.TopOrderBy order, int numberOfPlayers, OABlock block, int offset) {
+	private LinkedHashMap<OAPlayer, Integer> getTopPlayers(OADatabaseManager.ValueType order, int numberOfPlayers, OABlock block, int offset) {
 		LinkedHashMap<OAPlayer, Integer> ret = new LinkedHashMap<>();
 		HashMap<UUID, Integer> players = plugin.getDatabaseManager().getTopPlayers(order, (OABlockImpl) block, numberOfPlayers, offset);
 		for (Map.Entry<UUID, Integer> e : players.entrySet()) {

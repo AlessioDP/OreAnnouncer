@@ -3,7 +3,6 @@ package com.alessiodp.oreannouncer.bukkit;
 import com.alessiodp.core.bukkit.addons.internal.json.BukkitJsonHandler;
 import com.alessiodp.core.bukkit.addons.internal.json.SpigotJsonHandler;
 import com.alessiodp.core.bukkit.scheduling.ADPBukkitScheduler;
-import com.alessiodp.core.bukkit.utils.BukkitColorUtils;
 import com.alessiodp.core.common.bootstrap.ADPBootstrap;
 import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.oreannouncer.bukkit.addons.BukkitOAAddonManager;
@@ -53,7 +52,6 @@ public class BukkitOreAnnouncerPlugin extends OreAnnouncerPlugin {
 	
 	@Override
 	protected void postHandle() {
-		colorUtils = new BukkitColorUtils();
 		addonManager = new BukkitOAAddonManager(this);
 		
 		super.postHandle();

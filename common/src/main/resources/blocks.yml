@@ -9,7 +9,6 @@
 #  alerts:
 #    user: true/false             | Alert users
 #    admin: true/false            | Alert admins
-#    console: true/false          | Alert console
 #  name:
 #    singular: ""                 | Singular name of the block
 #    plural: ""                   | Plural name of the block

@@ -19,7 +19,8 @@ import com.alessiodp.oreannouncer.common.utils.BlocksFoundResult;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
@@ -64,28 +65,6 @@ public class OADatabaseManager extends DatabaseManager implements IOADatabase {
 					.replace("{uuid}", playerUuid.toString()), true);
 			
 			return ((IOADatabase) database).getPlayer(playerUuid);
-		}).join();
-	}
-	
-	@Override
-	public LinkedHashMap<UUID, Integer> getTopPlayers(TopOrderBy orderBy, @Nullable OABlockImpl block, int limit, int offset) {
-		return plugin.getScheduler().runSupplyAsync(() -> {
-			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_TOP_BLOCKS_LIST
-					.replace("{order}", orderBy.name())
-					.replace("{limit}", Integer.toString(limit))
-					.replace("{offset}", Integer.toString(offset)), true);
-			
-			return ((IOADatabase) database).getTopPlayers(orderBy, block, limit, offset);
-		}).join();
-	}
-	
-	@Override
-	public int getTopPlayersNumber(TopOrderBy orderBy, @Nullable OABlockImpl block) {
-		return plugin.getScheduler().runSupplyAsync(() -> {
-			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_TOP_BLOCKS_NUMBER
-					.replace("{order}", orderBy.name()), true);
-			
-			return ((IOADatabase) database).getTopPlayersNumber(orderBy, block);
 		}).join();
 	}
 	
@@ -155,7 +134,7 @@ public class OADatabaseManager extends DatabaseManager implements IOADatabase {
 	}
 	
 	@Override
-	public LinkedList<BlockFound> getLogBlocks(@Nullable OAPlayerImpl player, @Nullable OABlock block, int limit, int offset) {
+	public List<BlockFound> getLogBlocks(@Nullable OAPlayerImpl player, @Nullable OABlock block, int limit, int offset) {
 		return plugin.getScheduler().runSupplyAsync(() -> {
 			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_LOG_BLOCKS
 					.replace("{uuid}", player != null ? player.getPlayerUUID().toString() : "")
@@ -176,13 +155,57 @@ public class OADatabaseManager extends DatabaseManager implements IOADatabase {
 		}).join();
 	}
 	
-	public enum TopOrderBy {
+	@Override
+	public LinkedHashMap<UUID, Integer> getTopPlayers(ValueType orderBy, @Nullable OABlockImpl block, int limit, int offset) {
+		return plugin.getScheduler().runSupplyAsync(() -> {
+			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_TOP_BLOCKS_LIST
+					.replace("{order}", orderBy.name())
+					.replace("{limit}", Integer.toString(limit))
+					.replace("{offset}", Integer.toString(offset)), true);
+			
+			return ((IOADatabase) database).getTopPlayers(orderBy, block, limit, offset);
+		}).join();
+	}
+	
+	@Override
+	public int getTopPlayersNumber(ValueType orderBy, @Nullable OABlockImpl block) {
+		return plugin.getScheduler().runSupplyAsync(() -> {
+			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_TOP_BLOCKS_NUMBER
+					.replace("{order}", orderBy.name()), true);
+			
+			return ((IOADatabase) database).getTopPlayersNumber(orderBy, block);
+		}).join();
+	}
+	
+	@Override
+	public LinkedHashMap<OABlockImpl, Integer> getStatsPlayer(OADatabaseManager.ValueType valueType, UUID player) {
+		return plugin.getScheduler().runSupplyAsync(() -> {
+			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_STATS_PLAYER
+					.replace("{player}", player.toString())
+					.replace("{type}", valueType.name()), true);
+			
+			return ((IOADatabase) database).getStatsPlayer(valueType, player);
+		}).join();
+	}
+	
+	public enum ValueType {
 		DESTROY, FOUND;
 		
-		public static TopOrderBy parse(String order) {
-			if (order.equalsIgnoreCase(Messages.CMD_TOP_WORD_DESTROY))
+		public static ValueType getType(String type) {
+			switch (type.toLowerCase(Locale.ENGLISH)) {
+				case "destroy":
+					return DESTROY;
+				case "found":
+					return FOUND;
+				default:
+					return null;
+			}
+		}
+		
+		public static ValueType parse(String type) {
+			if (type.equalsIgnoreCase(Messages.OREANNOUNCER_SYNTAX_DESTROY))
 				return DESTROY;
-			else if (order.equalsIgnoreCase(Messages.CMD_TOP_WORD_FOUND))
+			else if (type.equalsIgnoreCase(Messages.OREANNOUNCER_SYNTAX_FOUND))
 				return FOUND;
 			return null;
 		}

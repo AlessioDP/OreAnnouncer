@@ -1,2 +1,2 @@
 -- SQLite database
-DROP TABLE IF EXISTS ${prefix}versions;
+DROP TABLE IF EXISTS <prefix>versions;

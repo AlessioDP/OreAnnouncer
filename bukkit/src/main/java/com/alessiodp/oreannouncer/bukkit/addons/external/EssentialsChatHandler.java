@@ -1,6 +1,7 @@
 package com.alessiodp.oreannouncer.bukkit.addons.external;
 
 import com.alessiodp.core.common.configuration.Constants;
+import com.alessiodp.core.common.utils.Color;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.addons.internal.OAPlaceholder;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
@@ -46,7 +47,7 @@ public class EssentialsChatHandler implements Listener {
 				if (identifier != null) {
 					OAPlaceholder placeholder = OAPlaceholder.getPlaceholder(identifier);
 					if (placeholder != null) {
-						old = old.replace(base, plugin.getColorUtils().convertColors(placeholder.formatPlaceholder(player, identifier)));
+						old = old.replace(base, Color.translateAlternateColorCodes(placeholder.formatPlaceholder(player, identifier)));
 						somethingChanged = true;
 					}
 				}

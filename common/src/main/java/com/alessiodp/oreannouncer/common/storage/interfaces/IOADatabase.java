@@ -10,16 +10,13 @@ import com.alessiodp.oreannouncer.common.utils.BlocksFoundResult;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 public interface IOADatabase {
 	void updatePlayer(OAPlayerImpl player);
 	OAPlayerImpl getPlayer(UUID playerUuid);
-	
-	LinkedHashMap<UUID, Integer> getTopPlayers(OADatabaseManager.TopOrderBy orderBy, @Nullable OABlockImpl block, int limit, int offset);
-	int getTopPlayersNumber(OADatabaseManager.TopOrderBy orderBy, @Nullable OABlockImpl block);
 	
 	void updateBlockDestroy(BlockDestroy blockDestroy);
 	void setBlockDestroy(BlockDestroy blockDestroy);
@@ -28,6 +25,11 @@ public interface IOADatabase {
 	
 	void insertBlockFound(BlockFound blockFound);
 	BlocksFoundResult getBlockFound(UUID player, OABlock block, long rangeTime);
-	LinkedList<BlockFound> getLogBlocks(@Nullable OAPlayerImpl player, @Nullable OABlock block, int limit, int offset);
+	List<BlockFound> getLogBlocks(@Nullable OAPlayerImpl player, @Nullable OABlock block, int limit, int offset);
 	int getLogBlocksNumber(@Nullable OAPlayerImpl player, @Nullable OABlock block);
+	
+	LinkedHashMap<UUID, Integer> getTopPlayers(OADatabaseManager.ValueType orderBy, @Nullable OABlockImpl block, int limit, int offset);
+	int getTopPlayersNumber(OADatabaseManager.ValueType orderBy, @Nullable OABlockImpl block);
+	
+	LinkedHashMap<OABlockImpl, Integer> getStatsPlayer(OADatabaseManager.ValueType valueType, UUID player);
 }

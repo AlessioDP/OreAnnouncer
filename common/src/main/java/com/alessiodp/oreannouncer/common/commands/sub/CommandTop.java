@@ -5,6 +5,7 @@ import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.ADPSubCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
+import com.alessiodp.core.common.utils.Color;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.blocks.objects.OABlockImpl;
 import com.alessiodp.oreannouncer.common.commands.list.CommonCommands;
@@ -26,6 +27,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 public class CommandTop extends ADPSubCommand {
+	private final String syntaxBase;
 	
 	public CommandTop(ADPPlugin plugin, ADPMainCommand mainCommand) {
 		super(
@@ -35,6 +37,11 @@ public class CommandTop extends ADPSubCommand {
 				OreAnnouncerPermission.USER_TOP.toString(),
 				ConfigMain.COMMANDS_CMD_TOP,
 				true
+		);
+		
+		syntaxBase = String.format("%s [%s]",
+				baseSyntax(),
+				Messages.OREANNOUNCER_SYNTAX_PAGE
 		);
 		
 		switch (CommandUsage.getCurrentUsage()) {
@@ -62,15 +69,19 @@ public class CommandTop extends ADPSubCommand {
 				break;
 			case BASE:
 			default:
-				syntax = String.format("%s [%s]",
-						baseSyntax(),
-						Messages.OREANNOUNCER_SYNTAX_PAGE
-				);
+				syntax = syntaxBase;
 				break;
 		}
 		
 		description = Messages.HELP_CMD_DESCRIPTIONS_TOP;
 		help = Messages.HELP_CMD_TOP;
+	}
+	
+	@Override
+	public String getSyntaxForUser(User user) {
+		if (!user.hasPermission(OreAnnouncerPermission.USER_TOP.toString()))
+			return syntaxBase;
+		return syntax;
 	}
 	
 	@Override
@@ -80,12 +91,17 @@ public class CommandTop extends ADPSubCommand {
 			OAPlayerImpl player = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 			
 			// Checks for command prerequisites
-			if (!sender.hasPermission(permission)) {
+			if (!sender.hasPermission(OreAnnouncerPermission.USER_TOP.toString())
+					&& !sender.hasPermission(OreAnnouncerPermission.USER_TOP_DESTROY.toString())
+					&& !sender.hasPermission(OreAnnouncerPermission.USER_TOP_FOUND.toString())) {
 				player.sendNoPermission(OreAnnouncerPermission.USER_TOP);
 				return false;
 			}
 			
 			((OACommandData) commandData).setPlayer(player);
+			commandData.addPermission(OreAnnouncerPermission.USER_TOP);
+			commandData.addPermission(OreAnnouncerPermission.USER_TOP_DESTROY);
+			commandData.addPermission(OreAnnouncerPermission.USER_TOP_FOUND);
 		}
 		return true;
 	}
@@ -105,12 +121,11 @@ public class CommandTop extends ADPSubCommand {
 		ConfigMain.STATS_BLACKLIST_BLOCKS_TOP.forEach((str) -> blacklist.add(str.toUpperCase(Locale.ENGLISH)));
 		
 		int selectedPage = 1;
-		OADatabaseManager.TopOrderBy orderBy = OADatabaseManager.TopOrderBy.parse(ConfigMain.STATS_TOP_ORDER_BY);
-		if (orderBy == null) orderBy = OADatabaseManager.TopOrderBy.DESTROY;
+		OADatabaseManager.ValueType orderBy = null;
 		OABlockImpl block = null;
 		if (commandData.getArgs().length > 1) {
-			String[] args = Arrays.copyOfRange(commandData.getArgs(), 1, commandData.getArgs().length);
 			CommandUsage commandUsage = CommandUsage.getCurrentUsage();
+			String[] args = Arrays.copyOfRange(commandData.getArgs(), 1, commandData.getArgs().length);
 			if (args.length == 3) {
 				// Full command
 				if (commandUsage == CommandUsage.FULL) {
@@ -129,7 +144,7 @@ public class CommandTop extends ADPSubCommand {
 					}
 					
 					
-					orderBy = OADatabaseManager.TopOrderBy.parse(args[0]);
+					orderBy = OADatabaseManager.ValueType.parse(args[0]);
 					if (orderBy == null) {
 						sendMessage(player, Messages.CMD_TOP_INVALID_ORDER);
 						return;
@@ -153,7 +168,7 @@ public class CommandTop extends ADPSubCommand {
 					
 					if (commandUsage == CommandUsage.FULL) {
 						// Check for or order or block
-						OADatabaseManager.TopOrderBy temp = OADatabaseManager.TopOrderBy.parse(args[0]);
+						OADatabaseManager.ValueType temp = OADatabaseManager.ValueType.parse(args[0]);
 						
 						if (temp == null) {
 							block = Blocks.LIST.get(args[0].toUpperCase(Locale.ENGLISH));
@@ -165,6 +180,7 @@ public class CommandTop extends ADPSubCommand {
 						} else {
 							orderBy = temp;
 						}
+						
 					} else if (commandUsage == CommandUsage.ONLY_BLOCK) {
 						// Check for block
 						block = Blocks.LIST.get(args[0].toUpperCase(Locale.ENGLISH));
@@ -175,7 +191,7 @@ public class CommandTop extends ADPSubCommand {
 						}
 					} else {
 						// Check for order
-						orderBy = OADatabaseManager.TopOrderBy.parse(args[0]);
+						orderBy = OADatabaseManager.ValueType.parse(args[0]);
 						if (orderBy == null) {
 							sendMessage(player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
 									.replace("%syntax%", syntax));
@@ -193,7 +209,7 @@ public class CommandTop extends ADPSubCommand {
 						}
 						
 						
-						orderBy = OADatabaseManager.TopOrderBy.parse(args[0]);
+						orderBy = OADatabaseManager.ValueType.parse(args[0]);
 						if (orderBy == null) {
 							sendMessage(player, Messages.CMD_TOP_INVALID_ORDER);
 							return;
@@ -211,7 +227,7 @@ public class CommandTop extends ADPSubCommand {
 				} catch (NumberFormatException ignored) {
 					if (commandUsage == CommandUsage.FULL) {
 						// Check for or order or block
-						orderBy = OADatabaseManager.TopOrderBy.parse(args[0]);
+						orderBy = OADatabaseManager.ValueType.parse(args[0]);
 						if (orderBy == null) {
 							block = Blocks.LIST.get(args[0].toUpperCase(Locale.ENGLISH));
 							if (block == null || !block.isEnabled() || blacklist.contains(block.getMaterialName())) {
@@ -227,7 +243,7 @@ public class CommandTop extends ADPSubCommand {
 							return;
 						}
 					} else if (commandUsage == CommandUsage.ONLY_ORDER) {
-						orderBy = OADatabaseManager.TopOrderBy.parse(args[0]);
+						orderBy = OADatabaseManager.ValueType.parse(args[0]);
 						if (orderBy == null) {
 							sendMessage(player, Messages.CMD_TOP_INVALID_ORDER);
 							return;
@@ -239,6 +255,27 @@ public class CommandTop extends ADPSubCommand {
 					}
 				}
 			}
+		}
+		
+		if (orderBy != null) {
+			if (!commandData.havePermission(OreAnnouncerPermission.USER_TOP) &&
+					(
+							(orderBy == OADatabaseManager.ValueType.DESTROY && !commandData.havePermission(OreAnnouncerPermission.USER_TOP_DESTROY))
+							|| (orderBy == OADatabaseManager.ValueType.FOUND && !commandData.havePermission(OreAnnouncerPermission.USER_TOP_FOUND))
+					)) {
+				sendMessage(player, Messages.CMD_TOP_INVALID_ORDER);
+				return;
+			}
+		} else {
+			if (commandData.havePermission(OreAnnouncerPermission.USER_TOP))
+				orderBy = OADatabaseManager.ValueType.getType(ConfigMain.STATS_TOP_ORDER_BY);
+			else if (commandData.havePermission(OreAnnouncerPermission.USER_TOP_DESTROY))
+				orderBy = OADatabaseManager.ValueType.DESTROY;
+			else if (commandData.havePermission(OreAnnouncerPermission.USER_TOP_FOUND))
+				orderBy = OADatabaseManager.ValueType.FOUND;
+			
+			
+			if (orderBy == null) orderBy = OADatabaseManager.ValueType.DESTROY;
 		}
 		
 		// Command starts
@@ -283,7 +320,7 @@ public class CommandTop extends ADPSubCommand {
 		if (player != null)
 			player.sendMessage(message);
 		else
-			plugin.logConsole(plugin.getColorUtils().removeColors(message), false);
+			plugin.logConsole(Color.translateAndStripColor(message), false);
 	}
 	
 	@Override
@@ -295,7 +332,7 @@ public class CommandTop extends ADPSubCommand {
 				switch (commandUsage) {
 					case FULL:
 					case ONLY_ORDER:
-						for (OADatabaseManager.TopOrderBy ord : OADatabaseManager.TopOrderBy.values())
+						for (OADatabaseManager.ValueType ord : OADatabaseManager.ValueType.values())
 							ret.add(ord.name().toLowerCase());
 						break;
 					case ONLY_BLOCK:
