@@ -22,12 +22,24 @@ oreannouncer:
   common-messages:
     invalid-command: '&cCommande invalide'
     configuration-reloaded: '&aConfiguration rechargée'
+  blocks:
+    enabled: '&aEnabled'
+    disabled: '&cDisabled'
+    toggled-on: '&aOn'
+    toggled-off: '&cOff'
+    word-yes: '&aYes'
+    word-no: '&cNo'
+    empty: '&8Empty'
+    none: '&8None'
   syntax:
     wrong-message: '&cMauvaise syntaxe: écrivez &7/%syntax%'
     block: 'bloquer'
+    destroy: 'détruire'
+    found: 'trouvé'
     order: 'ordre'
-    player: 'joueur'
     page: 'page'
+    player: 'joueur'
+    type: 'type'
     unknown: 'inconnue'
 #/ =============================== \
 #|         ALERTS MESSAGES         |
@@ -40,23 +52,23 @@ alerts:
   #- Do not use obfuscation if you are using coordinates to run commands
   #Example:
   #{"text":"%x%","color":"gray"} - This is a single block for a coordinate
-  user: '&6%player% &ea trouvé %number% %block% !'
+  user: '&6%player% &efound %number% %display_color%%block%!'
   #Without teleport:
   #admin: "&6%player% &efound %number% %block%! &7[x: %x%&7, z: %z%&7]"
-  admin: '[{"text":"%player% ","color":"gold"},{"text":"a trouvé %number% %block% ! ","color":"yellow"},{"text":"Se téléporter","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Cliquez pour vous téléporter !","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
+  admin: '[{"text":"&6%player% &efound %number% %display_color%%block%&e! "},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Click to teleport!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
   #No JSON for console
   console: '%player% a trouvé %number% %block% ! [x : %x%, y : %y%, z : %z%]'
   count:
     user: ''
-    admin: '[{"text":"%player% ","color":"gold"},{"text":"a trouvé %number% %block% en %time% ! ","color":"yellow"},{"text":"Se téléporter","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Cliquez pour vous téléporter !","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
+    admin: '[{"text":"&6%player% &efound %number% %display_color%%block%&e in %time%! "},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Click to teleport!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
     #No JSON for console
     console: '%player% a trouvé %number% %block% en %time% ! [x : %x%, y : %y%, z : %z%]'
   tnt:
     user: ''
-    admin: '[{"text":"Le TNT a détruit %number% %block% ! ","color":"yellow"},{"text":"Se téléporter","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Cliquez pour vous téléporter !","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %x% %y% %z%"}}]'
+    admin: '[{"text":"&eTNT destroyed %number% %display_color%%block%&e! "},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Click to teleport!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %x% %y% %z%"}}]'
     console: 'Le TNT a détruit %number% %block% ! [x : %x%, y : %y%, z : %z%]'
     player-user: ''
-    player-admin: '[{"text":"Le TNT de ","color":"yellow"},{"text":"%player%","color":"gold"},{"text":" a détruit %number% %block% ! ","color":"yellow"},{"text":"Se téléporter","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Cliquez pour vous téléporter !","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %x% %y% %z%"}}]'
+    player-admin: '[{"text":"&eTNT of &6%player% &edestroyed %number% %display_color%%block%&e! ","color":"yellow"},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Click to teleport!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %x% %y% %z%"}}]'
     player-console: 'Le TNT de %player% a détruit %number% %block% ! [x : %x%, y : %y%, z : %z%]'
 #/ =============================== \
 #|        COMMANDS MESSAGES        |
@@ -65,6 +77,33 @@ commands:
   alerts:
     toggle-on: '&aVous pourrez maintenant voir les alertes'
     toggle-off: '&aVous ne pourrez plus voir les alertes'
+  debug:
+    block:
+      header: '&2=================== &lDebug Blocks &r&2==================='
+      text:
+        - "&6%material_name% &7(%display_name%&7) (%enabled%&7):"
+        - "   &7Alert users/admins: %alert_users%&7/%alert_admins%"
+        - "    number/time: &f%count_number%&7/%count_time%"
+      invalid-block: '&cBloc invalide'
+    config:
+      header: '&2================== &lDebug Config &r&2=================='
+      text:
+        - "&6Alerts&7: %alerts%&7,  &6Coordinates&7: %coordinates%"
+        - "&6Bypass player/silk/counter&7: %bypass_player%&7/%bypass_silk%&7/%bypass_counter%"
+        - "&6Stats&7: %stats% &7(%stats_values%)"
+        - "  &6Blacklist log&7: %blacklist_log%"
+        - "  &6Blacklist stats&7: %blacklist_stats%"
+        - "  &6Blacklist top&7: %blacklist_top%"
+        - "&6Advanced count&7: %advanced_count%"
+        - "  &6Log command&7: %log_command%"
+        - "&6Top command&7: %top_command%"
+    player:
+      header: '&2================ &lDebug %player% &r&2================'
+      text:
+        - "&6Bypass alerts/destroy/found&7: %permission_bypass_alerts%&7/%permission_bypass_destroy%&7/%permission_bypass_found%"
+        - "&6See alerts of users/admins/others&7: %see_alerts_users%&7/%see_alerts_admins%&7/%see_alerts_others%"
+        - "&6Operator&7: %op%"
+      player-offline: "&cThe player '%player%' must be online"
   log:
     header-player: '&2========== &lJournal de %player% (%page%/%maxpages%) &r&2=========='
     footer-player: ''
@@ -72,8 +111,8 @@ commands:
     footer-block: ''
     header-block-general: '&2============= &lJournal des Blocs (%page%/%maxpages%) &r&2============='
     footer-block-general: ''
-    format-player-block: '["",{"text":"%number% %block_color%%block% ","color":"gold"},{"text":"il y a %date_elapsed%!","color":"gray","hoverEvent":{"action":"show_text","value":["",{"text":"%date%","color":"gold"}]}}]'
-    format-general-block: '["",{"text":"%number% %block_color%%block% ","color":"gold"},{"text":"par %player% ","color":"dark_gray"},{"text":" il y a %date_elapsed% !","color":"gray","hoverEvent":{"action":"show_text","value":["",{"text":"%date%","color":"gold"}]}}]'
+    format-player-block: '[{"text":"&6%number% %display_color%%display_name% "},{"text":"&7%date_elapsed% ago!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
+    format-general-block: '[{"text":"&6%number% %display_color%%display_name% &8by %player% "},{"text":"&7%date_elapsed% ago!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
     nothing: '&7Rien'
     player-not-found: '&c%player% introuvable !'
     invalid-block: '&cBloc invalide'
@@ -81,7 +120,8 @@ commands:
     header: '&2========== &l Statistiques de %player% &r&2=========='
     footer: ''
     nothing: '&7Rien'
-    format-block: '%block_color%%block%&7: %value%'
+    format-block: '%display_color%%display_name%&7: %value%'
+    invalid-type: '&cInvalid value type'
     player-not-found: '&c%player% introuvable !'
   top:
     #[Special tags]
@@ -93,8 +133,6 @@ commands:
     no-one: '&7Personne'
     #You can use JSON to shows per-block total on hover
     format-player: '&a%player%&7: %value% blocs'
-    word-destroy: 'détruire'
-    word-found: 'trouvé'
     invalid-order: '&cType d'' ordre non valide'
     invalid-block: '&cBloc invalide'
   version:
@@ -120,20 +158,22 @@ help:
     #=> %description%     = Description
     #=> %run_command%     = Command run syntax
     #=> %perform_command% = Perform command message
-    help: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
-    alerts: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
-    log: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
-    reload: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/%run_command%"},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
-    stats: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
-    top: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
-    version: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/%run_command%"},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
+    help: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    alerts: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    debug: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    log: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    reload: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    stats: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    top: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    version: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
   command-descriptions:
     help: 'Afficher les pages d''aide'
     alerts: 'Activer/désactiver les alertes'
+    debug: 'Debug issues'
     log: 'Afficher les logs'
     reload: 'Recharger les fichiers de configuration OreAnnouncer'
     stats: 'Afficher les statistiques du joueur'
     top: 'Afficher les meilleurs joueurs'
     version: 'Afficher les informations OreAnnouncer'
 dont-edit-this:
-  version: 7
+  version: 8
