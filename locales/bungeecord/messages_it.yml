@@ -81,8 +81,8 @@ commands:
     footer-block: ''
     header-block-general: '&2============== &lLog dei Blocchi (%page%/%maxpages%) &r&2=============='
     footer-block-general: ''
-    format-player-block: '["",{"text":"%number% %display_color%%display_name% ","color":"gold"},{"text":"%date_elapsed% ago!","color":"gray","hoverEvent":{"action":"show_text","value":["",{"text":"%date%","color":"gold"}]}}]'
-    format-general-block: '["",{"text":"%number% %display_color%%display_name% ","color":"gold"},{"text":"by %player% ","color":"dark_gray"},{"text":"%date_elapsed% ago!","color":"gray","hoverEvent":{"action":"show_text","value":["",{"text":"%date%","color":"gold"}]}}]'
+    format-player-block: '[{"text":"&6%number% %display_color%%display_name% "},{"text":"&7%date_elapsed% ago!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
+    format-general-block: '[{"text":"&6%number% %display_color%%display_name% &8by %player% "},{"text":"&7%date_elapsed% ago!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
     nothing: '&7Niente'
     player-not-found: '&c%player% non trovato!'
     invalid-block: '&cBlocco non valido'
@@ -128,14 +128,14 @@ help:
     #=> %description%     = Description
     #=> %run_command%     = Command run syntax
     #=> %perform_command% = Perform command message
-    help: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
-    alerts: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
-    debug: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
-    log: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
-    reload: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/%run_command%"},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
-    stats: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
-    top: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
-    version: '{"text":"","extra":[{"text":"/%syntax%","color":"dark_green"},{"text":" - %description%","color":"gray"}],"clickEvent":{"action":"run_command","value":"/%run_command%"},"hoverEvent":{"action":"show_text","value":{"text":"%perform_command%","color":"gold"}}}'
+    help: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    alerts: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    debug: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    log: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    reload: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    stats: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    top: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    version: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
   command-descriptions:
     help: 'Mostra le pagine d''aiuto'
     alerts: 'Attiva/disattiva avvisi'
