@@ -514,15 +514,15 @@ public class SQLDispatcherTest {
 	@Test
 	public void testGetLogBlocks() {
 		OASQLDispatcher dispatcher = getSQLDispatcherH2();
-		getLogBlocks(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(BlocksFoundDao.class));
+		getLogBlocks(dispatcher);
 		dispatcher.stop();
 		
 		dispatcher = getSQLDispatcherSQLite();
-		getLogBlocks(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(BlocksFoundDao.class));
+		getLogBlocks(dispatcher);
 		dispatcher.stop();
 	}
 	
-	private void getLogBlocks(OASQLDispatcher dispatcher, BlocksFoundDao dao) {
+	private void getLogBlocks(OASQLDispatcher dispatcher) {
 		long time = System.currentTimeMillis() / 1000L;
 		UUID player1 = UUID.randomUUID();
 		UUID player2 = UUID.randomUUID();
