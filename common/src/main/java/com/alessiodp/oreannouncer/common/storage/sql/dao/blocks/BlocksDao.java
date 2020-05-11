@@ -15,10 +15,10 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface BlocksDao {
-	@SqlUpdate("INSERT INTO `<prefix>blocks` (`player`, `material_name`, `destroyed`) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE destroyed=`destroyed` + destroyed")
+	@SqlUpdate("INSERT INTO `<prefix>blocks` (`player`, `material_name`, `destroyed`) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE destroyed=`destroyed` + VALUES(`destroyed`)")
 	void update(String uuid, String materialName, int destroyed);
 	
-	@SqlUpdate("INSERT INTO `<prefix>blocks` (`player`, `material_name`, `destroyed`) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE destroyed=destroyed")
+	@SqlUpdate("INSERT INTO `<prefix>blocks` (`player`, `material_name`, `destroyed`) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE destroyed=VALUES(`destroyed`)")
 	void set(String uuid, String materialName, int destroyed);
 	
 	@SqlQuery("SELECT * FROM `<prefix>blocks` WHERE player = ? AND material_name = ?")

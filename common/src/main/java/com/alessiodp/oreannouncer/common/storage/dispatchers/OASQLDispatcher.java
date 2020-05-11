@@ -50,6 +50,7 @@ public class OASQLDispatcher extends SQLDispatcher implements IOADatabase, IData
 		switch (storageType) {
 			case MYSQL:
 				ret = new MySQLConnectionFactory();
+				((MySQLConnectionFactory) ret).setTablePrefix(ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX);
 				((MySQLConnectionFactory) ret).setCharset(ConfigMain.STORAGE_SETTINGS_MYSQL_CHARSET);
 				((MySQLConnectionFactory) ret).setServerName(ConfigMain.STORAGE_SETTINGS_MYSQL_ADDRESS);
 				((MySQLConnectionFactory) ret).setPort(ConfigMain.STORAGE_SETTINGS_MYSQL_PORT);
