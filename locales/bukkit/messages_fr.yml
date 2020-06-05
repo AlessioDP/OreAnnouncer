@@ -25,8 +25,8 @@ oreannouncer:
   blocks:
     enabled: '&aActivé'
     disabled: '&cDésactivé'
-    toggled-on: '&aOn'
-    toggled-off: '&cOff'
+    toggled-on: '&aOui'
+    toggled-off: '&cNon'
     word-yes: '&aOui'
     word-no: '&cNon'
     empty: '&8Vide'
@@ -52,7 +52,7 @@ alerts:
   #- Do not use obfuscation if you are using coordinates to run commands
   #Example:
   #{"text":"%x%","color":"gray"} - This is a single block for a coordinate
-  user: '&6%player% &etrouvé %number% %display_color%%block% !'
+  user: '&6%player% &ea trouvé %number% %display_color%%block% !'
   #Without teleport:
   #admin: "&6%player% &efound %number% %block%! &7[x: %x%&7, z: %z%&7]"
   admin: '[{"text":"&6%player% &etrouvé %number% %display_color%%block%&e! "},{"text":"Téléportation","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Cliquez pour vous téléportez !","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
