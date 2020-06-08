@@ -10,6 +10,9 @@ import java.sql.SQLException;
 public class BlocksFoundResultRowMapper implements RowMapper<BlocksFoundResult> {
 	@Override
 	public BlocksFoundResult map(ResultSet rs, StatementContext ctx) throws SQLException {
-		return new BlocksFoundResult(rs.getLong("time"), rs.getInt("total"));
+		if (rs.getInt("total") > 0) {
+			return new BlocksFoundResult(rs.getLong("time"), rs.getInt("total"));
+		}
+		return null;
 	}
 }

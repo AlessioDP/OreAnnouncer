@@ -227,6 +227,20 @@ public class SQLDispatcherTest {
 		
 		bfr = dispatcher.getBlockFound(bf.getPlayer(), block, time - 200);
 		assertEquals(bfr.getTotal(), 20);
+		
+		// Blocks found total
+		
+		// Check nulls
+		assertNotNull(dispatcher.getBlockFound(bf.getPlayer(), null, time - 1000));
+		assertNull(dispatcher.getBlockFound(UUID.randomUUID(), null, time - 1000));
+		
+		bfr = dispatcher.getBlockFound(bf.getPlayer(), null, time - 100);
+		assertEquals(bfr.getTotal(), 20);
+		assertEquals(bfr.getTimestamp(), time - 100);
+		
+		bfr = dispatcher.getBlockFound(bf.getPlayer(), null, time);
+		assertEquals(bfr.getTotal(), 10);
+		assertEquals(bfr.getTimestamp(), time);
 	}
 	
 	@Test

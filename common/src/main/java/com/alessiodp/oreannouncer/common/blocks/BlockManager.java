@@ -95,14 +95,14 @@ public abstract class BlockManager {
 	
 	public abstract void unmarkBlock(ADPLocation blockLocation, MarkType markType);
 	
-	public void handleAlerts(boolean alertUsers, boolean alertAdmins, OAPlayerImpl player, OABlockImpl block, ADPLocation blockLocation, int numberOfBlocks) {
+	public void handleAlerts(boolean alertUsers, boolean alertAdmins, OAPlayerImpl player, OABlockImpl block, ADPLocation blockLocation, int numberOfBlocks, int lightLevel) {
 		String userMessage = block.getMessageUser() != null ? block.getMessageUser() : Messages.ALERTS_USER;
 		String adminMessage = block.getMessageAdmin() != null ? block.getMessageAdmin() : Messages.ALERTS_ADMIN;
 		String consoleMessage = block.getMessageConsole() != null ? block.getMessageConsole() : Messages.ALERTS_CONSOLE;
 		
-		userMessage = parseMessage(userMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_USER, numberOfBlocks);
-		adminMessage = parseMessage(adminMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_ADMIN, numberOfBlocks);
-		consoleMessage = parseMessage(consoleMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_CONSOLE, numberOfBlocks);
+		userMessage = parseMessage(userMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_USER, numberOfBlocks, lightLevel);
+		adminMessage = parseMessage(adminMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_ADMIN, numberOfBlocks, lightLevel);
+		consoleMessage = parseMessage(consoleMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_CONSOLE, numberOfBlocks, lightLevel);
 		
 		// Send message to players
 		if (plugin.isBungeeCordEnabled()) {
@@ -146,7 +146,7 @@ public abstract class BlockManager {
 		}
 	}
 	
-	public void handleBlockFound(OABlockImpl block, OAPlayerImpl player, ADPLocation blockLocation, int numberOfBlocks) {
+	public void handleBlockFound(OABlockImpl block, OAPlayerImpl player, ADPLocation blockLocation, int numberOfBlocks, int lightLevel) {
 		BlockFound newBf = new BlockFound(player.getPlayerUUID(), block, numberOfBlocks);
 		BlocksFoundResult bfr = plugin.getDatabaseManager().getBlockFound(player.getPlayerUUID(), block, block.getCountTime());
 		if (bfr != null) {
@@ -181,9 +181,9 @@ public abstract class BlockManager {
 			String adminMessage = block.getCountMessageAdmin() != null ? block.getCountMessageAdmin() : Messages.ALERTS_COUNT_ADMIN;
 			String consoleMessage = block.getCountMessageConsole() != null ? block.getCountMessageConsole() : Messages.ALERTS_COUNT_CONSOLE;
 			
-			userMessage = parseMessage(userMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_USER, bfr.getTotal(), bfr.getTimestamp());
-			adminMessage = parseMessage(adminMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_ADMIN, bfr.getTotal(), bfr.getTimestamp());
-			consoleMessage = parseMessage(consoleMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_CONSOLE, bfr.getTotal(), bfr.getTimestamp());
+			userMessage = parseMessage(userMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_USER, bfr.getTotal(), bfr.getTimestamp(), lightLevel);
+			adminMessage = parseMessage(adminMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_ADMIN, bfr.getTotal(), bfr.getTimestamp(), lightLevel);
+			consoleMessage = parseMessage(consoleMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_CONSOLE, bfr.getTotal(), bfr.getTimestamp(), lightLevel);
 			
 			if (plugin.isBungeeCordEnabled()) {
 				OAPacket packet = new OAPacket(plugin.getVersion());
@@ -271,10 +271,14 @@ public abstract class BlockManager {
 	}
 	
 	protected String parseMessage(String message, OAPlayerImpl player, OABlockImpl block, ADPLocation blockLocation, boolean hiddenCoordinates, int numberOfBlocks) {
-		return parseMessage(message, player, block, blockLocation, hiddenCoordinates, numberOfBlocks, 0);
+		return parseMessage(message, player, block, blockLocation, hiddenCoordinates, numberOfBlocks, 0L, 0);
 	}
 	
-	protected String parseMessage(String message, @Nullable OAPlayerImpl player, OABlockImpl block, ADPLocation blockLocation, boolean hiddenCoordinates, int numberOfBlocks, long elapsed) {
+	protected String parseMessage(String message, OAPlayerImpl player, OABlockImpl block, ADPLocation blockLocation, boolean hiddenCoordinates, int numberOfBlocks, int lightLevel) {
+		return parseMessage(message, player, block, blockLocation, hiddenCoordinates, numberOfBlocks, 0L, lightLevel);
+	}
+	
+	protected String parseMessage(String message, @Nullable OAPlayerImpl player, OABlockImpl block, ADPLocation blockLocation, boolean hiddenCoordinates, int numberOfBlocks, long elapsed, int lightLevel) {
 		// Replace placeholders
 		String pPlayer = player != null ? player.getName() : "unknown";
 		String pNumber = Integer.toString(numberOfBlocks);
@@ -285,6 +289,7 @@ public abstract class BlockManager {
 					.replace("%number%", pNumber)
 					.replace("%block%", pBlock)
 					.replace("%time%", formatElapsed(elapsed)
+					.replace("%light_level%", Integer.toString(lightLevel))
 				), block);
 		
 		String ret = plugin.getMessageUtils().convertPlayerPlaceholders(repl.apply(message), player);

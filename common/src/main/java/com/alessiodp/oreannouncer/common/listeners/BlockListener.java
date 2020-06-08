@@ -103,7 +103,7 @@ public abstract class BlockListener {
 							plugin.getBlockManager().handleBlockDestroy(e.getKey(), player, e.getValue());
 						
 						if (ConfigMain.STATS_ADVANCED_COUNT_ENABLE && !user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_FOUND.toString())) {
-							plugin.getBlockManager().handleBlockFound(e.getKey(), player, blockLocation, e.getValue());
+							plugin.getBlockManager().handleBlockFound(e.getKey(), player, blockLocation, e.getValue(), 15);
 						}
 					}
 					
@@ -137,7 +137,7 @@ public abstract class BlockListener {
 					final boolean fAlertAdmins = alertAdmins;
 					plugin.getScheduler().runAsync(() -> {
 						OAPlayerImpl player = plugin.getPlayerManager().getPlayer(user.getUUID());
-						plugin.getBlockManager().handleAlerts(fAlertUsers, fAlertAdmins, player, block, blockLocation, numberOfBlocks);
+						plugin.getBlockManager().handleAlerts(fAlertUsers, fAlertAdmins, player, block, blockLocation, numberOfBlocks, lightLevel);
 					});
 				}
 			}
@@ -160,7 +160,7 @@ public abstract class BlockListener {
 				if (numberOfBlocks > 0) {
 					plugin.getScheduler().runAsync(() -> {
 						OAPlayerImpl player = plugin.getPlayerManager().getPlayer(user.getUUID());
-						plugin.getBlockManager().handleBlockFound(block, player, blockLocation, numberOfBlocks);
+						plugin.getBlockManager().handleBlockFound(block, player, blockLocation, numberOfBlocks, lightLevel);
 					});
 				}
 			}

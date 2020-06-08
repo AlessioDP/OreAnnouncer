@@ -53,6 +53,9 @@ oreannouncer:
 alerts:
   # [Special tags]
   # %x%, %y% and %z% = Coordinates of the destroyed block
+  # %number% = Number of blocks
+  # %time% = Time elapsed (Only count messages)
+  # %light_level% = Light level
   #
   # JSON tips:
   #   - Make a single block for a coordinate (see below)

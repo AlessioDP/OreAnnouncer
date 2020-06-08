@@ -136,7 +136,7 @@ stats:
     # => large   = More than 1 hour
     # => medium  = More than 1 minute
     # => small   = More than 1 second
-    default-time-format-large: "h' hours'"
+    default-time-format-large: "H' hours'"
     default-time-format-medium: "m' minutes'"
     default-time-format-small: "s' seconds'"
 
