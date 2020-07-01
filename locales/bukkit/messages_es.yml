@@ -58,17 +58,17 @@ alerts:
   user: '&6%player% &eencontro %number% %display_color%%block%!'
   #Without teleport:
   #admin: "&6%player% &efound %number% %block%! &7[x: %x%&7, z: %z%&7]"
-  admin: '[{"text":"&6%player% &eencontro %number% %display_color%%block%&e! "},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Haga click para teletransportarse!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
+  admin: '[{"text":"&6%player% &efound %number% %display_color%%block%&e! "},{"text":"&7Teleport","hoverEvent":{"action":"show_text","value":{"text":"&6Click to teleport!"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
   #No JSON for console
   console: '%player% encontró %number% %block%! [x: %x%, y: %y%, z: %z%]'
   count:
     user: ''
-    admin: '[{"text":"&6%player% &eencontro %number% %display_color%%block%&e in %time%! "},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Haga click para teletransportarse!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
+    admin: '[{"text":"&6%player% &efound %number% %display_color%%block%&e in %time%! "},{"text":"&7Teleport","hoverEvent":{"action":"show_text","value":{"text":"&6Click to teleport!"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
     #No JSON for console
     console: '%player% encontró %number% %block% in %time%! [x: %x%, y: %y%, z: %z%]'
   tnt:
     user: ''
-    admin: '[{"text":"&eTNT of &6%player% &edestroyed %number% %display_color%%block%&e! ","color":"yellow"},{"text":"Teleport","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Click to teleport!","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %x% %y% %z%"}}]'
+    admin: '[{"text":"&eTNT of &6%player% &edestroyed %number% %display_color%%block%&e! "},{"text":"&7Teleport","hoverEvent":{"action":"show_text","value":{"text":"&6Click to teleport!"}},"clickEvent":{"action":"run_command","value":"/tp %x% %y% %z%"}}]'
     console: 'TNT of %player% destroyed %number% %block%! [x: %x%, y: %y%, z: %z%]'
     unknown-player: 'an unknown player'
   discordsrv:
