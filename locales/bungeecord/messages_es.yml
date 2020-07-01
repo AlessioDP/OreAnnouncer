@@ -59,6 +59,7 @@ commands:
     config:
       header: '&2================== &lDebug Config &r&2=================='
       text:
+        - "&6Outdated config/messages:&7 %outdated_config%&7/%outdated_messages%"
         - "&6Alerts&7: %alerts%&7,  &6Coordinates&7: %coordinates%"
         - "&6Bypass player/silk/counter&7: %bypass_player%&7/%bypass_silk%&7/%bypass_counter%"
         - "&6Stats&7: %stats% &7(%stats_values%)"
@@ -146,4 +147,4 @@ help:
     top: 'Mostrar mejores jugadores'
     version: 'Mostrar información de OreAnnouncer'
 dont-edit-this:
-  version: 6
+  version: 7
