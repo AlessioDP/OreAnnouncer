@@ -136,6 +136,19 @@ alerts:
         # If greater than 0 replace the coordinate with exactly X character
         # Otherwise it will maintain the coordinate length
         fixed-length: 0
+  # [DiscordSRV]
+  # Enable support to DiscordSRV plugin
+  # Message format: text or embed
+  # Choose channels used to send alerts
+  #   Leave the channel empty to do not send alerts in that channel
+  discordsrv:
+    enable: false
+    message-format: embed
+    embed-avatars: true
+    channels:
+      user: ''
+      admin: global
+
 
 
 # / =============================== \
@@ -150,7 +163,7 @@ blocks:
   #                               the server is trying to calculate nearest blocks. Do
   #                               not touch it if you don't know what you are doing
   bypass-player-blocks: false
-  bypass-silk-touch: true
+  bypass-silk-touch: false
   bypass-secure-counter: false
   # [Light level system]
   # Enable a light level check on block destroy
@@ -280,4 +293,4 @@ commands:
 
 
 dont-edit-this:
-  version: 9
+  version: 10

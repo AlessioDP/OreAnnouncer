@@ -2,8 +2,11 @@ package com.alessiodp.oreannouncer.common.blocks;
 
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.core.common.utils.ADPLocation;
+import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.core.common.utils.DurationUtils;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
+import com.alessiodp.oreannouncer.common.blocks.objects.Alert;
+import com.alessiodp.oreannouncer.common.blocks.objects.BlockData;
 import com.alessiodp.oreannouncer.common.blocks.objects.BlockDestroy;
 import com.alessiodp.oreannouncer.common.blocks.objects.BlockFound;
 import com.alessiodp.oreannouncer.common.blocks.objects.OABlockImpl;
@@ -17,7 +20,6 @@ import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 import com.alessiodp.oreannouncer.common.utils.BlocksFoundResult;
 import com.alessiodp.oreannouncer.common.utils.CoordinateUtils;
 import lombok.Getter;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.UUID;
 import java.util.function.Function;
@@ -31,44 +33,41 @@ public abstract class BlockManager {
 		coordinatesUtils = new CoordinateUtils(plugin);
 	}
 	
-	public void sendAlerts(String userMessage, String adminMessage, String consoleMessage, String sound) {
-		sendAlerts(userMessage, adminMessage, consoleMessage, sound, null);
-	}
-	
-	public void sendAlerts(String userMessage, String adminMessage, String consoleMessage, String sound, String serverId) {
+	public void sendAlerts(Alert alert) {
 		for (User user : plugin.getOnlinePlayers()) {
 			OAPlayerImpl onlinePlayer = plugin.getPlayerManager().getPlayer(user.getUUID());
 			if (onlinePlayer != null && onlinePlayer.haveAlertsOn()) {
 				String msg = null;
-				if (!adminMessage.isEmpty()
+				if (!alert.getMessageAdmin().isEmpty()
 						&& (
-								user.hasPermission(OreAnnouncerPermission.ADMIN_ALERTS_SEE.toString())
-								|| (serverId != null && user.hasPermission(OreAnnouncerPermission.ADMIN_ALERTS_SEE_SERVER.toString() + serverId))
+								user.hasPermission(OreAnnouncerPermission.ADMIN_ALERTS_SEE)
+								|| (alert.getServerId() != null && user.hasPermission(OreAnnouncerPermission.ADMIN_ALERTS_SEE_SERVER.toString() + alert.getServerId()))
 							)) {
-					msg = adminMessage;
-				} else if (!userMessage.isEmpty()
+					msg = alert.getMessageAdmin();
+				} else if (!alert.getMessageUser().isEmpty()
 						&& (
-							user.hasPermission(OreAnnouncerPermission.USER_ALERTS_SEE.toString())
-								|| (serverId != null && user.hasPermission(OreAnnouncerPermission.USER_ALERTS_SEE_SERVER.toString() + serverId))
+							user.hasPermission(OreAnnouncerPermission.USER_ALERTS_SEE)
+								|| (alert.getServerId() != null && user.hasPermission(OreAnnouncerPermission.USER_ALERTS_SEE_SERVER.toString() + alert.getServerId()))
 							)) {
-					msg = userMessage;
+					msg = alert.getMessageUser();
 				}
 				
 				if (msg != null) {
 					user.sendMessage(msg, true);
 					
 					// Send alert sound
-					if (!sound.isEmpty())
-						user.playSound(sound, ConfigMain.ALERTS_SOUND_VOLUME, ConfigMain.ALERTS_SOUND_PITCH);
+					CommonUtils.ifNonEmptyDo(alert.getSound(), (s) -> user.playSound(s, ConfigMain.ALERTS_SOUND_VOLUME, ConfigMain.ALERTS_SOUND_PITCH));
 				}
 			}
 		}
 		
 		// Send message to console
 		if (ConfigMain.ALERTS_CONSOLE) {
-			plugin.getLoggerManager().log(consoleMessage, true);
+			plugin.getLoggerManager().log(alert.getMessageConsole(), true);
 		}
 	}
+	
+	public void sendGlobalAlert(BlockData data, AlertType type) {}
 	
 	public void updateBlockDestroy(OAPlayerImpl player, String materialName, int numberOfBlocks) {
 		plugin.getDatabaseManager().updateBlockDestroy(new BlockDestroy(
@@ -95,20 +94,20 @@ public abstract class BlockManager {
 	
 	public abstract void unmarkBlock(ADPLocation blockLocation, MarkType markType);
 	
-	public void handleAlerts(boolean alertUsers, boolean alertAdmins, OAPlayerImpl player, OABlockImpl block, ADPLocation blockLocation, int numberOfBlocks, int lightLevel) {
-		String userMessage = block.getMessageUser() != null ? block.getMessageUser() : Messages.ALERTS_USER;
-		String adminMessage = block.getMessageAdmin() != null ? block.getMessageAdmin() : Messages.ALERTS_ADMIN;
-		String consoleMessage = block.getMessageConsole() != null ? block.getMessageConsole() : Messages.ALERTS_CONSOLE;
+	public void handleAlerts(BlockData data) {
+		String userMessage = CommonUtils.getOr(data.getBlock().getMessageUser(), Messages.ALERTS_USER);
+		String adminMessage = CommonUtils.getOr(data.getBlock().getMessageAdmin(), Messages.ALERTS_ADMIN);
+		String consoleMessage = CommonUtils.getOr(data.getBlock().getMessageConsole(), Messages.ALERTS_CONSOLE);
 		
-		userMessage = parseMessage(userMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_USER, numberOfBlocks, lightLevel);
-		adminMessage = parseMessage(adminMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_ADMIN, numberOfBlocks, lightLevel);
-		consoleMessage = parseMessage(consoleMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_CONSOLE, numberOfBlocks, lightLevel);
+		userMessage = parseMessage(userMessage, data, AlerterType.USER);
+		adminMessage = parseMessage(adminMessage, data, AlerterType.ADMIN);
+		consoleMessage = parseMessage(consoleMessage, data, AlerterType.CONSOLE);
 		
 		// Send message to players
 		if (plugin.isBungeeCordEnabled()) {
 			OAPacket packet = new OAPacket(plugin.getVersion());
 			packet
-					.setMaterialName(block.getMaterialName())
+					.setMaterialName(data.getBlock().getMaterialName())
 					.setType(OAPacket.PacketType.ALERT)
 					.setMessageUsers(userMessage)
 					.setMessageAdmins(adminMessage)
@@ -119,22 +118,25 @@ public abstract class BlockManager {
 				plugin.getLoggerManager().printError(OAConstants.DEBUG_MESSAGING_SEND_ALERT_FAILED);
 			}
 		} else {
-			sendAlerts(
-					alertUsers ? userMessage : "",
-					alertAdmins ? adminMessage : "",
-					consoleMessage,
-					block.getSound() != null ? block.getSound() : ConfigMain.ALERTS_SOUND_DEFAULT);
+			Alert alert = new Alert()
+					.setMessageConsole(consoleMessage)
+					.setData(data);
+			if (data.isAlertUsers()) alert.setMessageUser(userMessage);
+			if (data.isAlertAdmins()) alert.setMessageAdmin(adminMessage);
+			CommonUtils.ifNonNullDo(data.getBlock().getSound(), alert::setSound);
+			sendAlerts(alert);
 		}
+		sendGlobalAlert(data, AlertType.NORMAL);
 	}
 	
-	public void handleBlockDestroy(OABlockImpl block, OAPlayerImpl player, int numberOfBlocks) {
+	public void handleBlockDestroy(BlockData data) {
 		if (plugin.isBungeeCordEnabled()) {
 			OAPacket packet = new OAPacket(plugin.getVersion());
 			packet
-					.setMaterialName(block.getMaterialName())
+					.setMaterialName(data.getBlock().getMaterialName())
 					.setType(OAPacket.PacketType.DESTROY)
-					.setPlayerUuid(player.getPlayerUUID())
-					.setDestroyCount(numberOfBlocks);
+					.setPlayerUuid(data.getPlayer().getPlayerUUID())
+					.setDestroyCount(data.getNumber());
 			
 			if (plugin.getMessenger().getMessageDispatcher().sendPacket(packet)) {
 				plugin.getLoggerManager().logDebug(OAConstants.DEBUG_MESSAGING_SEND_DESTROY, true);
@@ -142,27 +144,30 @@ public abstract class BlockManager {
 				plugin.getLoggerManager().printError(OAConstants.DEBUG_MESSAGING_SEND_DESTROY_FAILED);
 			}
 		} else {
-			updateBlockDestroy(player, block.getMaterialName(), numberOfBlocks);
+			updateBlockDestroy(data.getPlayer(), data.getBlock().getMaterialName(), data.getNumber());
 		}
 	}
 	
-	public void handleBlockFound(OABlockImpl block, OAPlayerImpl player, ADPLocation blockLocation, int numberOfBlocks, int lightLevel) {
-		BlockFound newBf = new BlockFound(player.getPlayerUUID(), block, numberOfBlocks);
-		BlocksFoundResult bfr = plugin.getDatabaseManager().getBlockFound(player.getPlayerUUID(), block, block.getCountTime());
+	public void handleBlockFound(BlockData data) {
+		BlockFound newBf = new BlockFound(data.getPlayer().getPlayerUUID(), data.getBlock(), data.getNumber());
+		BlocksFoundResult bfr = plugin.getDatabaseManager().getBlockFound(data.getPlayer().getPlayerUUID(), data.getBlock(), data.getBlock().getCountTime());
 		if (bfr != null) {
 			bfr.setTimestamp(Math.min(bfr.getTimestamp(), newBf.getTimestamp()));
 			bfr.setTotal(bfr.getTotal() + newBf.getFound());
 		} else {
 			bfr = new BlocksFoundResult(newBf.getTimestamp(), newBf.getFound());
 		}
+		plugin.getLoggerManager().logDebug(OAConstants.DEBUG_COUNTER_HANDLING
+				.replace("{player}", data.getPlayer().getName())
+				.replace("{value}", Integer.toString(bfr.getTotal())), true);
 		
 		if (plugin.isBungeeCordEnabled()) {
 			OAPacket packet = new OAPacket(plugin.getVersion());
 			packet
-					.setMaterialName(block.getMaterialName())
+					.setMaterialName(data.getBlock().getMaterialName())
 					.setType(OAPacket.PacketType.FOUND)
-					.setPlayerUuid(player.getPlayerUUID())
-					.setDestroyCount(numberOfBlocks);
+					.setPlayerUuid(data.getPlayer().getPlayerUUID())
+					.setDestroyCount(data.getNumber());
 			
 			if (plugin.getMessenger().getMessageDispatcher().sendPacket(packet)) {
 				plugin.getLoggerManager().logDebug(OAConstants.DEBUG_MESSAGING_SEND_FOUND, true);
@@ -174,21 +179,22 @@ public abstract class BlockManager {
 		}
 		
 		// If count number enabled handle alerts
-		if (block.getCountNumber() > 0 && bfr.getTotal() >= block.getCountNumber()) {
+		if (data.getBlock().getCountNumber() > 0 && bfr.getTotal() >= data.getBlock().getCountNumber()) {
+			data.setNumber(bfr.getTotal());
 			
 			// Alert
-			String userMessage = block.getCountMessageUser() != null ? block.getCountMessageUser() : Messages.ALERTS_COUNT_USER;
-			String adminMessage = block.getCountMessageAdmin() != null ? block.getCountMessageAdmin() : Messages.ALERTS_COUNT_ADMIN;
-			String consoleMessage = block.getCountMessageConsole() != null ? block.getCountMessageConsole() : Messages.ALERTS_COUNT_CONSOLE;
+			String userMessage = CommonUtils.getOr(data.getBlock().getCountMessageUser(), Messages.ALERTS_COUNT_USER);
+			String adminMessage = CommonUtils.getOr(data.getBlock().getCountMessageAdmin(), Messages.ALERTS_COUNT_ADMIN);
+			String consoleMessage = CommonUtils.getOr(data.getBlock().getCountMessageConsole(), Messages.ALERTS_COUNT_CONSOLE);
 			
-			userMessage = parseMessage(userMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_USER, bfr.getTotal(), bfr.getTimestamp(), lightLevel);
-			adminMessage = parseMessage(adminMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_ADMIN, bfr.getTotal(), bfr.getTimestamp(), lightLevel);
-			consoleMessage = parseMessage(consoleMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_CONSOLE, bfr.getTotal(), bfr.getTimestamp(), lightLevel);
+			userMessage = parseMessage(userMessage, data, AlerterType.USER, bfr.getTimestamp());
+			adminMessage = parseMessage(adminMessage, data, AlerterType.ADMIN, bfr.getTimestamp());
+			consoleMessage = parseMessage(consoleMessage, data, AlerterType.CONSOLE, bfr.getTimestamp());
 			
 			if (plugin.isBungeeCordEnabled()) {
 				OAPacket packet = new OAPacket(plugin.getVersion());
 				packet
-						.setMaterialName(block.getMaterialName())
+						.setMaterialName(data.getBlock().getMaterialName())
 						.setType(OAPacket.PacketType.ALERT_COUNT)
 						.setMessageUsers(userMessage)
 						.setMessageAdmins(adminMessage)
@@ -199,29 +205,30 @@ public abstract class BlockManager {
 					plugin.getLoggerManager().printError(OAConstants.DEBUG_MESSAGING_SEND_ALERT_COUNT_FAILED);
 				}
 			} else {
-				sendAlerts(
-						userMessage,
-						adminMessage,
-						consoleMessage,
-						block.getSound() != null ? block.getSound() : ConfigMain.ALERTS_SOUND_DEFAULT);
+				Alert alert = new Alert(userMessage, adminMessage, consoleMessage)
+						.setData(data);
+				CommonUtils.ifNonNullDo(data.getBlock().getSound(), alert::setSound);
+				sendAlerts(alert);
 			}
+			sendGlobalAlert(data.setElapsed(bfr.getTimestamp()), AlertType.COUNT);
 		}
 	}
 	
-	public void handleTNTDestroy(@Nullable OAPlayerImpl player, OABlockImpl block, ADPLocation blockLocation, int numberOfBlocks) {
-		String userMessage = player != null ? Messages.ALERTS_TNT_PLAYER_USER : Messages.ALERTS_TNT_USER;
-		String adminMessage = player != null ? Messages.ALERTS_TNT_PLAYER_ADMIN : Messages.ALERTS_TNT_ADMIN;
-		String consoleMessage = player != null ? Messages.ALERTS_TNT_PLAYER_CONSOLE : Messages.ALERTS_TNT_CONSOLE;
+	public void handleTNTDestroy(BlockData data) {
+		// data.getPlayer() can be null
+		String userMessage = Messages.ALERTS_TNT_USER;
+		String adminMessage = Messages.ALERTS_TNT_ADMIN;
+		String consoleMessage = Messages.ALERTS_TNT_CONSOLE;
 		
-		userMessage = parseMessage(userMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_USER, numberOfBlocks);
-		adminMessage = parseMessage(adminMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_ADMIN, numberOfBlocks);
-		consoleMessage = parseMessage(consoleMessage, player, block, blockLocation, ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_CONSOLE, numberOfBlocks);
+		userMessage = parseMessage(userMessage, data, AlerterType.USER);
+		adminMessage = parseMessage(adminMessage, data, AlerterType.ADMIN);
+		consoleMessage = parseMessage(consoleMessage, data, AlerterType.CONSOLE);
 		
 		// Send message to players
 		if (plugin.isBungeeCordEnabled()) {
 			OAPacket packet = new OAPacket(plugin.getVersion());
 			packet
-					.setMaterialName(block.getMaterialName())
+					.setMaterialName(data.getBlock().getMaterialName())
 					.setType(OAPacket.PacketType.ALERT_TNT)
 					.setMessageUsers(userMessage)
 					.setMessageAdmins(adminMessage)
@@ -232,12 +239,12 @@ public abstract class BlockManager {
 				plugin.getLoggerManager().printError(OAConstants.DEBUG_MESSAGING_SEND_ALERT_TNT_FAILED);
 			}
 		} else {
-			sendAlerts(
-					userMessage,
-					adminMessage,
-					consoleMessage,
-					block.getSound() != null ? block.getSound() : ConfigMain.ALERTS_SOUND_DEFAULT);
+			Alert alert = new Alert(userMessage, adminMessage, consoleMessage)
+					.setData(data);
+			CommonUtils.ifNonNullDo(data.getBlock().getSound(), alert::setSound);
+			sendAlerts(alert);
 		}
+		sendGlobalAlert(data, AlertType.TNT);
 	}
 	
 	public int countNearBlocks(ADPLocation blockLocation, String material, MarkType markType) {
@@ -270,34 +277,35 @@ public abstract class BlockManager {
 		return ret;
 	}
 	
-	protected String parseMessage(String message, OAPlayerImpl player, OABlockImpl block, ADPLocation blockLocation, boolean hiddenCoordinates, int numberOfBlocks) {
-		return parseMessage(message, player, block, blockLocation, hiddenCoordinates, numberOfBlocks, 0L, 0);
+	public String parseMessage(String message, BlockData data, AlerterType alerterType) {
+		return parseMessage(message, data, alerterType, CommonUtils.getOr(data.getElapsed(), 0L));
 	}
 	
-	protected String parseMessage(String message, OAPlayerImpl player, OABlockImpl block, ADPLocation blockLocation, boolean hiddenCoordinates, int numberOfBlocks, int lightLevel) {
-		return parseMessage(message, player, block, blockLocation, hiddenCoordinates, numberOfBlocks, 0L, lightLevel);
-	}
-	
-	protected String parseMessage(String message, @Nullable OAPlayerImpl player, OABlockImpl block, ADPLocation blockLocation, boolean hiddenCoordinates, int numberOfBlocks, long elapsed, int lightLevel) {
+	public String parseMessage(String message, BlockData data, AlerterType alerterType, long elapsed) {
 		// Replace placeholders
-		String pPlayer = player != null ? player.getName() : "unknown";
-		String pNumber = Integer.toString(numberOfBlocks);
-		String pBlock = numberOfBlocks > 1 ? block.getPluralName() : block.getSingularName();
+		String pPlayer = data.getPlayer() != null ? data.getPlayer().getName() : Messages.ALERTS_TNT_UNKNOWN_PLAYER;
+		String pNumber = Integer.toString(data.getNumber());
+		String pBlock = data.getNumber() > 1 ? data.getBlock().getPluralName() : data.getBlock().getSingularName();
 		
 		Function<String, String> repl = (msg) -> plugin.getMessageUtils().convertBlockPlaceholders(msg
 					.replace("%player%", pPlayer)
 					.replace("%number%", pNumber)
 					.replace("%block%", pBlock)
 					.replace("%time%", formatElapsed(elapsed)
-					.replace("%light_level%", Integer.toString(lightLevel))
-				), block);
+					.replace("%light_level%", Integer.toString(data.getLightLevel()))
+				), data.getBlock());
 		
-		String ret = plugin.getMessageUtils().convertPlayerPlaceholders(repl.apply(message), player);
+		String ret = plugin.getMessageUtils().convertPlayerPlaceholders(repl.apply(message), data.getPlayer());
 		
-		ret = coordinatesUtils.replaceCoordinates(ret, blockLocation, hiddenCoordinates);
+		boolean hiddenCoordinates = alerterType == AlerterType.USER ?
+				ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_USER :
+				(alerterType == AlerterType.ADMIN ?
+						ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_ADMIN :
+						ConfigMain.ALERTS_COORDINATES_HIDE_HIDDENFOR_CONSOLE);
+		ret = coordinatesUtils.replaceCoordinates(ret, data.getLocation(), hiddenCoordinates);
 		
 		// PlaceholderAPI
-		return player != null ? parsePAPI(player.getPlayerUUID(), ret) : ret;
+		return data.getPlayer() != null ? parsePAPI(data.getPlayer().getPlayerUUID(), ret) : ret;
 	}
 	
 	private String formatElapsed(long timestamp) {
@@ -321,5 +329,13 @@ public abstract class BlockManager {
 		MarkType(String mark) {
 			this.mark = mark;
 		}
+	}
+	
+	public enum AlertType {
+		NORMAL, COUNT, TNT
+	}
+	
+	public enum AlerterType {
+		USER, ADMIN, CONSOLE
 	}
 }

@@ -26,7 +26,7 @@ public class CommandHelp extends ADPSubCommand {
 				plugin,
 				mainCommand,
 				CommonCommands.HELP,
-				OreAnnouncerPermission.USER_HELP.toString(),
+				OreAnnouncerPermission.USER_HELP,
 				ConfigMain.COMMANDS_CMD_HELP,
 				false
 		);

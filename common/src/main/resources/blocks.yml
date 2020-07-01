@@ -23,7 +23,7 @@
 #    admin-count: ""              | Override count admin message
 #    console-count: ""            | Override count console message
 #  sound: ""                      | Sound name of the alert
-#  light-level: 0-15              | Light level from 0 to 15
+#  light-level: 0-15              | Trigger alert if light level is below of X
 #  count-on-destroy: true/false   | Count this block for statistics system
 #  tnt: true/false                | Handle destroy with TNT
 #  priority: #                    | Priority number (-1 to disable) default 0

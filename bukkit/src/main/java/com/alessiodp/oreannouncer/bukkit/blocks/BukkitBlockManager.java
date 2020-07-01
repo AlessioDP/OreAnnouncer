@@ -1,17 +1,19 @@
 package com.alessiodp.oreannouncer.bukkit.blocks;
 
 import com.alessiodp.core.common.utils.ADPLocation;
+import com.alessiodp.core.common.utils.CommonUtils;
+import com.alessiodp.oreannouncer.bukkit.addons.external.DiscordSRVHandler;
 import com.alessiodp.oreannouncer.bukkit.addons.external.PlaceholderAPIHandler;
 import com.alessiodp.oreannouncer.bukkit.bootstrap.BukkitOreAnnouncerBootstrap;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.blocks.BlockManager;
+import com.alessiodp.oreannouncer.common.blocks.objects.BlockData;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.metadata.FixedMetadataValue;
 
-import java.util.Locale;
 import java.util.UUID;
 
 public class BukkitBlockManager extends BlockManager {
@@ -21,8 +23,14 @@ public class BukkitBlockManager extends BlockManager {
 	}
 	
 	@Override
+	public void sendGlobalAlert(BlockData data, AlertType type) {
+		super.sendGlobalAlert(data, type);
+		DiscordSRVHandler.dispatchAlerts(data, type);
+	}
+	
+	@Override
 	public boolean existsMaterial(String materialName) {
-		return Material.getMaterial(materialName.toUpperCase(Locale.ENGLISH)) != null;
+		return Material.getMaterial(CommonUtils.toUpperCase(materialName)) != null;
 	}
 	
 	@SuppressWarnings("ConstantConditions")

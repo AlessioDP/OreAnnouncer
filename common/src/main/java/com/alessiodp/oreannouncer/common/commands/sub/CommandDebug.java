@@ -5,11 +5,13 @@ import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.ADPSubCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
+import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.addons.external.LLAPIHandler;
 import com.alessiodp.oreannouncer.common.blocks.objects.OABlockImpl;
 import com.alessiodp.oreannouncer.common.commands.list.CommonCommands;
 import com.alessiodp.oreannouncer.common.commands.utils.OACommandData;
+import com.alessiodp.oreannouncer.common.configuration.OAConfigurationManager;
 import com.alessiodp.oreannouncer.common.configuration.OAConstants;
 import com.alessiodp.oreannouncer.common.configuration.data.Blocks;
 import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
@@ -17,7 +19,6 @@ import com.alessiodp.oreannouncer.common.configuration.data.Messages;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 import com.alessiodp.oreannouncer.common.utils.OreAnnouncerPermission;
 
-import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
@@ -31,7 +32,7 @@ public class CommandDebug extends ADPSubCommand {
 				plugin,
 				mainCommand,
 				CommonCommands.LOG,
-				OreAnnouncerPermission.ADMIN_DEBUG.toString(),
+				OreAnnouncerPermission.ADMIN_DEBUG,
 				ConfigMain.COMMANDS_CMD_DEBUG,
 				false
 		);
@@ -100,7 +101,7 @@ public class CommandDebug extends ADPSubCommand {
 			if (commandData.getArgs().length == 3) {
 				// oa debug block <BLOCK/ALL>
 				if (!commandData.getArgs()[2].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_ALL)) {
-					OABlockImpl b = Blocks.LIST.get(commandData.getArgs()[2].toUpperCase(Locale.ENGLISH));
+					OABlockImpl b = Blocks.LIST.get(CommonUtils.toUpperCase(commandData.getArgs()[2]));
 					if (b != null) {
 						block = b;
 					} else {
@@ -172,6 +173,8 @@ public class CommandDebug extends ADPSubCommand {
 			
 			for (String line : Messages.CMD_DEBUG_CONFIG_TEXT) {
 				player.sendMessage(line
+						.replace("%outdated_config%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatYesNo(((OAConfigurationManager) plugin.getConfigurationManager()).getConfigMain().isOutdated()))
+						.replace("%outdated_messages%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatYesNo(((OAConfigurationManager) plugin.getConfigurationManager()).getMessages().isOutdated()))
 						.replace("%alerts%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatOnOff(ConfigMain.ALERTS_ENABLE))
 						.replace("%coordinates%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatOnOff(ConfigMain.ALERTS_COORDINATES_ENABLE))
 						.replace("%bypass_player%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatYesNo(ConfigMain.BLOCKS_BYPASS_PLAYERBLOCKS))
@@ -195,12 +198,12 @@ public class CommandDebug extends ADPSubCommand {
 				
 				for (String line : Messages.CMD_DEBUG_PLAYER_TEXT) {
 					player.sendMessage(((OreAnnouncerPlugin) plugin).getMessageUtils().convertPlayerPlaceholders(
-							line.replace("%permission_bypass_alerts%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatYesNo(user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_ALERTS.toString())))
-									.replace("%permission_bypass_destroy%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatYesNo(user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_DESTROY.toString())))
-									.replace("%permission_bypass_found%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatYesNo(user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_FOUND.toString())))
-									.replace("%see_alerts_users%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatYesNo(user.hasPermission(OreAnnouncerPermission.USER_ALERTS_SEE.toString())))
-									.replace("%see_alerts_admins%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatYesNo(user.hasPermission(OreAnnouncerPermission.ADMIN_ALERTS_SEE.toString())))
-									.replace("%see_alerts_others%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatYesNo(user.hasPermission(OreAnnouncerPermission.ADMIN_STATS_OTHER.toString())))
+							line.replace("%permission_bypass_alerts%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatYesNo(user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_ALERTS)))
+									.replace("%permission_bypass_destroy%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatYesNo(user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_DESTROY)))
+									.replace("%permission_bypass_found%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatYesNo(user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_FOUND)))
+									.replace("%see_alerts_users%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatYesNo(user.hasPermission(OreAnnouncerPermission.USER_ALERTS_SEE)))
+									.replace("%see_alerts_admins%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatYesNo(user.hasPermission(OreAnnouncerPermission.ADMIN_ALERTS_SEE)))
+									.replace("%see_alerts_others%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatYesNo(user.hasPermission(OreAnnouncerPermission.ADMIN_STATS_OTHER)))
 									.replace("%op%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatYesNo(user.isOperator()))
 							, targetPlayer));
 				}

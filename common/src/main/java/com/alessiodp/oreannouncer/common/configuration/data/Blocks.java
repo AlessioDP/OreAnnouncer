@@ -2,6 +2,7 @@ package com.alessiodp.oreannouncer.common.configuration.data;
 
 import com.alessiodp.core.common.addons.external.simpleyaml.configuration.ConfigurationSection;
 import com.alessiodp.core.common.configuration.ConfigurationFile;
+import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.blocks.objects.OABlockImpl;
 import com.alessiodp.oreannouncer.common.configuration.OAConstants;
@@ -10,7 +11,6 @@ import lombok.NonNull;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 public class Blocks extends ConfigurationFile {
@@ -147,7 +147,7 @@ public class Blocks extends ConfigurationFile {
 					block.setPriority(csBlocks.getInt(key + ".priority", 0));
 					
 					block.setAccessible(false);
-					blocks.put(key.toUpperCase(Locale.ENGLISH), block);
+					blocks.put(CommonUtils.toUpperCase(key), block);
 				} else {
 					// Material doesn't exist
 					plugin.getLoggerManager().printError(OAConstants.DEBUG_CFG_WRONGBLOCK
@@ -159,7 +159,7 @@ public class Blocks extends ConfigurationFile {
 	}
 	
 	public boolean existsBlock(@NonNull String materialName) {
-		return LIST.containsKey(materialName.toUpperCase(Locale.ENGLISH));
+		return LIST.containsKey(CommonUtils.toUpperCase(materialName));
 	}
 	
 	public void updateBlock(@NonNull OABlockImpl block) {
@@ -204,7 +204,7 @@ public class Blocks extends ConfigurationFile {
 		}
 		
 		if (!existsBlock(block.getMaterialName())) {
-			LIST.put(block.getMaterialName().toUpperCase(Locale.ENGLISH), block);
+			LIST.put(CommonUtils.toUpperCase(block.getMaterialName()), block);
 		}
 	}
 	
@@ -217,6 +217,6 @@ public class Blocks extends ConfigurationFile {
 			e.printStackTrace();
 		}
 		
-		LIST.remove(block.getMaterialName().toUpperCase(Locale.ENGLISH));
+		LIST.remove(CommonUtils.toUpperCase(block.getMaterialName()));
 	}
 }

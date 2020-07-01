@@ -5,6 +5,7 @@ import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.core.common.storage.DatabaseManager;
 import com.alessiodp.core.common.storage.StorageType;
 import com.alessiodp.core.common.storage.interfaces.IDatabaseDispatcher;
+import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.oreannouncer.api.interfaces.OABlock;
 import com.alessiodp.oreannouncer.common.blocks.objects.BlockDestroy;
 import com.alessiodp.oreannouncer.common.blocks.objects.BlockFound;
@@ -20,7 +21,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
@@ -192,7 +192,7 @@ public class OADatabaseManager extends DatabaseManager implements IOADatabase {
 		DESTROY, FOUND;
 		
 		public static ValueType getType(String type) {
-			switch (type.toLowerCase(Locale.ENGLISH)) {
+			switch (CommonUtils.toLowerCase(type)) {
 				case "destroy":
 					return DESTROY;
 				case "found":

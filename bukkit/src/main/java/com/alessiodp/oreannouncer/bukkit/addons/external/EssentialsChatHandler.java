@@ -2,6 +2,7 @@ package com.alessiodp.oreannouncer.bukkit.addons.external;
 
 import com.alessiodp.core.common.configuration.Constants;
 import com.alessiodp.core.common.utils.Color;
+import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.addons.internal.OAPlaceholder;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
@@ -35,7 +36,7 @@ public class EssentialsChatHandler implements Listener {
 	@EventHandler
 	public void onChatPlayer(AsyncPlayerChatEvent event) {
 		String old = event.getFormat();
-		if (old.toLowerCase().contains("{oreannouncer_")) {
+		if (CommonUtils.toLowerCase(old).contains("{oreannouncer_")) {
 			// Bypass useless checks if this isn't an OreAnnouncer placeholder
 			boolean somethingChanged = false;
 			OAPlayerImpl player = plugin.getPlayerManager().getPlayer(event.getPlayer().getUniqueId());

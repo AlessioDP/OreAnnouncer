@@ -14,10 +14,10 @@ public class OAConstants {
 	public static final int PLUGIN_BSTATS_BUNGEE_ID = 4513;
 	
 	// Versions
-	public static final int VERSION_BUKKIT_CONFIG = 9;
+	public static final int VERSION_BUKKIT_CONFIG = 10;
 	public static final int VERSION_BUNGEE_CONFIG = 6;
-	public static final int VERSION_BUKKIT_MESSAGES = 8;
-	public static final int VERSION_BUNGEE_MESSAGES = 6;
+	public static final int VERSION_BUKKIT_MESSAGES = 9;
+	public static final int VERSION_BUNGEE_MESSAGES = 7;
 	public static final int VERSION_BLOCKS = 1;
 	
 	
@@ -39,6 +39,7 @@ public class OAConstants {
 	public static final String DEBUG_CMD_TOP_CONSOLE = "Performed top command";
 	public static final String DEBUG_CMD_VERSION = "{player} performed version command";
 	public static final String DEBUG_CMD_VERSION_CONSOLE = "Performed version command";
+	public static final String DEBUG_COUNTER_HANDLING = "Handling a block found result of {player} with {value} blocks";
 	public static final String DEBUG_DB_UPDATEPLAYER = "Update player for {player} [{uuid}]";
 	public static final String DEBUG_DB_GETPLAYER = "Get player request for '{uuid}'";
 	public static final String DEBUG_DB_TOP_BLOCKS_LIST = "Getting top players with limit {limit} and offset {offset}";

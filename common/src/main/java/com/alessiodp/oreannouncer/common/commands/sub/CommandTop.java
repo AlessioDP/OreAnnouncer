@@ -6,6 +6,7 @@ import com.alessiodp.core.common.commands.utils.ADPSubCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.core.common.utils.Color;
+import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.blocks.objects.OABlockImpl;
 import com.alessiodp.oreannouncer.common.commands.list.CommonCommands;
@@ -23,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 
 public class CommandTop extends ADPSubCommand {
@@ -34,7 +34,7 @@ public class CommandTop extends ADPSubCommand {
 				plugin,
 				mainCommand,
 				CommonCommands.TOP,
-				OreAnnouncerPermission.USER_TOP.toString(),
+				OreAnnouncerPermission.USER_TOP,
 				ConfigMain.COMMANDS_CMD_TOP,
 				true
 		);
@@ -79,7 +79,7 @@ public class CommandTop extends ADPSubCommand {
 	
 	@Override
 	public String getSyntaxForUser(User user) {
-		if (!user.hasPermission(OreAnnouncerPermission.USER_TOP.toString()))
+		if (!user.hasPermission(OreAnnouncerPermission.USER_TOP))
 			return syntaxBase;
 		return syntax;
 	}
@@ -91,9 +91,9 @@ public class CommandTop extends ADPSubCommand {
 			OAPlayerImpl player = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 			
 			// Checks for command prerequisites
-			if (!sender.hasPermission(OreAnnouncerPermission.USER_TOP.toString())
-					&& !sender.hasPermission(OreAnnouncerPermission.USER_TOP_DESTROY.toString())
-					&& !sender.hasPermission(OreAnnouncerPermission.USER_TOP_FOUND.toString())) {
+			if (!sender.hasPermission(OreAnnouncerPermission.USER_TOP)
+					&& !sender.hasPermission(OreAnnouncerPermission.USER_TOP_DESTROY)
+					&& !sender.hasPermission(OreAnnouncerPermission.USER_TOP_FOUND)) {
 				player.sendNoPermission(OreAnnouncerPermission.USER_TOP);
 				return false;
 			}
@@ -118,7 +118,7 @@ public class CommandTop extends ADPSubCommand {
 		
 		// Command handling
 		List<String> blacklist = new ArrayList<>();
-		ConfigMain.STATS_BLACKLIST_BLOCKS_TOP.forEach((str) -> blacklist.add(str.toUpperCase(Locale.ENGLISH)));
+		ConfigMain.STATS_BLACKLIST_BLOCKS_TOP.forEach((str) -> blacklist.add(CommonUtils.toUpperCase(str)));
 		
 		int selectedPage = 1;
 		OADatabaseManager.ValueType orderBy = null;
@@ -137,7 +137,7 @@ public class CommandTop extends ADPSubCommand {
 						return;
 					}
 					
-					block = Blocks.LIST.get(args[1].toUpperCase(Locale.ENGLISH));
+					block = Blocks.LIST.get(CommonUtils.toUpperCase(args[1]));
 					if (block == null || !block.isEnabled() || blacklist.contains(block.getMaterialName())) {
 						sendMessage(player, Messages.CMD_TOP_INVALID_BLOCK);
 						return;
@@ -171,7 +171,7 @@ public class CommandTop extends ADPSubCommand {
 						OADatabaseManager.ValueType temp = OADatabaseManager.ValueType.parse(args[0]);
 						
 						if (temp == null) {
-							block = Blocks.LIST.get(args[0].toUpperCase(Locale.ENGLISH));
+							block = Blocks.LIST.get(CommonUtils.toUpperCase(args[0]));
 							if (block == null) {
 								sendMessage(player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
 										.replace("%syntax%", syntax));
@@ -183,7 +183,7 @@ public class CommandTop extends ADPSubCommand {
 						
 					} else if (commandUsage == CommandUsage.ONLY_BLOCK) {
 						// Check for block
-						block = Blocks.LIST.get(args[0].toUpperCase(Locale.ENGLISH));
+						block = Blocks.LIST.get(CommonUtils.toUpperCase(args[0]));
 						if (block == null) {
 							sendMessage(player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
 									.replace("%syntax%", syntax));
@@ -202,7 +202,7 @@ public class CommandTop extends ADPSubCommand {
 				} catch (NumberFormatException ignored) {
 					if (commandUsage == CommandUsage.FULL) {
 						// Check for or order or block
-						block = Blocks.LIST.get(args[1].toUpperCase(Locale.ENGLISH));
+						block = Blocks.LIST.get(CommonUtils.toUpperCase(args[1]));
 						if (block == null || !block.isEnabled() || blacklist.contains(block.getMaterialName())) {
 							sendMessage(player, Messages.CMD_TOP_INVALID_BLOCK);
 							return;
@@ -229,7 +229,7 @@ public class CommandTop extends ADPSubCommand {
 						// Check for or order or block
 						orderBy = OADatabaseManager.ValueType.parse(args[0]);
 						if (orderBy == null) {
-							block = Blocks.LIST.get(args[0].toUpperCase(Locale.ENGLISH));
+							block = Blocks.LIST.get(CommonUtils.toUpperCase(args[0]));
 							if (block == null || !block.isEnabled() || blacklist.contains(block.getMaterialName())) {
 								sendMessage(player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
 										.replace("%syntax%", syntax));
@@ -237,7 +237,7 @@ public class CommandTop extends ADPSubCommand {
 							}
 						}
 					} else if (commandUsage == CommandUsage.ONLY_BLOCK) {
-						block = Blocks.LIST.get(args[0].toUpperCase(Locale.ENGLISH));
+						block = Blocks.LIST.get(CommonUtils.toUpperCase(args[0]));
 						if (block == null || !block.isEnabled() || blacklist.contains(block.getMaterialName())) {
 							sendMessage(player, Messages.CMD_TOP_INVALID_BLOCK);
 							return;
@@ -333,7 +333,7 @@ public class CommandTop extends ADPSubCommand {
 					case FULL:
 					case ONLY_ORDER:
 						for (OADatabaseManager.ValueType ord : OADatabaseManager.ValueType.values())
-							ret.add(ord.name().toLowerCase());
+							ret.add(CommonUtils.toLowerCase(ord.name()));
 						break;
 					case ONLY_BLOCK:
 						for (OABlockImpl block : Blocks.LIST.values()) {

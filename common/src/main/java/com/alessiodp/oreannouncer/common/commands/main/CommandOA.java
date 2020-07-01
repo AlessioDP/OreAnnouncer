@@ -5,6 +5,7 @@ import com.alessiodp.core.common.commands.utils.ADPExecutableCommand;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.core.common.utils.Color;
+import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.commands.list.CommonCommands;
 import com.alessiodp.oreannouncer.common.commands.sub.CommandAlerts;
@@ -59,7 +60,7 @@ public class CommandOA extends ADPMainCommand {
 				// Set /oa to /oa help
 				subCommand = ConfigMain.COMMANDS_CMD_HELP;
 			} else {
-				subCommand = args[0].toLowerCase();
+				subCommand = CommonUtils.toLowerCase(args[0]);
 			}
 			
 			if (exists(subCommand)) {
@@ -70,7 +71,7 @@ public class CommandOA extends ADPMainCommand {
 		} else {
 			// Console
 			if (args.length > 0) {
-				subCommand = args[0].toLowerCase();
+				subCommand = CommonUtils.toLowerCase(args[0]);
 				if (exists(subCommand) && getSubCommand(subCommand).isExecutableByConsole()) {
 					plugin.getCommandManager().getCommandUtils().executeCommand(sender, getCommandName(), getSubCommand(subCommand), args);
 				} else {

@@ -19,6 +19,18 @@ public class BukkitConfigMain extends ConfigMain {
 	@ConfigOption(path = "oreannouncer.bungeecord.server-id")
 	public static String		OREANNOUNCER_BUNGEECORD_SERVER_ID;
 	
+	// Alerts settings
+	@ConfigOption(path = "alerts.discordsrv.enable")
+	public static boolean		ALERTS_DISCORDSRV_ENABLE;
+	@ConfigOption(path = "alerts.discordsrv.message-format")
+	public static String		ALERTS_DISCORDSRV_MESSAGE_FORMAT;
+	@ConfigOption(path = "alerts.discordsrv.embed-avatars")
+	public static boolean		ALERTS_DISCORDSRV_EMBED_AVATARS;
+	@ConfigOption(path = "alerts.discordsrv.channels.user")
+	public static String		ALERTS_DISCORDSRV_CHANNELS_USER;
+	@ConfigOption(path = "alerts.discordsrv.channels.admin")
+	public static String		ALERTS_DISCORDSRV_CHANNELS_ADMIN;
+	
 	public BukkitConfigMain(OreAnnouncerPlugin plugin) {
 		super(plugin);
 	}

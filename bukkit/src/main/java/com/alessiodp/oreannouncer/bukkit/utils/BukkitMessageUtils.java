@@ -13,7 +13,8 @@ public class BukkitMessageUtils extends MessageUtils {
 	@Override
 	public String convertPlayerPlaceholders(String message, OAPlayerImpl player) {
 		String ret = super.convertPlayerPlaceholders(message, player);
-		ret = PlaceholderAPIHandler.getPlaceholders(player.getPlayerUUID(), ret);
+		if (player != null)
+			ret = PlaceholderAPIHandler.getPlaceholders(player.getPlayerUUID(), ret);
 		return ret;
 	}
 }

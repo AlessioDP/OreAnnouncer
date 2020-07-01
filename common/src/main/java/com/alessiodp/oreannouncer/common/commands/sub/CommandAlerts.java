@@ -24,7 +24,7 @@ public class CommandAlerts extends ADPSubCommand {
 				plugin,
 				mainCommand,
 				CommonCommands.ALERTS,
-				OreAnnouncerPermission.USER_ALERTS_TOGGLE.toString(),
+				OreAnnouncerPermission.USER_ALERTS_TOGGLE,
 				ConfigMain.COMMANDS_CMD_ALERTS,
 				false
 		);

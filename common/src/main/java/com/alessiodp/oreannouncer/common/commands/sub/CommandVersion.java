@@ -22,7 +22,7 @@ public class CommandVersion extends ADPSubCommand {
 				plugin,
 				mainCommand,
 				CommonCommands.VERSION,
-				OreAnnouncerPermission.ADMIN_VERSION.toString(),
+				OreAnnouncerPermission.ADMIN_VERSION,
 				ConfigMain.COMMANDS_CMD_VERSION,
 				true
 		);

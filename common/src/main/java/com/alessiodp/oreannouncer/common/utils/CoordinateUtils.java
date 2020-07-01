@@ -67,8 +67,8 @@ public class CoordinateUtils {
 	
 	@AllArgsConstructor
 	private static final class Coordinate {
-		private CoordinateAxis axis;
-		private double value;
+		private final CoordinateAxis axis;
+		private final double value;
 		// If null, this coordinate does not support hide
 		private Boolean hidden;
 		

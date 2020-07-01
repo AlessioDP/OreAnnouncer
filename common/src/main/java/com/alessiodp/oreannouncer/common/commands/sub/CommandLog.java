@@ -6,6 +6,7 @@ import com.alessiodp.core.common.commands.utils.ADPSubCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.core.common.utils.Color;
+import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.addons.external.LLAPIHandler;
 import com.alessiodp.oreannouncer.common.blocks.objects.BlockFound;
@@ -22,7 +23,6 @@ import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
@@ -35,7 +35,7 @@ public class CommandLog extends ADPSubCommand {
 				plugin,
 				mainCommand,
 				CommonCommands.LOG,
-				OreAnnouncerPermission.ADMIN_LOG.toString(),
+				OreAnnouncerPermission.ADMIN_LOG,
 				ConfigMain.COMMANDS_CMD_LOG,
 				true
 		);
@@ -109,7 +109,7 @@ public class CommandLog extends ADPSubCommand {
 			if (commandData.getArgs().length > 2) {
 				if (commandData.getArgs().length > 3) {
 					// oa block <BLOCK> <page>
-					OABlockImpl b = Blocks.LIST.get(commandData.getArgs()[2].toUpperCase(Locale.ENGLISH));
+					OABlockImpl b = Blocks.LIST.get(CommonUtils.toUpperCase(commandData.getArgs()[2]));
 					if (b != null && b.isEnabled()) {
 						block = b;
 					} else {
@@ -131,7 +131,7 @@ public class CommandLog extends ADPSubCommand {
 						selectedPage = Integer.parseInt(commandData.getArgs()[2]);
 					} catch (NumberFormatException ex) {
 						// oa block <BLOCK/page>
-						OABlockImpl b = Blocks.LIST.get(commandData.getArgs()[2].toUpperCase(Locale.ENGLISH));
+						OABlockImpl b = Blocks.LIST.get(CommonUtils.toUpperCase(commandData.getArgs()[2]));
 						if (b != null && b.isEnabled()) {
 							block = b;
 						} else {
@@ -161,7 +161,7 @@ public class CommandLog extends ADPSubCommand {
 				if (commandData.getArgs().length > 3) {
 					if (commandData.getArgs().length > 4) {
 						// oa player <player> <BLOCK> <page>
-						OABlockImpl b = Blocks.LIST.get(commandData.getArgs()[3].toUpperCase(Locale.ENGLISH));
+						OABlockImpl b = Blocks.LIST.get(CommonUtils.toUpperCase(commandData.getArgs()[3]));
 						if (b != null && b.isEnabled()) {
 							block = b;
 						} else {
@@ -183,7 +183,7 @@ public class CommandLog extends ADPSubCommand {
 							selectedPage = Integer.parseInt(commandData.getArgs()[3]);
 						} catch (NumberFormatException ex) {
 							// oa player <player> <BLOCK/page>
-							OABlockImpl b = Blocks.LIST.get(commandData.getArgs()[3].toUpperCase(Locale.ENGLISH));
+							OABlockImpl b = Blocks.LIST.get(CommonUtils.toUpperCase(commandData.getArgs()[3]));
 							if (b != null && b.isEnabled()) {
 								block = b;
 							} else {

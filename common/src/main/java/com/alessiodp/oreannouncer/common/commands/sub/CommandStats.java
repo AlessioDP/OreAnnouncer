@@ -38,7 +38,7 @@ public class CommandStats extends ADPSubCommand {
 				plugin,
 				mainCommand,
 				CommonCommands.STATS,
-				OreAnnouncerPermission.USER_STATS.toString(),
+				OreAnnouncerPermission.USER_STATS,
 				ConfigMain.COMMANDS_CMD_STATS,
 				true
 		);
@@ -74,9 +74,9 @@ public class CommandStats extends ADPSubCommand {
 	
 	@Override
 	public String getSyntaxForUser(User user) {
-		if (user.hasPermission(OreAnnouncerPermission.ADMIN_STATS_OTHER.toString()))
-			return user.hasPermission(OreAnnouncerPermission.USER_TOP.toString()) ? syntaxOthers: syntaxOthersBase;
-		return user.hasPermission(OreAnnouncerPermission.USER_TOP.toString()) ? syntax : syntaxBase;
+		if (user.hasPermission(OreAnnouncerPermission.ADMIN_STATS_OTHER))
+			return user.hasPermission(OreAnnouncerPermission.USER_TOP) ? syntaxOthers: syntaxOthersBase;
+		return user.hasPermission(OreAnnouncerPermission.USER_TOP) ? syntax : syntaxBase;
 	}
 	
 	@Override

@@ -4,9 +4,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
-import java.util.Set;
 import java.util.UUID;
 
 public interface OreAnnouncerAPI {
@@ -17,46 +15,12 @@ public interface OreAnnouncerAPI {
 	void reloadOreAnnouncer();
 	
 	/**
-	 * Send changes to the database. Used to save player data.
-	 *
-	 * @param player The {@link OAPlayer} to save
-	 */
-	@Deprecated
-	void updatePlayer(OAPlayer player);
-	
-	/**
 	 * Get the player by his {@link UUID}
 	 *
 	 * @param uuid The {@link UUID} of the player
 	 * @return Returns the {@link OAPlayer} of the relative player
 	 */
 	OAPlayer getOAPlayer(UUID uuid);
-	
-	/**
-	 * Get a list of destroyed blocks by the player
-	 *
-	 * @param uuid The {@link UUID} of the player
-	 * @return Returns a set of data blocks
-	 */
-	@Deprecated
-	Set<OAPlayerDataBlock> getPlayerBlocks(UUID uuid);
-	
-	/**
-	 * Send changes to the database. Used to save the data block.
-	 *
-	 * @param block The {@link OAPlayerDataBlock} to save
-	 */
-	@Deprecated
-	void updatePlayerDataBlock(OAPlayerDataBlock block);
-	
-	/**
-	 * Get top players
-	 * @deprecated Use getTopPlayersByDestroy(int) or getTopPlayersByFound(int)
-	 */
-	@Deprecated
-	default Set<OAPlayer> getTopPlayers(int numberOfPlayers) {
-		return new LinkedHashSet<>(getTopPlayersByDestroy(numberOfPlayers).keySet());
-	}
 	
 	/**
 	 * Get top players ordered by destroy

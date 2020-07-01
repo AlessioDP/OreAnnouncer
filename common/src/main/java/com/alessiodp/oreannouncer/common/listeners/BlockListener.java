@@ -4,6 +4,7 @@ import com.alessiodp.core.common.user.User;
 import com.alessiodp.core.common.utils.ADPLocation;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.blocks.BlockManager;
+import com.alessiodp.oreannouncer.common.blocks.objects.BlockData;
 import com.alessiodp.oreannouncer.common.blocks.objects.OABlockImpl;
 import com.alessiodp.oreannouncer.common.utils.OreAnnouncerPermission;
 import com.alessiodp.oreannouncer.common.configuration.OAConstants;
@@ -33,14 +34,14 @@ public abstract class BlockListener {
 				
 				// Store information into database
 				if (ConfigMain.STATS_ENABLE) {
-					if (!user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_DESTROY.toString()))
+					if (!user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_DESTROY))
 					store(user, block, lightLevel);
 					
-					if (ConfigMain.STATS_ADVANCED_COUNT_ENABLE && !user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_FOUND.toString()))
+					if (ConfigMain.STATS_ADVANCED_COUNT_ENABLE && !user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_FOUND))
 						found(user, block, blockLocation, lightLevel);
 				}
 				
-				if (ConfigMain.ALERTS_ENABLE && !user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_ALERTS.toString())) {
+				if (ConfigMain.ALERTS_ENABLE && !user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_ALERTS)) {
 					// Handle alerts
 					alert(user, block, blockLocation, lightLevel);
 				}
@@ -99,17 +100,16 @@ public abstract class BlockListener {
 							&& ConfigMain.BLOCKS_TNT_MINING_COUNT_DESTROY
 							&& e.getKey().isCountingOnDestroy()) {
 						OAPlayerImpl player = plugin.getPlayerManager().getPlayer(user.getUUID());
-						if (!user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_DESTROY.toString()))
-							plugin.getBlockManager().handleBlockDestroy(e.getKey(), player, e.getValue());
+						if (!user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_DESTROY))
+							plugin.getBlockManager().handleBlockDestroy(new BlockData(player, e.getKey(), e.getValue()));
 						
-						if (ConfigMain.STATS_ADVANCED_COUNT_ENABLE && !user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_FOUND.toString())) {
-							plugin.getBlockManager().handleBlockFound(e.getKey(), player, blockLocation, e.getValue(), 15);
-						}
+						if (ConfigMain.STATS_ADVANCED_COUNT_ENABLE && !user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_FOUND))
+							plugin.getBlockManager().handleBlockFound(new BlockData(player, e.getKey(), e.getValue()).setLightLevel(15));
 					}
 					
-					if (ConfigMain.ALERTS_ENABLE && (user == null || !user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_ALERTS.toString()))) {
+					if (ConfigMain.ALERTS_ENABLE && (user == null || !user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_ALERTS))) {
 						OAPlayerImpl player = user != null ? plugin.getPlayerManager().getPlayer(user.getUUID()) : null;
-						plugin.getBlockManager().handleTNTDestroy(player, e.getKey(), blockLocation, e.getValue());
+						plugin.getBlockManager().handleTNTDestroy(new BlockData(player, e.getKey(), e.getValue()).setLocation(blockLocation));
 					}
 				}
 			}
@@ -137,7 +137,12 @@ public abstract class BlockListener {
 					final boolean fAlertAdmins = alertAdmins;
 					plugin.getScheduler().runAsync(() -> {
 						OAPlayerImpl player = plugin.getPlayerManager().getPlayer(user.getUUID());
-						plugin.getBlockManager().handleAlerts(fAlertUsers, fAlertAdmins, player, block, blockLocation, numberOfBlocks, lightLevel);
+						plugin.getBlockManager().handleAlerts(new BlockData(player, block, numberOfBlocks)
+								.setAlertUsers(fAlertUsers)
+								.setAlertAdmins(fAlertAdmins)
+								.setLocation(blockLocation)
+								.setLightLevel(lightLevel)
+						);
 					});
 				}
 			}
@@ -148,7 +153,7 @@ public abstract class BlockListener {
 		if (block.isCountingOnDestroy() && (!ConfigMain.BLOCKS_LIGHT_ENABLE || !ConfigMain.BLOCKS_LIGHT_COUNTIFLOWER || lightLevel <= block.getLightLevel())) {
 			plugin.getScheduler().runAsync(() -> {
 				OAPlayerImpl player = plugin.getPlayerManager().getPlayer(user.getUUID());
-				plugin.getBlockManager().handleBlockDestroy(block, player, 1);
+				plugin.getBlockManager().handleBlockDestroy(new BlockData(player, block, 1));
 			});
 		}
 	}
@@ -160,7 +165,10 @@ public abstract class BlockListener {
 				if (numberOfBlocks > 0) {
 					plugin.getScheduler().runAsync(() -> {
 						OAPlayerImpl player = plugin.getPlayerManager().getPlayer(user.getUUID());
-						plugin.getBlockManager().handleBlockFound(block, player, blockLocation, numberOfBlocks, lightLevel);
+						plugin.getBlockManager().handleBlockFound(new BlockData(player, block, numberOfBlocks)
+								.setLocation(blockLocation)
+								.setLightLevel(lightLevel)
+						);
 					});
 				}
 			}

@@ -1,6 +1,7 @@
 package com.alessiodp.oreannouncer.common.utils;
 
 import com.alessiodp.core.common.utils.Color;
+import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.core.common.utils.DurationUtils;
 import com.alessiodp.oreannouncer.api.interfaces.OABlock;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
@@ -15,7 +16,6 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,7 +32,7 @@ public abstract class MessageUtils {
 			while (matcher.find()) {
 				String identifier = matcher.group(1);
 				// Match basic placeholders
-				switch (identifier.toLowerCase(Locale.ENGLISH)) {
+				switch (CommonUtils.toLowerCase(identifier)) {
 					case "%player%":
 						replacement = !player.getName().isEmpty() ? player.getName() : Messages.OREANNOUNCER_SYNTAX_UNKNOWN;
 						ret = ret.replace(identifier, replacement);
@@ -58,7 +58,7 @@ public abstract class MessageUtils {
 			while (matcher.find()) {
 				String identifier = matcher.group(1);
 				// Match basic placeholders
-				switch (identifier.toLowerCase(Locale.ENGLISH)) {
+				switch (CommonUtils.toLowerCase(identifier)) {
 					case "%enabled%":
 						ret = ret.replace(identifier, formatEnabledDisabled(block.isEnabled()));
 						break;
@@ -136,7 +136,7 @@ public abstract class MessageUtils {
 			while (matcher.find()) {
 				String identifier = matcher.group(1);
 				// Match basic placeholders
-				switch (identifier.toLowerCase(Locale.ENGLISH)) {
+				switch (CommonUtils.toLowerCase(identifier)) {
 					case "%enabled%":
 						ret = ret.replace(identifier, formatEnabledDisabled(block.isEnabled()));
 						break;

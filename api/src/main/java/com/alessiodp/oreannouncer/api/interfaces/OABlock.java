@@ -136,22 +136,6 @@ public interface OABlock {
 	void setCountTime(int time);
 	
 	/**
-	 * Get the count time format
-	 *
-	 * @return Returns the count time format of the block
-	 */
-	@Deprecated
-	default String getCountTimeFormat() {return "";}
-	
-	/**
-	 * Set the count time format of the block
-	 *
-	 * @param countTimeFormat The count time format of the block
-	 */
-	@Deprecated
-	default void setCountTimeFormat(String countTimeFormat) {}
-	
-	/**
 	 * Get custom message for users
 	 *
 	 * @return Returns the alert message for users

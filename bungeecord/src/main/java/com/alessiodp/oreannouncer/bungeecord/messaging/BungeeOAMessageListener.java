@@ -4,6 +4,7 @@ import com.alessiodp.core.bungeecord.messaging.BungeeMessageListener;
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.oreannouncer.bungeecord.configuration.data.BungeeConfigMain;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
+import com.alessiodp.oreannouncer.common.blocks.objects.Alert;
 import com.alessiodp.oreannouncer.common.blocks.objects.BlockFound;
 import com.alessiodp.oreannouncer.common.configuration.OAConstants;
 import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
@@ -31,21 +32,17 @@ public class BungeeOAMessageListener extends BungeeMessageListener {
 					case ALERT_TNT:
 						if (ConfigMain.ALERTS_ENABLE) {
 							((OreAnnouncerPlugin) plugin).getBlockManager().sendAlerts(
-									packet.getMessageUsers(),
-									packet.getMessageAdmins(),
-									packet.getMessageConsole(),
-									"",
-									packet.getServerId());
+									new Alert(packet.getMessageUsers(), packet.getMessageAdmins(), packet.getMessageConsole())
+									.setServerId(packet.getServerId())
+							);
 						}
 						break;
 					case ALERT_COUNT:
 						if (ConfigMain.STATS_ADVANCED_COUNT_ENABLE) {
 							((OreAnnouncerPlugin) plugin).getBlockManager().sendAlerts(
-									packet.getMessageUsers(),
-									packet.getMessageAdmins(),
-									packet.getMessageConsole(),
-									"",
-									packet.getServerId());
+									new Alert(packet.getMessageUsers(), packet.getMessageAdmins(), packet.getMessageConsole())
+											.setServerId(packet.getServerId())
+							);
 						}
 						break;
 					case DESTROY:

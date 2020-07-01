@@ -21,7 +21,7 @@ public class CommandReload extends ADPSubCommand {
 				plugin,
 				mainCommand,
 				CommonCommands.RELOAD,
-				OreAnnouncerPermission.ADMIN_RELOAD.toString(),
+				OreAnnouncerPermission.ADMIN_RELOAD,
 				ConfigMain.COMMANDS_CMD_RELOAD,
 				true
 		);

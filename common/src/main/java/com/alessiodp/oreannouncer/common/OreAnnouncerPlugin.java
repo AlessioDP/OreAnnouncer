@@ -110,7 +110,7 @@ public abstract class OreAnnouncerPlugin extends ADPPlugin {
 				OAConstants.PLUGIN_SPIGOTCODE,
 				ConfigMain.OREANNOUNCER_UPDATES_CHECK,
 				ConfigMain.OREANNOUNCER_UPDATES_WARN,
-				OreAnnouncerPermission.ADMIN_WARNINGS.toString(),
+				OreAnnouncerPermission.ADMIN_WARNINGS,
 				Messages.OREANNOUNCER_UPDATEAVAILABLE
 		);
 		getAdpUpdater().asyncTaskCheckUpdates();

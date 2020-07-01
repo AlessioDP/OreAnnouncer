@@ -14,5 +14,5 @@ import java.util.UUID;
 public class BlockDestroy implements OABlockDestroy {
 	@Getter private final UUID player;
 	@Getter private final String materialName;
-	@Getter private int destroyCount;
+	@Getter private final int destroyCount;
 }

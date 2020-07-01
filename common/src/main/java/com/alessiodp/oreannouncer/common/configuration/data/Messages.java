@@ -75,12 +75,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String ALERTS_TNT_ADMIN;
 	@ConfigOption(path = "alerts.tnt.console", nullable = true)
 	public static String ALERTS_TNT_CONSOLE;
-	@ConfigOption(path = "alerts.tnt.player-user", nullable = true)
-	public static String ALERTS_TNT_PLAYER_USER;
-	@ConfigOption(path = "alerts.tnt.player-admin", nullable = true)
-	public static String ALERTS_TNT_PLAYER_ADMIN;
-	@ConfigOption(path = "alerts.tnt.player-console", nullable = true)
-	public static String ALERTS_TNT_PLAYER_CONSOLE;
+	@ConfigOption(path = "alerts.tnt.unknown-player", nullable = true)
+	public static String ALERTS_TNT_UNKNOWN_PLAYER;
 	
 	
 	// Command messages

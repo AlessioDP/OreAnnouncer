@@ -1,11 +1,11 @@
 package com.alessiodp.oreannouncer.common.addons.internal;
 
+import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.blocks.objects.OABlockImpl;
 import com.alessiodp.oreannouncer.common.configuration.data.Blocks;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,19 +41,20 @@ public enum OAPlaceholder {
 	}
 	
 	public static OAPlaceholder getPlaceholder(String identifier) {
+		String identifierLower = CommonUtils.toLowerCase(identifier);
 		for (OAPlaceholder en : OAPlaceholder.values()) {
-			if (!en.custom && en.name().equalsIgnoreCase(identifier)) {
+			if (!en.custom && CommonUtils.toLowerCase(en.name()).equals(identifierLower)) {
 				return en;
 			}
 		}
 		
-		if (identifier.toLowerCase(Locale.ENGLISH).startsWith(PREFIX_DESTROY_BLOCK))
+		if (identifierLower.startsWith(PREFIX_DESTROY_BLOCK))
 			return PLAYER_DESTROY_BLOCK;
 		
-		if (identifier.toLowerCase(Locale.ENGLISH).startsWith(PREFIX_FOUND_BLOCK))
+		if (identifierLower.startsWith(PREFIX_FOUND_BLOCK))
 			return PLAYER_FOUND_BLOCK;
 		
-		if (identifier.toLowerCase(Locale.ENGLISH).startsWith(PREFIX_FOUNDIN_RANGE_BLOCK)) {
+		if (identifierLower.startsWith(PREFIX_FOUNDIN_RANGE_BLOCK)) {
 			Matcher matcher = PATTERN_FOUNDIN_RANGE_BLOCK.matcher(identifier);
 			if (matcher.find()) {
 				if (matcher.group(3) != null)

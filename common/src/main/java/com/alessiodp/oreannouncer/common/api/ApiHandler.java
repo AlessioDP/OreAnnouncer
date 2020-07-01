@@ -1,10 +1,10 @@
 package com.alessiodp.oreannouncer.common.api;
 
+import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.oreannouncer.api.interfaces.OABlock;
 import com.alessiodp.oreannouncer.api.interfaces.OABlockDestroy;
 import com.alessiodp.oreannouncer.api.interfaces.OABlockFound;
 import com.alessiodp.oreannouncer.api.interfaces.OAPlayer;
-import com.alessiodp.oreannouncer.api.interfaces.OAPlayerDataBlock;
 import com.alessiodp.oreannouncer.api.interfaces.OreAnnouncerAPI;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.blocks.objects.BlockDestroy;
@@ -12,19 +12,15 @@ import com.alessiodp.oreannouncer.common.blocks.objects.OABlockImpl;
 import com.alessiodp.oreannouncer.common.configuration.OAConfigurationManager;
 import com.alessiodp.oreannouncer.common.configuration.data.Blocks;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
-import com.alessiodp.oreannouncer.common.players.objects.PlayerDataBlock;
 import com.alessiodp.oreannouncer.common.storage.OADatabaseManager;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -37,34 +33,8 @@ public class ApiHandler implements OreAnnouncerAPI {
 	}
 	
 	@Override
-	public void updatePlayer(OAPlayer player) {
-		((OAPlayerImpl) player).updatePlayer();
-	}
-	
-	@Override
 	public OAPlayer getOAPlayer(UUID uuid) {
 		return plugin.getPlayerManager().getPlayer(uuid);
-	}
-	
-	@Override
-	public Set<OAPlayerDataBlock> getPlayerBlocks(UUID uuid) {
-		Set<OAPlayerDataBlock> ret = new HashSet<>();
-		OAPlayer player = getOAPlayer(uuid);
-		if (player != null) {
-			player.getAllBlockDestroy().forEach((block) -> ret.add(new PlayerDataBlock(block.getMaterialName(), block.getPlayer(), block.getDestroyCount())));
-		}
-		return ret;
-	}
-	
-	@Override
-	public void updatePlayerDataBlock(OAPlayerDataBlock block) {
-		OAPlayer player = getOAPlayer(block.getPlayer());
-		if (player != null) {
-			OABlock b = getBlock(block.getMaterialName());
-			if (b != null) {
-				player.setBlockDestroy(makeBlockDestroy(player.getPlayerUUID(), b, block.getDestroyCount()));
-			}
-		}
 	}
 	
 	@Override
@@ -102,7 +72,7 @@ public class ApiHandler implements OreAnnouncerAPI {
 	public OABlock addBlock(@org.checkerframework.checker.nullness.qual.NonNull String materialName) {
 		OABlockImpl ret = null;
 		if (!((OAConfigurationManager) plugin.getConfigurationManager()).getBlocks().existsBlock(materialName)) {
-			ret = new OABlockImpl(plugin, materialName.toUpperCase(Locale.ENGLISH));
+			ret = new OABlockImpl(plugin, CommonUtils.toUpperCase(materialName));
 			ret.updateBlock();
 		}
 		return ret;
@@ -114,7 +84,7 @@ public class ApiHandler implements OreAnnouncerAPI {
 	}
 	
 	@Override
-	public OABlockDestroy makeBlockDestroy(UUID playerUuid, OABlock block, int destroyCount) {
+	public OABlockDestroy makeBlockDestroy(@org.checkerframework.checker.nullness.qual.NonNull UUID playerUuid, @org.checkerframework.checker.nullness.qual.NonNull OABlock block, int destroyCount) {
 		return new BlockDestroy(playerUuid, block.getMaterialName(), destroyCount);
 	}
 }

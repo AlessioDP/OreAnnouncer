@@ -69,21 +69,21 @@ public abstract class OAPlayerImpl implements OAPlayer {
 		List<ADPCommand> ret = new ArrayList<>();
 		User player = plugin.getPlayer(getPlayerUUID());
 		
-		if (player.hasPermission(OreAnnouncerPermission.USER_HELP.toString()))
+		if (player.hasPermission(OreAnnouncerPermission.USER_HELP))
 			ret.add(CommonCommands.HELP);
-		if (player.hasPermission(OreAnnouncerPermission.USER_ALERTS_TOGGLE.toString()))
+		if (player.hasPermission(OreAnnouncerPermission.USER_ALERTS_TOGGLE))
 			ret.add(CommonCommands.ALERTS);
-		if (player.hasPermission(OreAnnouncerPermission.ADMIN_RELOAD.toString()))
+		if (player.hasPermission(OreAnnouncerPermission.ADMIN_RELOAD))
 			ret.add(CommonCommands.RELOAD);
-		if (player.hasPermission(OreAnnouncerPermission.USER_STATS.toString()))
+		if (player.hasPermission(OreAnnouncerPermission.USER_STATS))
 			ret.add(CommonCommands.STATS);
-		if (player.hasPermission(OreAnnouncerPermission.USER_TOP.toString())
-				|| player.hasPermission(OreAnnouncerPermission.USER_TOP_DESTROY.toString())
-				|| player.hasPermission(OreAnnouncerPermission.USER_TOP_FOUND.toString()))
+		if (player.hasPermission(OreAnnouncerPermission.USER_TOP)
+				|| player.hasPermission(OreAnnouncerPermission.USER_TOP_DESTROY)
+				|| player.hasPermission(OreAnnouncerPermission.USER_TOP_FOUND))
 			ret.add(CommonCommands.TOP);
-		if (player.hasPermission(OreAnnouncerPermission.ADMIN_LOG.toString()))
+		if (player.hasPermission(OreAnnouncerPermission.ADMIN_LOG))
 			ret.add(CommonCommands.LOG);
-		if (player.hasPermission(OreAnnouncerPermission.ADMIN_VERSION.toString()))
+		if (player.hasPermission(OreAnnouncerPermission.ADMIN_VERSION))
 			ret.add(CommonCommands.VERSION);
 		
 		return ret;
