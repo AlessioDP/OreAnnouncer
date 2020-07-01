@@ -25,8 +25,8 @@ oreannouncer:
   blocks:
     enabled: '&aActivé'
     disabled: '&cDésactivé'
-    toggled-on: '&aOn'
-    toggled-off: '&cOff'
+    toggled-on: '&aOui'
+    toggled-off: '&cNon'
     word-yes: '&aOui'
     word-no: '&cNon'
     empty: '&8Vide'
@@ -59,6 +59,7 @@ commands:
     config:
       header: '&2================== &lDebug Config &r&2=================='
       text:
+        - "&6Outdated config/messages:&7 %outdated_config%&7/%outdated_messages%"
         - "&6Alerts&7: %alerts%&7,  &6Coordinates&7: %coordinates%"
         - "&6Bypass player/silk/counter&7: %bypass_player%&7/%bypass_silk%&7/%bypass_counter%"
         - "&6Stats&7: %stats% &7(%stats_values%)"
@@ -90,7 +91,7 @@ commands:
     header: '&2========== &l Statistiques de %player% &r&2=========='
     footer: ''
     nothing: '&7Rien'
-    format-block: '%display_color%%display_name%&7:%value%'
+    format-block: '%display_color%%display_name%&7 : %value%'
     invalid-type: '&cType de valeur invalide'
     player-not-found: '&c%player% introuvable !'
   top:
@@ -146,4 +147,4 @@ help:
     top: 'Afficher les meilleurs joueurs'
     version: 'Afficher les informations OreAnnouncer'
 dont-edit-this:
-  version: 6
+  version: 7

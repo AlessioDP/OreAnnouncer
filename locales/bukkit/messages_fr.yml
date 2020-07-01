@@ -47,6 +47,9 @@ oreannouncer:
 alerts:
   #[Special tags]
   #%x%, %y% and %z% = Coordinates of the destroyed block
+  #%number% = Number of blocks
+  #%time% = Time elapsed (Only count messages)
+  #%light_level% = Light level
   #JSON tips:
   #- Make a single block for a coordinate (see below)
   #- Do not use obfuscation if you are using coordinates to run commands
@@ -55,21 +58,71 @@ alerts:
   user: '&6%player% &ea trouvé %number% %display_color%%block% !'
   #Without teleport:
   #admin: "&6%player% &efound %number% %block%! &7[x: %x%&7, z: %z%&7]"
-  admin: '[{"text":"&6%player% &ea trouvé %number% %display_color%%block%&e ! "},{"text":"Se téléporter","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Cliquez pour vous téléporter !","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
+  admin: '[{"text":"&6%player% &efound %number% %display_color%%block%&e! "},{"text":"&7Se téléporter","hoverEvent":{"action":"show_text","value":{"text":"&6Cliquez pour vous téléporter !"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
   #No JSON for console
   console: '%player% a trouvé %number% %block% ! [x : %x%, y : %y%, z : %z%]'
   count:
     user: ''
-    admin: '[{"text":"&6%player% &ea trouvé %number% %display_color%%block%&e en %time% ! "},{"text":"Se téléporter","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Cliquez pour vous téléporter !","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
+    admin: '[{"text":"&6%player% &ea trouvé %number% %display_color%%block%&e en %time% ! "},{"text":"&7Se téléporter","hoverEvent":{"action":"show_text","value":{"text":"&6Cliquez pour vous téléporter !"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
     #No JSON for console
     console: '%player% a trouvé %number% %block% en %time% ! [x : %x%, y : %y%, z : %z%]'
   tnt:
     user: ''
-    admin: '[{"text":"&eLe TNT a détruit %number% %display_color%%block%&e ! "},{"text":"Se téléporter","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Cliquez pour vous téléporter !","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %x% %y% %z%"}}]'
-    console: 'Le TNT a détruit %number% %block% ! [x : %x%, y : %y%, z : %z%]'
-    player-user: ''
-    player-admin: '[{"text":"&eLe TNT de &6%player% &ea détruit %number% %display_color%%blocs%&e ! ","color":"yellow"},{"text":"Se téléporter","color":"gray","hoverEvent":{"action":"show_text","value":{"text":"Cliquez pour vous téléporter !","color":"gold"}},"clickEvent":{"action":"run_command","value":"/tp %x% %y% %z%"}}]'
-    player-console: 'Le TNT de %player% a détruit %number% %block% ! [x : %x%, y : %y%, z : %z%]'
+    admin: '[{"text":"&eLe TNT de &6%player% &ea détruit %number% %display_color%%block%&e ! "},{"text":"&7Se téléporter","hoverEvent":{"action":"show_text","value":{"text":"&6Cliquez pour vous téléporter !"}},"clickEvent":{"action":"run_command","value":"/tp %x% %y% %z%"}}]'
+    console: 'Le TNT de %player% a détruit %number% %block% ! [x : %x%, y : %y%, z : %z%]'
+    unknown-player: 'un joueur inconnu'
+  discordsrv:
+    text:
+      normal:
+        user: '%player% trouvé %number% %block%!'
+        admin: '%player% a trouvé %number% %block% ! [x : %x%, y : %y%, z : %z%]'
+      count:
+        user: ''
+        admin: '%player% a trouvé %number% %block% en %time% ! [x : %x%, y : %y%, z : %z%]'
+      tnt:
+        user: ''
+        admin: 'Le TNT de %player% a détruit %number% %block% ! [x : %x%, y : %y%, z : %z%]'
+    embed:
+      normal:
+        user:
+          color: '#008b50'
+          author-name: '%player% trouvé %number% %block%!'
+          title: ''
+          description: ''
+          footer: ''
+        admin:
+          color: '#008b50'
+          author-name: '%player% a trouvé %number% %block% ! [x : %x%, y : %y%, z : %z%]'
+          title: ''
+          description: ''
+          footer: ''
+      count:
+        user:
+          color: '#008b50'
+          author-name: ''
+          title: ''
+          description: ''
+          footer: ''
+        admin:
+          color: '#008b50'
+          author-name: '%player% a trouvé %number% %block% en %time% ! [x : %x%, y : %y%, z : %z%]'
+          title: ''
+          description: ''
+          footer: ''
+      tnt:
+        #Avatar will be disabled if the player doesn't exist (unknown tnt triggerer)
+        user:
+          color: '#008b50'
+          author-name: ''
+          title: ''
+          description: ''
+          footer: ''
+        admin:
+          color: '#008b50'
+          author-name: 'Le TNT de %player% a détruit %number% %block% ! [x : %x%, y : %y%, z : %z%]'
+          title: ''
+          description: ''
+          footer: ''
 #/ =============================== \
 #|        COMMANDS MESSAGES        |
 #\ =============================== /
@@ -88,6 +141,7 @@ commands:
     config:
       header: '&2================== &lDebug Config &r&2=================='
       text:
+        - "&6Outdated config/messages:&7 %outdated_config%&7/%outdated_messages%"
         - "&6Alerts&7: %alerts%&7,  &6Coordinates&7: %coordinates%"
         - "&6Bypass player/silk/counter&7: %bypass_player%&7/%bypass_silk%&7/%bypass_counter%"
         - "&6Stats&7: %stats% &7(%stats_values%)"
@@ -176,4 +230,4 @@ help:
     top: 'Afficher les meilleurs joueurs'
     version: 'Afficher les informations OreAnnouncer'
 dont-edit-this:
-  version: 8
+  version: 9
