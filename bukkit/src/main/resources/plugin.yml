@@ -1,8 +1,8 @@
-name: ${pluginName}
-description: ${pluginDescription}
-author: ${pluginAuthor}
-website: ${pluginWebsite}
-version: ${pluginVersion}
+name: ${plugin.name}
+description: ${plugin.description}
+author: ${plugin.author}
+website: ${plugin.website}
+version: ${plugin.version}
 main: com.alessiodp.oreannouncer.bukkit.bootstrap.BukkitOreAnnouncerBootstrap
 api-version: 1.13
 softdepend: [DiscordSRV, LastLoginAPI, PlaceholderAPI]

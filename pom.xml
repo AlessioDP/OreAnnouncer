@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<groupId>com.alessiodp.oreannouncer</groupId>
+	<artifactId>oreannouncer</artifactId>
+	<version>2.6.0</version>
+	<packaging>pom</packaging>
+	
+	<name>OreAnnouncer</name>
+	<description>Collects data about mined blocks</description>
+	<url>https://alessiodp.com/oreannouncer</url>
+	
+	<licenses>
+		<license>
+			<name>AGPL-3.0</name>
+			<url>https://opensource.org/licenses/AGPL-3.0</url>
+		</license>
+	</licenses>
+	
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/AlessioDP/OreAnnouncer/issues</url>
+	</issueManagement>
+	
+	<scm>
+		<connection>scm:git:https://github.com/AlessioDP/OreAnnouncer.git</connection>
+		<url>https://github.com/AlessioDP/OreAnnouncer/</url>
+	</scm>
+	
+	<distributionManagement>
+		<repository>
+			<id>alessiodp-repo</id>
+			<name>AlessioDP repository</name>
+			<url>https://repo.alessiodp.com/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>alessiodp-repo</id>
+			<name>AlessioDP repository</name>
+			<url>https://repo.alessiodp.com/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+	
+	<modules>
+		<module>api</module>
+		<module>bukkit</module>
+		<module>bungeecord</module>
+		<module>common</module>
+		<module>output</module>
+	</modules>
+	
+	<properties>
+		<plugin.name>OreAnnouncer</plugin.name>
+		<plugin.description>Collects data about mined blocks</plugin.description>
+		<plugin.author>AlessioDP</plugin.author>
+		<plugin.website>https://alessiodp.com/oreannouncer</plugin.website>
+		<plugin.version>${project.version}</plugin.version>
+		
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		
+		<maven.compiler.version>3.8.1</maven.compiler.version>
+		<maven.javadoc-plugin.version>3.2.0</maven.javadoc-plugin.version>
+		<maven.shade.version>3.2.4</maven.shade.version>
+		
+		<dev.powermock>2.0.7</dev.powermock>
+		<dev.lombok>1.18.12</dev.lombok>
+		
+		<libs.adpcore>1.4.5</libs.adpcore>
+		<libs.discordsrv>1.19.1-SNAPSHOT</libs.discordsrv>
+		<libs.llapi>1.3.6</libs.llapi>
+		<libs.papi>2.10.6</libs.papi>
+	</properties>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<version>2.7</version>
+			</plugin>
+			<plugin>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.8.2</version>
+				<executions>
+					<execution>
+						<id>default-deploy</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<repositories>
+		<repository>
+			<!-- Maven central -->
+			<id>maven-central-repo</id>
+			<url>https://repo.maven.apache.org/</url>
+		</repository>
+		<repository>
+			<!-- AlessioDP repo -->
+			<id>alessiodp-repo</id>
+			<url>https://repo.alessiodp.com/releases/</url>
+		</repository>
+		<repository>
+			<!-- Spigot repo -->
+			<id>spigot-repo</id>
+			<url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+		</repository>
+		<repository>
+			<!-- OSS Sonatype repo -->
+			<id>oss-repo</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+		</repository>
+		<repository>
+			<!-- JitPack repo -->
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+		<repository>
+			<!-- Sponge repo -->
+			<id>sponge-repo</id>
+			<url>https://repo.spongepowered.org/maven</url>
+		</repository>
+	</repositories>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${dev.lombok}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<version>${dev.powermock}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito2</artifactId>
+			<version>${dev.powermock}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
