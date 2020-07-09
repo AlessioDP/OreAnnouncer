@@ -62,13 +62,13 @@ public class OASQLDispatcher extends SQLDispatcher implements IOADatabase, IData
 				((MySQLConnectionFactory) ret).setUseSSL(ConfigMain.STORAGE_SETTINGS_MYSQL_USESSL);
 				break;
 			case SQLITE:
-				ret = new SQLiteConnectionFactory(plugin.getFolder().resolve(ConfigMain.STORAGE_SETTINGS_SQLITE_DBFILE));
+				ret = new SQLiteConnectionFactory(plugin, plugin.getFolder().resolve(ConfigMain.STORAGE_SETTINGS_SQLITE_DBFILE));
 				((SQLiteConnectionFactory) ret).setTablePrefix(ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX);
 				playersDao = SQLitePlayersDao.class;
 				blocksDao = SQLiteBlocksDao.class;
 				break;
 			case H2:
-				ret = new H2ConnectionFactory(plugin.getFolder().resolve(ConfigMain.STORAGE_SETTINGS_H2_DBFILE));
+				ret = new H2ConnectionFactory(plugin, plugin.getFolder().resolve(ConfigMain.STORAGE_SETTINGS_H2_DBFILE));
 				((H2ConnectionFactory) ret).setTablePrefix(ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX);
 				playersDao = H2PlayersDao.class;
 				blocksDao = H2BlocksDao.class;

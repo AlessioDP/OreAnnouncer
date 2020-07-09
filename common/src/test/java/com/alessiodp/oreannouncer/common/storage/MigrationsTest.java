@@ -1,6 +1,7 @@
 package com.alessiodp.oreannouncer.common.storage;
 
 import com.alessiodp.core.common.ADPPlugin;
+import com.alessiodp.core.common.addons.ADPLibraryManager;
 import com.alessiodp.core.common.bootstrap.ADPBootstrap;
 import com.alessiodp.core.common.logging.LoggerManager;
 import com.alessiodp.core.common.storage.StorageType;
@@ -21,6 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.mockito.PowerMockito.mock;
@@ -53,6 +55,11 @@ public class MigrationsTest {
 		when(mockPlugin.getFolder()).thenReturn(testFolder.newFolder().toPath());
 		when(mockPlugin.getResource(anyString())).thenAnswer((mock) -> getClass().getClassLoader().getResourceAsStream(mock.getArgument(0)));
 		when(mockLoggerManager.isDebugEnabled()).thenReturn(true);
+		
+		// Mock class loaders
+		ADPLibraryManager mockLibraryManager = mock(ADPLibraryManager.class);
+		when(mockLibraryManager.getIsolatedClassLoaderOf(any())).thenReturn(getClass().getClassLoader());
+		when(mockPlugin.getLibraryManager()).thenReturn(mockLibraryManager);
 		
 		ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX = "test_";
 	}
