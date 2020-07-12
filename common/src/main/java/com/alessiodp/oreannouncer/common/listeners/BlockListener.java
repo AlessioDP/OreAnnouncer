@@ -104,7 +104,9 @@ public abstract class BlockListener {
 							plugin.getBlockManager().handleBlockDestroy(new BlockData(player, e.getKey(), e.getValue()));
 						
 						if (ConfigMain.STATS_ADVANCED_COUNT_ENABLE && !user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_FOUND))
-							plugin.getBlockManager().handleBlockFound(new BlockData(player, e.getKey(), e.getValue()).setLightLevel(15));
+							plugin.getBlockManager().handleBlockFound(new BlockData(player, e.getKey(), e.getValue())
+									.setLightLevel(15)
+									.setLocation(blockLocation));
 					}
 					
 					if (ConfigMain.ALERTS_ENABLE && (user == null || !user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_ALERTS))) {

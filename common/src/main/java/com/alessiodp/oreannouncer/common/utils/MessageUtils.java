@@ -34,7 +34,7 @@ public abstract class MessageUtils {
 				// Match basic placeholders
 				switch (CommonUtils.toLowerCase(identifier)) {
 					case "%player%":
-						replacement = !player.getName().isEmpty() ? player.getName() : Messages.OREANNOUNCER_SYNTAX_UNKNOWN;
+						replacement = CommonUtils.getNoEmptyOr(player.getName(), Messages.OREANNOUNCER_SYNTAX_UNKNOWN);
 						ret = ret.replace(identifier, replacement);
 						break;
 					default: // Nothing to do

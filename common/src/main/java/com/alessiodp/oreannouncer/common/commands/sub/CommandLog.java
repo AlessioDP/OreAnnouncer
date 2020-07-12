@@ -72,7 +72,7 @@ public class CommandLog extends ADPSubCommand {
 			player = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 			
 			if (player != null && !sender.hasPermission(permission)) {
-				player.sendNoPermission(OreAnnouncerPermission.ADMIN_LOG);
+				player.sendNoPermission(permission);
 				return false;
 			}
 			

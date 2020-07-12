@@ -46,7 +46,7 @@ public class CommandVersion extends ADPSubCommand {
 			
 			// Checks for command prerequisites
 			if (!sender.hasPermission(permission)) {
-				player.sendNoPermission(OreAnnouncerPermission.ADMIN_VERSION);
+				player.sendNoPermission(permission);
 				return false;
 			}
 			

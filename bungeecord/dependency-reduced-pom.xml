@@ -3,7 +3,7 @@
   <parent>
     <artifactId>oreannouncer</artifactId>
     <groupId>com.alessiodp.oreannouncer</groupId>
-    <version>2.6.1</version>
+    <version>2.6.2</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>oreannouncer-bungeecord</artifactId>
@@ -54,7 +54,7 @@
     <dependency>
       <groupId>com.alessiodp.oreannouncer</groupId>
       <artifactId>oreannouncer-common</artifactId>
-      <version>2.6.1</version>
+      <version>2.6.2</version>
       <scope>compile</scope>
     </dependency>
     <dependency>

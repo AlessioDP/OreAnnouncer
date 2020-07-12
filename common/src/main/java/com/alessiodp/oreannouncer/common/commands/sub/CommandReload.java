@@ -45,7 +45,7 @@ public class CommandReload extends ADPSubCommand {
 			OAPlayerImpl player = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 			
 			if (player != null && !sender.hasPermission(permission)) {
-				player.sendNoPermission(OreAnnouncerPermission.ADMIN_RELOAD);
+				player.sendNoPermission(permission);
 				return false;
 			}
 			

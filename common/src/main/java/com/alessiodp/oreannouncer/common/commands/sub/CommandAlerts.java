@@ -46,7 +46,7 @@ public class CommandAlerts extends ADPSubCommand {
 		
 		// Checks for command prerequisites
 		if (!sender.hasPermission(permission)) {
-			player.sendNoPermission(OreAnnouncerPermission.USER_ALERTS_TOGGLE);
+			player.sendNoPermission(permission);
 			return false;
 		}
 		

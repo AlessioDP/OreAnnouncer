@@ -44,7 +44,7 @@ public class CommandHelp extends ADPSubCommand {
 		
 		// Checks for command prerequisites
 		if (!sender.hasPermission(permission)) {
-			player.sendNoPermission(OreAnnouncerPermission.USER_HELP);
+			player.sendNoPermission(permission);
 			return false;
 		}
 		

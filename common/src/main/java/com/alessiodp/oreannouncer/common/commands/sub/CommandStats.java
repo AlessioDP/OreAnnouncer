@@ -29,6 +29,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class CommandStats extends ADPSubCommand {
+	private final String syntaxConsole;
 	private final String syntaxOthers;
 	private final String syntaxBase;
 	private final String syntaxOthersBase;
@@ -44,6 +45,11 @@ public class CommandStats extends ADPSubCommand {
 		);
 		
 		syntaxBase = baseSyntax();
+		
+		syntaxConsole = String.format("%s <%s>",
+				baseSyntax(),
+				Messages.OREANNOUNCER_SYNTAX_PLAYER
+		);
 		
 		syntaxOthersBase = String.format("%s [%s]",
 				baseSyntax(),
@@ -81,7 +87,7 @@ public class CommandStats extends ADPSubCommand {
 	
 	@Override
 	public String getConsoleSyntax() {
-		return syntaxOthers;
+		return syntaxConsole;
 	}
 	
 	@Override
@@ -92,7 +98,7 @@ public class CommandStats extends ADPSubCommand {
 			
 			// Checks for command prerequisites
 			if (!sender.hasPermission(permission)) {
-				player.sendNoPermission(OreAnnouncerPermission.USER_ALERTS_TOGGLE);
+				player.sendNoPermission(permission);
 				return false;
 			}
 			

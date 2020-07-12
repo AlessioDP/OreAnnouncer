@@ -70,7 +70,7 @@ public class CommandDebug extends ADPSubCommand {
 		OAPlayerImpl player = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 		
 		if (!sender.hasPermission(permission)) {
-			player.sendNoPermission(OreAnnouncerPermission.ADMIN_DEBUG);
+			player.sendNoPermission(permission);
 			return false;
 		}
 		

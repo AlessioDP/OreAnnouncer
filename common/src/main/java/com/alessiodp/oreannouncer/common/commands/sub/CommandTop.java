@@ -91,10 +91,10 @@ public class CommandTop extends ADPSubCommand {
 			OAPlayerImpl player = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
 			
 			// Checks for command prerequisites
-			if (!sender.hasPermission(OreAnnouncerPermission.USER_TOP)
+			if (!sender.hasPermission(permission)
 					&& !sender.hasPermission(OreAnnouncerPermission.USER_TOP_DESTROY)
 					&& !sender.hasPermission(OreAnnouncerPermission.USER_TOP_FOUND)) {
-				player.sendNoPermission(OreAnnouncerPermission.USER_TOP);
+				player.sendNoPermission(permission);
 				return false;
 			}
 			
