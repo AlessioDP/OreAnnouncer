@@ -162,5 +162,12 @@ public class DiscordSRVHandler {
 		private final String title;
 		private final String description;
 		private final String footer;
+
+		public boolean hasContent() {
+			return !authorName.isEmpty() ||
+					!title.isEmpty() ||
+					!description.isEmpty() ||
+					!footer.isEmpty();
+		}
 	}
 }

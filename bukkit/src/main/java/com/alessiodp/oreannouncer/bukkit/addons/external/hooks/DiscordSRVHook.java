@@ -46,19 +46,21 @@ public class DiscordSRVHook {
 	}
 	
 	public void sendMessageEmbed(OAPlayerImpl player, Function<String, String> parser, String channel, DiscordSRVHandler.DiscordSRVAlertEmbed embed) {
-		TextChannel textChannel = api.getDestinationTextChannelForGameChannelName(channel);
-		if (textChannel != null) {
-			MessageFormat mf = new MessageFormat();
-			CommonUtils.ifNonNullDo(parseHexColor(embed.getColor()), mf::setColor);
-			CommonUtils.ifNonEmptyDo(embed.getAuthorName(), txt -> mf.setAuthorName(parser.apply(txt)));
-			CommonUtils.ifNonEmptyDo(embed.getTitle(), txt -> mf.setTitle(parser.apply(txt)));
-			CommonUtils.ifNonEmptyDo(embed.getDescription(), txt -> mf.setDescription(parser.apply(txt)));
-			CommonUtils.ifNonEmptyDo(embed.getFooter(), txt -> mf.setFooterText(parser.apply(txt)));
-			
-			if (BukkitConfigMain.ALERTS_DISCORDSRV_EMBED_AVATARS && player != null)
-				mf.setAuthorImageUrl(api.getEmbedAvatarUrl(player.getName(), player.getPlayerUUID()));
-			
-			DiscordUtil.queueMessage(textChannel, api.translateMessage(mf, (content, needEscape) -> content));
+		if (embed != null && embed.hasContent()) {
+			TextChannel textChannel = api.getDestinationTextChannelForGameChannelName(channel);
+			if (textChannel != null) {
+				MessageFormat mf = new MessageFormat();
+				CommonUtils.ifNonNullDo(parseHexColor(embed.getColor()), mf::setColor);
+				CommonUtils.ifNonEmptyDo(embed.getAuthorName(), txt -> mf.setAuthorName(parser.apply(txt)));
+				CommonUtils.ifNonEmptyDo(embed.getTitle(), txt -> mf.setTitle(parser.apply(txt)));
+				CommonUtils.ifNonEmptyDo(embed.getDescription(), txt -> mf.setDescription(parser.apply(txt)));
+				CommonUtils.ifNonEmptyDo(embed.getFooter(), txt -> mf.setFooterText(parser.apply(txt)));
+
+				if (BukkitConfigMain.ALERTS_DISCORDSRV_EMBED_AVATARS && player != null)
+					mf.setAuthorImageUrl(api.getEmbedAvatarUrl(player.getName(), player.getPlayerUUID()));
+
+				DiscordUtil.queueMessage(textChannel, api.translateMessage(mf, (content, needEscape) -> content));
+			}
 		}
 	}
 	
