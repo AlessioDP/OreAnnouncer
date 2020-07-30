@@ -147,15 +147,20 @@ public class CommandLog extends ADPSubCommand {
 			if (commandData.getArgs().length > 2) {
 				// oa player <PLAYER> ...
 				playerName = commandData.getArgs()[2];
-				Set<UUID> targetPlayersUuid = LLAPIHandler.getPlayerByName(playerName);
-				if (targetPlayersUuid.size() > 0) {
-					UUID targetPlayerUuid = targetPlayersUuid.iterator().next();
-					targetPlayer = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(targetPlayerUuid);
+				
+				User targetUser = plugin.getPlayerByName(playerName);
+				if (targetUser != null) {
+					targetPlayer = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(targetUser.getUUID());
 				} else {
-					// Not found
-					sendMessage(player, Messages.CMD_LOG_PLAYERNOTFOUND
-							.replace("%player%", playerName));
-					return;
+					Set<UUID> targetPlayersUuid = LLAPIHandler.getPlayerByName(playerName);
+					if (targetPlayersUuid.size() > 0) {
+						targetPlayer = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(targetPlayersUuid.iterator().next());
+					} else {
+						// Not found
+						sendMessage(player, Messages.CMD_LOG_PLAYERNOTFOUND
+								.replace("%player%", playerName));
+						return;
+					}
 				}
 				
 				if (commandData.getArgs().length > 3) {

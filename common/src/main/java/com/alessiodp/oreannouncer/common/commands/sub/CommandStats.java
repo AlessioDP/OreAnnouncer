@@ -139,12 +139,8 @@ public class CommandStats extends ADPSubCommand {
 						return;
 					}
 					
-					Set<UUID> targetPlayersUuid = LLAPIHandler.getPlayerByName(args[1]);
-					if (targetPlayersUuid.size() > 0) {
-						UUID targetPlayerUuid = targetPlayersUuid.iterator().next();
-						targetPlayer = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(targetPlayerUuid);
-					} else {
-						// Not found
+					targetPlayer = playerLookup(args[1]);
+					if (targetPlayer == null) {
 						sendMessage(player, Messages.CMD_STATS_PLAYERNOTFOUND
 								.replace("%player%", args[1]));
 						return;
@@ -154,12 +150,8 @@ public class CommandStats extends ADPSubCommand {
 					
 					if (commandType == null) {
 						if (commandData.havePermission(OreAnnouncerPermission.ADMIN_STATS_OTHER)) {
-							Set<UUID> targetPlayersUuid = LLAPIHandler.getPlayerByName(args[0]);
-							if (targetPlayersUuid.size() > 0) {
-								UUID targetPlayerUuid = targetPlayersUuid.iterator().next();
-								targetPlayer = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(targetPlayerUuid);
-							} else {
-								// Not found
+							targetPlayer = playerLookup(args[0]);
+							if (targetPlayer == null) {
 								sendMessage(player, Messages.CMD_STATS_PLAYERNOTFOUND
 										.replace("%player%", args[0]));
 								return;
@@ -173,12 +165,8 @@ public class CommandStats extends ADPSubCommand {
 				}
 			} else {
 				// Base
-				Set<UUID> targetPlayersUuid = LLAPIHandler.getPlayerByName(args[0]);
-				if (targetPlayersUuid.size() > 0) {
-					UUID targetPlayerUuid = targetPlayersUuid.iterator().next();
-					targetPlayer = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(targetPlayerUuid);
-				} else {
-					// Not found
+				targetPlayer = playerLookup(args[0]);
+				if (targetPlayer == null) {
 					sendMessage(player, Messages.CMD_STATS_PLAYERNOTFOUND
 							.replace("%player%", args[0]));
 					return;
@@ -248,6 +236,20 @@ public class CommandStats extends ADPSubCommand {
 			player.sendMessage(message);
 		else
 			plugin.logConsole(Color.translateAndStripColor(message), false);
+	}
+	
+	private OAPlayerImpl playerLookup(String playerName) {
+		OAPlayerImpl ret = null;
+		User targetUser = plugin.getPlayerByName(playerName);
+		if (targetUser != null) {
+			ret = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(targetUser.getUUID());
+		} else {
+			Set<UUID> targetPlayersUuid = LLAPIHandler.getPlayerByName(playerName);
+			if (targetPlayersUuid.size() > 0) {
+				ret = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(targetPlayersUuid.iterator().next());
+			}
+		}
+		return ret;
 	}
 	
 	@Override

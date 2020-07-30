@@ -128,15 +128,20 @@ public class CommandDebug extends ADPSubCommand {
 			} else if (commandData.getArgs().length == 3) {
 				// oa debug player <PLAYER>
 				playerName = commandData.getArgs()[2];
-				Set<UUID> targetPlayersUuid = LLAPIHandler.getPlayerByName(playerName);
-				if (targetPlayersUuid.size() > 0) {
-					UUID targetPlayerUuid = targetPlayersUuid.iterator().next();
-					targetPlayer = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(targetPlayerUuid);
+				
+				User targetUser = plugin.getPlayerByName(playerName);
+				if (targetUser != null) {
+					targetPlayer = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(targetUser.getUUID());
 				} else {
-					// Not found
-					player.sendMessage(Messages.CMD_DEBUG_PLAYER_PLAYER_OFFLINE
-							.replace("%player%", playerName));
-					return;
+					Set<UUID> targetPlayersUuid = LLAPIHandler.getPlayerByName(playerName);
+					if (targetPlayersUuid.size() > 0) {
+						targetPlayer = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(targetPlayersUuid.iterator().next());
+					} else {
+						// Not found
+						player.sendMessage(Messages.CMD_DEBUG_PLAYER_PLAYER_OFFLINE
+								.replace("%player%", playerName));
+						return;
+					}
 				}
 			} else {
 				player.sendMessage(Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
