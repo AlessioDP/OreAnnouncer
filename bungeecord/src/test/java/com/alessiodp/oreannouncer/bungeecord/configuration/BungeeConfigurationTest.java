@@ -49,7 +49,8 @@ public class BungeeConfigurationTest {
 				"blocks.light-level",
 				"blocks.tnt",
 				"stats.blacklist",
-				"stats.advanced-count.default"
+				"stats.advanced-count.default",
+				"execute-commands"
 		);
 		
 		testConfiguration(configMain, skipPaths);

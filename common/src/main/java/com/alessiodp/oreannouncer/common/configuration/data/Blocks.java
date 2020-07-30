@@ -121,7 +121,8 @@ public class Blocks extends ConfigurationFile {
 		ConfigurationSection csBlocks = configuration.getConfigurationSection("blocks");
 		if (csBlocks != null) {
 			for (String key : csBlocks.getKeys(false)) {
-				if (((OreAnnouncerPlugin) plugin).getBlockManager().existsMaterial(key)) {
+				if (((OreAnnouncerPlugin) plugin).getBlockManager().existsMaterial(key)
+						|| key.startsWith("ITEMMODS_") || key.startsWith("MMOITEMS_")) {
 					// Material exists
 					block = new OABlockImpl(plugin, key);
 					block.setAccessible(true);

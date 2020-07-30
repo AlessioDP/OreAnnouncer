@@ -5,22 +5,24 @@ import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.blocks.objects.OABlockImpl;
 import com.alessiodp.oreannouncer.common.configuration.data.Blocks;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
+import lombok.Getter;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public enum OAPlaceholder {
 	PLAYER_DESTROY,
-	PLAYER_DESTROY_BLOCK (true),
+	PLAYER_DESTROY_BLOCK (true, "player_destroy_<block>"),
 	PLAYER_FOUND,
-	PLAYER_FOUND_BLOCK (true),
-	PLAYER_FOUNDIN_RANGE (true),
-	PLAYER_FOUNDIN_RANGE_BLOCK (true),
+	PLAYER_FOUND_BLOCK (true, "player_found_<block>"),
+	PLAYER_FOUNDIN_RANGE (true, "player_foundin_<range>"),
+	PLAYER_FOUNDIN_RANGE_BLOCK (true, "player_foundin_<range>_<block>"),
 	SERVER_NAME,
 	SERVER_ID;
 	
 	private final OreAnnouncerPlugin plugin;
 	private final boolean custom; // Ignore placeholder auto-matching by name
+	@Getter private final String syntax;
 	
 	
 	private static final String PREFIX_DESTROY_BLOCK = "player_destroy_"; // %player_destroy_BLOCK%
@@ -36,14 +38,19 @@ public enum OAPlaceholder {
 	}
 	
 	OAPlaceholder(boolean custom) {
+		this(custom, null);
+	}
+	
+	OAPlaceholder(boolean custom, String syntax){
 		this.custom = custom;
+		this.syntax = syntax != null ? syntax : CommonUtils.toLowerCase(this.name());
 		plugin = ((OreAnnouncerPlugin) OreAnnouncerPlugin.getInstance());
 	}
 	
 	public static OAPlaceholder getPlaceholder(String identifier) {
 		String identifierLower = CommonUtils.toLowerCase(identifier);
 		for (OAPlaceholder en : OAPlaceholder.values()) {
-			if (!en.custom && CommonUtils.toLowerCase(en.name()).equals(identifierLower)) {
+			if (!en.custom && en.syntax.equals(identifierLower)) {
 				return en;
 			}
 		}

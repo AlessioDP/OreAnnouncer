@@ -3,6 +3,8 @@ package com.alessiodp.oreannouncer.bukkit.blocks;
 import com.alessiodp.core.common.utils.ADPLocation;
 import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.oreannouncer.bukkit.addons.external.DiscordSRVHandler;
+import com.alessiodp.oreannouncer.bukkit.addons.external.ItemModsHandler;
+import com.alessiodp.oreannouncer.bukkit.addons.external.MMOItemsHandler;
 import com.alessiodp.oreannouncer.bukkit.addons.external.PlaceholderAPIHandler;
 import com.alessiodp.oreannouncer.bukkit.bootstrap.BukkitOreAnnouncerBootstrap;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
@@ -30,7 +32,18 @@ public class BukkitBlockManager extends BlockManager {
 	
 	@Override
 	public boolean existsMaterial(String materialName) {
-		return Material.getMaterial(CommonUtils.toUpperCase(materialName)) != null;
+		return Material.getMaterial(CommonUtils.toUpperCase(materialName)) != null
+				|| CommonUtils.toUpperCase(materialName).startsWith("ITEMMODS_")
+				|| CommonUtils.toUpperCase(materialName).startsWith("MMOITEMS_");
+	}
+	
+	public String getBlockType(Block block) {
+		if (ItemModsHandler.isPluginBlock(block)) {
+			return ItemModsHandler.getNameByBlock(block);
+		} else if (MMOItemsHandler.isPluginBlock(block)) {
+			return MMOItemsHandler.getNameByBlock(block);
+		}
+		return block.getType().name();
 	}
 	
 	@SuppressWarnings("ConstantConditions")
@@ -45,7 +58,7 @@ public class BukkitBlockManager extends BlockManager {
 				blockLocation.getYaw(),
 				blockLocation.getPitch()).getBlock();
 		if (block != null
-				&& block.getType().toString().equalsIgnoreCase(material)
+				&& getBlockType(block).equalsIgnoreCase(material)
 				&& block.hasMetadata(markType.getMark())) {
 			ret = true;
 		}
@@ -64,7 +77,7 @@ public class BukkitBlockManager extends BlockManager {
 				blockLocation.getYaw(),
 				blockLocation.getPitch()).getBlock();
 		if (block != null
-				&& block.getType().toString().equalsIgnoreCase(material)
+				&& getBlockType(block).equalsIgnoreCase(material)
 				&& !block.hasMetadata(markType.getMark())) {
 			block.setMetadata(markType.getMark(), new FixedMetadataValue((BukkitOreAnnouncerBootstrap) plugin.getBootstrap(), true));
 			ret = true;

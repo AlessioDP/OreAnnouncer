@@ -5,7 +5,7 @@ website: ${plugin.website}
 version: ${plugin.version}
 main: com.alessiodp.oreannouncer.bukkit.bootstrap.BukkitOreAnnouncerBootstrap
 api-version: 1.13
-softdepend: [DiscordSRV, LastLoginAPI, PlaceholderAPI]
+softdepend: [DiscordSRV, ItemMods, LastLoginAPI, MMOItems, PlaceholderAPI]
 permissions:
   oreannouncer.user.alerts.see:
     description: See user alerts
@@ -37,6 +37,8 @@ permissions:
     description: Bypass destroy count on block destroy
   oreannouncer.admin.bypass.found:
     description: Bypass found count on block destroy
+  oreannouncer.admin.bypass.execute.commands:
+    description: Bypass command execution
   oreannouncer.admin.debug:
     description: Allow access to /oa debug
   oreannouncer.admin.log:
@@ -68,6 +70,7 @@ permissions:
       oreannouncer.admin.bypass.alerts: true
       oreannouncer.admin.bypass.destroy: true
       oreannouncer.admin.bypass.found: true
+      oreannouncer.admin.bypass.execute.commands: true
       oreannouncer.admin.debug: true
       oreannouncer.admin.log: true
       oreannouncer.admin.reload: true

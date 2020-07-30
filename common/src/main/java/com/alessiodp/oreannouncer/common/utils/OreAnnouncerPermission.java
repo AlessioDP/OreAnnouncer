@@ -20,6 +20,7 @@ public enum OreAnnouncerPermission implements ADPPermission {
 	ADMIN_BYPASS_ALERTS		("oreannouncer.admin.bypass.alerts"),
 	ADMIN_BYPASS_DESTROY	("oreannouncer.admin.bypass.destroy"),
 	ADMIN_BYPASS_FOUND		("oreannouncer.admin.bypass.found"),
+	ADMIN_BYPASS_EXECUTE_COMMANDS 	("oreannouncer.admin.bypass.execute.commands"),
 	ADMIN_DEBUG				("oreannouncer.admin.debug"),
 	ADMIN_LOG				("oreannouncer.admin.log"),
 	ADMIN_RELOAD			("oreannouncer.admin.reload"),

@@ -59,6 +59,8 @@ public abstract class MessageUtils {
 				String identifier = matcher.group(1);
 				// Match basic placeholders
 				switch (CommonUtils.toLowerCase(identifier)) {
+					case "%material%":
+						ret = ret.replace(identifier, block.getMaterialName());
 					case "%enabled%":
 						ret = ret.replace(identifier, formatEnabledDisabled(block.isEnabled()));
 						break;
@@ -137,6 +139,8 @@ public abstract class MessageUtils {
 				String identifier = matcher.group(1);
 				// Match basic placeholders
 				switch (CommonUtils.toLowerCase(identifier)) {
+					case "%material%":
+						ret = ret.replace(identifier, block.getMaterialName());
 					case "%enabled%":
 						ret = ret.replace(identifier, formatEnabledDisabled(block.isEnabled()));
 						break;

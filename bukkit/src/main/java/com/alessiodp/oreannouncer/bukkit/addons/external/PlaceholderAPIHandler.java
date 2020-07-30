@@ -20,6 +20,7 @@ public class PlaceholderAPIHandler {
 		active = false;
 		if (Bukkit.getPluginManager().isPluginEnabled(ADDON_NAME)) {
 			hook = new PAPIHook(plugin);
+			
 			if (hook.register()) {
 				active = true;
 				
@@ -32,7 +33,7 @@ public class PlaceholderAPIHandler {
 	public static String getPlaceholders(UUID uuid, String message) {
 		String ret = message;
 		if (active && hook != null)
-			ret = hook.setPlaceholders(Bukkit.getOfflinePlayer(uuid), message);
+			ret = hook.parsePlaceholders(Bukkit.getOfflinePlayer(uuid), message);
 		return ret;
 	}
 }

@@ -19,6 +19,7 @@ public class BukkitConfigMain extends ConfigMain {
 	@ConfigOption(path = "oreannouncer.bungeecord.server-id")
 	public static String		OREANNOUNCER_BUNGEECORD_SERVER_ID;
 	
+	
 	// Alerts settings
 	@ConfigOption(path = "alerts.discordsrv.enable")
 	public static boolean		ALERTS_DISCORDSRV_ENABLE;
@@ -30,6 +31,14 @@ public class BukkitConfigMain extends ConfigMain {
 	public static String		ALERTS_DISCORDSRV_CHANNELS_USER;
 	@ConfigOption(path = "alerts.discordsrv.channels.admin")
 	public static String		ALERTS_DISCORDSRV_CHANNELS_ADMIN;
+	
+	
+	// Blocks settings
+	@ConfigOption(path = "blocks.itemmods.enable")
+	public static boolean		BLOCKS_ITEMMODS_ENABLE;
+	@ConfigOption(path = "blocks.mmoitems.enable")
+	public static boolean		BLOCKS_MMOITEMS_ENABLE;
+	
 	
 	public BukkitConfigMain(OreAnnouncerPlugin plugin) {
 		super(plugin);

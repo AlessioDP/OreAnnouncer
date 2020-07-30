@@ -35,7 +35,7 @@ public abstract class BlockListener {
 				// Store information into database
 				if (ConfigMain.STATS_ENABLE) {
 					if (!user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_DESTROY))
-					store(user, block, lightLevel);
+						store(user, block, lightLevel);
 					
 					if (ConfigMain.STATS_ADVANCED_COUNT_ENABLE && !user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_FOUND))
 						found(user, block, blockLocation, lightLevel);

@@ -226,7 +226,7 @@ public class CommandLog extends ADPSubCommand {
 		if (isGeneralCommand) {
 			if (block != null) {
 				sendMessage(player, Messages.CMD_LOG_HEADER_BLOCK
-						.replace("%block%", block.getDisplayName() != null ? block.getDisplayName() : block.getSingularName())
+						.replace("%block%", block.getDisplayName())
 						.replace("%page%", Integer.toString(selectedPage))
 						.replace("%maxpages%", Integer.toString(maxPages))
 						.replace("%total%", Integer.toString(numberBlocks)));
@@ -270,7 +270,7 @@ public class CommandLog extends ADPSubCommand {
 		if (isGeneralCommand) {
 			if (block != null) {
 				sendMessage(player, Messages.CMD_LOG_FOOTER_BLOCK
-						.replace("%block%", block.getDisplayName() != null ? block.getDisplayName() : block.getSingularName())
+						.replace("%block%", block.getDisplayName())
 						.replace("%page%", Integer.toString(selectedPage))
 						.replace("%maxpages%", Integer.toString(maxPages))
 						.replace("%total%", Integer.toString(numberBlocks)));

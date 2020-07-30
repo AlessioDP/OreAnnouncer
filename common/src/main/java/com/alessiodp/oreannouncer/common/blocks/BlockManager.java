@@ -21,6 +21,7 @@ import com.alessiodp.oreannouncer.common.utils.BlocksFoundResult;
 import com.alessiodp.oreannouncer.common.utils.CoordinateUtils;
 import lombok.Getter;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -130,6 +131,9 @@ public abstract class BlockManager {
 	}
 	
 	public void handleBlockDestroy(BlockData data) {
+		// Execute commands on destroy
+		executeBlockCommands(ConfigMain.EXECUTE_COMMANDS_ON_DESTROY, data);
+		
 		if (plugin.isBungeeCordEnabled()) {
 			OAPacket packet = new OAPacket(plugin.getVersion());
 			packet
@@ -190,6 +194,9 @@ public abstract class BlockManager {
 			userMessage = parseMessage(userMessage, data, AlerterType.USER, bfr.getTimestamp());
 			adminMessage = parseMessage(adminMessage, data, AlerterType.ADMIN, bfr.getTimestamp());
 			consoleMessage = parseMessage(consoleMessage, data, AlerterType.CONSOLE, bfr.getTimestamp());
+			
+			// Execute commands on destroy
+			executeBlockCommands(ConfigMain.EXECUTE_COMMANDS_ON_FOUND, data);
 			
 			if (plugin.isBungeeCordEnabled()) {
 				OAPacket packet = new OAPacket(plugin.getVersion());
@@ -278,7 +285,7 @@ public abstract class BlockManager {
 	}
 	
 	public String parseMessage(String message, BlockData data, AlerterType alerterType) {
-		return parseMessage(message, data, alerterType, CommonUtils.getOr(data.getElapsed(), 0L));
+		return parseMessage(message, data, alerterType, CommonUtils.getOr(data.getElapsed(), -1L));
 	}
 	
 	public String parseMessage(String message, BlockData data, AlerterType alerterType, long elapsed) {
@@ -291,7 +298,7 @@ public abstract class BlockManager {
 					.replace("%player%", pPlayer)
 					.replace("%number%", pNumber)
 					.replace("%block%", pBlock)
-					.replace("%time%", formatElapsed(elapsed)
+					.replace("%time%", elapsed >= 0 ? formatElapsed(elapsed) : "%time%"
 					.replace("%light_level%", Integer.toString(data.getLightLevel()))
 				), data.getBlock());
 		
@@ -315,6 +322,30 @@ public abstract class BlockManager {
 				ConfigMain.STATS_ADVANCED_COUNT_TIME_FORMAT_MEDIUM,
 				ConfigMain.STATS_ADVANCED_COUNT_TIME_FORMAT_SMALL
 		);
+	}
+	
+	private void executeBlockCommands(List<String> commands, BlockData data) {
+		if (ConfigMain.EXECUTE_COMMANDS_ENABLE && !commands.isEmpty() && data.getPlayer() != null) {
+			plugin.getScheduler().getSyncExecutor().execute(() -> {
+				User user = plugin.getPlayer(data.getPlayer().getPlayerUUID());
+				if (!user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_EXECUTE_COMMANDS)) {
+					for (String cmd : commands) {
+						if (ConfigMain.EXECUTE_COMMANDS_RUN_AS.equalsIgnoreCase("custom")) {
+							if (CommonUtils.toLowerCase(cmd).startsWith("console:"))
+								plugin.getBootstrap().executeCommand(parseMessage(cmd.substring(8), data, AlerterType.CONSOLE));
+							else if (CommonUtils.toLowerCase(cmd).startsWith("player:"))
+								plugin.getBootstrap().executeCommandByUser(parseMessage(cmd.substring(7), data, AlerterType.CONSOLE), user);
+							else
+								plugin.getBootstrap().executeCommandByUser(parseMessage(cmd, data, AlerterType.CONSOLE), user);
+						} else if (ConfigMain.EXECUTE_COMMANDS_RUN_AS.equalsIgnoreCase("console")) {
+							plugin.getBootstrap().executeCommand(parseMessage(cmd, data, AlerterType.CONSOLE));
+						} else {
+							plugin.getBootstrap().executeCommandByUser(parseMessage(cmd, data, AlerterType.CONSOLE), user);
+						}
+					}
+				}
+			});
+		}
 	}
 	
 	protected abstract String parsePAPI(UUID playerUuid, String message);

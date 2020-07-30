@@ -163,6 +163,16 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static int			STATS_TOP_NUMPLAYERS;
 	
 	
+	@ConfigOption(path = "execute-commands.enable", nullable = true)
+	public static boolean		EXECUTE_COMMANDS_ENABLE;
+	@ConfigOption(path = "execute-commands.run-as", nullable = true)
+	public static String		EXECUTE_COMMANDS_RUN_AS;
+	@ConfigOption(path = "execute-commands.on-destroy", nullable = true)
+	public static List<String>	EXECUTE_COMMANDS_ON_DESTROY;
+	@ConfigOption(path = "execute-commands.on-found", nullable = true)
+	public static List<String>	EXECUTE_COMMANDS_ON_FOUND;
+	
+	
 	// Commands settings
 	@ConfigOption(path = "commands.tab-support")
 	public static boolean		COMMANDS_TABSUPPORT;

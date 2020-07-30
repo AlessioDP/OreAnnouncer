@@ -98,6 +98,15 @@ alerts:
     volume: 1.0
     pitch: 2.0
     default: ""
+  # [Commands]
+  # Enable commands on destroy
+  # Special tags:
+  # => %player%:   Player name
+  # => %number%:   Number of blocks
+  # => any block tag
+  commands:
+    execute-on-destroy: []
+    execute-on-found: []
   # [Coordinates]
   # Enable the coordinates system:
   # Print the coordinates of the player on block destroy:
@@ -184,6 +193,17 @@ blocks:
     try-to-catch-player: true
     count-on-destroy: true
 
+  # [ItemMODS support]
+  # Enable ItemMODS plugin support
+  # Material name in blocks.yml must be ITEMMODS_<NAME>
+  itemmods:
+    enable: false
+
+  # [MMOItems support]
+  # Enable MMOItems plugin support
+  # Material name in blocks.yml must be MMOITEMS_<ID>
+  mmoitems:
+    enable: false
 
 # / =============================== \
 # |         STATS  SETTINGS         |
@@ -258,6 +278,27 @@ stats:
 
 
 # / =============================== \
+# |    EXECUTE COMMANDS SETTINGS    |
+# \ =============================== /
+execute-commands:
+  # [Execute commands system]
+  # Execute custom commands on a specific event:
+  # => destroy: When a player destroy one block
+  # => found:   When a player found a group of blocks
+  # Stats system must be enabled to trigger execute commands.
+  # You can bypass this with relative permission.
+  enable: false
+  # Choose how to run commands:
+  # => console   : Run as console
+  # => player    : Run as player
+  # => custom    : Add a prefix to the command to choose how execute it
+  #              : "console:" and "player:", e.g.: "player:say hello" or "console:say hello"
+  run-as: console
+  # You can use messages placeholders here (like %player%, %material% etc..)
+  on-destroy: []
+  on-found: []
+
+# / =============================== \
 # |        COMMANDS SETTINGS        |
 # \ =============================== /
 commands:
@@ -293,4 +334,4 @@ commands:
 
 
 dont-edit-this:
-  version: 10
+  version: 11

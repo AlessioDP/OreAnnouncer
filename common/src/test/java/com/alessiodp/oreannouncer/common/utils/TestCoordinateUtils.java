@@ -1,7 +1,8 @@
-package com.alessiodp.oreannouncer.common;
+package com.alessiodp.oreannouncer.common.utils;
 
 import com.alessiodp.core.common.addons.internal.JsonHandler;
 import com.alessiodp.core.common.utils.ADPLocation;
+import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import com.alessiodp.oreannouncer.common.configuration.data.Messages;
 import com.alessiodp.oreannouncer.common.utils.CoordinateUtils;

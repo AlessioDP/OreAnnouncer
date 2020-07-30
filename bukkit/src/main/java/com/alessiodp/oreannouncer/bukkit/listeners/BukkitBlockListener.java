@@ -2,6 +2,7 @@ package com.alessiodp.oreannouncer.bukkit.listeners;
 
 import com.alessiodp.core.bukkit.user.BukkitUser;
 import com.alessiodp.core.common.utils.ADPLocation;
+import com.alessiodp.oreannouncer.bukkit.blocks.BukkitBlockManager;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import com.alessiodp.oreannouncer.common.listeners.BlockListener;
@@ -30,6 +31,7 @@ public class BukkitBlockListener extends BlockListener implements Listener {
 	@EventHandler(priority=EventPriority.MONITOR)
 	public void onBlockBreak(BlockBreakEvent event) {
 		if (!event.isCancelled()) {
+			// Get enchantments
 			int enchantmentLevel;
 			try {
 				enchantmentLevel = event.getPlayer().getInventory().getItemInMainHand().getEnchantmentLevel(Enchantment.SILK_TOUCH);
@@ -37,9 +39,10 @@ public class BukkitBlockListener extends BlockListener implements Listener {
 				// MC 1.8
 				enchantmentLevel = event.getPlayer().getInventory().getItemInHand().getEnchantmentLevel(Enchantment.SILK_TOUCH);
 			}
+			
 			super.onBlockBreak(
 					new BukkitUser(plugin, event.getPlayer()),
-					event.getBlock().getType().name(),
+					((BukkitBlockManager) plugin.getBlockManager()).getBlockType(event.getBlock()),
 					event.getPlayer().getLastTwoTargetBlocks((Set<Material>) null,1).get(0).getLightLevel(),
 					enchantmentLevel > 0,
 					new ADPLocation(
@@ -60,7 +63,7 @@ public class BukkitBlockListener extends BlockListener implements Listener {
 		if (!event.isCancelled() && ConfigMain.BLOCKS_BYPASS_PLAYERBLOCKS)
 			super.onBlockPlace(
 					new BukkitUser(plugin, event.getPlayer()),
-					event.getBlock().getType().name(),
+					((BukkitBlockManager) plugin.getBlockManager()).getBlockType(event.getBlock()),
 					new ADPLocation(
 							event.getBlock().getLocation().getWorld().getName(),
 							event.getBlock().getLocation().getX(),
@@ -83,7 +86,7 @@ public class BukkitBlockListener extends BlockListener implements Listener {
 					) ? new BukkitUser(plugin, ((TNTPrimed) event.getEntity()).getSource()) : null;
 			ArrayList<String> blocks = new ArrayList<>();
 			for (Block block : event.blockList()) {
-				blocks.add(block.getType().name());
+				blocks.add(((BukkitBlockManager) plugin.getBlockManager()).getBlockType(block));
 			}
 			plugin.getScheduler().runAsync(() -> {
 				super.onTNTExplode(

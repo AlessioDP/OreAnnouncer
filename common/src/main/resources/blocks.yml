@@ -1,10 +1,11 @@
 #  / ====================================================== \
 # |  This is the blocks configuration file of OreAnnouncer  |
 # \ ====================================================== /
+#    (*) options are required
 # Complete syntax of a block:
-# MATERIAL_NAME:                  | The material name of the block
-#  enabled: true/false            | Enable/disable the block
-#  display-name: ""               | Display name of the block
+# MATERIAL_NAME:                 *| The material name of the block
+#  enabled: true/false           *| Enable/disable the block
+#  display-name: ""              *| Display name of the block
 #  display-color: ""              | Display color of the block
 #  alerts:
 #    user: true/false             | Alert users

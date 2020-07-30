@@ -409,7 +409,7 @@ public class SQLDispatcherTest {
 		Blocks.LIST.put(block2.getMaterialName(), block2);
 		Blocks.LIST.put(block3.getMaterialName(), block3);
 		
-		BlockDestroy bd1player1 = new BlockDestroy(player1, block1.getMaterialName(), 0);
+		BlockDestroy bd1player1 = new BlockDestroy(player1, block1.getMaterialName(), 1);
 		BlockDestroy bd1player1overwrite = new BlockDestroy(player1, block1.getMaterialName(), 5);
 		BlockDestroy bd2player1 = new BlockDestroy(player1, block2.getMaterialName(), 5); // This will be 10 after sum
 		BlockDestroy bd3player1 = new BlockDestroy(player1, block3.getMaterialName(), 20);

@@ -16,7 +16,7 @@ public class BlockData {
 	private boolean alertAdmins;
 	private ADPLocation location;
 	private int lightLevel;
-	private long elapsed;
+	private long elapsed = -1L;
 	
 	public BlockData(OAPlayerImpl player, OABlockImpl block, int number) {
 		this.player = player;
