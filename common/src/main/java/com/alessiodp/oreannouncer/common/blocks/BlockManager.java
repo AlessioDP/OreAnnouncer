@@ -292,7 +292,7 @@ public abstract class BlockManager {
 		// Replace placeholders
 		String pPlayer = data.getPlayer() != null ? data.getPlayer().getName() : Messages.ALERTS_TNT_UNKNOWN_PLAYER;
 		String pNumber = Integer.toString(data.getNumber());
-		String pBlock = data.getNumber() > 1 ? data.getBlock().getPluralName() : data.getBlock().getSingularName();
+		String pBlock = data.getNumber() > 1 ? CommonUtils.getNoEmptyOr(data.getBlock().getPluralName(), data.getBlock().getDisplayName()) : CommonUtils.getNoEmptyOr(data.getBlock().getSingularName(), data.getBlock().getDisplayName());
 		
 		Function<String, String> repl = (msg) -> plugin.getMessageUtils().convertBlockPlaceholders(msg
 					.replace("%player%", pPlayer)

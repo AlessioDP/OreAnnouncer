@@ -127,12 +127,12 @@ public class Blocks extends ConfigurationFile {
 					block = new OABlockImpl(plugin, key);
 					block.setAccessible(true);
 					block.setEnabled(csBlocks.getBoolean(key + ".enabled", true));
-					block.setDisplayName(csBlocks.getString(key + ".display-name", null));
-					block.setDisplayColor(csBlocks.getString(key + ".display-color", null));
+					block.setDisplayName(csBlocks.getString(key + ".display-name", key));
+					block.setDisplayColor(csBlocks.getString(key + ".display-color", ""));
 					block.setAlertingUsers(csBlocks.getBoolean(key + ".alerts.user", false));
 					block.setAlertingAdmins(csBlocks.getBoolean(key + ".alerts.admin", false));
-					block.setSingularName(csBlocks.getString(key + ".name.singular", key));
-					block.setPluralName(csBlocks.getString(key + ".name.plural", key));
+					block.setSingularName(csBlocks.getString(key + ".name.singular", null));
+					block.setPluralName(csBlocks.getString(key + ".name.plural", null));
 					block.setCountNumber(csBlocks.getInt(key + ".count.number", 0));
 					block.setCountTime(csBlocks.getInt(key + ".count.time", 0));
 					block.setMessageUser(csBlocks.getString(key + ".messages.user", null));
@@ -169,8 +169,12 @@ public class Blocks extends ConfigurationFile {
 		configuration.set("blocks." + block.getMaterialName() + ".display-color", block.getDisplayColor());
 		configuration.set("blocks." + block.getMaterialName() + ".alerts.user", block.isAlertingUsers());
 		configuration.set("blocks." + block.getMaterialName() + ".alerts.admin", block.isAlertingAdmins());
-		configuration.set("blocks." + block.getMaterialName() + ".name.singular", block.getSingularName());
-		configuration.set("blocks." + block.getMaterialName() + ".name.plural", block.getPluralName());
+		if (block.getSingularName() != null || block.getPluralName() != null) {
+			configuration.set("blocks." + block.getMaterialName() + ".name.singular", block.getSingularName());
+			configuration.set("blocks." + block.getMaterialName() + ".name.plural", block.getPluralName());
+		} else {
+			configuration.set("blocks." + block.getMaterialName() + ".name", null);
+		}
 		if (block.getCountNumber() != 0
 				|| block.getCountTime() != 0) {
 			configuration.set("blocks." + block.getMaterialName() + ".count.number", block.getCountNumber());

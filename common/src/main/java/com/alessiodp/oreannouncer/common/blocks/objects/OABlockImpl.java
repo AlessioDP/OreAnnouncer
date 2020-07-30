@@ -45,12 +45,12 @@ public class OABlockImpl implements OABlock {
 		this.plugin = plugin;
 		this.materialName = materialName;
 		this.enabled = true;
-		this.displayName = null;
+		this.displayName = "";
 		this.displayColor = "";
 		this.alertingUsers = false;
 		this.alertingAdmins = false;
-		this.singularName = "";
-		this.pluralName = "";
+		this.singularName = null;
+		this.pluralName = null;
 		this.countNumber = 0;
 		this.countTime = 0;
 		this.messageUser = null;
@@ -71,7 +71,7 @@ public class OABlockImpl implements OABlock {
 	}
 	
 	public void updateBlock() {
-		if (!singularName.isEmpty() && !pluralName.isEmpty()) {
+		if (!displayName.isEmpty()) {
 			((OAConfigurationManager) plugin.getConfigurationManager()).getBlocks().updateBlock(this);
 		}
 	}
