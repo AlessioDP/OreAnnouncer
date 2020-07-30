@@ -23,14 +23,14 @@ oreannouncer:
     invalid-command: '&cNiepoprawna komenda'
     configuration-reloaded: '&aPrzeładowano konfigurację'
   blocks:
-    enabled: '&aEnabled'
-    disabled: '&cDisabled'
-    toggled-on: '&aOn'
-    toggled-off: '&cOff'
-    word-yes: '&aYes'
-    word-no: '&cNo'
-    empty: '&8Empty'
-    none: '&8None'
+    enabled: '&aWłączone'
+    disabled: '&cWyłączone'
+    toggled-on: '&aWł'
+    toggled-off: '&cWył'
+    word-yes: '&aTak'
+    word-no: '&cNie'
+    empty: '&8Puste'
+    none: '&8Brak'
   syntax:
     wrong-message: '&cNiepoprawna składnia: Wpisz &7/%syntax%'
     block: 'blok'
@@ -39,7 +39,7 @@ oreannouncer:
     order: 'kolejność'
     page: 'strona'
     player: 'gracz'
-    type: 'type'
+    type: 'typ'
     unknown: 'nieznany'
 #/ =============================== \
 #|        COMMANDS MESSAGES        |
@@ -82,8 +82,8 @@ commands:
     footer-block: ''
     header-block-general: '&2=============== &lLogi Bloków (%page%/%maxpages%) &r&2==============='
     footer-block-general: ''
-    format-player-block: '[{"text":"&6%number% %display_color%%display_name% "},{"text":"&7%date_elapsed% ago!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
-    format-general-block: '[{"text":"&6%number% %display_color%%display_name% &8by %player% "},{"text":"&7%date_elapsed% ago!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
+    format-player-block: '[{"text":"&6%number% %display_color%%display_name% "},{"text":"&7%date_elapsed% temu!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
+    format-general-block: '[{"text":"&6%number% %display_color%%display_name% &8przez %player% "},{"text":"&7%date_elapsed% temu!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
     nothing: '&7Nic'
     player-not-found: '&cGracz %player% nie odnaleziony!'
     invalid-block: '&cNieprawidłowy blok'
@@ -92,7 +92,7 @@ commands:
     footer: ''
     nothing: '&7Nic'
     format-block: '%display_color%%display_name%&7: %value%'
-    invalid-type: '&cInvalid value type'
+    invalid-type: '&cNieprawidłowy typ wartości'
     player-not-found: '&cGracz %player% nie odnaleziony!'
   top:
     #[Special tags]
@@ -140,7 +140,7 @@ help:
   command-descriptions:
     help: 'Pokaż strony pomocy'
     alerts: 'Przełącz alerty'
-    debug: 'Debug issues'
+    debug: 'Problemy debugowania'
     log: 'Pokaż logi'
     reload: 'Przeładuj pliki konfiguracyjne OreAnnouncer'
     stats: 'Pokaż statystyki gracza'
