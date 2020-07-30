@@ -61,6 +61,7 @@ public abstract class MessageUtils {
 				switch (CommonUtils.toLowerCase(identifier)) {
 					case "%material%":
 						ret = ret.replace(identifier, block.getMaterialName());
+						break;
 					case "%enabled%":
 						ret = ret.replace(identifier, formatEnabledDisabled(block.isEnabled()));
 						break;
@@ -141,6 +142,7 @@ public abstract class MessageUtils {
 				switch (CommonUtils.toLowerCase(identifier)) {
 					case "%material%":
 						ret = ret.replace(identifier, block.getMaterialName());
+						break;
 					case "%enabled%":
 						ret = ret.replace(identifier, formatEnabledDisabled(block.isEnabled()));
 						break;
