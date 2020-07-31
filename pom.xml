@@ -76,7 +76,7 @@
 		<libs.itemMods>1.3.2-SNAPSHOT</libs.itemMods>
 		<libs.llapi>1.4.2</libs.llapi>
 		<libs.mmoItems>5.5.4</libs.mmoItems>
-		<libs.papi>2.10.6</libs.papi>
+		<libs.papi>2.10.7</libs.papi>
 	</properties>
 	
 	<build>
