@@ -73,7 +73,7 @@
 		
 		<libs.adpcore>1.4.10</libs.adpcore>
 		<libs.discordsrv>1.19.1</libs.discordsrv>
-		<libs.itemMods>1.3.2-SNAPSHOT</libs.itemMods>
+		<libs.itemMods>1.3.2.4</libs.itemMods>
 		<libs.llapi>1.4.2</libs.llapi>
 		<libs.mmoItems>5.5.4</libs.mmoItems>
 		<libs.papi>2.10.6</libs.papi>
