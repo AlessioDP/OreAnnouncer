@@ -12,35 +12,35 @@ oreannouncer:
   #[Special tags]
   #=> %version%     = New version found
   #=> %thisversion% = Version installed
-  update-available: '&2New version of OreAnnouncer found: %version% (Current: %thisversion%)'
+  update-available: '&2Byla nalezena nová verze pluginu OreAnnouncer: %version% (současná: %thisversion%)'
   #[Special tags]
   #=> %config%      = The configuration file name that is outdated
-  configuration-outdated: '&cThe configuration file ''%config%'' of OreAnnouncer is outdated!'
+  configuration-outdated: '&cKonfigurační soubor ''%config%'' pluginu OreAnnouncer je zastaralý!'
   #[Special tags]
   #=> %permission%  = Missing permission
-  no-permission: '&cYou do not have access to that command'
+  no-permission: '&cNemáš oprávnění k použití tohoto příkazu'
   common-messages:
-    invalid-command: '&cInvalid command'
-    configuration-reloaded: '&aConfiguration reloaded'
+    invalid-command: '&cNeplatný příkaz'
+    configuration-reloaded: '&aKonfigurace znovu načtena'
   blocks:
-    enabled: '&aEnabled'
-    disabled: '&cDisabled'
-    toggled-on: '&aOn'
-    toggled-off: '&cOff'
-    word-yes: '&aYes'
-    word-no: '&cNo'
-    empty: '&8Empty'
-    none: '&8None'
+    enabled: '&aPovoleno'
+    disabled: '&cZakázáno'
+    toggled-on: '&aZap'
+    toggled-off: '&cVyp'
+    word-yes: '&aAno'
+    word-no: '&cNe'
+    empty: '&8Prázdné'
+    none: '&8Žádné'
   syntax:
-    wrong-message: '&cWrong syntax: Type &7/%syntax%'
-    block: 'block'
-    destroy: 'destroy'
-    found: 'found'
-    order: 'order'
-    page: 'page'
-    player: 'player'
-    type: 'type'
-    unknown: 'unknown'
+    wrong-message: '&cNesprávná syntaxe: Zadej &7/%syntax%'
+    block: 'blok'
+    destroy: 'zničení'
+    found: 'nalezeno'
+    order: 'pořadí'
+    page: 'strana'
+    player: 'hráč'
+    type: 'typ'
+    unknown: 'neznámé'
 #/ =============================== \
 #|         ALERTS MESSAGES         |
 #\ =============================== /
@@ -55,44 +55,44 @@ alerts:
   #- Do not use obfuscation if you are using coordinates to run commands
   #Example:
   #{"text":"%x%","color":"gray"} - This is a single block for a coordinate
-  user: '&6%player% &efound %number% %display_color%%block%!'
+  user: '&eHráč &6%player% &enalezl %number%x %display_color%%block%!'
   #Without teleport:
   #admin: "&6%player% &efound %number% %block%! &7[x: %x%&7, z: %z%&7]"
-  admin: '[{"text":"&6%player% &efound %number% %display_color%%block%&e! "},{"text":"&7Teleport","hoverEvent":{"action":"show_text","value":{"text":"&6Click to teleport!"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
+  admin: '[{"text":"&eHráč &6%player% &enalezl %number%x %display_color%%block%&e! "},{"text":"&7Teleportace","hoverEvent":{"action":"show_text","value":{"text":"&6Klikni pro teleportaci!"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
   #No JSON for console
-  console: '%player% found %number% %block%! [x: %x%, y: %y%, z: %z%]'
+  console: '&eHráč %player% nalezl %number%x %block%! [x: %x%, y: %y%, z: %z%]'
   count:
     user: ''
-    admin: '[{"text":"&6%player% &efound %number% %display_color%%block%&e in %time%! "},{"text":"&7Teleport","hoverEvent":{"action":"show_text","value":{"text":"&6Click to teleport!"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
+    admin: '[{"text":"&eHráč &6%player% &enalezl %number%x %display_color%%block%&e za %time%! "},{"text":"&7Teleportace","hoverEvent":{"action":"show_text","value":{"text":"&6Klikni pro teleportaci!"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
     #No JSON for console
-    console: '%player% found %number% %block% in %time%! [x: %x%, y: %y%, z: %z%]'
+    console: '&eHráč %player% nalezl %number%x %block% za %time%! [x: %x%, y: %y%, z: %z%]'
   tnt:
     user: ''
-    admin: '[{"text":"&eTNT of &6%player% &edestroyed %number% %display_color%%block%&e! "},{"text":"&7Teleport","hoverEvent":{"action":"show_text","value":{"text":"&6Click to teleport!"}},"clickEvent":{"action":"run_command","value":"/tp %x% %y% %z%"}}]'
-    console: 'TNT of %player% destroyed %number% %block%! [x: %x%, y: %y%, z: %z%]'
-    unknown-player: 'an unknown player'
+    admin: '[{"text":"&eTNT hráče &6%player% &ezničilo %number%x %display_color%%block%&e! "},{"text":"&7Teleportace","hoverEvent":{"action":"show_text","value":{"text":"&6Klikni pro teleportaci!"}},"clickEvent":{"action":"run_command","value":"/tp %x% %y% %z%"}}]'
+    console: 'TNT hráče %player% zničilo %number%x %block%! [x: %x%, y: %y%, z: %z%]'
+    unknown-player: 'neznámý hráč'
   discordsrv:
     text:
       normal:
-        user: '%player% found %number% %block%!'
-        admin: '%player% found %number% %block%! [x: %x%, y: %y%, z: %z%]'
+        user: 'Hráč %player% nalezl %number%x %block%!'
+        admin: '&eHráč %player% nalezl %number%x %block%! [x: %x%, y: %y%, z: %z%]'
       count:
         user: ''
-        admin: '%player% found %number% %block% in %time%! [x: %x%, y: %y%, z: %z%]'
+        admin: '&eHráč %player% nalezl %number%x %block% za %time%! [x: %x%, y: %y%, z: %z%]'
       tnt:
         user: ''
-        admin: 'TNT of %player% destroyed %number% %block%! [x: %x%, y: %y%, z: %z%]'
+        admin: 'TNT hráče %player% zničilo %number%x %block%! [x: %x%, y: %y%, z: %z%]'
     embed:
       normal:
         user:
           color: '#008b50'
-          author-name: '%player% found %number% %block%!'
+          author-name: 'Hráč %player% nalezl %number%x %block%!'
           title: ''
           description: ''
           footer: ''
         admin:
           color: '#008b50'
-          author-name: '%player% found %number% %block%! [x: %x%, y: %y%, z: %z%]'
+          author-name: '&eHráč %player% nalezl %number%x %block%! [x: %x%, y: %y%, z: %z%]'
           title: ''
           description: ''
           footer: ''
@@ -105,7 +105,7 @@ alerts:
           footer: ''
         admin:
           color: '#008b50'
-          author-name: '%player% found %number% %block% in %time%! [x: %x%, y: %y%, z: %z%]'
+          author-name: '&eHráč %player% nalezl %number%x %block% za %time%! [x: %x%, y: %y%, z: %z%]'
           title: ''
           description: ''
           footer: ''
@@ -119,7 +119,7 @@ alerts:
           footer: ''
         admin:
           color: '#008b50'
-          author-name: 'TNT of %player% destroyed %number% %block%! [x: %x%, y: %y%, z: %z%]'
+          author-name: 'TNT hráče %player% zničilo %number%x %block%! [x: %x%, y: %y%, z: %z%]'
           title: ''
           description: ''
           footer: ''
@@ -128,8 +128,8 @@ alerts:
 #\ =============================== /
 commands:
   alerts:
-    toggle-on: '&aNow you will be able to see alerts'
-    toggle-off: '&aYou won''t see alerts anymore'
+    toggle-on: '&aNyní budeš moci vidět upozornění'
+    toggle-off: '&aJiž nebudeš moci vidět upozornění'
   debug:
     block:
       header: '&2=================== &lDebug Blocks &r&2==================='
@@ -137,7 +137,7 @@ commands:
         - "&6%material_name% &7(%display_name%&7) (%enabled%&7):"
         - "   &7Alert users/admins: %alert_users%&7/%alert_admins%"
         - "    number/time: &f%count_number%&7/%count_time%"
-      invalid-block: '&cInvalid block'
+      invalid-block: '&cNeplatný blok'
     config:
       header: '&2================== &lDebug Config &r&2=================='
       text:
@@ -159,52 +159,52 @@ commands:
         - "&6Operator&7: %op%"
       player-offline: "&cThe player '%player%' must be online"
   log:
-    header-player: '&2============ &l%player%''s Log (%page%/%maxpages%) &r&2============'
+    header-player: '&2============ &lProtokol hráče %player% (%page%/%maxpages%) &r&2============'
     footer-player: ''
-    header-block: '&2============= &l%block%''s Log (%page%/%maxpages%) &r&2============='
+    header-block: '&2============= &lProtokol bloku %block% (%page%/%maxpages%) &r&2============='
     footer-block: ''
-    header-block-general: '&2================ &lBlocks Log (%page%/%maxpages%) &r&2================'
+    header-block-general: '&2================ &lProtokol bloků (%page%/%maxpages%) &r&2================'
     footer-block-general: ''
-    format-player-block: '[{"text":"&6%number% %display_color%%display_name% "},{"text":"&7%date_elapsed% ago!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
-    format-general-block: '[{"text":"&6%number% %display_color%%display_name% &8by %player% "},{"text":"&7%date_elapsed% ago!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
-    nothing: '&7Nothing'
-    player-not-found: '&c%player% not found!'
-    invalid-block: '&cInvalid block'
+    format-player-block: '[{"text":"&6%number%x %display_color%%display_name% "},{"text":"&7Před %date_elapsed%!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
+    format-general-block: '[{"text":"&6%number%x %display_color%%display_name% &8hráčem %player% "},{"text":"&7Před %date_elapsed%!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
+    nothing: '&7Nic'
+    player-not-found: '&cHráč %player% nenalezen!'
+    invalid-block: '&cNeplatný blok'
   stats:
-    header: '&2============== &l%player%''s Stats &r&2=============='
+    header: '&2============== &lStatistiky hráče %player% &r&2=============='
     footer: ''
-    nothing: '&7Nothing'
+    nothing: '&7Nic'
     format-block: '%display_color%%display_name%&7: %value%'
-    invalid-type: '&cInvalid value type'
-    player-not-found: '&c%player% not found!'
+    invalid-type: '&cNeplatný typ hodnoty'
+    player-not-found: '&cHráč %player% nenalezen!'
   top:
     #[Special tags]
     #=> %total%    = Total players
     #=> %page%     = Current list page
     #=> %maxpages% = How many pages exist
-    header: '&2=================== &lTop Players &r&2==================='
+    header: '&2=================== &lNejlepší hráči &r&2==================='
     footer: ''
-    no-one: '&7No one'
+    no-one: '&7Nikdo'
     #You can use JSON to shows per-block total on hover
-    format-player: '&a%player%&7: %value% blocks'
-    invalid-order: '&cInvalid order type'
-    invalid-block: '&cInvalid block'
+    format-player: '&a%player%&7: %value% bloků'
+    invalid-order: '&cNeplatný typ pořadí'
+    invalid-block: '&cNeplatný blok'
   version:
     #[Special tags]
     #=> %version%    = OreAnnouncer version
     #=> %newversion% = Latest OreAnnouncer version
     #=> %platform%   = Platform of the plugin (e.g. Bukkit, BungeeCord)
-    updated: '&2&lOreAnnouncer &2%version% &7(%platform%) - Developed by &6AlessioDP'
-    outdated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
+    updated: '&2&lOreAnnouncer &2%version% &7(%platform%) - Vytvořil &6AlessioDP'
+    outdated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Vytvořil &6AlessioDP\n&aNalezena nová verze: &2%newversion%"
 #/ =============================== \
 #|          HELP MESSAGES          |
 #\ =============================== /
 help:
-  header: '&2============= &lOreAnnouncer Help Page &r&2============='
+  header: '&2============= &lNápověda pluginu OreAnnouncer &r&2============='
   footer: ''
-  perform-command: 'Perform the command'
+  perform-command: 'Vykoná příkaz'
   console-help:
-    header: 'You can only make these commands:'
+    header: 'Můžeš provádět pouze následující příkazy:'
     command: ' > %command% - %description%'
   commands:
     #[Special tags]
@@ -221,13 +221,13 @@ help:
     top: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
     version: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
   command-descriptions:
-    help: 'Show help pages'
-    alerts: 'Toggle alerts'
-    debug: 'Debug issues'
-    log: 'Show logs'
-    reload: 'Reload OreAnnouncer configuration files'
-    stats: 'Show player stats'
-    top: 'Show top players'
-    version: 'Show OreAnnouncer information'
+    help: 'Zobrazení nápovědy'
+    alerts: 'Přepnutí upozornění'
+    debug: 'Ladění problémů'
+    log: 'Zobrazení protokolů'
+    reload: 'Znovunačtení konfiguračních souborů pluginu OreAnnouncer'
+    stats: 'Zobrazení statistik hráčů'
+    top: 'Zobrazení nejlepších hráčů'
+    version: 'Zobrazení informací o pluginu OreAnnouncer'
 dont-edit-this:
   version: 9
