@@ -58,7 +58,7 @@ commands:
       invalid-player: "&cThe player '%player%' must be online"
     alert:
       invalid-number: '&cYou must insert a positive number'
-      invalid-type: '&cYou must insert a valid alert type'
+      invalid-type: '&cYou must insert a valid alert type: normal/advanced'
     block:
       header: '&2=================== &lDebug Blocks &r&2==================='
       text:
@@ -81,10 +81,13 @@ commands:
         - "  &2Log command&7: %log_command%"
         - "&2Top command&7: %top_command%"
     player:
-      header: '&2================ &lDebug %player% &r&2================'
+      header: '&2================== &lDebug Player &r&2=================='
       text:
+        - "&2UUID&7: %uuid%"
+        - "&2Name&7: %name%"
+        - "&2Operator&7: %op%"
         - "&2Bypass alerts/destroy/found&7: %permission_bypass_alerts%&7/%permission_bypass_destroy%&7/%permission_bypass_found%"
-        - "&2See alerts of users/admins/others&7: %see_alerts_users%&7/%see_alerts_admins%&7/%see_alerts_others%"
+        - "&2See alerts of users/admins&7: %see_alerts_users%&7/%see_alerts_admins%"
   log:
     header-player: '&2============ &lЛог игрока %player% (%page%/%maxpages%) &r&2============'
     footer-player: ''
