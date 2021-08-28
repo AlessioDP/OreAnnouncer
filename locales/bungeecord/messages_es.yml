@@ -22,6 +22,7 @@ oreannouncer:
   common-messages:
     invalid-command: '&cComando inválido'
     configuration-reloaded: '&aLa configuración ha sido reiniciada'
+    player-not-found: '&cThe player %player% has not been found'
   blocks:
     enabled: '&aHabilitado'
     disabled: '&cDeshabilitado'
@@ -33,9 +34,12 @@ oreannouncer:
     none: '&8Ninguno'
   syntax:
     wrong-message: '&cSintaxis incorrecta: Escribe &7/%syntax%'
+    advanced: 'advanced'
     block: 'bloque'
     destroy: 'destruido'
     found: 'encontró'
+    normal: 'normal'
+    number: 'number'
     order: 'orden'
     page: 'página'
     player: 'jugador'
@@ -49,32 +53,38 @@ commands:
     toggle-on: '&aAhora podrás ver las alertas'
     toggle-off: '&aAhora no veras mas las alertas'
   debug:
+    common:
+      invalid-block: '&cBloque no válido'
+      invalid-player: "&cThe player '%player%' must be online"
+    alert:
+      invalid-number: '&cYou must insert a positive number'
+      invalid-type: '&cYou must insert a valid alert type'
     block:
       header: '&2=================== &lDebug Blocks &r&2==================='
       text:
-        - "&6%material_name% &7(%display_name%&7) (%enabled%&7):"
-        - "   &7Alert users/admins: %alert_users%&7/%alert_admins%"
-        - "    number/time: &f%count_number%&7/%count_time%"
-      invalid-block: '&cBloque no válido'
+        - "&2%material_name% &7(%display_name%&7) (%enabled%&7):"
+        - "  &7Alert users/admins: %alert_users%&7/&f%alert_admins%"
+        - "   number/time: &f%count_number%&7/&f%count_time%"
+        - "  &7Count destroy/TNT/light: %count_on_destroy%&7/%tnt%&7/&f%light_level%"
     config:
       header: '&2================== &lDebug Config &r&2=================='
       text:
-        - "&6Outdated config/messages:&7 %outdated_config%&7/%outdated_messages%"
-        - "&6Alerts&7: %alerts%&7,  &6Coordinates&7: %coordinates%"
-        - "&6Bypass player/silk/counter&7: %bypass_player%&7/%bypass_silk%&7/%bypass_counter%"
-        - "&6Stats&7: %stats% &7(%stats_values%)"
-        - "  &6Blacklist log&7: %blacklist_log%"
-        - "  &6Blacklist stats&7: %blacklist_stats%"
-        - "  &6Blacklist top&7: %blacklist_top%"
-        - "&6Advanced count&7: %advanced_count%"
-        - "  &6Log command&7: %log_command%"
-        - "&6Top command&7: %top_command%"
+        - "&2Outdated config/messages:&7 %outdated_config%&7/%outdated_messages%"
+        - "&2Storage&7: %storage%"
+        - "&2Alerts&7: %alerts%&7,  &2Coordinates&7: %coordinates%"
+        - "&2Bypass player/silk/counter&7: %bypass_player%&7/%bypass_silk%&7/%bypass_counter%"
+        - "&2Stats&7: %stats% &7(%stats_values%)"
+        - "  &2Blacklist log&7: %blacklist_log%"
+        - "  &2Blacklist stats&7: %blacklist_stats%"
+        - "  &2Blacklist top&7: %blacklist_top%"
+        - "&2Advanced count&7: %advanced_count%"
+        - "  &2Log command&7: %log_command%"
+        - "&2Top command&7: %top_command%"
     player:
       header: '&2================ &lDebug %player% &r&2================'
       text:
-        - "&6Bypass alerts/destroy/found&7: %permission_bypass_alerts%&7/%permission_bypass_destroy%&7/%permission_bypass_found%"
-        - "&6See alerts of users/admins/others&7: %see_alerts_users%&7/%see_alerts_admins%&7/%see_alerts_others%"
-      player-offline: "&cThe player '%player%' must be online"
+        - "&2Bypass alerts/destroy/found&7: %permission_bypass_alerts%&7/%permission_bypass_destroy%&7/%permission_bypass_found%"
+        - "&2See alerts of users/admins/others&7: %see_alerts_users%&7/%see_alerts_admins%&7/%see_alerts_others%"
   log:
     header-player: '&2============ &lLog de %player% (%page%/%maxpages%) &r&2============'
     footer-player: ''
@@ -85,7 +95,6 @@ commands:
     format-player-block: '[{"text":"&7¡&6%number% %display_color%%display_name% "},{"text":"&7hace %date_elapsed%!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
     format-general-block: '[{"text":"&7¡&6%number% %display_color%%display_name% &8por %player% "},{"text":"&7hace %date_elapsed%!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
     nothing: '&7Nada'
-    player-not-found: '&c%player% no localizado!'
     invalid-block: '&cBloque no válido'
   stats:
     header: '&2============== &lStats de %player% &r&2=============='
@@ -93,7 +102,6 @@ commands:
     nothing: '&7Nada'
     format-block: '%display_color%%display_name%&7: %value%'
     invalid-type: '&cTipo de valor inválido'
-    player-not-found: '&c%player% no localizado!'
   top:
     #[Special tags]
     #=> %total%    = Total players
@@ -113,6 +121,9 @@ commands:
     #=> %platform%   = Platform of the plugin (e.g. Bukkit, BungeeCord)
     updated: '&2&lOreAnnouncer &2%version% &7(%platform%) - Desarrollado por &6AlessioDP'
     outdated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Desarrollado por &6AlessioDP\n&aNueva versión encontrada: &2%newversion%"
+  whitelist:
+    added: '&aAdded %player% to the whitelist'
+    removed: '&aRemoved %player% from the whitelist'
 #/ =============================== \
 #|          HELP MESSAGES          |
 #\ =============================== /
@@ -137,6 +148,7 @@ help:
     stats: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
     top: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
     version: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    whitelist: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
   command-descriptions:
     help: 'Mostrar paginas de ayuda'
     alerts: 'Alternar alertas'
@@ -146,5 +158,6 @@ help:
     stats: 'Mostrar estadísticas del jugador'
     top: 'Mostrar mejores jugadores'
     version: 'Mostrar información de OreAnnouncer'
+    whitelist: 'Whitelist players'
 dont-edit-this:
-  version: 7
+  version: 8
