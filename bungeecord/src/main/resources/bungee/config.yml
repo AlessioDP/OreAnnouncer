@@ -38,7 +38,9 @@ oreannouncer:
 storage:
   # [Database type]
   # What type of storage the plugin should use? Database storage types:
+  # => mariadb    | [Remote] Save the data into a MariaDB database
   # => mysql      | [Remote] Save the data into a MySQL database
+  # => postgresql | [Remote] Save the data into a PostgreSQL database
   # => sqlite     | [File]   Save the data into a SQLite database
   # => h2         | [File]   Save the data into a H2 database (default)
   database-storage-type: h2
@@ -57,8 +59,8 @@ storage:
     h2:
       database-file: database
 
-    # [MySQL settings]
-    mysql:
+    # [Remote SQL settings - MySQL/MariaDB/PostgreSQL]
+    remote-sql:
       address: localhost
       port: '3306'
       database: database
@@ -166,15 +168,32 @@ stats:
 
 
 # / =============================== \
+# |       WHITELIST  SETTINGS       |
+# \ =============================== /
+whitelist:
+  # [Whitelist system]
+  # Enable a command to whitelist players, so they won't trigger alerts and others stats
+  # => bypass   : Decide what the players bypass
+  enable: true
+  bypass:
+    alerts: true
+    destroy: true
+    found: true
+
+
+# / =============================== \
 # |        COMMANDS SETTINGS        |
 # \ =============================== /
 commands:
   # Enable tab support (/oab <tab> to see every allowed command)
   tab-support: true
-  oa-description: OreAnnouncer help page
   main-commands:
+    oa:
+      command: 'oab'
+      aliases:
+        - oreannouncerb
+  sub-commands:
     help: help
-    oa: oab
     alerts: alerts
     debug: debug
     log: log
@@ -182,11 +201,15 @@ commands:
     stats: stats
     top: top
     version: version
-  sub-commands:
+    whitelist: whitelist
+  misc-commands:
+    add: 'add'
+    alert: 'alert'
     all: 'all'
     block: 'block'
     config: 'config'
     player: 'player'
+    remove: 'remove'
     word-on: 'on'
     word-off: 'off'
   order:
@@ -195,10 +218,11 @@ commands:
     - log
     - stats
     - top
+    - whitelist
     - reload
     - debug
     - version
 
 
 dont-edit-this:
-  version: 6
+  version: 7

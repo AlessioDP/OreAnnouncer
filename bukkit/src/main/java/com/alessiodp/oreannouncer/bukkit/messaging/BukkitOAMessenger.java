@@ -6,18 +6,18 @@ import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 
 public class BukkitOAMessenger extends ADPMessenger {
 	public BukkitOAMessenger(ADPPlugin plugin) {
-		super(plugin, false);
+		super(plugin);
 		messageDispatcher = new BukkitOAMessageDispatcher(plugin);
+		messageListener = new BukkitOAMessageListener(plugin);
 	}
 	
 	@Override
 	public void reload() {
 		if (((OreAnnouncerPlugin) plugin).isBungeeCordEnabled()) {
 			messageDispatcher.register();
+			messageListener.register();
 		} else {
 			disable();
 		}
 	}
-	
-	
 }

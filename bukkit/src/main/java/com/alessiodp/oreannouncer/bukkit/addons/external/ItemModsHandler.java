@@ -45,8 +45,7 @@ public class ItemModsHandler implements Listener {
 					((Plugin) plugin.getBootstrap()).getServer().getPluginManager().registerEvents(new ItemModsBlockListener(plugin), ((Plugin) plugin.getBootstrap()));
 				}
 				
-				plugin.getLoggerManager().log(Constants.DEBUG_ADDON_HOOKED
-						.replace("{addon}", ADDON_NAME), true);
+				plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
 			}
 		}
 	}
@@ -63,8 +62,7 @@ public class ItemModsHandler implements Listener {
 		if (active) {
 			CustomBlock customBlock = itemMods.getCustomBlockManager().getCustomBlock(block);
 			if (customBlock != null
-					&& customBlock.getConfig().getReferenceItemConfig() != null
-					&& customBlock.getConfig().getReferenceItemConfig().getName() != null)
+					&& customBlock.getConfig().getReferenceItemConfig() != null)
 				return "ITEMMODS_" + CommonUtils.toUpperCase(customBlock.getConfig().getReferenceItemConfig().getName());
 		}
 		return "";
@@ -73,7 +71,7 @@ public class ItemModsHandler implements Listener {
 	public static String getNameByItemStack(ItemStack itemStack) {
 		if (active) {
 			Optional<ItemConfig> opt = itemMods.getCustomItemManager().getItems().stream().filter((itemConfig -> itemConfig.giveItemStack().equals(itemStack))).findAny();
-			if (opt.isPresent() && opt.get().getName() != null)
+			if (opt.isPresent())
 				return "ITEMMODS_" + CommonUtils.toUpperCase(opt.get().getName());
 		}
 		return "";

@@ -20,8 +20,7 @@ public class PlaceholderAPIHandler {
 	public void init() {
 		if (active) {
 			// Already active, print hooked then return
-			plugin.getLoggerManager().log(Constants.DEBUG_ADDON_HOOKED
-					.replace("{addon}", ADDON_NAME), true);
+			plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
 			return;
 		}
 		
@@ -33,8 +32,7 @@ public class PlaceholderAPIHandler {
 				if (hook.register()) {
 					active = true;
 					
-					plugin.getLoggerManager().log(Constants.DEBUG_ADDON_HOOKED
-							.replace("{addon}", ADDON_NAME), true);
+					plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
 				}
 			}
 		}

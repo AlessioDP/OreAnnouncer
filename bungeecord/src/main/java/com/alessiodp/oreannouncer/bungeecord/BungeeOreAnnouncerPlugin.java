@@ -1,6 +1,7 @@
 package com.alessiodp.oreannouncer.bungeecord;
 
 import com.alessiodp.core.bungeecord.addons.internal.json.BungeeJsonHandler;
+import com.alessiodp.core.bungeecord.addons.internal.title.BungeeTitleHandler;
 import com.alessiodp.core.bungeecord.scheduling.ADPBungeeScheduler;
 import com.alessiodp.core.common.bootstrap.ADPBootstrap;
 import com.alessiodp.core.common.configuration.Constants;
@@ -9,6 +10,7 @@ import com.alessiodp.oreannouncer.bungeecord.addons.external.BungeeMetricsHandle
 import com.alessiodp.oreannouncer.bungeecord.blocks.BungeeBlockManager;
 import com.alessiodp.oreannouncer.bungeecord.commands.BungeeOACommandManager;
 import com.alessiodp.oreannouncer.bungeecord.configuration.BungeeOAConfigurationManager;
+import com.alessiodp.oreannouncer.bungeecord.events.BungeeEventManager;
 import com.alessiodp.oreannouncer.bungeecord.listeners.BungeeJoinLeaveListener;
 import com.alessiodp.oreannouncer.bungeecord.messaging.BungeeOAMessenger;
 import com.alessiodp.oreannouncer.bungeecord.players.BungeePlayerManager;
@@ -48,6 +50,7 @@ public class BungeeOreAnnouncerPlugin extends OreAnnouncerPlugin {
 	@Override
 	protected void postHandle() {
 		addonManager = new BungeeOAAddonManager(this);
+		eventManager = new BungeeEventManager(this);
 		
 		super.postHandle();
 		
@@ -57,6 +60,11 @@ public class BungeeOreAnnouncerPlugin extends OreAnnouncerPlugin {
 	@Override
 	protected void initializeJsonHandler() {
 		jsonHandler = new BungeeJsonHandler();
+	}
+	
+	@Override
+	protected void initializeTitleHandler() {
+		titleHandler = new BungeeTitleHandler();
 	}
 	
 	@Override

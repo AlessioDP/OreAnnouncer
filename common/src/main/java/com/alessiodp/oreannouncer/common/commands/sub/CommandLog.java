@@ -2,19 +2,16 @@ package com.alessiodp.oreannouncer.common.commands.sub;
 
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
-import com.alessiodp.core.common.commands.utils.ADPSubCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
-import com.alessiodp.core.common.utils.Color;
 import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
-import com.alessiodp.oreannouncer.common.addons.external.LLAPIHandler;
 import com.alessiodp.oreannouncer.common.blocks.objects.BlockFound;
 import com.alessiodp.oreannouncer.common.blocks.objects.OABlockImpl;
 import com.alessiodp.oreannouncer.common.commands.list.CommonCommands;
 import com.alessiodp.oreannouncer.common.commands.utils.OACommandData;
+import com.alessiodp.oreannouncer.common.commands.utils.OASubCommand;
 import com.alessiodp.oreannouncer.common.utils.OreAnnouncerPermission;
-import com.alessiodp.oreannouncer.common.configuration.OAConstants;
 import com.alessiodp.oreannouncer.common.configuration.data.Blocks;
 import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import com.alessiodp.oreannouncer.common.configuration.data.Messages;
@@ -23,10 +20,8 @@ import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
-public class CommandLog extends ADPSubCommand {
+public class CommandLog extends OASubCommand {
 	private final String syntaxPlayer;
 	private final String syntaxBlock;
 	
@@ -36,25 +31,25 @@ public class CommandLog extends ADPSubCommand {
 				mainCommand,
 				CommonCommands.LOG,
 				OreAnnouncerPermission.ADMIN_LOG,
-				ConfigMain.COMMANDS_CMD_LOG,
+				ConfigMain.COMMANDS_SUB_LOG,
 				true
 		);
 		
 		syntax = String.format("%s <%s/%s> ...",
 				baseSyntax(),
-				ConfigMain.COMMANDS_SUB_BLOCK,
-				ConfigMain.COMMANDS_SUB_PLAYER
+				ConfigMain.COMMANDS_MISC_BLOCK,
+				ConfigMain.COMMANDS_MISC_PLAYER
 		);
 		syntaxPlayer = String.format("%s %s <%s> [%s] [%s]",
 				baseSyntax(),
-				ConfigMain.COMMANDS_SUB_PLAYER,
+				ConfigMain.COMMANDS_MISC_PLAYER,
 				Messages.OREANNOUNCER_SYNTAX_PLAYER,
 				Messages.OREANNOUNCER_SYNTAX_BLOCK,
 				Messages.OREANNOUNCER_SYNTAX_PAGE
 		);
 		syntaxBlock = String.format("%s %s [%s] [%s]",
 				baseSyntax(),
-				ConfigMain.COMMANDS_SUB_BLOCK,
+				ConfigMain.COMMANDS_MISC_BLOCK,
 				Messages.OREANNOUNCER_SYNTAX_BLOCK,
 				Messages.OREANNOUNCER_SYNTAX_PAGE
 		);
@@ -80,7 +75,7 @@ public class CommandLog extends ADPSubCommand {
 		}
 		
 		if (commandData.getArgs().length < 2) {
-			sendMessage(player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
+			sendMessage(sender, player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
 					.replace("%syntax%", syntax));
 			return false;
 		}
@@ -89,13 +84,8 @@ public class CommandLog extends ADPSubCommand {
 	
 	@Override
 	public void onCommand(CommandData commandData) {
+		User sender = commandData.getSender();
 		OAPlayerImpl player = ((OACommandData) commandData).getPlayer();
-		
-		if (player != null)
-			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_CMD_LOG
-					.replace("{player}", player.getName()), true);
-		else
-			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_CMD_LOG_CONSOLE, true);
 		
 		// Command handling
 		int selectedPage = 1;
@@ -103,17 +93,17 @@ public class CommandLog extends ADPSubCommand {
 		OAPlayerImpl targetPlayer = null;
 		OABlockImpl block = null;
 		boolean isGeneralCommand;
-		if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_BLOCK)) {
+		if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_MISC_BLOCK)) {
 			isGeneralCommand = true;
 			
 			if (commandData.getArgs().length > 2) {
 				if (commandData.getArgs().length > 3) {
 					// oa block <BLOCK> <page>
-					OABlockImpl b = Blocks.LIST.get(CommonUtils.toUpperCase(commandData.getArgs()[2]));
+					OABlockImpl b = Blocks.searchBlock(CommonUtils.toUpperCase(commandData.getArgs()[2]));
 					if (b != null && b.isEnabled()) {
 						block = b;
 					} else {
-						sendMessage(player, Messages.CMD_LOG_INVALID_BLOCK);
+						sendMessage(sender, player, Messages.CMD_LOG_INVALID_BLOCK);
 						return;
 					}
 					
@@ -121,7 +111,7 @@ public class CommandLog extends ADPSubCommand {
 					try {
 						selectedPage = Integer.parseInt(commandData.getArgs()[3]);
 					} catch (NumberFormatException ex) {
-						sendMessage(player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
+						sendMessage(sender, player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
 								.replace("%syntax%", syntaxBlock));
 						return;
 					}
@@ -131,46 +121,39 @@ public class CommandLog extends ADPSubCommand {
 						selectedPage = Integer.parseInt(commandData.getArgs()[2]);
 					} catch (NumberFormatException ex) {
 						// oa block <BLOCK/page>
-						OABlockImpl b = Blocks.LIST.get(CommonUtils.toUpperCase(commandData.getArgs()[2]));
+						OABlockImpl b = Blocks.searchBlock(CommonUtils.toUpperCase(commandData.getArgs()[2]));
 						if (b != null && b.isEnabled()) {
 							block = b;
 						} else {
-							sendMessage(player, Messages.CMD_LOG_INVALID_BLOCK);
+							sendMessage(sender, player, Messages.CMD_LOG_INVALID_BLOCK);
 							return;
 						}
 					}
 				}
 			}
-		} else if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_PLAYER)) {
+		} else if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_MISC_PLAYER)) {
 			isGeneralCommand = false;
 			
 			if (commandData.getArgs().length > 2) {
 				// oa player <PLAYER> ...
 				playerName = commandData.getArgs()[2];
 				
-				User targetUser = plugin.getPlayerByName(playerName);
-				if (targetUser != null) {
-					targetPlayer = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(targetUser.getUUID());
-				} else {
-					Set<UUID> targetPlayersUuid = LLAPIHandler.getPlayerByName(playerName);
-					if (targetPlayersUuid.size() > 0) {
-						targetPlayer = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(targetPlayersUuid.iterator().next());
-					} else {
-						// Not found
-						sendMessage(player, Messages.CMD_LOG_PLAYERNOTFOUND
-								.replace("%player%", playerName));
-						return;
-					}
+				targetPlayer = playerLookup(playerName);
+				if (targetPlayer == null) {
+					// Not found
+					sendMessage(sender, player, Messages.OREANNOUNCER_COMMON_PLAYER_NOT_FOUND
+							.replace("%player%", playerName));
+					return;
 				}
 				
 				if (commandData.getArgs().length > 3) {
 					if (commandData.getArgs().length > 4) {
 						// oa player <player> <BLOCK> <page>
-						OABlockImpl b = Blocks.LIST.get(CommonUtils.toUpperCase(commandData.getArgs()[3]));
+						OABlockImpl b = Blocks.searchBlock(CommonUtils.toUpperCase(commandData.getArgs()[3]));
 						if (b != null && b.isEnabled()) {
 							block = b;
 						} else {
-							sendMessage(player, Messages.CMD_LOG_INVALID_BLOCK);
+							sendMessage(sender, player, Messages.CMD_LOG_INVALID_BLOCK);
 							return;
 						}
 						
@@ -178,7 +161,7 @@ public class CommandLog extends ADPSubCommand {
 						try {
 							selectedPage = Integer.parseInt(commandData.getArgs()[4]);
 						} catch (NumberFormatException ex) {
-							sendMessage(player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
+							sendMessage(sender, player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
 									.replace("%syntax%", syntaxPlayer));
 							return;
 						}
@@ -188,23 +171,23 @@ public class CommandLog extends ADPSubCommand {
 							selectedPage = Integer.parseInt(commandData.getArgs()[3]);
 						} catch (NumberFormatException ex) {
 							// oa player <player> <BLOCK/page>
-							OABlockImpl b = Blocks.LIST.get(CommonUtils.toUpperCase(commandData.getArgs()[3]));
+							OABlockImpl b = Blocks.searchBlock(CommonUtils.toUpperCase(commandData.getArgs()[3]));
 							if (b != null && b.isEnabled()) {
 								block = b;
 							} else {
-								sendMessage(player, Messages.CMD_LOG_INVALID_BLOCK);
+								sendMessage(sender, player, Messages.CMD_LOG_INVALID_BLOCK);
 								return;
 							}
 						}
 					}
 				}
 			} else {
-				sendMessage(player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
+				sendMessage(sender, player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
 						.replace("%syntax%", syntaxPlayer));
 				return;
 			}
 		} else {
-			sendMessage(player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
+			sendMessage(sender, player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
 					.replace("%syntax%", syntax));
 			return;
 		}
@@ -230,19 +213,19 @@ public class CommandLog extends ADPSubCommand {
 		
 		if (isGeneralCommand) {
 			if (block != null) {
-				sendMessage(player, Messages.CMD_LOG_HEADER_BLOCK
+				sendMessage(sender, player, Messages.CMD_LOG_HEADER_BLOCK
 						.replace("%block%", block.getDisplayName())
 						.replace("%page%", Integer.toString(selectedPage))
 						.replace("%maxpages%", Integer.toString(maxPages))
 						.replace("%total%", Integer.toString(numberBlocks)));
 			} else {
-				sendMessage(player, Messages.CMD_LOG_HEADER_BLOCK_GENERAL
+				sendMessage(sender, player, Messages.CMD_LOG_HEADER_BLOCK_GENERAL
 						.replace("%page%", Integer.toString(selectedPage))
 						.replace("%maxpages%", Integer.toString(maxPages))
 						.replace("%total%", Integer.toString(numberBlocks)));
 			}
 		} else {
-			sendMessage(player, ((OreAnnouncerPlugin) plugin).getMessageUtils().convertPlayerPlaceholders(
+			sendMessage(sender, player, ((OreAnnouncerPlugin) plugin).getMessageUtils().convertPlayerPlaceholders(
 					Messages.CMD_LOG_HEADER_PLAYER
 						.replace("%page%", Integer.toString(selectedPage))
 						.replace("%maxpages%", Integer.toString(maxPages))
@@ -253,11 +236,11 @@ public class CommandLog extends ADPSubCommand {
 		
 		if (blocks.size() > 0) {
 			for (BlockFound bf : blocks) {
-				OABlockImpl b = Blocks.LIST.get(bf.getMaterialName());
+				OABlockImpl b = Blocks.searchBlock(bf.getMaterialName());
 				if (b != null && b.isEnabled()) {
 					empty = false;
 					OAPlayerImpl bPlayer = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(bf.getPlayer());
-					sendMessage(player, ((OreAnnouncerPlugin) plugin).getMessageUtils().convertPlayerPlaceholders(
+					sendMessage(sender, player, ((OreAnnouncerPlugin) plugin).getMessageUtils().convertPlayerPlaceholders(
 							((OreAnnouncerPlugin) plugin).getMessageUtils().convertBlockPlaceholders((isGeneralCommand ? Messages.CMD_LOG_FORMAT_GENERAL_BLOCK : Messages.CMD_LOG_FORMAT_PLAYER_BLOCK)
 								.replace("%number%", Integer.toString(bf.getFound()))
 								.replace("%date_elapsed%", ((OreAnnouncerPlugin) plugin).getMessageUtils().formatElapsed(bf.getTimestamp()))
@@ -269,24 +252,24 @@ public class CommandLog extends ADPSubCommand {
 		}
 		
 		if (empty) {
-			sendMessage(player, Messages.CMD_LOG_NOTHING);
+			sendMessage(sender, player, Messages.CMD_LOG_NOTHING);
 		}
 		
 		if (isGeneralCommand) {
 			if (block != null) {
-				sendMessage(player, Messages.CMD_LOG_FOOTER_BLOCK
+				sendMessage(sender, player, Messages.CMD_LOG_FOOTER_BLOCK
 						.replace("%block%", block.getDisplayName())
 						.replace("%page%", Integer.toString(selectedPage))
 						.replace("%maxpages%", Integer.toString(maxPages))
 						.replace("%total%", Integer.toString(numberBlocks)));
 			} else {
-				sendMessage(player, Messages.CMD_LOG_FOOTER_BLOCK_GENERAL
+				sendMessage(sender, player, Messages.CMD_LOG_FOOTER_BLOCK_GENERAL
 						.replace("%page%", Integer.toString(selectedPage))
 						.replace("%maxpages%", Integer.toString(maxPages))
 						.replace("%total%", Integer.toString(numberBlocks)));
 			}
 		} else {
-			sendMessage(player, ((OreAnnouncerPlugin) plugin).getMessageUtils().convertPlayerPlaceholders(
+			sendMessage(sender, player, ((OreAnnouncerPlugin) plugin).getMessageUtils().convertPlayerPlaceholders(
 					Messages.CMD_LOG_FOOTER_PLAYER
 							.replace("%page%", Integer.toString(selectedPage))
 							.replace("%maxpages%", Integer.toString(maxPages))
@@ -296,35 +279,20 @@ public class CommandLog extends ADPSubCommand {
 		}
 	}
 	
-	private void sendMessage(OAPlayerImpl player, String message) {
-		if (player != null)
-			player.sendMessage(message);
-		else
-			plugin.logConsole(Color.translateAndStripColor(plugin.getJsonHandler().removeJson(message)), false);
-	}
-	
 	@Override
 	public List<String> onTabComplete(@NonNull User sender, String[] args) {
 		List<String> ret = new ArrayList<>();
 		if (sender.hasPermission(permission)) {
 			if (args.length == 2) {
-				ret.add(ConfigMain.COMMANDS_SUB_BLOCK);
-				ret.add(ConfigMain.COMMANDS_SUB_PLAYER);
-				
-				if (!args[1].isEmpty()) {
-					ret = plugin.getCommandManager().getCommandUtils().tabCompleteParser(ret, args[1]);
-				}
+				ret.add(ConfigMain.COMMANDS_MISC_BLOCK);
+				ret.add(ConfigMain.COMMANDS_MISC_PLAYER);
 			} else if (args.length > 2) {
-				if (args[1].equalsIgnoreCase(ConfigMain.COMMANDS_SUB_BLOCK)) {
+				if (args[1].equalsIgnoreCase(ConfigMain.COMMANDS_MISC_BLOCK)) {
 					if (args.length == 3) {
 						// Block
 						for (OABlockImpl block : Blocks.LIST.values()) {
 							if (block.isEnabled())
 								ret.add(block.getMaterialName());
-						}
-						
-						if (!args[2].isEmpty()) {
-							ret = plugin.getCommandManager().getCommandUtils().tabCompleteParser(ret, args[2]);
 						}
 					}
 				} else {
@@ -336,14 +304,10 @@ public class CommandLog extends ADPSubCommand {
 							if (block.isEnabled())
 								ret.add(block.getMaterialName());
 						}
-						
-						if (!args[3].isEmpty()) {
-							ret = plugin.getCommandManager().getCommandUtils().tabCompleteParser(ret, args[3]);
-						}
 					}
 				}
 			}
 		}
-		return ret;
+		return plugin.getCommandManager().getCommandUtils().tabCompleteParser(ret, args[args.length - 1]);
 	}
 }

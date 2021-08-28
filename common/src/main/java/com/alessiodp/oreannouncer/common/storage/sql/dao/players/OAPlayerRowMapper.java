@@ -16,6 +16,7 @@ public class OAPlayerRowMapper implements RowMapper<OAPlayerImpl> {
 		OAPlayerImpl ret = ((OreAnnouncerPlugin) ADPPlugin.getInstance()).getPlayerManager().initializePlayer(UUID.fromString(rs.getString("uuid")));
 		ret.setAccessible(true);
 		ret.setAlertsOn(rs.getBoolean("alerts"));
+		ret.setWhitelisted(rs.getBoolean("whitelisted"));
 		ret.setAccessible(false);
 		return ret;
 	}

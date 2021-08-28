@@ -1,5 +1,7 @@
 package com.alessiodp.oreannouncer.api.interfaces;
 
+import java.util.List;
+
 public interface OABlock {
 	
 	/**
@@ -22,6 +24,34 @@ public interface OABlock {
 	 * @param enable True to enable
 	 */
 	void setEnabled(boolean enable);
+	
+	/**
+	 * Get block variants a unmodifiable List
+	 *
+	 * @return A unmodifiable list of block variants
+	 */
+	List<String> getVariants();
+	
+	/**
+	 * Set the variants list
+	 *
+	 * @param variants The variants to set
+	 */
+	void setVariants(List<String> variants);
+	
+	/**
+	 * Add a variant to the list
+	 *
+	 * @param variant The variant to add
+	 */
+	void addVariant(String variant);
+	
+	/**
+	 * Remove a variant from the list
+	 *
+	 * @param variant The variant to remove
+	 */
+	void removeVariant(String variant);
 	
 	/**
 	 * Get display name
@@ -245,6 +275,20 @@ public interface OABlock {
 	 * @param lightLevel The light level to set
 	 */
 	void setLightLevel(int lightLevel);
+	
+	/**
+	 * Get height level value
+	 *
+	 * @return Returns the height level of the block
+	 */
+	int getHeightLevel();
+	
+	/**
+	 * Set height level cap
+	 *
+	 * @param heightLevel The height level to set
+	 */
+	void setHeightLevel(int heightLevel);
 	
 	/**
 	 * Is count on destroy enabled?

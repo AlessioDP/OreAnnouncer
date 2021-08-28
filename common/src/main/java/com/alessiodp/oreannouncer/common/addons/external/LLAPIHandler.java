@@ -27,8 +27,7 @@ public class LLAPIHandler {
 			if (hook.register()) {
 				active = true;
 				
-				plugin.getLoggerManager().log(Constants.DEBUG_ADDON_HOOKED
-						.replace("{addon}", ADDON_NAME), true);
+				plugin.getLoggerManager().log(String.format(Constants.DEBUG_ADDON_HOOKED, ADDON_NAME), true);
 			}
 		}
 	}
@@ -39,7 +38,7 @@ public class LLAPIHandler {
 			ret = hook.getPlayerName(uuid);
 		} else {
 			User user = plugin.getPlayer(uuid);
-			ret = user != null ? user.getName() : "";
+			ret = user != null ? user.getName() : "Unknown";
 		}
 		return ret;
 	}

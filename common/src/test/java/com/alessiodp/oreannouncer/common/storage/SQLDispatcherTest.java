@@ -1,12 +1,10 @@
 package com.alessiodp.oreannouncer.common.storage;
 
 import com.alessiodp.core.common.ADPPlugin;
-import com.alessiodp.core.common.addons.ADPLibraryManager;
 import com.alessiodp.core.common.bootstrap.ADPBootstrap;
 import com.alessiodp.core.common.logging.LoggerManager;
 import com.alessiodp.core.common.storage.StorageType;
 import com.alessiodp.core.common.storage.sql.connection.ConnectionFactory;
-import com.alessiodp.core.common.storage.sql.migrator.Migrator;
 import com.alessiodp.core.common.user.OfflineUser;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.blocks.objects.BlockDestroy;
@@ -19,10 +17,13 @@ import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 import com.alessiodp.oreannouncer.common.storage.dispatchers.OASQLDispatcher;
 import com.alessiodp.oreannouncer.common.storage.sql.dao.blocks.BlocksDao;
 import com.alessiodp.oreannouncer.common.storage.sql.dao.blocks.H2BlocksDao;
+import com.alessiodp.oreannouncer.common.storage.sql.dao.blocks.PostgreSQLBlocksDao;
 import com.alessiodp.oreannouncer.common.storage.sql.dao.blocks.SQLiteBlocksDao;
 import com.alessiodp.oreannouncer.common.storage.sql.dao.blocksfound.BlocksFoundDao;
+import com.alessiodp.oreannouncer.common.storage.sql.dao.blocksfound.PostgreSQLBlocksFoundDao;
 import com.alessiodp.oreannouncer.common.storage.sql.dao.players.H2PlayersDao;
 import com.alessiodp.oreannouncer.common.storage.sql.dao.players.PlayersDao;
+import com.alessiodp.oreannouncer.common.storage.sql.dao.players.PostgreSQLPlayersDao;
 import com.alessiodp.oreannouncer.common.storage.sql.dao.players.SQLitePlayersDao;
 import com.alessiodp.oreannouncer.common.utils.BlocksFoundResult;
 import org.junit.Before;
@@ -40,6 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -48,7 +50,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.powermock.api.mockito.PowerMockito.doNothing;
+import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.mockito.PowerMockito.doAnswer;
 import static org.powermock.api.mockito.PowerMockito.mock;
@@ -56,21 +58,11 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({
-		ADPPlugin.class,
-		ADPBootstrap.class,
-		Blocks.class,
-		BlocksFoundResult.class,
-		ConfigMain.class,
-		LoggerManager.class,
-		Migrator.class,
-		OASQLDispatcher.class,
-		OfflineUser.class,
-		OreAnnouncerPlugin.class,
-		PlayerManager.class
+		ADPPlugin.class
 })
 public class SQLDispatcherTest {
 	@Rule
-	public TemporaryFolder testFolder = new TemporaryFolder();
+	public final TemporaryFolder testFolder = new TemporaryFolder();
 	
 	private OreAnnouncerPlugin mockPlugin;
 	
@@ -105,11 +97,6 @@ public class SQLDispatcherTest {
 		OfflineUser mockOfflineUser = mock(OfflineUser.class);
 		when(mockPlugin.getOfflinePlayer(any())).thenReturn(mockOfflineUser);
 		when(mockOfflineUser.getName()).thenReturn("Dummy");
-		
-		// Mock class loaders
-		ADPLibraryManager mockLibraryManager = mock(ADPLibraryManager.class);
-		when(mockLibraryManager.getIsolatedClassLoaderOf(any())).thenReturn(getClass().getClassLoader());
-		when(mockPlugin.getLibraryManager()).thenReturn(mockLibraryManager);
 		
 		ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX = "test_";
 	}
@@ -146,6 +133,78 @@ public class SQLDispatcherTest {
 		return ret;
 	}
 	
+	public static OASQLDispatcher getSQLDispatcherMySQL(OreAnnouncerPlugin plugin) {
+		// Manual test only
+		/*
+		ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX = "test_";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CHARSET = "utf8";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_ADDRESS = "localhost";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_PORT = "3306";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_DATABASE = "oreannouncer";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_USERNAME = "root";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_PASSWORD = "";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_POOLSIZE = 10;
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CONNLIFETIME = 1800000;
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_USESSL = false;
+		OASQLDispatcher ret = new OASQLDispatcher(plugin, StorageType.MYSQL);
+		ret.init();
+		
+		ret.getConnectionFactory().getJdbi().onDemand(BlocksDao.class).deleteAll();
+		ret.getConnectionFactory().getJdbi().onDemand(BlocksFoundDao.class).deleteAll();
+		ret.getConnectionFactory().getJdbi().onDemand(PlayersDao.class).deleteAll();
+		return ret;
+		 */
+		return null;
+	}
+	
+	public static OASQLDispatcher getSQLDispatcherMariaDB(OreAnnouncerPlugin plugin) {
+		// Manual test only
+		/*
+		ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX = "test_";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CHARSET = "utf8";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_ADDRESS = "localhost";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_PORT = "3306";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_DATABASE = "oreannouncer";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_USERNAME = "root";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_PASSWORD = "";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_POOLSIZE = 10;
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CONNLIFETIME = 1800000;
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_USESSL = false;
+		OASQLDispatcher ret = new OASQLDispatcher(plugin, StorageType.MARIADB);
+		ret.init();
+		
+		ret.getConnectionFactory().getJdbi().onDemand(BlocksDao.class).deleteAll();
+		ret.getConnectionFactory().getJdbi().onDemand(BlocksFoundDao.class).deleteAll();
+		ret.getConnectionFactory().getJdbi().onDemand(PlayersDao.class).deleteAll();
+		return ret;
+		 */
+		return null;
+	}
+	
+	public static OASQLDispatcher getSQLDispatcherPostgreSQL(OreAnnouncerPlugin plugin) {
+		// Manual test only
+		/*
+		ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX = "test_";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CHARSET = "utf8";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_ADDRESS = "localhost";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_PORT = "5432";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_DATABASE = "oreannouncer";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_USERNAME = "postgres";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_PASSWORD = "";
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_POOLSIZE = 10;
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_CONNLIFETIME = 1800000;
+		ConfigMain.STORAGE_SETTINGS_REMOTE_SQL_USESSL = false;
+		OASQLDispatcher ret = new OASQLDispatcher(plugin, StorageType.POSTGRESQL);
+		ret.init();
+		
+		ret.getConnectionFactory().getJdbi().onDemand(PostgreSQLBlocksDao.class).deleteAll();
+		ret.getConnectionFactory().getJdbi().onDemand(PostgreSQLBlocksFoundDao.class).deleteAll();
+		ret.getConnectionFactory().getJdbi().onDemand(PostgreSQLPlayersDao.class).deleteAll();
+		return ret;
+		 */
+		return null;
+	}
+	
 	@Test
 	public void testPlayer() {
 		OASQLDispatcher dispatcher = getSQLDispatcherH2();
@@ -155,19 +214,35 @@ public class SQLDispatcherTest {
 		dispatcher = getSQLDispatcherSQLite();
 		player(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePlayersDao.class));
 		dispatcher.stop();
+		
+		dispatcher = getSQLDispatcherMySQL(mockPlugin);
+		if (dispatcher != null) {
+			player(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PlayersDao.class));
+			dispatcher.stop();
+		}
+		
+		dispatcher = getSQLDispatcherMariaDB(mockPlugin);
+		if (dispatcher != null) {
+			player(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PlayersDao.class));
+			dispatcher.stop();
+		}
+		
+		dispatcher = getSQLDispatcherPostgreSQL(mockPlugin);
+		if (dispatcher != null) {
+			player(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PostgreSQLPlayersDao.class));
+			dispatcher.stop();
+		}
 	}
 	
 	
 	private void player(OASQLDispatcher dispatcher, PlayersDao dao) {
-		OAPlayerImpl player = new OAPlayerImpl(mockPlugin, UUID.randomUUID()) {};
+		OAPlayerImpl player = initializePlayer(mockPlugin, UUID.randomUUID());
 		OAPlayerImpl mockPlayer = mock(player.getClass());
-		doNothing().when(mockPlayer).updatePlayer();
+		doReturn(CompletableFuture.completedFuture(null)).when(mockPlayer).updatePlayer();
 		
 		PlayerManager mockPlayerManager = mock(PlayerManager.class);
 		when(mockPlugin.getPlayerManager()).thenReturn(mockPlayerManager);
-		when(mockPlayerManager.initializePlayer(any())).thenAnswer((mock) ->
-				new OAPlayerImpl(mockPlugin, mock.getArgument(0)) {}
-		);
+		when(mockPlayerManager.initializePlayer(any())).thenAnswer((mock) -> initializePlayer(mockPlugin, mock.getArgument(0)));
 		
 		
 		player.setAccessible(true);
@@ -187,8 +262,6 @@ public class SQLDispatcherTest {
 		player.setAccessible(false);
 		dispatcher.updatePlayer(player);
 		assertEquals(dao.countAll(), 0);
-		
-		dispatcher.getConnectionFactory().getJdbi().useHandle(handle -> handle.execute("DROP TABLE `<prefix>players`"));
 	}
 	
 	@Test
@@ -200,6 +273,24 @@ public class SQLDispatcherTest {
 		dispatcher = getSQLDispatcherSQLite();
 		blockFound(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(BlocksFoundDao.class));
 		dispatcher.stop();
+		
+		dispatcher = getSQLDispatcherMySQL(mockPlugin);
+		if (dispatcher != null) {
+			blockFound(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(BlocksFoundDao.class));
+			dispatcher.stop();
+		}
+		
+		dispatcher = getSQLDispatcherMariaDB(mockPlugin);
+		if (dispatcher != null) {
+			blockFound(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(BlocksFoundDao.class));
+			dispatcher.stop();
+		}
+		
+		dispatcher = getSQLDispatcherPostgreSQL(mockPlugin);
+		if (dispatcher != null) {
+			blockFound(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PostgreSQLBlocksFoundDao.class));
+			dispatcher.stop();
+		}
 	}
 	
 	private void blockFound(OASQLDispatcher dispatcher, BlocksFoundDao dao) {
@@ -258,6 +349,24 @@ public class SQLDispatcherTest {
 		dispatcher = getSQLDispatcherSQLite();
 		topPlayersDestroyed(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLiteBlocksDao.class));
 		dispatcher.stop();
+		
+		dispatcher = getSQLDispatcherMySQL(mockPlugin);
+		if (dispatcher != null) {
+			topPlayersDestroyed(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(BlocksDao.class));
+			dispatcher.stop();
+		}
+		
+		dispatcher = getSQLDispatcherMariaDB(mockPlugin);
+		if (dispatcher != null) {
+			topPlayersDestroyed(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(BlocksDao.class));
+			dispatcher.stop();
+		}
+		
+		dispatcher = getSQLDispatcherPostgreSQL(mockPlugin);
+		if (dispatcher != null) {
+			topPlayersDestroyed(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PostgreSQLBlocksDao.class));
+			dispatcher.stop();
+		}
 	}
 	
 	private void topPlayersDestroyed(OASQLDispatcher dispatcher, BlocksDao dao) {
@@ -265,13 +374,13 @@ public class SQLDispatcherTest {
 		UUID player2 = UUID.randomUUID();
 		UUID player3 = UUID.randomUUID();
 		
-		OABlockImpl block1 = new OABlockImpl(mockPlugin, "mat1");
-		OABlockImpl block2 = new OABlockImpl(mockPlugin, "mat2");
-		OABlockImpl block3 = new OABlockImpl(mockPlugin, "mat3");
+		OABlockImpl block1 = new OABlockImpl(mockPlugin, "MAT1");
+		OABlockImpl block2 = new OABlockImpl(mockPlugin, "MAT2");
+		OABlockImpl block3 = new OABlockImpl(mockPlugin, "MAT3");
 		Blocks.LIST = new HashMap<>();
-		Blocks.LIST.put(block1.getMaterialName(), block1);
-		Blocks.LIST.put(block2.getMaterialName(), block2);
-		Blocks.LIST.put(block3.getMaterialName(), block3);
+		Blocks.addBlock(block1);
+		Blocks.addBlock(block2);
+		Blocks.addBlock(block3);
 		
 		BlockDestroy bd1player1 = new BlockDestroy(player1, block1.getMaterialName(), 0);
 		BlockDestroy bd1player1overwrite = new BlockDestroy(player1, block1.getMaterialName(), 5);
@@ -312,6 +421,16 @@ public class SQLDispatcherTest {
 		// Counts
 		assertEquals(dispatcher.getTopPlayersNumber(OADatabaseManager.ValueType.DESTROY, null), 3);
 		assertEquals(dispatcher.getTopPlayersNumber(OADatabaseManager.ValueType.DESTROY, new OABlockImpl(mockPlugin, block3.getMaterialName())), 2);
+		
+		// Player position
+		assertEquals(dispatcher.getTopPlayerPosition(bd1player1.getPlayer(), OADatabaseManager.ValueType.DESTROY, null), 1);
+		assertEquals(dispatcher.getTopPlayerPosition(bd1player2.getPlayer(), OADatabaseManager.ValueType.DESTROY, null), 3);
+		assertEquals(dispatcher.getTopPlayerPosition(bd1player3.getPlayer(), OADatabaseManager.ValueType.DESTROY, null), 2);
+		assertEquals(dispatcher.getTopPlayerPosition(UUID.randomUUID(), OADatabaseManager.ValueType.DESTROY, null), 0);
+		
+		assertEquals(dispatcher.getTopPlayerPosition(bd1player1.getPlayer(), OADatabaseManager.ValueType.DESTROY, block2), 1);
+		assertEquals(dispatcher.getTopPlayerPosition(bd1player2.getPlayer(), OADatabaseManager.ValueType.DESTROY, block2), 2);
+		assertEquals(dispatcher.getTopPlayerPosition(bd1player3.getPlayer(), OADatabaseManager.ValueType.DESTROY, block2), 0);
 	}
 	
 	@Test
@@ -323,6 +442,24 @@ public class SQLDispatcherTest {
 		dispatcher = getSQLDispatcherSQLite();
 		topPlayersFound(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(BlocksFoundDao.class));
 		dispatcher.stop();
+		
+		dispatcher = getSQLDispatcherMySQL(mockPlugin);
+		if (dispatcher != null) {
+			topPlayersFound(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(BlocksFoundDao.class));
+			dispatcher.stop();
+		}
+		
+		dispatcher = getSQLDispatcherMariaDB(mockPlugin);
+		if (dispatcher != null) {
+			topPlayersFound(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(BlocksFoundDao.class));
+			dispatcher.stop();
+		}
+		
+		dispatcher = getSQLDispatcherPostgreSQL(mockPlugin);
+		if (dispatcher != null) {
+			topPlayersFound(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PostgreSQLBlocksFoundDao.class));
+			dispatcher.stop();
+		}
 	}
 	
 	private void topPlayersFound(OASQLDispatcher dispatcher, BlocksFoundDao dao) {
@@ -335,9 +472,9 @@ public class SQLDispatcherTest {
 		OABlockImpl block2 = new OABlockImpl(mockPlugin, "mat2");
 		OABlockImpl block3 = new OABlockImpl(mockPlugin, "mat3");
 		Blocks.LIST = new HashMap<>();
-		Blocks.LIST.put(block1.getMaterialName(), block1);
-		Blocks.LIST.put(block2.getMaterialName(), block2);
-		Blocks.LIST.put(block3.getMaterialName(), block3);
+		Blocks.addBlock(block1);
+		Blocks.addBlock(block2);
+		Blocks.addBlock(block3);
 		
 		BlockFound bf1player1 = new BlockFound(player1, block1.getMaterialName(), time, 5);
 		BlockFound bf2player1 = new BlockFound(player1, block2.getMaterialName(), time, 10);
@@ -383,6 +520,16 @@ public class SQLDispatcherTest {
 		// Counts
 		assertEquals(dispatcher.getTopPlayersNumber(OADatabaseManager.ValueType.FOUND, null), 3);
 		assertEquals(dispatcher.getTopPlayersNumber(OADatabaseManager.ValueType.FOUND, block3), 2);
+		
+		// Player position
+		assertEquals(dispatcher.getTopPlayerPosition(bf1player1.getPlayer(), OADatabaseManager.ValueType.FOUND, null), 1);
+		assertEquals(dispatcher.getTopPlayerPosition(bf1player2.getPlayer(), OADatabaseManager.ValueType.FOUND, null), 3);
+		assertEquals(dispatcher.getTopPlayerPosition(bf1player3.getPlayer(), OADatabaseManager.ValueType.FOUND, null), 2);
+		assertEquals(dispatcher.getTopPlayerPosition(UUID.randomUUID(), OADatabaseManager.ValueType.FOUND, null), 0);
+		
+		assertEquals(dispatcher.getTopPlayerPosition(bf1player1.getPlayer(), OADatabaseManager.ValueType.FOUND, block2), 1);
+		assertEquals(dispatcher.getTopPlayerPosition(bf1player2.getPlayer(), OADatabaseManager.ValueType.FOUND, block2), 2);
+		assertEquals(dispatcher.getTopPlayerPosition(bf1player3.getPlayer(), OADatabaseManager.ValueType.FOUND, block2), 0);
 	}
 	
 	@Test
@@ -394,7 +541,26 @@ public class SQLDispatcherTest {
 		dispatcher = getSQLDispatcherSQLite();
 		statsPlayerDestroyed(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLiteBlocksDao.class));
 		dispatcher.stop();
+		
+		dispatcher = getSQLDispatcherMySQL(mockPlugin);
+		if (dispatcher != null) {
+			statsPlayerDestroyed(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(BlocksDao.class));
+			dispatcher.stop();
+		}
+		
+		dispatcher = getSQLDispatcherMariaDB(mockPlugin);
+		if (dispatcher != null) {
+			statsPlayerDestroyed(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(BlocksDao.class));
+			dispatcher.stop();
+		}
+		
+		dispatcher = getSQLDispatcherPostgreSQL(mockPlugin);
+		if (dispatcher != null) {
+			statsPlayerDestroyed(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PostgreSQLBlocksDao.class));
+			dispatcher.stop();
+		}
 	}
+	
 	
 	private void statsPlayerDestroyed(OASQLDispatcher dispatcher, BlocksDao dao) {
 		UUID player1 = UUID.randomUUID();
@@ -405,9 +571,9 @@ public class SQLDispatcherTest {
 		OABlockImpl block2 = new OABlockImpl(mockPlugin, "mat2");
 		OABlockImpl block3 = new OABlockImpl(mockPlugin, "mat3");
 		Blocks.LIST = new HashMap<>();
-		Blocks.LIST.put(block1.getMaterialName(), block1);
-		Blocks.LIST.put(block2.getMaterialName(), block2);
-		Blocks.LIST.put(block3.getMaterialName(), block3);
+		Blocks.addBlock(block1);
+		Blocks.addBlock(block2);
+		Blocks.addBlock(block3);
 		
 		BlockDestroy bd1player1 = new BlockDestroy(player1, block1.getMaterialName(), 1);
 		BlockDestroy bd1player1overwrite = new BlockDestroy(player1, block1.getMaterialName(), 5);
@@ -434,7 +600,6 @@ public class SQLDispatcherTest {
 		
 		ConfigMain.STATS_BLACKLIST_BLOCKS_STATS = Collections.singletonList(block3.getMaterialName());
 		HashMap<OABlockImpl, Integer> blocks = dispatcher.getStatsPlayer(OADatabaseManager.ValueType.DESTROY, player1);
-		
 		assertNotNull(blocks.get(block1));
 		assertEquals(blocks.get(block1).intValue(), 5);
 		assertNotNull(blocks.get(block2));
@@ -468,6 +633,24 @@ public class SQLDispatcherTest {
 		dispatcher = getSQLDispatcherSQLite();
 		statsPlayerFound(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(BlocksFoundDao.class));
 		dispatcher.stop();
+		
+		dispatcher = getSQLDispatcherMySQL(mockPlugin);
+		if (dispatcher != null) {
+			statsPlayerFound(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(BlocksFoundDao.class));
+			dispatcher.stop();
+		}
+		
+		dispatcher = getSQLDispatcherMariaDB(mockPlugin);
+		if (dispatcher != null) {
+			statsPlayerFound(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(BlocksFoundDao.class));
+			dispatcher.stop();
+		}
+		
+		dispatcher = getSQLDispatcherPostgreSQL(mockPlugin);
+		if (dispatcher != null) {
+			statsPlayerFound(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(PostgreSQLBlocksFoundDao.class));
+			dispatcher.stop();
+		}
 	}
 	
 	private void statsPlayerFound(OASQLDispatcher dispatcher, BlocksFoundDao dao) {
@@ -480,9 +663,9 @@ public class SQLDispatcherTest {
 		OABlockImpl block2 = new OABlockImpl(mockPlugin, "mat2");
 		OABlockImpl block3 = new OABlockImpl(mockPlugin, "mat3");
 		Blocks.LIST = new HashMap<>();
-		Blocks.LIST.put(block1.getMaterialName(), block1);
-		Blocks.LIST.put(block2.getMaterialName(), block2);
-		Blocks.LIST.put(block3.getMaterialName(), block3);
+		Blocks.addBlock(block1);
+		Blocks.addBlock(block2);
+		Blocks.addBlock(block3);
 		
 		BlockFound bf1player1 = new BlockFound(player1, block1.getMaterialName(), time, 5);
 		BlockFound bf2player1 = new BlockFound(player1, block2.getMaterialName(), time, 10);
@@ -540,6 +723,24 @@ public class SQLDispatcherTest {
 		dispatcher = getSQLDispatcherSQLite();
 		getLogBlocks(dispatcher);
 		dispatcher.stop();
+		
+		dispatcher = getSQLDispatcherMySQL(mockPlugin);
+		if (dispatcher != null) {
+			getLogBlocks(dispatcher);
+			dispatcher.stop();
+		}
+		
+		dispatcher = getSQLDispatcherMariaDB(mockPlugin);
+		if (dispatcher != null) {
+			getLogBlocks(dispatcher);
+			dispatcher.stop();
+		}
+		
+		dispatcher = getSQLDispatcherPostgreSQL(mockPlugin);
+		if (dispatcher != null) {
+			getLogBlocks(dispatcher);
+			dispatcher.stop();
+		}
 	}
 	
 	private void getLogBlocks(OASQLDispatcher dispatcher) {
@@ -551,9 +752,9 @@ public class SQLDispatcherTest {
 		OABlockImpl block2 = new OABlockImpl(mockPlugin, "mat2");
 		OABlockImpl block3 = new OABlockImpl(mockPlugin, "mat3");
 		Blocks.LIST = new HashMap<>();
-		Blocks.LIST.put(block1.getMaterialName(), block1);
-		Blocks.LIST.put(block2.getMaterialName(), block2);
-		Blocks.LIST.put(block3.getMaterialName(), block3);
+		Blocks.addBlock(block1);
+		Blocks.addBlock(block2);
+		Blocks.addBlock(block3);
 		
 		OAPlayerImpl oaPlayer1 = new OAPlayerImpl(mockPlugin, player1) {};
 		
@@ -614,5 +815,9 @@ public class SQLDispatcherTest {
 		assertEquals(total.size(), 3);
 		assertTrue(total.stream().anyMatch(bf -> bf.getMaterialName().equals(bf1player1.getMaterialName())));
 		assertEquals(total.stream().filter(bf -> bf.getMaterialName().equals(bf1player1.getMaterialName())).findFirst().get().getFound(), 20);
+	}
+	
+	public static OAPlayerImpl initializePlayer(OreAnnouncerPlugin mockPlugin, UUID uuid) {
+		return new OAPlayerImpl(mockPlugin, uuid) {};
 	}
 }

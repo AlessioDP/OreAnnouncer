@@ -2,18 +2,15 @@ package com.alessiodp.oreannouncer.common.commands.sub;
 
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
-import com.alessiodp.core.common.commands.utils.ADPSubCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
-import com.alessiodp.core.common.utils.Color;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
-import com.alessiodp.oreannouncer.common.addons.external.LLAPIHandler;
 import com.alessiodp.oreannouncer.common.blocks.objects.OABlockImpl;
 import com.alessiodp.oreannouncer.common.commands.list.CommonCommands;
 import com.alessiodp.oreannouncer.common.commands.utils.OACommandData;
+import com.alessiodp.oreannouncer.common.commands.utils.OASubCommand;
 import com.alessiodp.oreannouncer.common.storage.OADatabaseManager;
 import com.alessiodp.oreannouncer.common.utils.OreAnnouncerPermission;
-import com.alessiodp.oreannouncer.common.configuration.OAConstants;
 import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import com.alessiodp.oreannouncer.common.configuration.data.Messages;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
@@ -24,11 +21,9 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class CommandStats extends ADPSubCommand {
+public class CommandStats extends OASubCommand {
 	private final String syntaxConsole;
 	private final String syntaxOthers;
 	private final String syntaxBase;
@@ -40,7 +35,7 @@ public class CommandStats extends ADPSubCommand {
 				mainCommand,
 				CommonCommands.STATS,
 				OreAnnouncerPermission.USER_STATS,
-				ConfigMain.COMMANDS_CMD_STATS,
+				ConfigMain.COMMANDS_SUB_STATS,
 				true
 		);
 		
@@ -75,7 +70,6 @@ public class CommandStats extends ADPSubCommand {
 		
 		description = Messages.HELP_CMD_DESCRIPTIONS_STATS;
 		help = Messages.HELP_CMD_STATS;
-		
 	}
 	
 	@Override
@@ -92,36 +86,13 @@ public class CommandStats extends ADPSubCommand {
 	
 	@Override
 	public boolean preRequisites(CommandData commandData) {
-		User sender = commandData.getSender();
-		if (sender.isPlayer()) {
-			OAPlayerImpl player = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(sender.getUUID());
-			
-			// Checks for command prerequisites
-			if (!sender.hasPermission(permission)) {
-				player.sendNoPermission(permission);
-				return false;
-			}
-			
-			((OACommandData) commandData).setPlayer(player);
-		}
-		commandData.addPermission(OreAnnouncerPermission.ADMIN_STATS_OTHER);
-		commandData.addPermission(OreAnnouncerPermission.USER_STATS);
-		commandData.addPermission(OreAnnouncerPermission.USER_STATS_DESTROY);
-		commandData.addPermission(OreAnnouncerPermission.USER_STATS_FOUND);
-		return true;
+		return handlePreRequisitesWithPermission(commandData);
 	}
 	
 	@Override
 	public void onCommand(CommandData commandData) {
+		User sender = commandData.getSender();
 		OAPlayerImpl player = ((OACommandData) commandData).getPlayer();
-		
-		if (player != null)
-			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_CMD_STATS
-				.replace("{player}", player.getName())
-				.replace("{victim}", commandData.getArgs().length > 1 ? commandData.getArgs()[1] : ""), true);
-		else
-			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_CMD_STATS_CONSOLE
-							.replace("{victim}", commandData.getArgs().length > 1 ? commandData.getArgs()[1] : ""), true);
 		
 		// Command handling
 		OAPlayerImpl targetPlayer = null;
@@ -135,13 +106,13 @@ public class CommandStats extends ADPSubCommand {
 					commandType = OADatabaseManager.ValueType.parse(args[0]);
 					
 					if (commandType == null) {
-						sendMessage(player, Messages.CMD_STATS_INVALID_TYPE);
+						sendMessage(sender, player, Messages.CMD_STATS_INVALID_TYPE);
 						return;
 					}
 					
 					targetPlayer = playerLookup(args[1]);
 					if (targetPlayer == null) {
-						sendMessage(player, Messages.CMD_STATS_PLAYERNOTFOUND
+						sendMessage(sender, player, Messages.OREANNOUNCER_COMMON_PLAYER_NOT_FOUND
 								.replace("%player%", args[1]));
 						return;
 					}
@@ -152,12 +123,12 @@ public class CommandStats extends ADPSubCommand {
 						if (commandData.havePermission(OreAnnouncerPermission.ADMIN_STATS_OTHER)) {
 							targetPlayer = playerLookup(args[0]);
 							if (targetPlayer == null) {
-								sendMessage(player, Messages.CMD_STATS_PLAYERNOTFOUND
+								sendMessage(sender, player, Messages.OREANNOUNCER_COMMON_PLAYER_NOT_FOUND
 										.replace("%player%", args[0]));
 								return;
 							}
 						} else {
-							sendMessage(player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
+							sendMessage(sender, player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
 									.replace("%syntax%", getSyntaxForUser(commandData.getSender())));
 							return;
 						}
@@ -167,7 +138,7 @@ public class CommandStats extends ADPSubCommand {
 				// Base
 				targetPlayer = playerLookup(args[0]);
 				if (targetPlayer == null) {
-					sendMessage(player, Messages.CMD_STATS_PLAYERNOTFOUND
+					sendMessage(sender, player, Messages.OREANNOUNCER_COMMON_PLAYER_NOT_FOUND
 							.replace("%player%", args[0]));
 					return;
 				}
@@ -180,7 +151,7 @@ public class CommandStats extends ADPSubCommand {
 							(commandType == OADatabaseManager.ValueType.DESTROY && !commandData.havePermission(OreAnnouncerPermission.USER_STATS_DESTROY))
 									|| (commandType == OADatabaseManager.ValueType.FOUND && !commandData.havePermission(OreAnnouncerPermission.USER_STATS_FOUND))
 					)) {
-				sendMessage(player, Messages.CMD_STATS_INVALID_TYPE);
+				sendMessage(sender, player, Messages.CMD_STATS_INVALID_TYPE);
 				return;
 			}
 		} else {
@@ -197,7 +168,7 @@ public class CommandStats extends ADPSubCommand {
 		
 		if (targetPlayer == null) {
 			if (player == null) {
-				sendMessage(player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
+				sendMessage(sender, null, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
 						.replace("%syntax%", getSyntaxForUser(commandData.getSender())));
 				return;
 			} else
@@ -207,7 +178,7 @@ public class CommandStats extends ADPSubCommand {
 		// Command starts
 		LinkedHashMap<OABlockImpl, Integer> blocks = ((OreAnnouncerPlugin) plugin).getDatabaseManager().getStatsPlayer(commandType, targetPlayer.getPlayerUUID());
 		
-		sendMessage(player, ((OreAnnouncerPlugin) plugin).getMessageUtils().convertPlayerPlaceholders(Messages.CMD_STATS_HEADER, targetPlayer));
+		sendMessage(sender, player, ((OreAnnouncerPlugin) plugin).getMessageUtils().convertPlayerPlaceholders(Messages.CMD_STATS_HEADER, targetPlayer));
 		
 		if (blocks.size() > 0) {
 			Comparator<Map.Entry<OABlockImpl, Integer>> sorter = Map.Entry.comparingByValue(Comparator.reverseOrder());
@@ -220,36 +191,13 @@ public class CommandStats extends ADPSubCommand {
 					.sorted(sorter)
 					.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new));
 			
-			result.forEach((block, number) -> {
-				sendMessage(player, ((OreAnnouncerPlugin) plugin).getMessageUtils().convertBlockPlaceholders(Messages.CMD_STATS_FORMATPLAYER
-						.replace("%value%", Integer.toString(number)), block));
-			});
+			result.forEach((block, number) -> sendMessage(sender, player, ((OreAnnouncerPlugin) plugin).getMessageUtils().convertBlockPlaceholders(Messages.CMD_STATS_FORMATPLAYER
+					.replace("%value%", Integer.toString(number)), block)));
 		} else {
-			sendMessage(player, ((OreAnnouncerPlugin) plugin).getMessageUtils().convertPlayerPlaceholders(Messages.CMD_STATS_NOTHING, targetPlayer));
+			sendMessage(sender, player, ((OreAnnouncerPlugin) plugin).getMessageUtils().convertPlayerPlaceholders(Messages.CMD_STATS_NOTHING, targetPlayer));
 		}
 		
-		sendMessage(player, ((OreAnnouncerPlugin) plugin).getMessageUtils().convertPlayerPlaceholders(Messages.CMD_STATS_FOOTER, targetPlayer));
-	}
-	
-	private void sendMessage(OAPlayerImpl player, String message) {
-		if (player != null)
-			player.sendMessage(message);
-		else
-			plugin.logConsole(Color.translateAndStripColor(message), false);
-	}
-	
-	private OAPlayerImpl playerLookup(String playerName) {
-		OAPlayerImpl ret = null;
-		User targetUser = plugin.getPlayerByName(playerName);
-		if (targetUser != null) {
-			ret = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(targetUser.getUUID());
-		} else {
-			Set<UUID> targetPlayersUuid = LLAPIHandler.getPlayerByName(playerName);
-			if (targetPlayersUuid.size() > 0) {
-				ret = ((OreAnnouncerPlugin) plugin).getPlayerManager().getPlayer(targetPlayersUuid.iterator().next());
-			}
-		}
-		return ret;
+		sendMessage(sender, player, ((OreAnnouncerPlugin) plugin).getMessageUtils().convertPlayerPlaceholders(Messages.CMD_STATS_FOOTER, targetPlayer));
 	}
 	
 	@Override

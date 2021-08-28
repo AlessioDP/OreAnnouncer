@@ -3,6 +3,7 @@ package com.alessiodp.oreannouncer.bungeecord.blocks;
 import com.alessiodp.core.common.utils.ADPLocation;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.blocks.BlockManager;
+import com.alessiodp.oreannouncer.common.blocks.objects.OABlockImpl;
 
 import java.util.UUID;
 
@@ -20,13 +21,13 @@ public class BungeeBlockManager extends BlockManager {
 	}
 	
 	@Override
-	public boolean isBlockMarked(ADPLocation blockLocation, String material, MarkType markType) {
+	public boolean isBlockMarked(ADPLocation blockLocation, MarkType markType) {
 		// Nothing to do
 		return false;
 	}
 	
 	@Override
-	public boolean markBlock(ADPLocation blockLocation, String material, MarkType markType) {
+	public boolean markBlock(ADPLocation blockLocation, OABlockImpl block, MarkType markType) {
 		// Nothing to do
 		return false;
 	}

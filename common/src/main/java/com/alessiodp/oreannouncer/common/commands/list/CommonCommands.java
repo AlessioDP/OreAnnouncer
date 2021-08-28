@@ -7,11 +7,13 @@ public enum CommonCommands implements ADPCommand {
 	
 	ALERTS,
 	HELP,
+	DEBUG,
 	LOG,
 	RELOAD,
 	STATS,
 	TOP,
-	VERSION;
+	VERSION,
+	WHITELIST;
 	
 	@Override
 	public String getOriginalName() {

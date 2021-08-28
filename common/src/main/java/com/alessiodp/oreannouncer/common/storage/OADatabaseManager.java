@@ -17,14 +17,16 @@ import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 import com.alessiodp.oreannouncer.common.storage.dispatchers.OASQLDispatcher;
 import com.alessiodp.oreannouncer.common.storage.interfaces.IOADatabase;
 import com.alessiodp.oreannouncer.common.utils.BlocksFoundResult;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
-public class OADatabaseManager extends DatabaseManager implements IOADatabase {
+public class OADatabaseManager extends DatabaseManager {
+	
 	public OADatabaseManager(ADPPlugin plugin) {
 		super(plugin);
 	}
@@ -33,156 +35,153 @@ public class OADatabaseManager extends DatabaseManager implements IOADatabase {
 	protected IDatabaseDispatcher initializeDispatcher(StorageType storageType) {
 		IDatabaseDispatcher ret = null;
 		switch (storageType) {
+			case MARIADB:
 			case MYSQL:
+			case POSTGRESQL:
 			case SQLITE:
 			case H2:
 				ret = new OASQLDispatcher(plugin, storageType);
 				break;
 			default:
 				// Unsupported storage type
-				plugin.getLoggerManager().printError(Constants.DEBUG_DB_INIT_FAILED_UNSUPPORTED
-						.replace("{type}", ConfigMain.STORAGE_TYPE_DATABASE));
+				plugin.getLoggerManager().printError(String.format(Constants.DEBUG_DB_INIT_FAILED_UNSUPPORTED, ConfigMain.STORAGE_TYPE_DATABASE));
 				break;
 		}
+		
 		return ret;
 	}
 	
-	@Override
-	public void updatePlayer(OAPlayerImpl player) {
-		plugin.getScheduler().runAsync(() -> {
-			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_UPDATEPLAYER
-					.replace("{player}", player.getName())
-					.replace("{uuid}", player.getPlayerUUID().toString()), true);
+	public CompletableFuture<Void> updatePlayer(OAPlayerImpl player) {
+		return executeSafelyAsync(() -> {
+			plugin.getLoggerManager().logDebug(String.format(OAConstants.DEBUG_DB_UPDATEPLAYER, player.getName(), player.getPlayerUUID().toString()), true);
 			
 			((IOADatabase) database).updatePlayer(player);
 		});
 	}
 	
-	@Override
 	public OAPlayerImpl getPlayer(UUID playerUuid) {
-		return plugin.getScheduler().runSupplyAsync(() -> {
-			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_GETPLAYER
-					.replace("{uuid}", playerUuid.toString()), true);
+		return executeSafelySupplyAsync(() -> {
+			plugin.getLoggerManager().logDebug(String.format(OAConstants.DEBUG_DB_GETPLAYER, playerUuid.toString()), true);
 			
 			return ((IOADatabase) database).getPlayer(playerUuid);
 		}).join();
 	}
 	
-	@Override
 	public void updateBlockDestroy(BlockDestroy blockDestroy) {
-		plugin.getScheduler().runAsync(() -> {
-			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_UPDATE_BLOCK_DESTROY
-					.replace("{uuid}", blockDestroy.getPlayer().toString())
-					.replace("{block}", blockDestroy.getMaterialName()), true);
+		executeSafelyAsync(() -> {
+			plugin.getLoggerManager().logDebug(String.format(OAConstants.DEBUG_DB_UPDATE_BLOCK_DESTROY, blockDestroy.getPlayer().toString(), blockDestroy.getMaterialName()), true);
 			
 			((IOADatabase) database).updateBlockDestroy(blockDestroy);
 		});
 	}
 	
-	@Override
 	public void setBlockDestroy(BlockDestroy blockDestroy) {
-		plugin.getScheduler().runAsync(() -> {
-			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_SET_BLOCK_DESTROY
-					.replace("{uuid}", blockDestroy.getPlayer().toString())
-					.replace("{block}", blockDestroy.getMaterialName()), true);
+		executeSafelyAsync(() -> {
+			plugin.getLoggerManager().logDebug(String.format(OAConstants.DEBUG_DB_SET_BLOCK_DESTROY, blockDestroy.getPlayer().toString(), blockDestroy.getMaterialName()), true);
 			
 			((IOADatabase) database).setBlockDestroy(blockDestroy);
 		});
 	}
 	
-	@Override
-	public BlockDestroy getBlockDestroy(UUID player, OABlock block) {
-		return plugin.getScheduler().runSupplyAsync(() -> {
-			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_GET_BLOCK_DESTROY
-					.replace("{uuid}", player.toString())
-					.replace("{block}", block.getMaterialName()), true);
+	public BlockDestroy getBlockDestroy(UUID player, @Nullable OABlock block) {
+		return executeSafelySupplyAsync(() -> {
+			plugin.getLoggerManager().logDebug(String.format(OAConstants.DEBUG_DB_GET_BLOCK_DESTROY, player.toString(), block != null ? block.getMaterialName() : "*"), true);
 			
 			return ((IOADatabase) database).getBlockDestroy(player, block);
 		}).join();
 	}
 	
-	@Override
 	public Set<BlockDestroy> getAllBlockDestroy(UUID player) {
-		return plugin.getScheduler().runSupplyAsync(() -> {
-			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_GET_ALL_BLOCK_DESTROY
-					.replace("{uuid}", player.toString()), true);
+		return executeSafelySupplyAsync(() -> {
+			plugin.getLoggerManager().logDebug(String.format(OAConstants.DEBUG_DB_GET_ALL_BLOCK_DESTROY, player.toString()), true);
 			
 			return ((IOADatabase) database).getAllBlockDestroy(player);
 		}).join();
 	}
 	
-	@Override
 	public void insertBlockFound(BlockFound blockFound) {
-		plugin.getScheduler().runAsync(() -> {
-			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_INSERT_BLOCK_FOUND
-					.replace("{uuid}", blockFound.getPlayer().toString())
-					.replace("{block}", blockFound.getMaterialName()), true);
+		executeSafelyAsync(() -> {
+			plugin.getLoggerManager().logDebug(String.format(OAConstants.DEBUG_DB_INSERT_BLOCK_FOUND, blockFound.getPlayer().toString(), blockFound.getMaterialName()), true);
 			
 			((IOADatabase) database).insertBlockFound(blockFound);
 		});
 	}
 	
-	@Override
-	public BlocksFoundResult getBlockFound(UUID player, OABlock block, long rangeTime) {
-		return plugin.getScheduler().runSupplyAsync(() -> {
-			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_GET_BLOCK_FOUND
-					.replace("{uuid}", player.toString())
-					.replace("{block}", block.getMaterialName()), true);
+	public BlocksFoundResult getBlockFound(UUID player, @Nullable OABlock block, long rangeTime) {
+		return executeSafelySupplyAsync(() -> {
+			plugin.getLoggerManager().logDebug(String.format(OAConstants.DEBUG_DB_GET_BLOCK_FOUND, player.toString(), block != null ? block.getMaterialName() : "*"), true);
 			
 			return ((IOADatabase) database).getBlockFound(player, block, (System.currentTimeMillis() / 1000L) - rangeTime);
 		}).join();
 	}
 	
-	@Override
 	public List<BlockFound> getLogBlocks(@Nullable OAPlayerImpl player, @Nullable OABlock block, int limit, int offset) {
-		return plugin.getScheduler().runSupplyAsync(() -> {
-			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_LOG_BLOCKS
-					.replace("{uuid}", player != null ? player.getPlayerUUID().toString() : "")
-					.replace("{block}", block != null ? block.getMaterialName() : ""), true);
+		return executeSafelySupplyAsync(() -> {
+			plugin.getLoggerManager().logDebug(String.format(
+					OAConstants.DEBUG_DB_LOG_BLOCKS,
+					player != null ? player.getPlayerUUID().toString() : "",
+					block != null ? block.getMaterialName() : ""
+			), true);
 			
 			return ((IOADatabase) database).getLogBlocks(player, block, limit, offset);
 		}).join();
 	}
 	
-	@Override
 	public int getLogBlocksNumber(@Nullable OAPlayerImpl player, @Nullable OABlock block) {
-		return plugin.getScheduler().runSupplyAsync(() -> {
-			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_LOG_BLOCKS_NUMBER
-					.replace("{uuid}", player != null ? player.getPlayerUUID().toString() : "")
-					.replace("{block}", block != null ? block.getMaterialName() : ""), true);
+		return executeSafelySupplyAsync(() -> {
+			plugin.getLoggerManager().logDebug(String.format(
+					OAConstants.DEBUG_DB_LOG_BLOCKS_NUMBER,
+					player != null ? player.getPlayerUUID().toString() : "",
+					block != null ? block.getMaterialName() : ""
+			), true);
 			
 			return ((IOADatabase) database).getLogBlocksNumber(player, block);
 		}).join();
 	}
 	
-	@Override
 	public LinkedHashMap<UUID, Integer> getTopPlayers(ValueType orderBy, @Nullable OABlockImpl block, int limit, int offset) {
-		return plugin.getScheduler().runSupplyAsync(() -> {
-			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_TOP_BLOCKS_LIST
-					.replace("{order}", orderBy.name())
-					.replace("{limit}", Integer.toString(limit))
-					.replace("{offset}", Integer.toString(offset)), true);
+		return executeSafelySupplyAsync(() -> {
+			plugin.getLoggerManager().logDebug(String.format(OAConstants.DEBUG_DB_TOP_PLAYERS, orderBy.name(), block != null ? block.getMaterialName() : "none", limit, offset), true);
 			
 			return ((IOADatabase) database).getTopPlayers(orderBy, block, limit, offset);
 		}).join();
 	}
 	
-	@Override
 	public int getTopPlayersNumber(ValueType orderBy, @Nullable OABlockImpl block) {
-		return plugin.getScheduler().runSupplyAsync(() -> {
-			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_TOP_BLOCKS_NUMBER
-					.replace("{order}", orderBy.name()), true);
+		return executeSafelySupplyAsync(() -> {
+			plugin.getLoggerManager().logDebug(String.format(OAConstants.DEBUG_DB_TOP_PLAYERS_NUMBER, orderBy.name(), block != null ? block.getMaterialName() : "none"), true);
 			
 			return ((IOADatabase) database).getTopPlayersNumber(orderBy, block);
 		}).join();
 	}
 	
-	@Override
+	public int getTopPlayerPosition(UUID player, OADatabaseManager.ValueType orderBy, @Nullable OABlockImpl block) {
+		return executeSafelySupplyAsync(() -> {
+			plugin.getLoggerManager().logDebug(String.format(OAConstants.DEBUG_DB_TOP_PLAYER_POSITION, orderBy.name(), block != null ? block.getMaterialName() : "none"), true);
+			
+			return ((IOADatabase) database).getTopPlayerPosition(player, orderBy, block);
+		}).join();
+	}
+	
+	public int getTotalDestroy(@Nullable OABlock block) {
+		return executeSafelySupplyAsync(() -> {
+			plugin.getLoggerManager().logDebug(String.format(OAConstants.DEBUG_DB_TOTAL_DESTROY, block != null ? block.getMaterialName() : "none"), true);
+			
+			return ((IOADatabase) database).getTotalDestroy(block);
+		}).join();
+	}
+	
+	public int getTotalFound(@Nullable OABlock block) {
+		return executeSafelySupplyAsync(() -> {
+			plugin.getLoggerManager().logDebug(String.format(OAConstants.DEBUG_DB_TOTAL_FOUND, block != null ? block.getMaterialName() : "none"), true);
+			
+			return ((IOADatabase) database).getTotalFound(block);
+		}).join();
+	}
+	
 	public LinkedHashMap<OABlockImpl, Integer> getStatsPlayer(OADatabaseManager.ValueType valueType, UUID player) {
-		return plugin.getScheduler().runSupplyAsync(() -> {
-			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_DB_STATS_PLAYER
-					.replace("{player}", player.toString())
-					.replace("{type}", valueType.name()), true);
+		return executeSafelySupplyAsync(() -> {
+			plugin.getLoggerManager().logDebug(String.format(OAConstants.DEBUG_DB_STATS_PLAYER, player.toString(), valueType.name()), true);
 			
 			return ((IOADatabase) database).getStatsPlayer(valueType, player);
 		}).join();

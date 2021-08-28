@@ -51,6 +51,8 @@ permissions:
     description: Allow access to /oa version
   oreannouncer.admin.warnings:
     description: Send an alert if there is an error
+  oreannouncer.admin.whitelist:
+    description: Allow access to /oa whitelist
 
   oreannouncer.user.*:
     default: op
@@ -77,3 +79,4 @@ permissions:
       oreannouncer.admin.stats.other: true
       oreannouncer.admin.version: true
       oreannouncer.admin.warnings: true
+      oreannouncer.admin.whitelist: true

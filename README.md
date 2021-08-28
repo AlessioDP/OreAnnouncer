@@ -11,7 +11,7 @@ You can send an alert to users/admins or just store every block they destroy to 
 [Download from Bukkit](https://dev.bukkit.org/projects/oreannouncer)
 
 ## Documentation
-[Documentation page here](https://alessiodp.com/wiki/oreannouncer/).
+[Documentation page here](https://alessiodp.com/docs/oreannouncer).
 
 ## License
 [Read the license here](https://github.com/AlessioDP/OreAnnouncer/blob/master/LICENSE).

@@ -10,6 +10,7 @@ import com.alessiodp.oreannouncer.bukkit.bootstrap.BukkitOreAnnouncerBootstrap;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.blocks.BlockManager;
 import com.alessiodp.oreannouncer.common.blocks.objects.BlockData;
+import com.alessiodp.oreannouncer.common.blocks.objects.OABlockImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -48,18 +49,17 @@ public class BukkitBlockManager extends BlockManager {
 	
 	@SuppressWarnings("ConstantConditions")
 	@Override
-	public boolean isBlockMarked(ADPLocation blockLocation, String material, MarkType markType) {
+	public boolean isBlockMarked(ADPLocation blockLocation, MarkType markType) {
 		boolean ret = false;
-		Block block = new Location(
+		Block bukkitBlock = new Location(
 				Bukkit.getWorld(blockLocation.getWorld()),
 				blockLocation.getX(),
 				blockLocation.getY(),
 				blockLocation.getZ(),
 				blockLocation.getYaw(),
 				blockLocation.getPitch()).getBlock();
-		if (block != null
-				&& getBlockType(block).equalsIgnoreCase(material)
-				&& block.hasMetadata(markType.getMark())) {
+		if (bukkitBlock != null
+				&& bukkitBlock.hasMetadata(markType.getMark())) {
 			ret = true;
 		}
 		return ret;
@@ -67,19 +67,19 @@ public class BukkitBlockManager extends BlockManager {
 	
 	@SuppressWarnings("ConstantConditions")
 	@Override
-	public boolean markBlock(ADPLocation blockLocation, String material, MarkType markType) {
+	public boolean markBlock(ADPLocation blockLocation, OABlockImpl block, MarkType markType) {
 		boolean ret = false;
-		Block block = new Location(
+		Block bukkitBlock = new Location(
 				Bukkit.getWorld(blockLocation.getWorld()),
 				blockLocation.getX(),
 				blockLocation.getY(),
 				blockLocation.getZ(),
 				blockLocation.getYaw(),
 				blockLocation.getPitch()).getBlock();
-		if (block != null
-				&& getBlockType(block).equalsIgnoreCase(material)
-				&& !block.hasMetadata(markType.getMark())) {
-			block.setMetadata(markType.getMark(), new FixedMetadataValue((BukkitOreAnnouncerBootstrap) plugin.getBootstrap(), true));
+		if (bukkitBlock != null
+				&& (block.getMaterialName().equalsIgnoreCase(getBlockType(bukkitBlock)) || block.getVariants().contains(getBlockType(bukkitBlock)))
+				&& !bukkitBlock.hasMetadata(markType.getMark())) {
+			bukkitBlock.setMetadata(markType.getMark(), new FixedMetadataValue((BukkitOreAnnouncerBootstrap) plugin.getBootstrap(), true));
 			ret = true;
 		}
 		return ret;

@@ -39,6 +39,10 @@ public class BukkitConfigMain extends ConfigMain {
 	@ConfigOption(path = "blocks.mmoitems.enable")
 	public static boolean		BLOCKS_MMOITEMS_ENABLE;
 	
+	// Commands
+	@ConfigOption(path = "commands.main-commands.oa.description")
+	public static String		COMMANDS_MAIN_OA_DESCRIPTION;
+	
 	
 	public BukkitConfigMain(OreAnnouncerPlugin plugin) {
 		super(plugin);

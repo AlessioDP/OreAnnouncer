@@ -47,6 +47,7 @@ public class BungeeConfigurationTest {
 				"blocks.bypass",
 				"blocks.warn",
 				"blocks.light-level",
+				"blocks.height-level",
 				"blocks.tnt",
 				"stats.blacklist",
 				"stats.advanced-count.default",

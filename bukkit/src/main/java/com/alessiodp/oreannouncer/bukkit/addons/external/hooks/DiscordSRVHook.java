@@ -29,8 +29,7 @@ public class DiscordSRVHook {
 			
 			ret = true;
 		} catch (Exception ex) {
-			plugin.getLoggerManager().printError(Constants.DEBUG_ADDON_OUTDATED
-					.replace("{addon}", "DiscordSRV"));
+			plugin.getLoggerManager().printError(String.format(Constants.DEBUG_ADDON_OUTDATED, "DiscordSRV"));
 			ex.printStackTrace();
 		}
 		return ret;
@@ -56,10 +55,11 @@ public class DiscordSRVHook {
 				CommonUtils.ifNonEmptyDo(embed.getDescription(), txt -> mf.setDescription(parser.apply(txt)));
 				CommonUtils.ifNonEmptyDo(embed.getFooter(), txt -> mf.setFooterText(parser.apply(txt)));
 
-				if (BukkitConfigMain.ALERTS_DISCORDSRV_EMBED_AVATARS && player != null)
-					mf.setAuthorImageUrl(api.getEmbedAvatarUrl(player.getName(), player.getPlayerUUID()));
-
-				DiscordUtil.queueMessage(textChannel, api.translateMessage(mf, (content, needEscape) -> content));
+				if (BukkitConfigMain.ALERTS_DISCORDSRV_EMBED_AVATARS && player != null) {
+					mf.setAuthorImageUrl(DiscordSRV.getAvatarUrl(player.getName(), player.getPlayerUUID()));
+				}
+				
+				DiscordUtil.queueMessage(textChannel, DiscordSRV.translateMessage(mf, (content, needEscape) -> content));
 			}
 		}
 	}

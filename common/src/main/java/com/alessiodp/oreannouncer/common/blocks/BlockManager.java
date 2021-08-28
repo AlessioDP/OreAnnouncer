@@ -9,13 +9,14 @@ import com.alessiodp.oreannouncer.common.blocks.objects.Alert;
 import com.alessiodp.oreannouncer.common.blocks.objects.BlockData;
 import com.alessiodp.oreannouncer.common.blocks.objects.BlockDestroy;
 import com.alessiodp.oreannouncer.common.blocks.objects.BlockFound;
+import com.alessiodp.oreannouncer.common.blocks.objects.BlockLocationImpl;
 import com.alessiodp.oreannouncer.common.blocks.objects.OABlockImpl;
+import com.alessiodp.oreannouncer.common.messaging.OAMessageDispatcher;
 import com.alessiodp.oreannouncer.common.utils.OreAnnouncerPermission;
 import com.alessiodp.oreannouncer.common.configuration.OAConstants;
 import com.alessiodp.oreannouncer.common.configuration.data.Blocks;
 import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import com.alessiodp.oreannouncer.common.configuration.data.Messages;
-import com.alessiodp.oreannouncer.common.messaging.OAPacket;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 import com.alessiodp.oreannouncer.common.utils.BlocksFoundResult;
 import com.alessiodp.oreannouncer.common.utils.CoordinateUtils;
@@ -68,7 +69,28 @@ public abstract class BlockManager {
 		}
 	}
 	
-	public void sendGlobalAlert(BlockData data, AlertType type) {}
+	public void sendGlobalAlert(BlockData data, AlertType type) {
+		if (type == AlertType.NORMAL) {
+			plugin.getEventManager().callEvent(plugin.getEventManager().prepareAlertEvent(
+					data.getPlayer(),
+					data.getBlock(),
+					data.getNumber(),
+					new BlockLocationImpl(data.getLocation()),
+					data.getLightLevel(),
+					data.getHeightLevel()
+			));
+		} else if (type == AlertType.COUNT) {
+			plugin.getEventManager().callEvent(plugin.getEventManager().prepareAdvancedEvent(
+					data.getPlayer(),
+					data.getBlock(),
+					data.getNumber(),
+					data.getElapsed(),
+					new BlockLocationImpl(data.getLocation()),
+					data.getLightLevel(),
+					data.getHeightLevel()
+			));
+		}
+	}
 	
 	public void updateBlockDestroy(OAPlayerImpl player, String materialName, int numberOfBlocks) {
 		plugin.getDatabaseManager().updateBlockDestroy(new BlockDestroy(
@@ -80,7 +102,7 @@ public abstract class BlockManager {
 	
 	public void updateBlockFound(BlockFound bf) {
 		if (ConfigMain.STATS_ADVANCED_COUNT_ENABLE) {
-			OABlockImpl block = Blocks.LIST.get(bf.getMaterialName());
+			OABlockImpl block = Blocks.searchBlock(bf.getMaterialName());
 			if (block != null) {
 				plugin.getDatabaseManager().insertBlockFound(bf);
 			}
@@ -89,9 +111,9 @@ public abstract class BlockManager {
 	
 	public abstract boolean existsMaterial(String materialName);
 	
-	public abstract boolean isBlockMarked(ADPLocation blockLocation, String material, MarkType markType);
+	public abstract boolean isBlockMarked(ADPLocation blockLocation, MarkType markType);
 	
-	public abstract boolean markBlock(ADPLocation blockLocation, String material, MarkType markType);
+	public abstract boolean markBlock(ADPLocation blockLocation, OABlockImpl block, MarkType markType);
 	
 	public abstract void unmarkBlock(ADPLocation blockLocation, MarkType markType);
 	
@@ -106,18 +128,10 @@ public abstract class BlockManager {
 		
 		// Send message to players
 		if (plugin.isBungeeCordEnabled()) {
-			OAPacket packet = new OAPacket(plugin.getVersion());
-			packet
-					.setMaterialName(data.getBlock().getMaterialName())
-					.setType(OAPacket.PacketType.ALERT)
-					.setMessageUsers(userMessage)
-					.setMessageAdmins(adminMessage)
-					.setMessageConsole(consoleMessage);
-			if (plugin.getMessenger().getMessageDispatcher().sendPacket(packet)) {
-				plugin.getLoggerManager().logDebug(OAConstants.DEBUG_MESSAGING_SEND_ALERT, true);
-			} else {
-				plugin.getLoggerManager().printError(OAConstants.DEBUG_MESSAGING_SEND_ALERT_FAILED);
-			}
+			((OAMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendAlert(
+					data,
+					userMessage, adminMessage, consoleMessage
+			);
 		} else {
 			Alert alert = new Alert()
 					.setMessageConsole(consoleMessage)
@@ -135,21 +149,16 @@ public abstract class BlockManager {
 		executeBlockCommands(ConfigMain.EXECUTE_COMMANDS_ON_DESTROY, data);
 		
 		if (plugin.isBungeeCordEnabled()) {
-			OAPacket packet = new OAPacket(plugin.getVersion());
-			packet
-					.setMaterialName(data.getBlock().getMaterialName())
-					.setType(OAPacket.PacketType.DESTROY)
-					.setPlayerUuid(data.getPlayer().getPlayerUUID())
-					.setDestroyCount(data.getNumber());
-			
-			if (plugin.getMessenger().getMessageDispatcher().sendPacket(packet)) {
-				plugin.getLoggerManager().logDebug(OAConstants.DEBUG_MESSAGING_SEND_DESTROY, true);
-			} else {
-				plugin.getLoggerManager().printError(OAConstants.DEBUG_MESSAGING_SEND_DESTROY_FAILED);
-			}
+			((OAMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendBlockDestroy(data);
 		} else {
 			updateBlockDestroy(data.getPlayer(), data.getBlock().getMaterialName(), data.getNumber());
 		}
+		
+		plugin.getEventManager().callEvent(plugin.getEventManager().prepareBlockDestroyEvent(
+				data.getPlayer(),
+				data.getBlock(),
+				new BlockLocationImpl(data.getLocation())
+		));
 	}
 	
 	public void handleBlockFound(BlockData data) {
@@ -161,23 +170,10 @@ public abstract class BlockManager {
 		} else {
 			bfr = new BlocksFoundResult(newBf.getTimestamp(), newBf.getFound());
 		}
-		plugin.getLoggerManager().logDebug(OAConstants.DEBUG_COUNTER_HANDLING
-				.replace("{player}", data.getPlayer().getName())
-				.replace("{value}", Integer.toString(bfr.getTotal())), true);
+		plugin.getLoggerManager().logDebug(String.format(OAConstants.DEBUG_COUNTER_HANDLING, data.getPlayer().getName(), bfr.getTotal()), true);
 		
 		if (plugin.isBungeeCordEnabled()) {
-			OAPacket packet = new OAPacket(plugin.getVersion());
-			packet
-					.setMaterialName(data.getBlock().getMaterialName())
-					.setType(OAPacket.PacketType.FOUND)
-					.setPlayerUuid(data.getPlayer().getPlayerUUID())
-					.setDestroyCount(data.getNumber());
-			
-			if (plugin.getMessenger().getMessageDispatcher().sendPacket(packet)) {
-				plugin.getLoggerManager().logDebug(OAConstants.DEBUG_MESSAGING_SEND_FOUND, true);
-			} else {
-				plugin.getLoggerManager().printError(OAConstants.DEBUG_MESSAGING_SEND_FOUND_FAILED);
-			}
+			((OAMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendBlockFound(data);
 		} else {
 			updateBlockFound(newBf);
 		}
@@ -187,38 +183,34 @@ public abstract class BlockManager {
 			data.setNumber(bfr.getTotal());
 			
 			// Alert
-			String userMessage = CommonUtils.getOr(data.getBlock().getCountMessageUser(), Messages.ALERTS_COUNT_USER);
-			String adminMessage = CommonUtils.getOr(data.getBlock().getCountMessageAdmin(), Messages.ALERTS_COUNT_ADMIN);
-			String consoleMessage = CommonUtils.getOr(data.getBlock().getCountMessageConsole(), Messages.ALERTS_COUNT_CONSOLE);
-			
-			userMessage = parseMessage(userMessage, data, AlerterType.USER, bfr.getTimestamp());
-			adminMessage = parseMessage(adminMessage, data, AlerterType.ADMIN, bfr.getTimestamp());
-			consoleMessage = parseMessage(consoleMessage, data, AlerterType.CONSOLE, bfr.getTimestamp());
-			
-			// Execute commands on destroy
-			executeBlockCommands(ConfigMain.EXECUTE_COMMANDS_ON_FOUND, data);
-			
-			if (plugin.isBungeeCordEnabled()) {
-				OAPacket packet = new OAPacket(plugin.getVersion());
-				packet
-						.setMaterialName(data.getBlock().getMaterialName())
-						.setType(OAPacket.PacketType.ALERT_COUNT)
-						.setMessageUsers(userMessage)
-						.setMessageAdmins(adminMessage)
-						.setMessageConsole(consoleMessage);
-				if (plugin.getMessenger().getMessageDispatcher().sendPacket(packet)) {
-					plugin.getLoggerManager().logDebug(OAConstants.DEBUG_MESSAGING_SEND_ALERT_COUNT, true);
-				} else {
-					plugin.getLoggerManager().printError(OAConstants.DEBUG_MESSAGING_SEND_ALERT_COUNT_FAILED);
-				}
-			} else {
-				Alert alert = new Alert(userMessage, adminMessage, consoleMessage)
-						.setData(data);
-				CommonUtils.ifNonNullDo(data.getBlock().getSound(), alert::setSound);
-				sendAlerts(alert);
-			}
-			sendGlobalAlert(data.setElapsed(bfr.getTimestamp()), AlertType.COUNT);
+			handleFoundAlerts(data, bfr);
 		}
+	}
+	
+	public void handleFoundAlerts(BlockData data, BlocksFoundResult bfr) {
+		String userMessage = CommonUtils.getOr(data.getBlock().getCountMessageUser(), Messages.ALERTS_COUNT_USER);
+		String adminMessage = CommonUtils.getOr(data.getBlock().getCountMessageAdmin(), Messages.ALERTS_COUNT_ADMIN);
+		String consoleMessage = CommonUtils.getOr(data.getBlock().getCountMessageConsole(), Messages.ALERTS_COUNT_CONSOLE);
+		
+		userMessage = parseMessage(userMessage, data, AlerterType.USER, bfr.getTimestamp());
+		adminMessage = parseMessage(adminMessage, data, AlerterType.ADMIN, bfr.getTimestamp());
+		consoleMessage = parseMessage(consoleMessage, data, AlerterType.CONSOLE, bfr.getTimestamp());
+		
+		// Execute commands on destroy
+		executeBlockCommands(ConfigMain.EXECUTE_COMMANDS_ON_FOUND, data);
+		
+		if (plugin.isBungeeCordEnabled()) {
+			((OAMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendAlertCount(
+					data,
+					userMessage, adminMessage, consoleMessage
+			);
+		} else {
+			Alert alert = new Alert(userMessage, adminMessage, consoleMessage)
+					.setData(data);
+			CommonUtils.ifNonNullDo(data.getBlock().getSound(), alert::setSound);
+			sendAlerts(alert);
+		}
+		sendGlobalAlert(data.setElapsed(bfr.getTimestamp()), AlertType.COUNT);
 	}
 	
 	public void handleTNTDestroy(BlockData data) {
@@ -233,18 +225,10 @@ public abstract class BlockManager {
 		
 		// Send message to players
 		if (plugin.isBungeeCordEnabled()) {
-			OAPacket packet = new OAPacket(plugin.getVersion());
-			packet
-					.setMaterialName(data.getBlock().getMaterialName())
-					.setType(OAPacket.PacketType.ALERT_TNT)
-					.setMessageUsers(userMessage)
-					.setMessageAdmins(adminMessage)
-					.setMessageConsole(consoleMessage);
-			if (plugin.getMessenger().getMessageDispatcher().sendPacket(packet)) {
-				plugin.getLoggerManager().logDebug(OAConstants.DEBUG_MESSAGING_SEND_ALERT_TNT, true);
-			} else {
-				plugin.getLoggerManager().printError(OAConstants.DEBUG_MESSAGING_SEND_ALERT_TNT_FAILED);
-			}
+			((OAMessageDispatcher) plugin.getMessenger().getMessageDispatcher()).sendAlertTNT(
+					data,
+					userMessage, adminMessage, consoleMessage
+			);
 		} else {
 			Alert alert = new Alert(userMessage, adminMessage, consoleMessage)
 					.setData(data);
@@ -254,24 +238,23 @@ public abstract class BlockManager {
 		sendGlobalAlert(data, AlertType.TNT);
 	}
 	
-	public int countNearBlocks(ADPLocation blockLocation, String material, MarkType markType) {
-		return countNearBlocks(blockLocation, material, markType, 0);
+	public int countNearBlocks(ADPLocation blockLocation, OABlockImpl block, MarkType markType) {
+		return countNearBlocks(blockLocation, block, markType, 0);
 	}
 	
-	public int countNearBlocks(ADPLocation blockLocation, String material, MarkType markType, int currentNumber) {
+	public int countNearBlocks(ADPLocation blockLocation, OABlockImpl block, MarkType markType, int currentNumber) {
 		int ret = currentNumber;
-		if (markBlock(blockLocation, material, markType)) {
+		if (markBlock(blockLocation, block, markType)) {
 			ret++;
 			for (int x=-1; x <= 1; x++) {
 				for (int y=-1; y <= 1; y++) {
 					for (int z=-1; z <= 1; z++) {
 						if (ret < 500 || ConfigMain.BLOCKS_BYPASS_SECURE_COUNTER) {
-							ret = countNearBlocks(blockLocation.add(x, y, z), material, markType, ret);
+							ret = countNearBlocks(blockLocation.add(x, y, z), block, markType, ret);
 						} else {
 							// Calculating too many blocks, print an error
 							// and force to stop the counter
-							plugin.getLoggerManager().printError(OAConstants.DEBUG_EVENT_BLOCK_BREAK_INFINITE_COUNT
-									.replace("{block}", material));
+							plugin.getLoggerManager().printError(String.format(OAConstants.DEBUG_EVENT_BLOCK_BREAK_INFINITE_COUNT, block.getMaterialName()));
 							return -1;
 						}
 						
@@ -298,6 +281,7 @@ public abstract class BlockManager {
 					.replace("%player%", pPlayer)
 					.replace("%number%", pNumber)
 					.replace("%block%", pBlock)
+					.replace("%world%", data.getLocation().getWorld())
 					.replace("%time%", elapsed >= 0 ? formatElapsed(elapsed) : "%time%"
 					.replace("%light_level%", Integer.toString(data.getLightLevel()))
 				), data.getBlock());

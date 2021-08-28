@@ -9,13 +9,13 @@ import com.alessiodp.oreannouncer.api.interfaces.OreAnnouncerAPI;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.blocks.objects.BlockDestroy;
 import com.alessiodp.oreannouncer.common.blocks.objects.OABlockImpl;
-import com.alessiodp.oreannouncer.common.configuration.OAConfigurationManager;
 import com.alessiodp.oreannouncer.common.configuration.data.Blocks;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 import com.alessiodp.oreannouncer.common.storage.OADatabaseManager;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -28,8 +28,13 @@ public class ApiHandler implements OreAnnouncerAPI {
 	@NonNull private final OreAnnouncerPlugin plugin;
 	
 	@Override
-	public void reloadOreAnnouncer() {
+	public void reloadPlugin() {
 		plugin.reloadConfiguration();
+	}
+	
+	@Override
+	public boolean isBungeeCordEnabled() {
+		return plugin.isBungeeCordEnabled();
 	}
 	
 	@Override
@@ -63,15 +68,16 @@ public class ApiHandler implements OreAnnouncerAPI {
 		return new LinkedList<>(plugin.getDatabaseManager().getLogBlocks((OAPlayerImpl) player, block, limit, offset));
 	}
 	
+	@Nullable
 	@Override
-	public @Nullable OABlock getBlock(@org.checkerframework.checker.nullness.qual.NonNull String materialName) {
-		return Blocks.LIST.get(materialName);
+	public OABlock getBlock(@NotNull String materialName) {
+		return Blocks.searchBlock(materialName);
 	}
 	
 	@Override
-	public OABlock addBlock(@org.checkerframework.checker.nullness.qual.NonNull String materialName) {
+	public OABlock addBlock(@NotNull String materialName) {
 		OABlockImpl ret = null;
-		if (!((OAConfigurationManager) plugin.getConfigurationManager()).getBlocks().existsBlock(materialName)) {
+		if (!Blocks.existsBlock(materialName)) {
 			ret = new OABlockImpl(plugin, CommonUtils.toUpperCase(materialName));
 			ret.updateBlock();
 		}
@@ -79,12 +85,12 @@ public class ApiHandler implements OreAnnouncerAPI {
 	}
 	
 	@Override
-	public void removeBlock(@org.checkerframework.checker.nullness.qual.NonNull OABlock block) {
+	public void removeBlock(@NotNull OABlock block) {
 		((OABlockImpl) block).removeBlock();
 	}
 	
 	@Override
-	public OABlockDestroy makeBlockDestroy(@org.checkerframework.checker.nullness.qual.NonNull UUID playerUuid, @org.checkerframework.checker.nullness.qual.NonNull OABlock block, int destroyCount) {
+	public OABlockDestroy makeBlockDestroy(@NotNull UUID playerUuid, @NotNull OABlock block, int destroyCount) {
 		return new BlockDestroy(playerUuid, block.getMaterialName(), destroyCount);
 	}
 }

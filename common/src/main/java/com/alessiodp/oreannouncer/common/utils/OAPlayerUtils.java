@@ -8,16 +8,16 @@ import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @RequiredArgsConstructor
 public class OAPlayerUtils implements IPlayerUtils {
 	private final OreAnnouncerPlugin plugin;
 	
 	@Override
-	public List<ADPCommand> getAllowedCommands(@NonNull User user) {
-		List<ADPCommand> ret = new ArrayList<>();
+	public Set<ADPCommand> getAllowedCommands(@NonNull User user) {
+		Set<ADPCommand> ret = new HashSet<>();
 		OAPlayerImpl player = plugin.getPlayerManager().getPlayer(user.getUUID());
 		if (player != null) {
 			ret = player.getAllowedCommands();

@@ -5,7 +5,6 @@ import com.alessiodp.core.common.logging.LoggerManager;
 import com.alessiodp.core.common.user.OfflineUser;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.addons.internal.OAPlaceholder;
-import com.alessiodp.oreannouncer.common.blocks.objects.BlockDestroy;
 import com.alessiodp.oreannouncer.common.blocks.objects.OABlockImpl;
 import com.alessiodp.oreannouncer.common.configuration.data.Blocks;
 import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
@@ -13,32 +12,31 @@ import com.alessiodp.oreannouncer.common.players.PlayerManager;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 import com.alessiodp.oreannouncer.common.storage.OADatabaseManager;
 import com.alessiodp.oreannouncer.common.utils.BlocksFoundResult;
-import org.mockito.internal.util.collections.Sets;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.powermock.core.MockRepository;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.powermock.api.mockito.PowerMockito.doAnswer;
 import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.spy;
 
-/* Unstable test case. Run it manually.
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({
-		ConfigMain.class,
-		OreAnnouncerPlugin.class,
-		OADatabaseManager.class,
-		OAPlaceholder.class,
-		PlayerManager.class
-})*/
 public class OAPlaceholderTest {
 	private OreAnnouncerPlugin mockPlugin;
 	private OADatabaseManager mockDatabaseManager;
@@ -46,8 +44,10 @@ public class OAPlaceholderTest {
 	private OABlockImpl block1;
 	private OABlockImpl block2;
 	private OABlockImpl block3;
+	private OAPlayerImpl player1;
+	private OAPlayerImpl player2;
 	
-	//@Before
+	@Before
 	public void setUp() {
 		MockRepository.clear();
 		mockPlugin = mock(OreAnnouncerPlugin.class);
@@ -78,46 +78,45 @@ public class OAPlaceholderTest {
 		block2 = new OABlockImpl(mockPlugin, "matB");
 		block3 = new OABlockImpl(mockPlugin, "matC");
 		Blocks.LIST = new HashMap<>();
-		Blocks.LIST.put(block1.getMaterialName(), block1);
-		Blocks.LIST.put(block2.getMaterialName(), block2);
-		Blocks.LIST.put(block3.getMaterialName(), block3);
+		Blocks.addBlock(block1);
+		Blocks.addBlock(block2);
+		Blocks.addBlock(block3);
+		
+		player1 = new TestOAPlayerImpl(mockPlugin, UUID.randomUUID());
+		player2 = new TestOAPlayerImpl(mockPlugin, UUID.randomUUID());
+		
+		when(playerManager.getPlayer(any())).then(uuid -> {
+			if (uuid.getArgument(0).equals(player1.getPlayerUUID()))
+				return player1;
+			else if (uuid.getArgument(0).equals(player2.getPlayerUUID()))
+				return player2;
+			return null;
+		});
 	}
 	
-	//@Test
+	@Test
+	@PrepareForTest({ADPPlugin.class, OAPlaceholder.class})
 	public void testPlaceholderPlayerDestroy() {
-		OAPlayerImpl player = new OAPlayerImpl(mockPlugin, UUID.randomUUID()) {};
+		LinkedHashMap<OABlockImpl, Integer> statsPlayer = new LinkedHashMap<>();
+		statsPlayer.put(block1, 30);
+		statsPlayer.put(block2, 20);
 		
-		doAnswer((mock) -> {
-			if (mock.getArgument(1) != null && mock.getArgument(1) instanceof OABlockImpl) {
-				if (block1.equals(mock.getArgument(1))) {
-					return new BlockDestroy(player.getPlayerUUID(), block1.getMaterialName(), 10);
-				} else if (block2.equals(mock.getArgument(1))) {
-					return new BlockDestroy(player.getPlayerUUID(), block2.getMaterialName(), 20);
-				}
-			}
-			return new BlockDestroy(player.getPlayerUUID(), block3.getMaterialName(), 30);
-		}).when(mockDatabaseManager).getBlockDestroy(eq(player.getPlayerUUID()), any());
-		
-		doAnswer((mock) -> Sets.newSet(
-						new BlockDestroy(player.getPlayerUUID(), block1.getMaterialName(), 20),
-						new BlockDestroy(player.getPlayerUUID(), block2.getMaterialName(), 30)
-				)).when(mockDatabaseManager).getAllBlockDestroy(eq(player.getPlayerUUID()));
+		when(mockDatabaseManager.getStatsPlayer(any(), eq(player1.getPlayerUUID()))).thenReturn(statsPlayer);
 		
 		String identifier = "player_destroy";
 		OAPlaceholder placeholder = OAPlaceholder.getPlaceholder(identifier);
 		assertEquals(placeholder, OAPlaceholder.PLAYER_DESTROY);
-		assertEquals(placeholder.formatPlaceholder(player, identifier), "50");
+		assertEquals(placeholder.formatPlaceholder(player1, identifier), "50");
 		
 		identifier = "player_destroy_" + block2.getMaterialName();
 		placeholder = OAPlaceholder.getPlaceholder(identifier);
 		assertEquals(placeholder, OAPlaceholder.PLAYER_DESTROY_BLOCK);
-		assertEquals(placeholder.formatPlaceholder(player, identifier), "20");
+		assertEquals(placeholder.formatPlaceholder(player1, identifier), "20");
 	}
 	
-	//@Test
+	@Test
+	@PrepareForTest({ADPPlugin.class, OAPlaceholder.class})
 	public void testPlaceholderPlayerFound() {
-		OAPlayerImpl player = new OAPlayerImpl(mockPlugin, UUID.randomUUID()) {};
-		
 		doAnswer((mock) -> {
 			if (mock.getArgument(1) != null && mock.getArgument(1) instanceof OABlockImpl) {
 				if (block1.equals(mock.getArgument(1))) {
@@ -127,25 +126,24 @@ public class OAPlaceholderTest {
 				}
 			}
 			return new BlocksFoundResult(0, 30);
-		}).when(mockDatabaseManager).getBlockFound(eq(player.getPlayerUUID()), any(), anyLong());
+		}).when(mockDatabaseManager).getBlockFound(eq(player1.getPlayerUUID()), any(), anyLong());
 		
-		assertEquals(mockDatabaseManager.getBlockFound(player.getPlayerUUID(), null, 0), new BlocksFoundResult(0, 30));
+		assertEquals(mockDatabaseManager.getBlockFound(player1.getPlayerUUID(), null, 0), new BlocksFoundResult(0, 30));
 		
 		String identifier = "player_found";
 		OAPlaceholder placeholder = OAPlaceholder.getPlaceholder(identifier);
 		assertEquals(placeholder, OAPlaceholder.PLAYER_FOUND);
-		assertEquals(placeholder.formatPlaceholder(player, identifier), "30");
+		assertEquals(placeholder.formatPlaceholder(player1, identifier), "30");
 		
 		identifier = "player_found_" + block2.getMaterialName();
 		placeholder = OAPlaceholder.getPlaceholder(identifier);
 		assertEquals(placeholder, OAPlaceholder.PLAYER_FOUND_BLOCK);
-		assertEquals(placeholder.formatPlaceholder(player, identifier), "20");
+		assertEquals(placeholder.formatPlaceholder(player1, identifier), "20");
 	}
 	
-	//@Test
+	@Test
+	@PrepareForTest({ADPPlugin.class, OAPlaceholder.class})
 	public void testPlaceholderPlayerFoundIn() {
-		OAPlayerImpl player = new OAPlayerImpl(mockPlugin, UUID.randomUUID()) {};
-		
 		doAnswer((mock) -> {
 			if (mock.getArgument(1) == null) {
 				if ((Long) mock.getArgument(2) > 100) {
@@ -162,29 +160,203 @@ public class OAPlaceholderTest {
 				return new BlocksFoundResult(0, 500);
 			}
 			return new BlocksFoundResult(0, 600);
-		}).when(mockDatabaseManager).getBlockFound(eq(player.getPlayerUUID()), any(), anyLong());
+		}).when(mockDatabaseManager).getBlockFound(eq(player1.getPlayerUUID()), any(), anyLong());
 		
-		assertEquals(mockDatabaseManager.getBlockFound(player.getPlayerUUID(), null, 0), new BlocksFoundResult(0, 300));
+		assertEquals(mockDatabaseManager.getBlockFound(player1.getPlayerUUID(), null, 0), new BlocksFoundResult(0, 300));
 		
 		String identifier = "player_foundin_60";
 		OAPlaceholder placeholder = OAPlaceholder.getPlaceholder(identifier);
 		assertEquals(placeholder, OAPlaceholder.PLAYER_FOUNDIN_RANGE);
-		assertEquals(placeholder.formatPlaceholder(player, identifier), "200");
+		assertEquals(placeholder.formatPlaceholder(player1, identifier), "200");
 		
 		identifier = "player_foundin_150";
 		placeholder = OAPlaceholder.getPlaceholder(identifier);
 		assertEquals(placeholder, OAPlaceholder.PLAYER_FOUNDIN_RANGE);
-		assertEquals(placeholder.formatPlaceholder(player, identifier), "100");
+		assertEquals(placeholder.formatPlaceholder(player1, identifier), "100");
 		
 		identifier = "player_foundin_60_" + block1.getMaterialName();
 		placeholder = OAPlaceholder.getPlaceholder(identifier);
 		assertEquals(placeholder, OAPlaceholder.PLAYER_FOUNDIN_RANGE_BLOCK);
-		assertEquals(placeholder.formatPlaceholder(player, identifier), "500");
+		assertEquals(placeholder.formatPlaceholder(player1, identifier), "500");
 		
 		identifier = "player_foundin_150_" + block1.getMaterialName();
 		placeholder = OAPlaceholder.getPlaceholder(identifier);
 		assertEquals(placeholder, OAPlaceholder.PLAYER_FOUNDIN_RANGE_BLOCK);
-		assertEquals(placeholder.formatPlaceholder(player, identifier), "400");
+		assertEquals(placeholder.formatPlaceholder(player1, identifier), "400");
+	}
+	
+	@Test
+	@PrepareForTest({ADPPlugin.class, OAPlaceholder.class})
+	public void testPlaceholderTopPlayerDestroy() {
+		LinkedHashMap<OABlockImpl, Integer> statsPlayer = new LinkedHashMap<>();
+		statsPlayer.put(block1, 30);
+		statsPlayer.put(block2, 20);
+		
+		when(mockDatabaseManager.getStatsPlayer(any(), eq(player1.getPlayerUUID()))).thenReturn(statsPlayer);
+		
+		String identifier = "player_destroy";
+		OAPlaceholder placeholder = OAPlaceholder.getPlaceholder(identifier);
+		assertEquals(placeholder, OAPlaceholder.PLAYER_DESTROY);
+		assertEquals(placeholder.formatPlaceholder(player1, identifier), "50");
+		
+		identifier = "player_destroy_" + block2.getMaterialName();
+		placeholder = OAPlaceholder.getPlaceholder(identifier);
+		assertEquals(placeholder, OAPlaceholder.PLAYER_DESTROY_BLOCK);
+		assertEquals(placeholder.formatPlaceholder(player1, identifier), "20");
+	}
+	
+	@Test
+	@PrepareForTest({ADPPlugin.class, OAPlaceholder.class})
+	public void testPlaceholderTopPlayerByDestroy() {
+		LinkedHashMap<UUID, Integer> res = new LinkedHashMap<>();
+		res.put(player1.getPlayerUUID(), 20);
+		when(mockDatabaseManager.getTopPlayers(eq(OADatabaseManager.ValueType.DESTROY), any(), anyInt(), eq(0))).thenReturn(res);
+		LinkedHashMap<UUID, Integer> res2 = new LinkedHashMap<>();
+		res2.put(player2.getPlayerUUID(), 10);
+		when(mockDatabaseManager.getTopPlayers(eq(OADatabaseManager.ValueType.DESTROY), any(), anyInt(), eq(1))).thenReturn(res2);
+		
+		String identifier = "top_player_by_destroy_1_player_id";
+		OAPlaceholder placeholder = OAPlaceholder.getPlaceholder(identifier);
+		assertEquals(placeholder, OAPlaceholder.TOP_PLAYER_BY_DESTROY_NUMBER_PLACEHOLDER);
+		assertEquals(placeholder.formatPlaceholder(player1, identifier), player1.getPlayerUUID().toString());
+		
+		identifier = "top_player_by_destroy_" + block2.getMaterialName() + "_1_player_id";
+		placeholder = OAPlaceholder.getPlaceholder(identifier);
+		assertEquals(placeholder, OAPlaceholder.TOP_PLAYER_BY_DESTROY_BLOCK_NUMBER_PLACEHOLDER);
+		assertEquals(placeholder.formatPlaceholder(player1, identifier), player1.getPlayerUUID().toString());
+		
+		identifier = "top_player_by_destroy_2_player_id";
+		placeholder = OAPlaceholder.getPlaceholder(identifier);
+		assertEquals(placeholder, OAPlaceholder.TOP_PLAYER_BY_DESTROY_NUMBER_PLACEHOLDER);
+		assertEquals(placeholder.formatPlaceholder(player1, identifier), player2.getPlayerUUID().toString());
+		
+		identifier = "top_player_by_destroy_" + block2.getMaterialName() + "_2_player_id";
+		placeholder = OAPlaceholder.getPlaceholder(identifier);
+		assertEquals(placeholder, OAPlaceholder.TOP_PLAYER_BY_DESTROY_BLOCK_NUMBER_PLACEHOLDER);
+		assertEquals(placeholder.formatPlaceholder(player1, identifier), player2.getPlayerUUID().toString());
+	}
+	
+	@Test
+	@PrepareForTest({ADPPlugin.class, OAPlaceholder.class})
+	public void testPlaceholderTopPlayerByFound() {
+		LinkedHashMap<UUID, Integer> res = new LinkedHashMap<>();
+		res.put(player1.getPlayerUUID(), 20);
+		when(mockDatabaseManager.getTopPlayers(eq(OADatabaseManager.ValueType.FOUND), any(), anyInt(), eq(0))).thenReturn(res);
+		LinkedHashMap<UUID, Integer> res2 = new LinkedHashMap<>();
+		res2.put(player2.getPlayerUUID(), 10);
+		when(mockDatabaseManager.getTopPlayers(eq(OADatabaseManager.ValueType.FOUND), any(), anyInt(), eq(1))).thenReturn(res2);
+		
+		String identifier = "top_player_by_found_1_player_id";
+		OAPlaceholder placeholder = OAPlaceholder.getPlaceholder(identifier);
+		assertEquals(placeholder, OAPlaceholder.TOP_PLAYER_BY_FOUND_NUMBER_PLACEHOLDER);
+		assertEquals(placeholder.formatPlaceholder(player1, identifier), player1.getPlayerUUID().toString());
+		
+		identifier = "top_player_by_found_" + block2.getMaterialName() + "_1_player_id";
+		placeholder = OAPlaceholder.getPlaceholder(identifier);
+		assertEquals(placeholder, OAPlaceholder.TOP_PLAYER_BY_FOUND_BLOCK_NUMBER_PLACEHOLDER);
+		assertEquals(placeholder.formatPlaceholder(player1, identifier), player1.getPlayerUUID().toString());
+		
+		identifier = "top_player_by_found_2_player_id";
+		placeholder = OAPlaceholder.getPlaceholder(identifier);
+		assertEquals(placeholder, OAPlaceholder.TOP_PLAYER_BY_FOUND_NUMBER_PLACEHOLDER);
+		assertEquals(placeholder.formatPlaceholder(player1, identifier), player2.getPlayerUUID().toString());
+		
+		identifier = "top_player_by_found_" + block2.getMaterialName() + "_2_player_id";
+		placeholder = OAPlaceholder.getPlaceholder(identifier);
+		assertEquals(placeholder, OAPlaceholder.TOP_PLAYER_BY_FOUND_BLOCK_NUMBER_PLACEHOLDER);
+		assertEquals(placeholder.formatPlaceholder(player1, identifier), player2.getPlayerUUID().toString());
+	}
+	
+	@Test
+	@PrepareForTest({ADPPlugin.class, OAPlaceholder.class})
+	public void testPlaceholderTopPlayersTotalByDestroy() {
+		when(mockDatabaseManager.getTopPlayersNumber(eq(OADatabaseManager.ValueType.DESTROY), isNull())).thenReturn(20);
+		when(mockDatabaseManager.getTopPlayersNumber(eq(OADatabaseManager.ValueType.DESTROY), eq(block1))).thenReturn(10);
+		
+		String identifier = "top_players_total_by_destroy";
+		OAPlaceholder placeholder = OAPlaceholder.getPlaceholder(identifier);
+		assertEquals(placeholder, OAPlaceholder.TOP_PLAYERS_TOTAL_BY_DESTROY);
+		assertEquals(placeholder.formatPlaceholder(player1, identifier), "20");
+		
+		identifier = "top_players_total_" + block1.getMaterialName() + "_by_destroy";
+		placeholder = OAPlaceholder.getPlaceholder(identifier);
+		assertEquals(placeholder, OAPlaceholder.TOP_PLAYERS_TOTAL_BLOCK_BY_DESTROY);
+		assertEquals(placeholder.formatPlaceholder(player1, identifier), "10");
+	}
+	
+	@Test
+	@PrepareForTest({ADPPlugin.class, OAPlaceholder.class})
+	public void testPlaceholderTopPlayersTotalByFound() {
+		when(mockDatabaseManager.getTopPlayersNumber(eq(OADatabaseManager.ValueType.FOUND), isNull())).thenReturn(20);
+		when(mockDatabaseManager.getTopPlayersNumber(eq(OADatabaseManager.ValueType.FOUND), eq(block1))).thenReturn(10);
+		
+		String identifier = "top_players_total_by_found";
+		OAPlaceholder placeholder = OAPlaceholder.getPlaceholder(identifier);
+		assertEquals(placeholder, OAPlaceholder.TOP_PLAYERS_TOTAL_BY_FOUND);
+		assertEquals(placeholder.formatPlaceholder(player1, identifier), "20");
+		
+		identifier = "top_players_total_" + block1.getMaterialName() + "_by_found";
+		placeholder = OAPlaceholder.getPlaceholder(identifier);
+		assertEquals(placeholder, OAPlaceholder.TOP_PLAYERS_TOTAL_BLOCK_BY_FOUND);
+		assertEquals(placeholder.formatPlaceholder(player1, identifier), "10");
+	}
+	
+	@Test
+	@PrepareForTest({ADPPlugin.class, OAPlaceholder.class})
+	public void testPlaceholderPlayerTopByDestroy() {
+		when(mockDatabaseManager.getTopPlayerPosition(eq(player1.getPlayerUUID()), eq(OADatabaseManager.ValueType.DESTROY), isNull())).thenReturn(1);
+		when(mockDatabaseManager.getTopPlayerPosition(eq(player1.getPlayerUUID()), eq(OADatabaseManager.ValueType.DESTROY), eq(block1))).thenReturn(2);
+		
+		String identifier = "player_top_by_destroy";
+		OAPlaceholder placeholder = OAPlaceholder.getPlaceholder(identifier);
+		assertEquals(placeholder, OAPlaceholder.PLAYER_TOP_BY_DESTROY);
+		assertEquals(placeholder.formatPlaceholder(player1, identifier), "1");
+		
+		identifier = "player_top_by_destroy_" + block1.getMaterialName();
+		placeholder = OAPlaceholder.getPlaceholder(identifier);
+		assertEquals(placeholder, OAPlaceholder.PLAYER_TOP_BY_DESTROY_BLOCK);
+		assertEquals(placeholder.formatPlaceholder(player1, identifier), "2");
+	}
+	
+	@Test
+	@PrepareForTest({ADPPlugin.class, OAPlaceholder.class})
+	public void testPlaceholderTotalByDestroy() {
+		when(mockDatabaseManager.getTotalDestroy(isNull())).thenReturn(20);
+		when(mockDatabaseManager.getTotalDestroy(eq(block1))).thenReturn(10);
+		
+		String identifier = "total_by_destroy";
+		OAPlaceholder placeholder = OAPlaceholder.getPlaceholder(identifier);
+		assertEquals(placeholder, OAPlaceholder.TOTAL_BY_DESTROY);
+		assertEquals(placeholder.formatPlaceholder(player1, identifier), "20");
+		
+		identifier = "total_" + block1.getMaterialName() + "_by_destroy";
+		placeholder = OAPlaceholder.getPlaceholder(identifier);
+		assertEquals(placeholder, OAPlaceholder.TOTAL_BLOCK_BY_DESTROY);
+		assertEquals(placeholder.formatPlaceholder(player1, identifier), "10");
+	}
+	
+	@Test
+	@PrepareForTest({ADPPlugin.class, OAPlaceholder.class})
+	public void testPlaceholderTotalByFound() {
+		when(mockDatabaseManager.getTotalFound(isNull())).thenReturn(20);
+		when(mockDatabaseManager.getTotalFound(eq(block1))).thenReturn(10);
+		
+		String identifier = "total_by_found";
+		OAPlaceholder placeholder = OAPlaceholder.getPlaceholder(identifier);
+		assertEquals(placeholder, OAPlaceholder.TOTAL_BY_FOUND);
+		assertEquals(placeholder.formatPlaceholder(player1, identifier), "20");
+		
+		identifier = "total_" + block1.getMaterialName() + "_by_found";
+		placeholder = OAPlaceholder.getPlaceholder(identifier);
+		assertEquals(placeholder, OAPlaceholder.TOTAL_BLOCK_BY_FOUND);
+		assertEquals(placeholder.formatPlaceholder(player1, identifier), "10");
+	}
+	
+	private static class TestOAPlayerImpl extends OAPlayerImpl {
+		
+		protected TestOAPlayerImpl(OreAnnouncerPlugin plugin, UUID uuid) {
+			super(plugin, uuid);
+		}
 	}
 	
 	private static class TestPlayerManager extends PlayerManager {

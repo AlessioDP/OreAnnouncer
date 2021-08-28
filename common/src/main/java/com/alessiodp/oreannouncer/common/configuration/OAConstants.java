@@ -14,61 +14,53 @@ public class OAConstants {
 	public static final int PLUGIN_BSTATS_BUNGEE_ID = 4513;
 	
 	// Versions
-	public static final int VERSION_BUKKIT_CONFIG = 11;
-	public static final int VERSION_BUNGEE_CONFIG = 6;
-	public static final int VERSION_BUKKIT_MESSAGES = 9;
-	public static final int VERSION_BUNGEE_MESSAGES = 7;
+	public static final int VERSION_BUKKIT_CONFIG = 12;
+	public static final int VERSION_BUNGEE_CONFIG = 7;
+	public static final int VERSION_BUKKIT_MESSAGES = 10;
+	public static final int VERSION_BUNGEE_MESSAGES = 8;
 	public static final int VERSION_BLOCKS = 1;
 	
 	
 	// Debug messages
-	public static final String DEBUG_CFG_WRONGBLOCK = "Cannot find the block '{block}'";
-	public static final String DEBUG_CMD_ALERTS = "{player} performed alerts command with toggle '{toggle}'";
-	public static final String DEBUG_CMD_HELP = "{player} performed help command";
-	public static final String DEBUG_CMD_DEBUG = "{player} performed debug command";
-	public static final String DEBUG_CMD_LOG = "{player} performed log command";
-	public static final String DEBUG_CMD_LOG_CONSOLE = "Console performed log command";
-	public static final String DEBUG_CMD_LOG_FAILED_PARSE_DATE = "Failed to parse format date: {message}";
-	public static final String DEBUG_CMD_RELOAD = "{player} performed reload command";
-	public static final String DEBUG_CMD_RELOAD_CONSOLE = "Console performed reload command";
-	public static final String DEBUG_CMD_RELOADED = "Configuration reloaded by {player}";
-	public static final String DEBUG_CMD_RELOADED_CONSOLE = "Configuration reloaded";
-	public static final String DEBUG_CMD_STATS = "{player} performed stats command on '{victim}'";
-	public static final String DEBUG_CMD_STATS_CONSOLE = "Performed stats command on '{victim}'";
-	public static final String DEBUG_CMD_TOP = "{player} performed top command";
-	public static final String DEBUG_CMD_TOP_CONSOLE = "Performed top command";
-	public static final String DEBUG_CMD_VERSION = "{player} performed version command";
-	public static final String DEBUG_CMD_VERSION_CONSOLE = "Performed version command";
-	public static final String DEBUG_COUNTER_HANDLING = "Handling a block found result of {player} with {value} blocks";
-	public static final String DEBUG_DB_UPDATEPLAYER = "Update player for {player} [{uuid}]";
-	public static final String DEBUG_DB_GETPLAYER = "Get player request for '{uuid}'";
-	public static final String DEBUG_DB_TOP_BLOCKS_LIST = "Getting top players with limit {limit} and offset {offset}";
-	public static final String DEBUG_DB_TOP_BLOCKS_NUMBER = "Getting number of top players";
-	public static final String DEBUG_DB_STATS_PLAYER = "Getting stats of player '{player}' with value {type}";
-	public static final String DEBUG_DB_UPDATE_BLOCK_DESTROY = "Updating block destroy for '{uuid}' of {block}";
-	public static final String DEBUG_DB_SET_BLOCK_DESTROY = "Setting block destroy for '{uuid}' of {block}";
-	public static final String DEBUG_DB_GET_BLOCK_DESTROY = "Getting block destroy for '{uuid}' of {block}";
-	public static final String DEBUG_DB_GET_ALL_BLOCK_DESTROY = "Getting all block destroy for '{uuid}'";
-	public static final String DEBUG_DB_INSERT_BLOCK_FOUND = "Inserting block found for '{uuid}' of {block}";
-	public static final String DEBUG_DB_GET_BLOCK_FOUND = "Getting block found for '{uuid}' of {block}";
-	public static final String DEBUG_DB_LOG_BLOCKS = "Getting log blocks for '{uuid}' of '{block}'";
-	public static final String DEBUG_DB_LOG_BLOCKS_NUMBER = "Getting number of log blocks for '{uuid}' of '{block}'";
-	public static final String DEBUG_EVENT_BLOCK_BREAK = "{player} broke a block of '{block}'";
-	public static final String DEBUG_EVENT_BLOCK_PLACE = "{player} placed a marked block '{block}'";
-	public static final String DEBUG_EVENT_BLOCK_TNT = "{player} destroyed {number} blocks with TNT";
-	public static final String DEBUG_EVENT_BLOCK_BREAK_INFINITE_COUNT = "Security Counter Warning:\n=========================================================\n  WARNING: A player is trying to destroy '{block}' and nearest blocks are over 500.\n  This is a security warning, check if the block is correctly configured or contact the developer.\n=========================================================";
-	public static final String DEBUG_MESSAGING_SEND_ALERT = "Sent an alert packet";
-	public static final String DEBUG_MESSAGING_SEND_ALERT_FAILED = "Failed to send an alert packet";
-	public static final String DEBUG_MESSAGING_SEND_ALERT_TNT = "Sent a tnt alert packet";
-	public static final String DEBUG_MESSAGING_SEND_ALERT_TNT_FAILED = "Failed to send a tnt alert packet";
-	public static final String DEBUG_MESSAGING_SEND_ALERT_COUNT = "Sent a count alert packet";
-	public static final String DEBUG_MESSAGING_SEND_ALERT_COUNT_FAILED = "Failed to send a count alert packet";
-	public static final String DEBUG_MESSAGING_SEND_DESTROY = "Sent a destroy packet";
-	public static final String DEBUG_MESSAGING_SEND_DESTROY_FAILED = "Failed to send a destroy packet";
-	public static final String DEBUG_MESSAGING_SEND_FOUND = "Sent a found packet";
-	public static final String DEBUG_MESSAGING_SEND_FOUND_FAILED = "Failed to send a found packet";
-	public static final String DEBUG_MESSAGING_RECEIVED = "Received an OreAnnouncer packet of type '{type}'";
-	public static final String DEBUG_MESSAGING_RECEIVED_WRONG = "Received a wrong OreAnnouncer packet";
+	public static final String DEBUG_CFG_WRONG_BLOCK = "Cannot find the block '%s'";
+	public static final String DEBUG_CFG_WRONG_VARIANT = "Cannot find the variant block '%s'";
+	
+	public static final String DEBUG_FAILED_PARSE_DATE = "Failed to parse format date";
+	
+	public static final String DEBUG_COUNTER_HANDLING = "Handling a block found result of %s with %d blocks";
+	
+	public static final String DEBUG_DB_UPDATEPLAYER = "Update player request for %s (uuid: %s)";
+	public static final String DEBUG_DB_GETPLAYER = "Get player request for %s";
+	public static final String DEBUG_DB_UPDATE_BLOCK_DESTROY = "Update block destroy request for %s of %s";
+	public static final String DEBUG_DB_SET_BLOCK_DESTROY = "Set block destroy request for %s of %s";
+	public static final String DEBUG_DB_GET_BLOCK_DESTROY = "Get block destroy request for %s of %s";
+	public static final String DEBUG_DB_GET_ALL_BLOCK_DESTROY = "Get all block destroy request for %s";
+	public static final String DEBUG_DB_INSERT_BLOCK_FOUND = "Insert block found request for %s of %s";
+	public static final String DEBUG_DB_GET_BLOCK_FOUND = "Get block found request for %s of %s";
+	public static final String DEBUG_DB_LOG_BLOCKS = "Get log blocks request for %s of %s";
+	public static final String DEBUG_DB_LOG_BLOCKS_NUMBER = "Get number of log blocks request for %s of %s";
+	public static final String DEBUG_DB_TOP_PLAYERS = "Get top players by %s (block: %s) with limit %d and offset %d";
+	public static final String DEBUG_DB_TOP_PLAYERS_NUMBER = "Get number of top players by %s (block: %s)";
+	public static final String DEBUG_DB_TOP_PLAYER_POSITION = "Get top player position by %s (block: %s)";
+	public static final String DEBUG_DB_TOTAL_DESTROY = "Get total by destroy (block: %s)";
+	public static final String DEBUG_DB_TOTAL_FOUND = "Get total by found (block: %s)";
+	public static final String DEBUG_DB_STATS_PLAYER = "Get player stats of %s by %s";
+	
+	public static final String DEBUG_EVENT_BLOCK_BREAK = "%s broke a block of '%s'";
+	public static final String DEBUG_EVENT_BLOCK_PLACE = "%s placed a marked block '%s'";
+	public static final String DEBUG_EVENT_BLOCK_TNT = "%s destroyed %d blocks with TNT";
+	public static final String DEBUG_EVENT_BLOCK_BREAK_INFINITE_COUNT = "Security Counter Warning:\n=========================================================\n  WARNING: A player is trying to destroy '%s' and nearest blocks are over 500.\n  This is a security warning, check if the block is correctly configured or contact the developer.\n=========================================================";
+	
+	public static final String DEBUG_MESSAGING_RECEIVED = "Received an OreAnnouncer packet of type '%s' from channel '%s'";
+	public static final String DEBUG_MESSAGING_RECEIVED_WRONG = "Received a wrong OreAnnouncer packet from channel '%s'";
+	public static final String DEBUG_MESSAGING_LISTEN_UPDATE_PLAYER = "Received an OreAnnouncer packet, updated player %s";
+	public static final String DEBUG_MESSAGING_LISTEN_ALERT_ERROR = "Received an OreAnnouncer packet, parsing of Alert failed: %s";
+	public static final String DEBUG_MESSAGING_LISTEN_ALERT_COUNT_ERROR = "Received an OreAnnouncer packet, parsing of AlertCount failed: %s";
 	public static final String DEBUG_MESSAGING_DESTROY_UUID_EMPTY = "Received an OreAnnouncer destroy packet with an empty UUID";
 	public static final String DEBUG_MESSAGING_FOUND_UUID_EMPTY = "Received an OreAnnouncer found packet with an empty UUID";
+	
+	public static final String DEBUG_PLAYER_RELOADED = "Reloaded player %s";
+	public static final String DEBUG_PLAYER_GET_DATABASE = "Got player %s from database (p-uuid: %s)";
+	public static final String DEBUG_PLAYER_GET_LIST = "Got player %s from list (p-uuid: %s)";
+	public static final String DEBUG_PLAYER_GET_NEW = "Got a new player %s (p-uuid: %s)";
 }

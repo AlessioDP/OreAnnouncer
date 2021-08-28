@@ -20,13 +20,14 @@ public enum OreAnnouncerPermission implements ADPPermission {
 	ADMIN_BYPASS_ALERTS		("oreannouncer.admin.bypass.alerts"),
 	ADMIN_BYPASS_DESTROY	("oreannouncer.admin.bypass.destroy"),
 	ADMIN_BYPASS_FOUND		("oreannouncer.admin.bypass.found"),
-	ADMIN_BYPASS_EXECUTE_COMMANDS 	("oreannouncer.admin.bypass.execute.commands"),
+	ADMIN_BYPASS_EXECUTE_COMMANDS	("oreannouncer.admin.bypass.execute.commands"),
 	ADMIN_DEBUG				("oreannouncer.admin.debug"),
 	ADMIN_LOG				("oreannouncer.admin.log"),
 	ADMIN_RELOAD			("oreannouncer.admin.reload"),
 	ADMIN_STATS_OTHER		("oreannouncer.admin.stats.other"),
 	ADMIN_VERSION			("oreannouncer.admin.version"),
-	ADMIN_WARNINGS			("oreannouncer.admin.warnings");
+	ADMIN_WARNINGS			("oreannouncer.admin.warnings"),
+	ADMIN_WHITELIST			("oreannouncer.admin.whitelist");
 	
 	private final String perm;
 	OreAnnouncerPermission(String t) {

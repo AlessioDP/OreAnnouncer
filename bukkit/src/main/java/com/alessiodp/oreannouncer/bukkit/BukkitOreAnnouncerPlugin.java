@@ -2,6 +2,7 @@ package com.alessiodp.oreannouncer.bukkit;
 
 import com.alessiodp.core.bukkit.addons.internal.json.BukkitJsonHandler;
 import com.alessiodp.core.bukkit.addons.internal.json.SpigotJsonHandler;
+import com.alessiodp.core.bukkit.addons.internal.title.BukkitTitleHandler;
 import com.alessiodp.core.bukkit.scheduling.ADPBukkitScheduler;
 import com.alessiodp.core.common.bootstrap.ADPBootstrap;
 import com.alessiodp.core.common.configuration.Constants;
@@ -12,6 +13,7 @@ import com.alessiodp.oreannouncer.bukkit.bootstrap.BukkitOreAnnouncerBootstrap;
 import com.alessiodp.oreannouncer.bukkit.commands.BukkitOACommandManager;
 import com.alessiodp.oreannouncer.bukkit.configuration.BukkitOAConfigurationManager;
 import com.alessiodp.oreannouncer.bukkit.configuration.data.BukkitConfigMain;
+import com.alessiodp.oreannouncer.bukkit.events.BukkitEventManager;
 import com.alessiodp.oreannouncer.bukkit.listeners.BukkitBlockListener;
 import com.alessiodp.oreannouncer.bukkit.listeners.BukkitJoinLeaveListener;
 import com.alessiodp.oreannouncer.bukkit.messaging.BukkitOAMessenger;
@@ -53,6 +55,7 @@ public class BukkitOreAnnouncerPlugin extends OreAnnouncerPlugin {
 	@Override
 	protected void postHandle() {
 		addonManager = new BukkitOAAddonManager(this);
+		eventManager = new BukkitEventManager(this);
 		
 		super.postHandle();
 		
@@ -65,6 +68,11 @@ public class BukkitOreAnnouncerPlugin extends OreAnnouncerPlugin {
 			jsonHandler = new SpigotJsonHandler();
 		else
 			jsonHandler = new BukkitJsonHandler();
+	}
+	
+	@Override
+	protected void initializeTitleHandler() {
+		titleHandler = new BukkitTitleHandler();
 	}
 	
 	@Override

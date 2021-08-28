@@ -9,13 +9,13 @@ import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.commands.list.CommonCommands;
 import com.alessiodp.oreannouncer.common.commands.sub.CommandAlerts;
-import com.alessiodp.oreannouncer.common.commands.sub.CommandDebug;
 import com.alessiodp.oreannouncer.common.commands.sub.CommandHelp;
 import com.alessiodp.oreannouncer.common.commands.sub.CommandLog;
 import com.alessiodp.oreannouncer.common.commands.sub.CommandReload;
 import com.alessiodp.oreannouncer.common.commands.sub.CommandStats;
 import com.alessiodp.oreannouncer.common.commands.sub.CommandTop;
 import com.alessiodp.oreannouncer.common.commands.sub.CommandVersion;
+import com.alessiodp.oreannouncer.common.commands.sub.CommandWhitelist;
 import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import com.alessiodp.oreannouncer.common.configuration.data.Messages;
 
@@ -25,9 +25,9 @@ import java.util.Map;
 public class CommandOA extends ADPMainCommand {
 	
 	public CommandOA(OreAnnouncerPlugin plugin) {
-		super(plugin, CommonCommands.OA, ConfigMain.COMMANDS_CMD_OA, true);
+		super(plugin, CommonCommands.OA, ConfigMain.COMMANDS_MAIN_OA_COMMAND, true);
 		
-		description = ConfigMain.COMMANDS_DESCRIPTION_OA;
+		aliases = ConfigMain.COMMANDS_MAIN_OA_ALIASES;
 		subCommands = new HashMap<>();
 		subCommandsByEnum = new HashMap<>();
 		tabSupport = ConfigMain.COMMANDS_TABSUPPORT;
@@ -35,9 +35,6 @@ public class CommandOA extends ADPMainCommand {
 		register(new CommandHelp(plugin, this));
 		register(new CommandReload(plugin, this));
 		register(new CommandVersion(plugin, this));
-		
-		if (ConfigMain.OREANNOUNCER_DEBUG_COMMAND)
-			register(new CommandDebug(plugin, this));
 		
 		if (ConfigMain.ALERTS_ENABLE)
 			register(new CommandAlerts(plugin, this));
@@ -50,6 +47,10 @@ public class CommandOA extends ADPMainCommand {
 			if (ConfigMain.STATS_ADVANCED_COUNT_ENABLE && ConfigMain.STATS_ADVANCED_COUNT_LOG_ENABLE)
 				register(new CommandLog(plugin, this));
 		}
+		
+		if (ConfigMain.WHITELIST_ENABLE) {
+			register(new CommandWhitelist(plugin, this));
+		}
 	}
 	
 	@Override
@@ -58,7 +59,7 @@ public class CommandOA extends ADPMainCommand {
 		if (sender.isPlayer()) {
 			if (args.length == 0) {
 				// Set /llapi to /llapi help
-				subCommand = CommonUtils.toLowerCase(ConfigMain.COMMANDS_CMD_HELP);
+				subCommand = CommonUtils.toLowerCase(ConfigMain.COMMANDS_SUB_HELP);
 			} else {
 				subCommand = CommonUtils.toLowerCase(args[0]);
 			}
@@ -75,16 +76,16 @@ public class CommandOA extends ADPMainCommand {
 				if (exists(subCommand) && getSubCommand(subCommand).isExecutableByConsole()) {
 					plugin.getCommandManager().getCommandUtils().executeCommand(sender, getCommandName(), getSubCommand(subCommand), args);
 				} else {
-					plugin.logConsole(Color.translateAndStripColor(Messages.OREANNOUNCER_COMMON_INVALIDCMD), false);
+					plugin.logConsole(Color.translateAndStripColor(Messages.OREANNOUNCER_COMMON_INVALIDCMD));
 				}
 			} else {
 				// Print help
-				plugin.logConsole(Messages.HELP_CONSOLEHELP_HEADER, false);
+				plugin.logConsole(Messages.HELP_CONSOLEHELP_HEADER);
 				for(Map.Entry<ADPCommand, ADPExecutableCommand> e : plugin.getCommandManager().getOrderedCommands().entrySet()) {
 					if (e.getValue().isExecutableByConsole()  && e.getValue().isListedInHelp()) {
 						plugin.logConsole(Messages.HELP_CONSOLEHELP_COMMAND
 								.replace("%command%", e.getValue().getConsoleSyntax())
-								.replace("%description%", e.getValue().getDescription()), false);
+								.replace("%description%", e.getValue().getDescription()));
 					}
 				}
 			}

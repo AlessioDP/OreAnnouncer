@@ -3,7 +3,7 @@
   <parent>
     <artifactId>oreannouncer</artifactId>
     <groupId>com.alessiodp.oreannouncer</groupId>
-    <version>2.7.2</version>
+    <version>2.8.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>output</artifactId>
@@ -27,7 +27,6 @@
           <artifactSet>
             <includes>
               <include>com.alessiodp.oreannouncer:*</include>
-              <include>com.alessiodp.core:*</include>
             </includes>
           </artifactSet>
           <relocations>
@@ -36,12 +35,8 @@
               <shadedPattern>com.alessiodp.oreannouncer.core</shadedPattern>
             </relocation>
             <relocation>
-              <pattern>net.byteflux.libby</pattern>
-              <shadedPattern>com.alessiodp.oreannouncer.core.common.addons.external.libby</shadedPattern>
-            </relocation>
-            <relocation>
-              <pattern>ninja.leaping.configurate</pattern>
-              <shadedPattern>com.alessiodp.oreannouncer.libs.configurate</shadedPattern>
+              <pattern>org.h2</pattern>
+              <shadedPattern>com.alessiodp.oreannouncer.libs.h2</shadedPattern>
             </relocation>
             <relocation>
               <pattern>com.zaxxer.hikari</pattern>
@@ -52,10 +47,31 @@
               <shadedPattern>com.alessiodp.oreannouncer.libs.jdbi</shadedPattern>
             </relocation>
             <relocation>
-              <pattern>org.reflections</pattern>
-              <shadedPattern>com.alessiodp.oreannouncer.libs.reflections</shadedPattern>
+              <pattern>org.mariadb</pattern>
+              <shadedPattern>com.alessiodp.oreannouncer.libs.mariadb</shadedPattern>
+            </relocation>
+            <relocation>
+              <pattern>com.mysql</pattern>
+              <shadedPattern>com.alessiodp.oreannouncer.libs.mysql</shadedPattern>
+            </relocation>
+            <relocation>
+              <pattern>org.postgresql</pattern>
+              <shadedPattern>com.alessiodp.oreannouncer.libs.postgresql</shadedPattern>
+            </relocation>
+            <relocation>
+              <pattern>jdk.nashorn</pattern>
+              <shadedPattern>com.alessiodp.oreannouncer.libs.nashorn</shadedPattern>
             </relocation>
           </relocations>
+          <filters>
+            <filter>
+              <artifact>*:*</artifact>
+              <excludes>
+                <exclude>META-INF/MANIFEST.MF</exclude>
+                <exclude>META-INF/**</exclude>
+              </excludes>
+            </filter>
+          </filters>
         </configuration>
       </plugin>
     </plugins>
@@ -64,13 +80,13 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.18.12</version>
+      <version>1.18.20</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.powermock</groupId>
       <artifactId>powermock-module-junit4</artifactId>
-      <version>2.0.7</version>
+      <version>2.0.9</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -90,7 +106,7 @@
     <dependency>
       <groupId>org.powermock</groupId>
       <artifactId>powermock-api-mockito2</artifactId>
-      <version>2.0.7</version>
+      <version>2.0.9</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>

@@ -10,7 +10,9 @@ import lombok.Getter;
 import lombok.NonNull;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Blocks extends ConfigurationFile {
@@ -19,7 +21,8 @@ public class Blocks extends ConfigurationFile {
 	@Getter private final int latestVersion = OAConstants.VERSION_BLOCKS;
 	
 	// Blocks
-	public static Map<String, OABlockImpl> LIST;
+	public static Map<String, OABlockImpl> LIST = new HashMap<>();
+	public static Map<String, OABlockImpl> VARIANTS = new HashMap<>();
 	
 	public Blocks(OreAnnouncerPlugin plugin) {
 		super(plugin);
@@ -105,28 +108,37 @@ public class Blocks extends ConfigurationFile {
 		blockQuartz.setAccessible(false);
 		
 		LIST = new HashMap<>();
-		LIST.put(blockDiamond.getMaterialName(), blockDiamond);
-		LIST.put(blockEmerald.getMaterialName(), blockEmerald);
-		LIST.put(blockEmerald.getMaterialName(), blockGold);
-		LIST.put(blockEmerald.getMaterialName(), blockRedstone);
-		LIST.put(blockEmerald.getMaterialName(), blockIron);
-		LIST.put(blockEmerald.getMaterialName(), blockQuartz);
+		Blocks.addBlock(blockDiamond);
+		Blocks.addBlock(blockEmerald);
+		Blocks.addBlock(blockGold);
+		Blocks.addBlock(blockRedstone);
+		Blocks.addBlock(blockIron);
+		Blocks.addBlock(blockQuartz);
+		
+		VARIANTS = new HashMap<>();
 	}
 	
 	@Override
 	public void loadConfiguration() {
-		HashMap<String, OABlockImpl> blocks = new HashMap<>();
-		OABlockImpl block;
+		HashMap<String, OABlockImpl> list = new HashMap<>();
+		HashMap<String, OABlockImpl> variants = new HashMap<>();
 		
 		ConfigurationSection csBlocks = configuration.getConfigurationSection("blocks");
 		if (csBlocks != null) {
 			for (String key : csBlocks.getKeys(false)) {
-				if (((OreAnnouncerPlugin) plugin).getBlockManager().existsMaterial(key)
-						|| key.startsWith("ITEMMODS_") || key.startsWith("MMOITEMS_")) {
+				if (((OreAnnouncerPlugin) plugin).getBlockManager().existsMaterial(key)) {
 					// Material exists
-					block = new OABlockImpl(plugin, key);
+					final OABlockImpl block = new OABlockImpl(plugin, key);
 					block.setAccessible(true);
 					block.setEnabled(csBlocks.getBoolean(key + ".enabled", true));
+					List<?> vars = csBlocks.getList(key + ".variants", Collections.emptyList());
+					vars.forEach(v -> {
+						if (v instanceof String && ((OreAnnouncerPlugin) plugin).getBlockManager().existsMaterial((String) v)) {
+							block.addVariant((String) v);
+						} else {
+							plugin.getLoggerManager().printError(String.format(OAConstants.DEBUG_CFG_WRONG_VARIANT, v));
+						}
+					});
 					block.setDisplayName(csBlocks.getString(key + ".display-name", key));
 					block.setDisplayColor(csBlocks.getString(key + ".display-color", ""));
 					block.setAlertingUsers(csBlocks.getBoolean(key + ".alerts.user", false));
@@ -143,28 +155,49 @@ public class Blocks extends ConfigurationFile {
 					block.setCountMessageConsole(csBlocks.getString(key + ".messages.console-count", null));
 					block.setSound(csBlocks.getString(key + ".sound", ""));
 					block.setLightLevel(csBlocks.getInt(key + ".light-level", 15));
+					block.setHeightLevel(csBlocks.getInt(key + ".height-level", 0));
 					block.setCountingOnDestroy(csBlocks.getBoolean(key + ".count-on-destroy", false));
 					block.setTNTEnabled(csBlocks.getBoolean(key + ".tnt", true));
 					block.setPriority(csBlocks.getInt(key + ".priority", 0));
 					
 					block.setAccessible(false);
-					blocks.put(CommonUtils.toUpperCase(key), block);
+					list.put(CommonUtils.toUpperCase(key), block);
+					block.getVariants().forEach(v -> variants.put(CommonUtils.toUpperCase(v), block));
 				} else {
 					// Material doesn't exist
-					plugin.getLoggerManager().printError(OAConstants.DEBUG_CFG_WRONGBLOCK
-							.replace("{block}", key));
+					plugin.getLoggerManager().printError(String.format(OAConstants.DEBUG_CFG_WRONG_BLOCK, key));
 				}
 			}
 		}
-		LIST = blocks;
+		LIST = list;
+		VARIANTS = variants;
 	}
 	
-	public boolean existsBlock(@NonNull String materialName) {
-		return LIST.containsKey(CommonUtils.toUpperCase(materialName));
+	public static void addBlock(@NonNull OABlockImpl block) {
+		addBlock(block.getMaterialName(), block);
+	}
+	
+	public static void addBlock(@NonNull String materialName, @NonNull OABlockImpl block) {
+		LIST.put(CommonUtils.toUpperCase(materialName), block);
+	}
+	
+	public static OABlockImpl searchBlock(@NonNull String materialName) {
+		OABlockImpl ret = LIST.get(CommonUtils.toUpperCase(materialName));
+		if (ret == null)
+			ret = VARIANTS.get(CommonUtils.toUpperCase(materialName));
+		return ret;
+	}
+	
+	public static boolean existsBlock(@NonNull String materialName) {
+		return LIST.containsKey(CommonUtils.toUpperCase(materialName)) || VARIANTS.containsKey(CommonUtils.toUpperCase(materialName));
 	}
 	
 	public void updateBlock(@NonNull OABlockImpl block) {
 		configuration.set("blocks." + block.getMaterialName() + ".enabled", block.isEnabled());
+		if (block.getVariants().size() > 0)
+			configuration.set("blocks." + block.getMaterialName() + ".variants", block.getVariants());
+		else
+			configuration.set("blocks." + block.getMaterialName() + ".variants", null);
 		configuration.set("blocks." + block.getMaterialName() + ".display-name", block.getDisplayName());
 		configuration.set("blocks." + block.getMaterialName() + ".display-color", block.getDisplayColor());
 		configuration.set("blocks." + block.getMaterialName() + ".alerts.user", block.isAlertingUsers());
@@ -199,11 +232,12 @@ public class Blocks extends ConfigurationFile {
 		}
 		configuration.set("blocks." + block.getMaterialName() + ".sound", block.getSound());
 		configuration.set("blocks." + block.getMaterialName() + ".light-level", block.getLightLevel());
+		configuration.set("blocks." + block.getMaterialName() + ".height-level", block.getHeightLevel() > 0 ? block.getHeightLevel() : null);
 		configuration.set("blocks." + block.getMaterialName() + ".count-on-destroy", block.isCountingOnDestroy());
 		configuration.set("blocks." + block.getMaterialName() + ".tnt", block.isTNTEnabled());
 		
 		try {
-			configuration.saveWithComments();
+			configuration.save();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -211,17 +245,22 @@ public class Blocks extends ConfigurationFile {
 		if (!existsBlock(block.getMaterialName())) {
 			LIST.put(CommonUtils.toUpperCase(block.getMaterialName()), block);
 		}
+		
+		// Remove old variants & add new ones
+		VARIANTS.entrySet().removeIf(e -> e.getValue().getMaterialName().equals(block.getMaterialName()));
+		block.getVariants().forEach(v -> VARIANTS.put(CommonUtils.toUpperCase(v), block));
 	}
 	
 	public void removeBlock(@NonNull OABlockImpl block) {
 		configuration.set("blocks." + block.getMaterialName(), null);
 		
 		try {
-			configuration.saveWithComments();
+			configuration.save();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		LIST.remove(CommonUtils.toUpperCase(block.getMaterialName()));
+		VARIANTS.entrySet().removeIf(e -> e.getValue().getMaterialName().equals(block.getMaterialName()));
 	}
 }

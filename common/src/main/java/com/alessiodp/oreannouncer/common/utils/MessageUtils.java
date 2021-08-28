@@ -32,12 +32,9 @@ public abstract class MessageUtils {
 			while (matcher.find()) {
 				String identifier = matcher.group(1);
 				// Match basic placeholders
-				switch (CommonUtils.toLowerCase(identifier)) {
-					case "%player%":
-						replacement = CommonUtils.getNoEmptyOr(player.getName(), Messages.OREANNOUNCER_SYNTAX_UNKNOWN);
-						ret = ret.replace(identifier, replacement);
-						break;
-					default: // Nothing to do
+				if ("%player%".equals(CommonUtils.toLowerCase(identifier))) {
+					replacement = CommonUtils.getNoEmptyOr(player.getName(), Messages.OREANNOUNCER_SYNTAX_UNKNOWN);
+					ret = ret.replace(identifier, replacement);
 				}
 				
 				OAPlaceholder placeholder = OAPlaceholder.getPlaceholder(stripPlaceholder(identifier));
@@ -60,13 +57,11 @@ public abstract class MessageUtils {
 				// Match basic placeholders
 				switch (CommonUtils.toLowerCase(identifier)) {
 					case "%material%":
+					case "%material_name%":
 						ret = ret.replace(identifier, block.getMaterialName());
 						break;
 					case "%enabled%":
 						ret = ret.replace(identifier, formatEnabledDisabled(block.isEnabled()));
-						break;
-					case "%material_name%":
-						ret = ret.replace(identifier, block.getMaterialName());
 						break;
 					case "%display_name%":
 						ret = ret.replace(identifier, block.getDisplayName());
@@ -116,6 +111,9 @@ public abstract class MessageUtils {
 					case "%light_level%":
 						ret = ret.replace(identifier, Integer.toString(block.getLightLevel()));
 						break;
+					case "%height_level%":
+						ret = ret.replace(identifier, Integer.toString(block.getHeightLevel()));
+						break;
 					case "%count_on_destroy%":
 						ret = ret.replace(identifier, formatOnOff(block.isCountingOnDestroy()));
 						break;
@@ -141,13 +139,11 @@ public abstract class MessageUtils {
 				// Match basic placeholders
 				switch (CommonUtils.toLowerCase(identifier)) {
 					case "%material%":
+					case "%material_name%":
 						ret = ret.replace(identifier, block.getMaterialName());
 						break;
 					case "%enabled%":
 						ret = ret.replace(identifier, formatEnabledDisabled(block.isEnabled()));
-						break;
-					case "%material_name%":
-						ret = ret.replace(identifier, block.getMaterialName());
 						break;
 					case "%display_name%":
 						ret = ret.replace(identifier, formatText(block.getDisplayName()));
@@ -200,6 +196,9 @@ public abstract class MessageUtils {
 					case "%light_level%":
 						ret = ret.replace(identifier, formatNumber(block.getLightLevel()));
 						break;
+					case "%height_level%":
+						ret = ret.replace(identifier, formatNumber(block.getHeightLevel()));
+						break;
 					case "%count_on_destroy%":
 						ret = ret.replace(identifier, formatOnOff(block.isCountingOnDestroy()));
 						break;
@@ -224,7 +223,8 @@ public abstract class MessageUtils {
 		try {
 			ret = DateTimeFormatter.ofPattern(ret).format(date);
 		} catch (IllegalArgumentException ex) {
-			plugin.getLoggerManager().printErrorStacktrace(OAConstants.DEBUG_CMD_LOG_FAILED_PARSE_DATE, ex);
+			plugin.getLoggerManager().printError(OAConstants.DEBUG_FAILED_PARSE_DATE);
+			ex.printStackTrace();
 		}
 		return ret;
 	}

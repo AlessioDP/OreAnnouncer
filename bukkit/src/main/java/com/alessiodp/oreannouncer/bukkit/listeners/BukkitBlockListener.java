@@ -88,19 +88,17 @@ public class BukkitBlockListener extends BlockListener implements Listener {
 			for (Block block : event.blockList()) {
 				blocks.add(((BukkitBlockManager) plugin.getBlockManager()).getBlockType(block));
 			}
-			plugin.getScheduler().runAsync(() -> {
-				super.onTNTExplode(
-						user,
-						blocks,
-						new ADPLocation(
-								event.getLocation().getWorld().getName(),
-								event.getLocation().getX(),
-								event.getLocation().getY(),
-								event.getLocation().getZ(),
-								event.getLocation().getYaw(),
-								event.getLocation().getPitch()
-						));
-			});
+			plugin.getScheduler().runAsync(() -> super.onTNTExplode(
+					user,
+					blocks,
+					new ADPLocation(
+							event.getLocation().getWorld() != null ? event.getLocation().getWorld().getName() : "",
+							event.getLocation().getX(),
+							event.getLocation().getY(),
+							event.getLocation().getZ(),
+							event.getLocation().getYaw(),
+							event.getLocation().getPitch()
+					)));
 		}
 	}
 }

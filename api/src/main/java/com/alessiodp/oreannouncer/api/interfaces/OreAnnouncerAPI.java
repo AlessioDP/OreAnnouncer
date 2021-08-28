@@ -1,7 +1,7 @@
 package com.alessiodp.oreannouncer.api.interfaces;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -12,7 +12,23 @@ public interface OreAnnouncerAPI {
 	/**
 	 * Reload OreAnnouncer configuration files
 	 */
-	void reloadOreAnnouncer();
+	void reloadPlugin();
+	
+	/**
+	 * Reload OreAnnouncer configuration files
+	 * @deprecated Use reloadPlugin() instead
+	*/
+	@Deprecated
+	default void reloadOreAnnouncer() {
+		reloadPlugin();
+	}
+	
+	/**
+	 * Check if the plugin have BungeeCord option enabled
+	 *
+	 * @return True if BungeeCord support is enabled
+	 */
+	boolean isBungeeCordEnabled();
 	
 	/**
 	 * Get the player by his {@link UUID}
@@ -167,7 +183,8 @@ public interface OreAnnouncerAPI {
 	 * @param materialName The block to get
 	 * @return Returns the block or null if not exists
 	 */
-	@Nullable OABlock getBlock(@NonNull String materialName);
+	@Nullable
+	OABlock getBlock(@NotNull String materialName);
 	
 	/**
 	 * Add a block to the configuration
@@ -175,14 +192,15 @@ public interface OreAnnouncerAPI {
 	 * @param materialName The block name to add
 	 * @return Returns a new block or null if already exists
 	 */
-	@Nullable OABlock addBlock(@NonNull String materialName);
+	@Nullable
+	OABlock addBlock(@NotNull String materialName);
 	
 	/**
 	 * Remove the block from the configuration
 	 *
 	 * @param block The block to remove
 	 */
-	void removeBlock(@NonNull OABlock block);
+	void removeBlock(@NotNull OABlock block);
 	
 	/**
 	 * Make a new {@link OABlockDestroy}
@@ -192,5 +210,5 @@ public interface OreAnnouncerAPI {
 	 * @param destroyCount The number of destroyed blocks
 	 * @return Returns a new instance of {@link OABlockDestroy}
 	 */
-	OABlockDestroy makeBlockDestroy(@NonNull UUID playerUuid, @NonNull OABlock block, int destroyCount);
+	OABlockDestroy makeBlockDestroy(@NotNull UUID playerUuid, @NotNull OABlock block, int destroyCount);
 }

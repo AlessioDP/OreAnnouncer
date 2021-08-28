@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
 @EqualsAndHashCode(doNotUseGetters = true)
@@ -18,6 +20,7 @@ public class OABlockImpl implements OABlock {
 	// Interface fields
 	@Getter private final String materialName;
 	@Getter private boolean enabled;
+	@Getter private List<String> variants;
 	@Getter private String displayName;
 	@Getter private String displayColor;
 	@Getter private boolean alertingUsers;
@@ -34,6 +37,7 @@ public class OABlockImpl implements OABlock {
 	@Getter private String countMessageConsole;
 	@Getter private String sound;
 	@Getter private int lightLevel;
+	@Getter private int heightLevel;
 	@Getter private boolean countingOnDestroy;
 	private boolean tntEnabled;
 	@Getter private int priority;
@@ -45,6 +49,7 @@ public class OABlockImpl implements OABlock {
 		this.plugin = plugin;
 		this.materialName = materialName;
 		this.enabled = true;
+		this.variants = new ArrayList<>();
 		this.displayName = "";
 		this.displayColor = "";
 		this.alertingUsers = false;
@@ -95,6 +100,27 @@ public class OABlockImpl implements OABlock {
 	public void setEnabled(boolean enable) {
 		updateValue(() -> {
 			this.enabled = enable;
+		});
+	}
+	
+	@Override
+	public void setVariants(List<String> variants) {
+		updateValue(() -> {
+			this.variants = variants;
+		});
+	}
+	
+	@Override
+	public void addVariant(String variant) {
+		updateValue(() -> {
+			this.variants.add(variant);
+		});
+	}
+	
+	@Override
+	public void removeVariant(String variant) {
+		updateValue(() -> {
+			this.variants.remove(variant);
 		});
 	}
 	
@@ -207,6 +233,13 @@ public class OABlockImpl implements OABlock {
 	public void setLightLevel(int lightLevel) {
 		updateValue(() -> {
 			this.lightLevel = lightLevel;
+		});
+	}
+	
+	@Override
+	public void setHeightLevel(int heightLevel) {
+		updateValue(() -> {
+			this.heightLevel = heightLevel;
 		});
 	}
 	

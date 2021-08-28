@@ -4,7 +4,7 @@ import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 @NoArgsConstructor
 @Data

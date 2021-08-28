@@ -32,24 +32,24 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static String		STORAGE_SETTINGS_SQLITE_DBFILE;
 	@ConfigOption(path = "storage.storage-settings.h2.database-file")
 	public static String		STORAGE_SETTINGS_H2_DBFILE;
-	@ConfigOption(path = "storage.storage-settings.mysql.address")
-	public static String		STORAGE_SETTINGS_MYSQL_ADDRESS;
-	@ConfigOption(path = "storage.storage-settings.mysql.port")
-	public static String		STORAGE_SETTINGS_MYSQL_PORT;
-	@ConfigOption(path = "storage.storage-settings.mysql.database")
-	public static String		STORAGE_SETTINGS_MYSQL_DATABASE;
-	@ConfigOption(path = "storage.storage-settings.mysql.username")
-	public static String		STORAGE_SETTINGS_MYSQL_USERNAME;
-	@ConfigOption(path = "storage.storage-settings.mysql.password")
-	public static String		STORAGE_SETTINGS_MYSQL_PASSWORD;
-	@ConfigOption(path = "storage.storage-settings.mysql.pool-size")
-	public static int			STORAGE_SETTINGS_MYSQL_POOLSIZE;
-	@ConfigOption(path = "storage.storage-settings.mysql.connection-lifetime")
-	public static int			STORAGE_SETTINGS_MYSQL_CONNLIFETIME;
-	@ConfigOption(path = "storage.storage-settings.mysql.use-ssl")
-	public static boolean		STORAGE_SETTINGS_MYSQL_USESSL;
-	@ConfigOption(path = "storage.storage-settings.mysql.charset")
-	public static String		STORAGE_SETTINGS_MYSQL_CHARSET;
+	@ConfigOption(path = "storage.storage-settings.remote-sql.address")
+	public static String		STORAGE_SETTINGS_REMOTE_SQL_ADDRESS;
+	@ConfigOption(path = "storage.storage-settings.remote-sql.port")
+	public static String		STORAGE_SETTINGS_REMOTE_SQL_PORT;
+	@ConfigOption(path = "storage.storage-settings.remote-sql.database")
+	public static String		STORAGE_SETTINGS_REMOTE_SQL_DATABASE;
+	@ConfigOption(path = "storage.storage-settings.remote-sql.username")
+	public static String		STORAGE_SETTINGS_REMOTE_SQL_USERNAME;
+	@ConfigOption(path = "storage.storage-settings.remote-sql.password")
+	public static String		STORAGE_SETTINGS_REMOTE_SQL_PASSWORD;
+	@ConfigOption(path = "storage.storage-settings.remote-sql.pool-size")
+	public static int			STORAGE_SETTINGS_REMOTE_SQL_POOLSIZE;
+	@ConfigOption(path = "storage.storage-settings.remote-sql.connection-lifetime")
+	public static int			STORAGE_SETTINGS_REMOTE_SQL_CONNLIFETIME;
+	@ConfigOption(path = "storage.storage-settings.remote-sql.use-ssl")
+	public static boolean		STORAGE_SETTINGS_REMOTE_SQL_USESSL;
+	@ConfigOption(path = "storage.storage-settings.remote-sql.charset")
+	public static String		STORAGE_SETTINGS_REMOTE_SQL_CHARSET;
 	
 	
 	// Alerts settings
@@ -106,6 +106,12 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static boolean		BLOCKS_LIGHT_ALERTIFLOWER;
 	@ConfigOption(path = "blocks.light-level.count-only-if-lower", nullable = true)
 	public static boolean		BLOCKS_LIGHT_COUNTIFLOWER;
+	@ConfigOption(path = "blocks.height-level.enable", nullable = true)
+	public static boolean		BLOCKS_HEIGHT_ENABLE;
+	@ConfigOption(path = "blocks.height-level.alert-only-if-lower", nullable = true)
+	public static boolean		BLOCKS_HEIGHT_ALERTIFLOWER;
+	@ConfigOption(path = "blocks.height-level.count-only-if-lower", nullable = true)
+	public static boolean		BLOCKS_HEIGHT_COUNTIFLOWER;
 	@ConfigOption(path = "blocks.tnt-mining.alert-on-tnt-mining", nullable = true)
 	public static boolean		BLOCKS_TNT_MINING_ALERT_ON;
 	@ConfigOption(path = "blocks.tnt-mining.try-to-catch-player", nullable = true)
@@ -163,6 +169,16 @@ public abstract class ConfigMain extends ConfigurationFile {
 	public static int			STATS_TOP_NUMPLAYERS;
 	
 	
+	@ConfigOption(path = "whitelist.enable")
+	public static boolean		WHITELIST_ENABLE;
+	@ConfigOption(path = "whitelist.bypass.alerts")
+	public static boolean		WHITELIST_BYPASS_ALERTS;
+	@ConfigOption(path = "whitelist.bypass.destroy")
+	public static boolean		WHITELIST_BYPASS_DESTROY;
+	@ConfigOption(path = "whitelist.bypass.found")
+	public static boolean		WHITELIST_BYPASS_FOUND;
+	
+	
 	@ConfigOption(path = "execute-commands.enable", nullable = true)
 	public static boolean		EXECUTE_COMMANDS_ENABLE;
 	@ConfigOption(path = "execute-commands.run-as", nullable = true)
@@ -176,40 +192,49 @@ public abstract class ConfigMain extends ConfigurationFile {
 	// Commands settings
 	@ConfigOption(path = "commands.tab-support")
 	public static boolean		COMMANDS_TABSUPPORT;
-	@ConfigOption(path = "commands.oa-description")
-	public static String		COMMANDS_DESCRIPTION_OA;
 	
-	@ConfigOption(path = "commands.main-commands.help")
-	public static String		COMMANDS_CMD_HELP;
-	@ConfigOption(path = "commands.main-commands.oa")
-	public static String		COMMANDS_CMD_OA;
-	@ConfigOption(path = "commands.main-commands.alerts")
-	public static String		COMMANDS_CMD_ALERTS;
-	@ConfigOption(path = "commands.main-commands.debug")
-	public static String		COMMANDS_CMD_DEBUG;
-	@ConfigOption(path = "commands.main-commands.log")
-	public static String		COMMANDS_CMD_LOG;
-	@ConfigOption(path = "commands.main-commands.reload")
-	public static String		COMMANDS_CMD_RELOAD;
-	@ConfigOption(path = "commands.main-commands.stats")
-	public static String		COMMANDS_CMD_STATS;
-	@ConfigOption(path = "commands.main-commands.top")
-	public static String		COMMANDS_CMD_TOP;
-	@ConfigOption(path = "commands.main-commands.version")
-	public static String		COMMANDS_CMD_VERSION;
+	@ConfigOption(path = "commands.main-commands.oa.command")
+	public static String		COMMANDS_MAIN_OA_COMMAND;
+	@ConfigOption(path = "commands.main-commands.oa.aliases")
+	public static List<String>	COMMANDS_MAIN_OA_ALIASES;
 	
-	@ConfigOption(path = "commands.sub-commands.all")
-	public static String		COMMANDS_SUB_ALL;
-	@ConfigOption(path = "commands.sub-commands.block")
-	public static String		COMMANDS_SUB_BLOCK;
-	@ConfigOption(path = "commands.sub-commands.config")
-	public static String		COMMANDS_SUB_CONFIG;
-	@ConfigOption(path = "commands.sub-commands.player")
-	public static String		COMMANDS_SUB_PLAYER;
-	@ConfigOption(path = "commands.sub-commands.word-on")
-	public static String		COMMANDS_SUB_ON;
-	@ConfigOption(path = "commands.sub-commands.word-off")
-	public static String		COMMANDS_SUB_OFF;
+	@ConfigOption(path = "commands.sub-commands.help")
+	public static String		COMMANDS_SUB_HELP;
+	@ConfigOption(path = "commands.sub-commands.alerts")
+	public static String		COMMANDS_SUB_ALERTS;
+	@ConfigOption(path = "commands.sub-commands.debug")
+	public static String		COMMANDS_SUB_DEBUG;
+	@ConfigOption(path = "commands.sub-commands.log")
+	public static String		COMMANDS_SUB_LOG;
+	@ConfigOption(path = "commands.sub-commands.reload")
+	public static String		COMMANDS_SUB_RELOAD;
+	@ConfigOption(path = "commands.sub-commands.stats")
+	public static String		COMMANDS_SUB_STATS;
+	@ConfigOption(path = "commands.sub-commands.top")
+	public static String		COMMANDS_SUB_TOP;
+	@ConfigOption(path = "commands.sub-commands.version")
+	public static String		COMMANDS_SUB_VERSION;
+	@ConfigOption(path = "commands.sub-commands.whitelist")
+	public static String		COMMANDS_SUB_WHITELIST;
+	
+	@ConfigOption(path = "commands.misc-commands.add")
+	public static String		COMMANDS_MISC_ADD;
+	@ConfigOption(path = "commands.misc-commands.alert")
+	public static String		COMMANDS_MISC_ALERT;
+	@ConfigOption(path = "commands.misc-commands.all")
+	public static String		COMMANDS_MISC_ALL;
+	@ConfigOption(path = "commands.misc-commands.block")
+	public static String		COMMANDS_MISC_BLOCK;
+	@ConfigOption(path = "commands.misc-commands.config")
+	public static String		COMMANDS_MISC_CONFIG;
+	@ConfigOption(path = "commands.misc-commands.player")
+	public static String		COMMANDS_MISC_PLAYER;
+	@ConfigOption(path = "commands.misc-commands.remove")
+	public static String		COMMANDS_MISC_REMOVE;
+	@ConfigOption(path = "commands.misc-commands.word-on")
+	public static String		COMMANDS_MISC_ON;
+	@ConfigOption(path = "commands.misc-commands.word-off")
+	public static String		COMMANDS_MISC_OFF;
 	
 	@ConfigOption(path = "commands.order")
 	public static List<String>	COMMANDS_ORDER;

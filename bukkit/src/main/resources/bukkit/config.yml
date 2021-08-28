@@ -33,10 +33,10 @@ oreannouncer:
 
   # [Enable BungeeCord support]
   # Any destroyed block will be handled by OreAnnouncer on BungeeCord.
-  # In this server commands and storage features will be disabled.
-  # Edit server-name to use it in permissions and server-id to use it as placeholder
   bungeecord:
     enable: false
+    # Name and id are used in placeholders %server_name% and %server_id%
+    # Feel free to use them if you wanna know where the message is coming from
     server-name: ServerName
     server-id: server
 
@@ -47,7 +47,9 @@ oreannouncer:
 storage:
   # [Database type]
   # What type of storage the plugin should use? Database storage types:
+  # => mariadb    | [Remote] Save the data into a MariaDB database
   # => mysql      | [Remote] Save the data into a MySQL database
+  # => postgresql | [Remote] Save the data into a PostgreSQL database
   # => sqlite     | [File]   Save the data into a SQLite database
   # => h2         | [File]   Save the data into a H2 database (default)
   database-storage-type: h2
@@ -66,8 +68,8 @@ storage:
     h2:
       database-file: database
 
-    # [MySQL settings]
-    mysql:
+    # [Remote SQL settings - MySQL/MariaDB/PostgreSQL]
+    remote-sql:
       address: localhost
       port: '3306'
       database: database
@@ -154,6 +156,8 @@ alerts:
     enable: false
     message-format: embed
     embed-avatars: true
+    # Set the name of the channel that you defined in DiscordSRV config.yml
+    # > Channels: {"global": "000000000000000000"}
     channels:
       user: ''
       admin: global
@@ -174,13 +178,25 @@ blocks:
   bypass-player-blocks: false
   bypass-silk-touch: false
   bypass-secure-counter: false
+
   # [Light level system]
   # Enable a light level check on block destroy
   # Choose to alert/count blocks only if light level is lower than an X number
+  # Note: you must define the light level in blocks.yml
   light-level:
     enable: false
     alert-only-if-lower: true
-    count-only-if-lower: false
+    count-only-if-lower: true
+
+  # [Height level system]
+  # Enable a height level check on block destroy
+  # Choose to alert/count blocks only if the height level is lower than an X number
+  # Note: you must define the height level in blocks.yml
+  height-level:
+    enable: false
+    alert-only-if-lower: true
+    count-only-if-lower: true
+
   # [TNT Mining]
   # Alert when blocks are destroyed by tnt instead of mining
   # Unfortunately you won't be able to know who ignited indirectly the TNT
@@ -298,16 +314,35 @@ execute-commands:
   on-destroy: []
   on-found: []
 
+
+# / =============================== \
+# |       WHITELIST  SETTINGS       |
+# \ =============================== /
+whitelist:
+  # [Whitelist system]
+  # Enable a command to whitelist players, so they won't trigger alerts and others stats
+  # => bypass   : Decide what the players bypass
+  enable: true
+  bypass:
+    alerts: true
+    destroy: true
+    found: true
+
+
 # / =============================== \
 # |        COMMANDS SETTINGS        |
 # \ =============================== /
 commands:
   # Enable tab support (/oa <tab> to see every allowed command)
   tab-support: true
-  oa-description: OreAnnouncer help page
   main-commands:
+    oa:
+      command: 'oa'
+      description: 'OreAnnouncer help page'
+      aliases:
+        - oreannouncer
+  sub-commands:
     help: help
-    oa: oa
     alerts: alerts
     debug: debug
     log: log
@@ -315,11 +350,15 @@ commands:
     stats: stats
     top: top
     version: version
-  sub-commands:
+    whitelist: whitelist
+  misc-commands:
+    add: 'add'
+    alert: 'alert'
     all: 'all'
     block: 'block'
     config: 'config'
     player: 'player'
+    remove: 'remove'
     word-on: 'on'
     word-off: 'off'
   order:
@@ -328,10 +367,11 @@ commands:
     - log
     - stats
     - top
+    - whitelist
     - reload
     - debug
     - version
 
 
 dont-edit-this:
-  version: 11
+  version: 12

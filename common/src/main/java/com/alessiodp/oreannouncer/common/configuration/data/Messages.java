@@ -19,6 +19,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String OREANNOUNCER_COMMON_INVALIDCMD;
 	@ConfigOption(path = "oreannouncer.common-messages.configuration-reloaded")
 	public static String OREANNOUNCER_COMMON_CONFIGRELOAD;
+	@ConfigOption(path = "oreannouncer.common-messages.player-not-found")
+	public static String OREANNOUNCER_COMMON_PLAYER_NOT_FOUND;
 	
 	@ConfigOption(path = "oreannouncer.blocks.enabled")
 	public static String OREANNOUNCER_BLOCKS_ENABLED;
@@ -39,12 +41,18 @@ public abstract class Messages extends ConfigurationFile {
 	
 	@ConfigOption(path = "oreannouncer.syntax.wrong-message")
 	public static String OREANNOUNCER_SYNTAX_WRONGMESSAGE;
+	@ConfigOption(path = "oreannouncer.syntax.advanced")
+	public static String OREANNOUNCER_SYNTAX_ADVANCED;
 	@ConfigOption(path = "oreannouncer.syntax.block")
 	public static String OREANNOUNCER_SYNTAX_BLOCK;
 	@ConfigOption(path = "oreannouncer.syntax.destroy")
 	public static String OREANNOUNCER_SYNTAX_DESTROY;
 	@ConfigOption(path = "oreannouncer.syntax.found")
 	public static String OREANNOUNCER_SYNTAX_FOUND;
+	@ConfigOption(path = "oreannouncer.syntax.normal")
+	public static String OREANNOUNCER_SYNTAX_NORMAL;
+	@ConfigOption(path = "oreannouncer.syntax.number")
+	public static String OREANNOUNCER_SYNTAX_NUMBER;
 	@ConfigOption(path = "oreannouncer.syntax.order")
 	public static String OREANNOUNCER_SYNTAX_ORDER;
 	@ConfigOption(path = "oreannouncer.syntax.page")
@@ -85,12 +93,20 @@ public abstract class Messages extends ConfigurationFile {
 	@ConfigOption(path = "commands.alerts.toggle-off")
 	public static String CMD_ALERTS_TOGGLEOFF;
 	
+	@ConfigOption(path = "commands.debug.common.invalid-block")
+	public static String CMD_DEBUG_COMMON_INVALID_BLOCK;
+	@ConfigOption(path = "commands.debug.common.invalid-player")
+	public static String CMD_DEBUG_COMMON_INVALID_PLAYER;
+	
+	@ConfigOption(path = "commands.debug.alert.invalid-number")
+	public static String CMD_DEBUG_ALERT_INVALID_NUMBER;
+	@ConfigOption(path = "commands.debug.alert.invalid-type")
+	public static String CMD_DEBUG_ALERT_INVALID_TYPE;
+	
 	@ConfigOption(path = "commands.debug.block.header")
 	public static String CMD_DEBUG_BLOCK_HEADER;
 	@ConfigOption(path = "commands.debug.block.text")
 	public static List<String> CMD_DEBUG_BLOCK_TEXT;
-	@ConfigOption(path = "commands.debug.block.invalid-block")
-	public static String CMD_DEBUG_BLOCK_INVALID_BLOCK;
 	
 	@ConfigOption(path = "commands.debug.config.header")
 	public static String CMD_DEBUG_CONFIG_HEADER;
@@ -101,8 +117,6 @@ public abstract class Messages extends ConfigurationFile {
 	public static String CMD_DEBUG_PLAYER_HEADER;
 	@ConfigOption(path = "commands.debug.player.text")
 	public static List<String> CMD_DEBUG_PLAYER_TEXT;
-	@ConfigOption(path = "commands.debug.player.player-offline")
-	public static String CMD_DEBUG_PLAYER_PLAYER_OFFLINE;
 	
 	@ConfigOption(path = "commands.log.header-player")
 	public static String CMD_LOG_HEADER_PLAYER;
@@ -122,8 +136,6 @@ public abstract class Messages extends ConfigurationFile {
 	public static String CMD_LOG_FORMAT_GENERAL_BLOCK;
 	@ConfigOption(path = "commands.log.nothing")
 	public static String CMD_LOG_NOTHING;
-	@ConfigOption(path = "commands.log.player-not-found")
-	public static String CMD_LOG_PLAYERNOTFOUND;
 	@ConfigOption(path = "commands.log.invalid-block")
 	public static String CMD_LOG_INVALID_BLOCK;
 	
@@ -137,8 +149,6 @@ public abstract class Messages extends ConfigurationFile {
 	public static String CMD_STATS_FORMATPLAYER;
 	@ConfigOption(path = "commands.stats.invalid-type")
 	public static String CMD_STATS_INVALID_TYPE;
-	@ConfigOption(path = "commands.stats.player-not-found")
-	public static String CMD_STATS_PLAYERNOTFOUND;
 	
 	@ConfigOption(path = "commands.top.header")
 	public static String CMD_TOP_HEADER;
@@ -157,6 +167,11 @@ public abstract class Messages extends ConfigurationFile {
 	public static String CMD_VERSION_UPDATED;
 	@ConfigOption(path = "commands.version.outdated")
 	public static String CMD_VERSION_OUTDATED;
+	
+	@ConfigOption(path = "commands.whitelist.added")
+	public static String CMD_WHITELIST_ADDED;
+	@ConfigOption(path = "commands.whitelist.removed")
+	public static String CMD_WHITELIST_REMOVED;
 	
 	
 	// Help messages
@@ -187,6 +202,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String HELP_CMD_TOP;
 	@ConfigOption(path = "help.commands.version")
 	public static String HELP_CMD_VERSION;
+	@ConfigOption(path = "help.commands.whitelist")
+	public static String HELP_CMD_WHITELIST;
 	
 	@ConfigOption(path = "help.command-descriptions.help")
 	public static String HELP_CMD_DESCRIPTIONS_HELP;
@@ -204,6 +221,8 @@ public abstract class Messages extends ConfigurationFile {
 	public static String HELP_CMD_DESCRIPTIONS_TOP;
 	@ConfigOption(path = "help.command-descriptions.version")
 	public static String HELP_CMD_DESCRIPTIONS_VERSION;
+	@ConfigOption(path = "help.command-descriptions.whitelist")
+	public static String HELP_CMD_DESCRIPTIONS_WHITELIST;
 	
 	protected Messages(OreAnnouncerPlugin plugin) {
 		super(plugin);

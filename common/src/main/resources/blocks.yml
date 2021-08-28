@@ -5,6 +5,8 @@
 # Complete syntax of a block:
 # MATERIAL_NAME:                 *| The material name of the block
 #  enabled: true/false           *| Enable/disable the block
+#  variants:                      | Add material variants
+#    - ANOTHER_MATERIAL_NAME
 #  display-name: ""              *| Display name of the block
 #  display-color: ""              | Display color of the block
 #  alerts:
@@ -25,12 +27,31 @@
 #    console-count: ""            | Override count console message
 #  sound: ""                      | Sound name of the alert
 #  light-level: 0-15              | Trigger alert if light level is below of X
+#  height-level: #                | Trigger alert if height level is below of X
 #  count-on-destroy: true/false   | Count this block for statistics system
 #  tnt: true/false                | Handle destroy with TNT
 #  priority: #                    | Priority number (-1 to disable) default 0
 blocks:
+  EMERALD_ORE:
+    enabled: true
+    variants:
+      - DEEPSLATE_EMERALD_ORE
+    display-name: "Emerald Ore"
+    display-color: "green"
+    alerts:
+      user: true
+      admin: true
+    name:
+      singular: emerald
+      plural: emeralds
+    sound: ENTITY_PLAYER_LEVELUP
+    light-level: 15
+    count-on-destroy: true
+    priority: 100
   DIAMOND_ORE:
     enabled: true
+    variants:
+      - DEEPSLATE_DIAMOND_ORE
     display-name: "Diamond Ore"
     display-color: "aqua"
     alerts:
@@ -46,22 +67,10 @@ blocks:
     light-level: 15
     count-on-destroy: true
     priority: 90
-  EMERALD_ORE:
-    enabled: true
-    display-name: "Emerald Ore"
-    display-color: "green"
-    alerts:
-      user: true
-      admin: true
-    name:
-      singular: emerald
-      plural: emeralds
-    sound: ENTITY_PLAYER_LEVELUP
-    light-level: 15
-    count-on-destroy: true
-    priority: 100
   GOLD_ORE:
     enabled: true
+    variants:
+      - DEEPSLATE_GOLD_ORE
     display-name: "Gold Ore"
     display-color: "gold"
     alerts:
@@ -78,6 +87,8 @@ blocks:
     priority: 80
   REDSTONE_ORE:
     enabled: false
+    variants:
+      - DEEPSLATE_REDSTONE_ORE
     display-name: "Redstone Ore"
     display-color: "red"
     alerts:
@@ -89,8 +100,25 @@ blocks:
     light-level: 15
     count-on-destroy: false
     priority: -1
+  COPPER_ORE:
+    enabled: false
+    variants:
+      - DEEPSLATE_COPPER_ORE
+    display-name: "Copper Ore"
+    display-color: "dark_aqua"
+    alerts:
+      user: false
+      admin: false
+    name:
+      singular: copper
+      plural: coppers
+    light-level: 15
+    count-on-destroy: false
+    priority: -1
   IRON_ORE:
     enabled: false
+    variants:
+      - DEEPSLATE_IRON_ORE
     display-name: "Iron Ore"
     display-color: "white"
     alerts:
@@ -115,6 +143,19 @@ blocks:
     light-level: 15
     count-on-destroy: false
     priority: 60
+  ANCIENT_DEBRIS:
+    enabled: false
+    display-name: "Ancient Debris"
+    display-color: "dark_red"
+    alerts:
+      user: true
+      admin: true
+    name:
+      singular: ancient debris
+      plural: ancient debris
+    light-level: 15
+    count-on-destroy: false
+    priority: 80
 
 dont-edit-this:
   version: 1

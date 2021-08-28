@@ -2,19 +2,18 @@ package com.alessiodp.oreannouncer.common.commands.sub;
 
 import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
-import com.alessiodp.core.common.commands.utils.ADPSubCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.commands.list.CommonCommands;
 import com.alessiodp.oreannouncer.common.commands.utils.OACommandData;
+import com.alessiodp.oreannouncer.common.commands.utils.OASubCommand;
 import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import com.alessiodp.oreannouncer.common.utils.OreAnnouncerPermission;
-import com.alessiodp.oreannouncer.common.configuration.OAConstants;
 import com.alessiodp.oreannouncer.common.configuration.data.Messages;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 
-public class CommandReload extends ADPSubCommand {
+public class CommandReload extends OASubCommand {
 	
 	public CommandReload(ADPPlugin plugin, ADPMainCommand mainCommand) {
 		super(
@@ -22,7 +21,7 @@ public class CommandReload extends ADPSubCommand {
 				mainCommand,
 				CommonCommands.RELOAD,
 				OreAnnouncerPermission.ADMIN_RELOAD,
-				ConfigMain.COMMANDS_CMD_RELOAD,
+				ConfigMain.COMMANDS_SUB_RELOAD,
 				true
 		);
 		
@@ -58,21 +57,8 @@ public class CommandReload extends ADPSubCommand {
 	public void onCommand(CommandData commandData) {
 		OAPlayerImpl player = ((OACommandData) commandData).getPlayer();
 		
-		if (player != null)
-			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_CMD_RELOAD
-					.replace("{player}", player.getName()), true);
-		else
-			plugin.getLoggerManager().logDebug(OAConstants.DEBUG_CMD_RELOAD_CONSOLE, true);
-		
 		plugin.reloadConfiguration();
 		
-		if (player != null) {
-			player.sendMessage(Messages.OREANNOUNCER_COMMON_CONFIGRELOAD);
-			
-			plugin.getLoggerManager().log(OAConstants.DEBUG_CMD_RELOADED
-					.replace("{player}", player.getName()), true);
-		} else {
-			plugin.getLoggerManager().log(OAConstants.DEBUG_CMD_RELOADED_CONSOLE, true);
-		}
+		sendMessage(commandData.getSender(), player, Messages.OREANNOUNCER_COMMON_CONFIGRELOAD);
 	}
 }
