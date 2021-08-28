@@ -22,7 +22,7 @@ oreannouncer:
   common-messages:
     invalid-command: '&cNeplatný příkaz'
     configuration-reloaded: '&aKonfigurace znovu načtena'
-    player-not-found: '&cThe player %player% has not been found'
+    player-not-found: '&cHráč %player% nebyl nalezen'
   blocks:
     enabled: '&aPovoleno'
     disabled: '&cZakázáno'
