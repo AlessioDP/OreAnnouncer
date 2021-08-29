@@ -217,8 +217,7 @@ public class CommandDebug extends OASubCommand {
 					.setAlertUsers(true)
 					.setAlertAdmins(true)
 					.setLocation(getPlayerLocation(targetPlayer))
-					.setLightLevel(getPlayerLightLevel(targetPlayer))
-					.setHeightLevel(getPlayerHeightLevel(targetPlayer));
+					.setLightLevel(getPlayerLightLevel(targetPlayer));
 			
 			switch (alertType) {
 				case NORMAL:
@@ -330,10 +329,6 @@ public class CommandDebug extends OASubCommand {
 	
 	protected int getPlayerLightLevel(OAPlayerImpl player) {
 		return 15;
-	}
-	
-	protected int getPlayerHeightLevel(OAPlayerImpl player) {
-		return 0;
 	}
 	
 	private enum CommandType {

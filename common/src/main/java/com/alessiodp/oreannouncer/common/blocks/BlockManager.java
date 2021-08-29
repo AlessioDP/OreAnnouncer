@@ -77,7 +77,7 @@ public abstract class BlockManager {
 					data.getNumber(),
 					new BlockLocationImpl(data.getLocation()),
 					data.getLightLevel(),
-					data.getHeightLevel()
+					(int) data.getLocation().getY()
 			));
 		} else if (type == AlertType.COUNT) {
 			plugin.getEventManager().callEvent(plugin.getEventManager().prepareAdvancedEvent(
@@ -87,7 +87,7 @@ public abstract class BlockManager {
 					data.getElapsed(),
 					new BlockLocationImpl(data.getLocation()),
 					data.getLightLevel(),
-					data.getHeightLevel()
+					(int) data.getLocation().getY()
 			));
 		}
 	}
@@ -284,6 +284,7 @@ public abstract class BlockManager {
 					.replace("%world%", data.getLocation().getWorld())
 					.replace("%time%", elapsed >= 0 ? formatElapsed(elapsed) : "%time%"
 					.replace("%light_level%", Integer.toString(data.getLightLevel()))
+					.replace("%height_level%", Integer.toString((int) data.getLocation().getY()))
 				), data.getBlock());
 		
 		String ret = plugin.getMessageUtils().convertPlayerPlaceholders(repl.apply(message), data.getPlayer());

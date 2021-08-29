@@ -108,8 +108,7 @@ public class BungeeOAMessageListener extends BungeeMessageListener {
 		OABlockImpl block = Blocks.searchBlock(packet.getData().getBlock());
 		BlockData blockData = new BlockData(player, block, packet.getData().getNumber())
 				.setLocation(packet.getData().getLocation())
-				.setLightLevel(packet.getData().getLightLevel())
-				.setHeightLevel(packet.getData().getHeightLevel());
+				.setLightLevel(packet.getData().getLightLevel());
 		
 		((OreAnnouncerPlugin) plugin).getBlockManager().sendAlerts(
 				new Alert(packet.getMessages().getUser(), packet.getMessages().getAdmin(), packet.getMessages().getConsole())

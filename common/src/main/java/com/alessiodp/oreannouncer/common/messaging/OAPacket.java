@@ -66,7 +66,7 @@ public class OAPacket extends ADPPacket {
 				blockData.getNumber(),
 				blockData.getLocation(),
 				blockData.getLightLevel(),
-				blockData.getHeightLevel()
+				(int) blockData.getLocation().getY()
 		);
 		return this;
 	}

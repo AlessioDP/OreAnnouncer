@@ -96,7 +96,9 @@ public abstract class BlockListener {
 						OAPlayerImpl player = plugin.getPlayerManager().getPlayer(user.getUUID());
 						if (!user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_DESTROY)
 								&& (player == null || !(ConfigMain.WHITELIST_ENABLE && ConfigMain.WHITELIST_BYPASS_DESTROY) || !player.isWhitelisted()))
-							plugin.getBlockManager().handleBlockDestroy(new BlockData(player, e.getKey(), e.getValue()));
+							plugin.getBlockManager().handleBlockDestroy(new BlockData(player, e.getKey(), e.getValue())
+									.setLightLevel(15)
+									.setLocation(blockLocation));
 						
 						if (ConfigMain.STATS_ADVANCED_COUNT_ENABLE && !user.hasPermission(OreAnnouncerPermission.ADMIN_BYPASS_FOUND)
 								&& (player == null || !(ConfigMain.WHITELIST_ENABLE && ConfigMain.WHITELIST_BYPASS_FOUND) || !player.isWhitelisted()))
@@ -154,7 +156,8 @@ public abstract class BlockListener {
 			plugin.getScheduler().runAsync(() -> {
 				OAPlayerImpl player = plugin.getPlayerManager().getPlayer(user.getUUID());
 				if (!(ConfigMain.WHITELIST_ENABLE && ConfigMain.WHITELIST_BYPASS_DESTROY) || !player.isWhitelisted())
-					plugin.getBlockManager().handleBlockDestroy(new BlockData(player, block, 1));
+					plugin.getBlockManager().handleBlockDestroy(new BlockData(player, block, 1)
+							.setLocation(blockLocation));
 			});
 		}
 	}

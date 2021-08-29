@@ -36,12 +36,4 @@ public class BukkitCommandDebug extends CommandDebug {
 			return bukkitPlayer.getLocation().getBlock().getLightLevel();
 		return super.getPlayerLightLevel(player);
 	}
-	
-	@Override
-	protected int getPlayerHeightLevel(OAPlayerImpl player) {
-		Player bukkitPlayer = Bukkit.getPlayer(player.getPlayerUUID());
-		if (bukkitPlayer != null)
-			return bukkitPlayer.getLocation().getBlockY();
-		return super.getPlayerLightLevel(player);
-	}
 }

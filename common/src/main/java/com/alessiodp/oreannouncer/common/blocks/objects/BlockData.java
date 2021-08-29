@@ -18,7 +18,6 @@ public class BlockData implements Serializable {
 	private boolean alertAdmins;
 	private ADPLocation location;
 	private int lightLevel;
-	private int heightLevel;
 	private long elapsed = -1L;
 	
 	public BlockData(OAPlayerImpl player, OABlockImpl block, int number) {
