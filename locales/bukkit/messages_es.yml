@@ -53,7 +53,9 @@ alerts:
   #%x%, %y% and %z% = Coordinates of the destroyed block
   #%number% = Number of blocks
   #%time% = Time elapsed (Only count messages)
+  #%world% = World
   #%light_level% = Light level
+  #%height_level% = Height level
   #JSON tips:
   #- Make a single block for a coordinate (see below)
   #- Do not use obfuscation if you are using coordinates to run commands
