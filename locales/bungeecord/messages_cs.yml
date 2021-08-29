@@ -34,12 +34,12 @@ oreannouncer:
     none: '&8Žádné'
   syntax:
     wrong-message: '&cNesprávná syntaxe: Zadej &7/%syntax%'
-    advanced: 'advanced'
+    advanced: 'pokročilé'
     block: 'blok'
     destroy: 'zničení'
     found: 'nalezeno'
-    normal: 'normal'
-    number: 'number'
+    normal: 'normální'
+    number: 'číslo'
     order: 'pořadí'
     page: 'strana'
     player: 'hráč'
@@ -125,8 +125,8 @@ commands:
     updated: '&2&lOreAnnouncer &2%version% &7(%platform%) - Vytvořil &6AlessioDP'
     outdated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Vytvořil &6AlessioDP\n&aNalezena nová verze: &2%newversion%"
   whitelist:
-    added: '&aAdded %player% to the whitelist'
-    removed: '&aRemoved %player% from the whitelist'
+    added: 'Hráč %player% &apřidán na seznam povolených'
+    removed: 'Hráč %player% &aodebrán ze seznamu povolených'
 #/ =============================== \
 #|          HELP MESSAGES          |
 #\ =============================== /
@@ -161,6 +161,6 @@ help:
     stats: 'Zobrazení statistik hráčů'
     top: 'Zobrazení nejlepších hráčů'
     version: 'Zobrazení informací o pluginu OreAnnouncer'
-    whitelist: 'Whitelist players'
+    whitelist: 'Seznam povolených hráčů'
 dont-edit-this:
   version: 8
