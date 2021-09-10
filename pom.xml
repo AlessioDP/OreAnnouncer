@@ -88,7 +88,7 @@
 		<libs.sqlite>3.36.0.2</libs.sqlite>
 		
 		<!-- External plugins -->
-		<libs.discordsrv>1.23.0</libs.discordsrv>
+		<libs.discordsrv>1.24.0</libs.discordsrv>
 		<libs.itemMods>1.5-SNAPSHOT</libs.itemMods>
 		<libs.llapi>1.6.0</libs.llapi>
 		<libs.mmoItems>6.6.0</libs.mmoItems>
