@@ -12,39 +12,39 @@ oreannouncer:
   #[Special tags]
   #=> %version%     = New version found
   #=> %thisversion% = Version installed
-  update-available: '&2Dostępna jest nowa wersja OreAnnouncer: %version% (Obecna: %thisversion%)'
+  update-available: '&2Nieuwe versie van OreAnnouncer gevonden: %version% (Actueel: %thisversion%)'
   #[Special tags]
   #=> %config%      = The configuration file name that is outdated
-  configuration-outdated: '&cPlik konfiguracyjny ''%config%'' OreAnnouncer jest przestarzały!'
+  configuration-outdated: '&cHet configuratie bestand ''%config%'' van OreAnnouncer is verouderd!'
   #[Special tags]
   #=> %permission%  = Missing permission
-  no-permission: '&cNie masz uprawnień do użycia tej komendy'
+  no-permission: '&cJe hebt geen toegang tot deze opdracht'
   common-messages:
-    invalid-command: '&cNiepoprawna komenda'
-    configuration-reloaded: '&aPrzeładowano konfigurację'
-    player-not-found: '&cNie znaleziono gracza %player%'
+    invalid-command: '&cOngeldige opdracht'
+    configuration-reloaded: '&aConfiguratie herladen'
+    player-not-found: '&cDe persoon %player% Is niet gevonden'
   blocks:
-    enabled: '&aWłączone'
-    disabled: '&cWyłączone'
-    toggled-on: '&aWł'
-    toggled-off: '&cWył'
-    word-yes: '&aTak'
-    word-no: '&cNie'
-    empty: '&8Puste'
-    none: '&8Brak'
+    enabled: '&aAan'
+    disabled: '&cUit'
+    toggled-on: '&aIngeschakeld'
+    toggled-off: '&cUitgeschakeld'
+    word-yes: '&aJa'
+    word-no: '&cNee'
+    empty: '&8Leeg'
+    none: '&8niks'
   syntax:
-    wrong-message: '&cNiepoprawna składnia: Wpisz &7/%syntax%'
-    advanced: 'zaawansowany'
+    wrong-message: '&cFoute syntax: Type &7/%syntax%'
+    advanced: 'geavanceerd'
     block: 'blok'
-    destroy: 'zniszcz'
-    found: 'znaleziono'
-    normal: 'normalny'
-    number: 'liczba'
-    order: 'kolejność'
-    page: 'strona'
-    player: 'gracz'
-    type: 'typ'
-    unknown: 'nieznany'
+    destroy: 'kapot maken'
+    found: 'gevonden'
+    normal: 'normaal'
+    number: 'nummer'
+    order: 'volgorde'
+    page: 'pagina'
+    player: 'speler'
+    type: 'type'
+    unknown: 'ongekend'
 #/ =============================== \
 #|         ALERTS MESSAGES         |
 #\ =============================== /
@@ -61,44 +61,44 @@ alerts:
   #- Do not use obfuscation if you are using coordinates to run commands
   #Example:
   #{"text":"%x%","color":"gray"} - This is a single block for a coordinate
-  user: '&6%player% &eznalazł %number% %display_color%%block%!'
+  user: '&6%player% &egevonden %number% %display_color%%block%!'
   #Without teleport:
   #admin: "&6%player% &efound %number% %block%! &7[x: %x%&7, z: %z%&7]"
-  admin: '[{"text":"&6%player% &eznalazł %number% %display_color%%block%&e! "},{"text":"&7Teleport","hoverEvent":{"action":"show_text","value":{"text":"&6Kliknij aby przeteleportować!"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
+  admin: '[{"text":"&6%player% &egevonden %number% %display_color%%block%&e! "},{"text":"&7Teleport","hoverEvent":{"action":"show_text","value":{"text":"&6Klik om te teleporteren!"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
   #No JSON for console
-  console: '%player% znalazł %number% %block%! [x: %x%, y: %y%, z: %z%]'
+  console: '%player% vond %number% %block%! [x: %x%, y: %y%, z: %z%]'
   count:
     user: ''
-    admin: '[{"text":"&6%player% &eznalazł %number% %display_color%%block%&e w ciągu %time%! "},{"text":"&7Teleport","hoverEvent":{"action":"show_text","value":{"text":"&6Kliknij aby przeteleportować!"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
+    admin: '[{"text":"&6%player% &egevonden %number% %display_color%%block%&e in %time%! "},{"text":"&7Teleport","hoverEvent":{"action":"show_text","value":{"text":"&6Klik om te teleporteren!"}},"clickEvent":{"action":"run_command","value":"/tp %player%"}}]'
     #No JSON for console
-    console: '%player% znalazł %number% %block% w %time%! [x: %x%, y: %y%, z: %z%]'
+    console: '%player% vond %number% %block% in %time%! [x: %x%, y: %y%, z: %z%]'
   tnt:
     user: ''
-    admin: '[{"text":"&eTNT gracza &6%player% &ezniszczyło %number% %display_color%%block%&e! "},{"text":"&7Teleport","hoverEvent":{"action":"show_text","value":{"text":"&6Kliknij aby przeteleportować!"}},"clickEvent":{"action":"run_command","value":"/tp %x% %y% %z%"}}]'
-    console: 'TNT gracza %player% zniszczyło %number% %block%! [x: %x%, y: %y%, z: %z%]'
-    unknown-player: 'nieznany gracz'
+    admin: '[{"text":"&eTNT of &6%player% &ebrak %number% %display_color%%block%&e! "},{"text":"&7Teleport","hoverEvent":{"action":"show_text","value":{"text":"&6Klik om te teleporteren!"}},"clickEvent":{"action":"run_command","value":"/tp %x% %y% %z%"}}]'
+    console: 'TNT of %player% brak %number% %block%! [x: %x%, y: %y%, z: %z%]'
+    unknown-player: 'een ongekende speler'
   discordsrv:
     text:
       normal:
-        user: '%player% znalazł %number% %block%!'
-        admin: '%player% znalazł %number% %block%! [x: %x%, y: %y%, z: %z%]'
+        user: '%player% vond %number% %block%!'
+        admin: '%player% vond %number% %block%! [x: %x%, y: %y%, z: %z%]'
       count:
         user: ''
-        admin: '%player% znalazł %number% %block% w %time%! [x: %x%, y: %y%, z: %z%]'
+        admin: '%player% vond %number% %block% in %time%! [x: %x%, y: %y%, z: %z%]'
       tnt:
         user: ''
-        admin: 'TNT gracza %player% zniszczyło %number% %block%! [x: %x%, y: %y%, z: %z%]'
+        admin: 'TNT of %player% brak %number% %block%! [x: %x%, y: %y%, z: %z%]'
     embed:
       normal:
         user:
           color: '#008b50'
-          author-name: '%player% znalazł %number% %block%!'
+          author-name: '%player% vond %number% %block%!'
           title: ''
           description: ''
           footer: ''
         admin:
           color: '#008b50'
-          author-name: '%player% znalazł %number% %block%! [x: %x%, y: %y%, z: %z%]'
+          author-name: '%player% vond %number% %block%! [x: %x%, y: %y%, z: %z%]'
           title: ''
           description: ''
           footer: ''
@@ -111,7 +111,7 @@ alerts:
           footer: ''
         admin:
           color: '#008b50'
-          author-name: '%player% znalazł %number% %block% w %time%! [x: %x%, y: %y%, z: %z%]'
+          author-name: '%player% vond %number% %block% in %time%! [x: %x%, y: %y%, z: %z%]'
           title: ''
           description: ''
           footer: ''
@@ -125,7 +125,7 @@ alerts:
           footer: ''
         admin:
           color: '#008b50'
-          author-name: 'TNT gracza %player% zniszczyło %number% %block%! [x: %x%, y: %y%, z: %z%]'
+          author-name: 'TNT of %player% brak %number% %block%! [x: %x%, y: %y%, z: %z%]'
           title: ''
           description: ''
           footer: ''
@@ -134,11 +134,11 @@ alerts:
 #\ =============================== /
 commands:
   alerts:
-    toggle-on: '&aOd teraz będziesz otrzymywał powiadomienia'
-    toggle-off: '&aOd teraz nie będziesz otrzymywał powiadomień'
+    toggle-on: '&aNu kunt u alerts zien'
+    toggle-off: '&aNu ziet u geen alerts meer'
   debug:
     common:
-      invalid-block: '&cNieprawidłowy blok'
+      invalid-block: '&cFoutieve blok'
       invalid-player: "&cThe player '%player%' must be online"
     alert:
       invalid-number: '&cYou must insert a positive number'
@@ -173,53 +173,53 @@ commands:
         - "&2Bypass alerts/destroy/found&7: %permission_bypass_alerts%&7/%permission_bypass_destroy%&7/%permission_bypass_found%"
         - "&2See alerts of users/admins&7: %see_alerts_users%&7/%see_alerts_admins%"
   log:
-    header-player: '&2============ &lLogi %player% (%page%/%maxpages%) &r&2=============='
+    header-player: '&2============ &l%player%''s Logboek (%page%/%maxpages%) &r&2============'
     footer-player: ''
-    header-block: '&2============ &lLogi %block% (%page%/%maxpages%) &r&2=============='
+    header-block: '&2========= &l%block%''s Logboek (%page%/%maxpages%) &r&2============='
     footer-block: ''
-    header-block-general: '&2=============== &lLogi Bloków (%page%/%maxpages%) &r&2==============='
+    header-block-general: '&2================ &lBlokken Log (%page%/%maxpages%) &r&2================'
     footer-block-general: ''
-    format-player-block: '[{"text":"&6%number% %display_color%%display_name% "},{"text":"&7%date_elapsed% temu!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
-    format-general-block: '[{"text":"&6%number% %display_color%%display_name% &8przez %player% "},{"text":"&7%date_elapsed% temu!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
-    nothing: '&7Nic'
-    invalid-block: '&cNieprawidłowy blok'
+    format-player-block: '[{"text":"&6%number% %display_color%%display_name% "},{"text":"&7%date_elapsed% geleden!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
+    format-general-block: '[{"text":"&6%number% %display_color%%display_name% &8door %player% "},{"text":"&7%date_elapsed% geleden!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
+    nothing: '&7Niks'
+    invalid-block: '&cFoutieve blok'
   stats:
-    header: '&2============= &lStatystyki %player% &r&2============='
+    header: '&2============== &l%player%''s Statistieken &r&2=============='
     footer: ''
-    nothing: '&7Nic'
+    nothing: '&7Niks'
     format-block: '%display_color%%display_name%&7: %value%'
-    invalid-type: '&cNieprawidłowy typ wartości'
+    invalid-type: '&cFoutiev type van waarde'
   top:
     #[Special tags]
     #=> %total%    = Total players
     #=> %page%     = Current list page
     #=> %maxpages% = How many pages exist
-    header: '&2================= &lNajlepsi gracze &r&2================='
+    header: '&2=============== &lTop Spelers &r&2==============='
     footer: ''
-    no-one: '&7Nikt'
+    no-one: '&7Niemand'
     #You can use JSON to shows per-block total on hover
-    format-player: '&a%player%&7: %value% bloków'
-    invalid-order: '&cNieprawidłowy typ zamówienia'
-    invalid-block: '&cNieprawidłowy blok'
+    format-player: '&a%player%&7: %value% blokken'
+    invalid-order: '&cVerkeerd type volgorde'
+    invalid-block: '&cFoutieve blok'
   version:
     #[Special tags]
     #=> %version%    = OreAnnouncer version
     #=> %newversion% = Latest OreAnnouncer version
     #=> %platform%   = Platform of the plugin (e.g. Bukkit, BungeeCord)
-    updated: '&2&lOreAnnouncer &2%version% &7(%platform%) - Wydane przez &6AlessioDP'
-    outdated: "&2&lOreAnnouncer &2%version% &7(%platform%) -Wydane przez &6AlessioDP\n&aDostępna nowa wersja: &2%newversion%"
+    updated: '&2&lOreAnnouncer &2%version% &7(%platform%) - Gemaakt door &6AlessioDP'
+    outdated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Gemaakt door &6AlessioDP\n&aNieuwe versie gevonden: &2%newversion%"
   whitelist:
-    added: '&aDodano %player% do białej listy'
-    removed: '&aUsunięto %player% z białej listy'
+    added: '&a%player% Is toegevoegd aan de whitelist'
+    removed: '&a%player% Is verwijderd van de whitelist'
 #/ =============================== \
 #|          HELP MESSAGES          |
 #\ =============================== /
 help:
-  header: '&2=========== &lStrona pomocy OreAnnouncer &r&2==========='
+  header: '&2============= &lOreAnnouncer Help Pagina &r&2============='
   footer: ''
-  perform-command: 'Wykonaj polecenie'
+  perform-command: 'Voer de opdracht uit'
   console-help:
-    header: 'Możesz wykonać tylko te komendy:'
+    header: 'Je kan alleen deze opdrachten maken:'
     command: ' > %command% - %description%'
   commands:
     #[Special tags]
@@ -237,14 +237,14 @@ help:
     version: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
     whitelist: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
   command-descriptions:
-    help: 'Pokaż strony pomocy'
-    alerts: 'Przełącz alerty'
-    debug: 'Problemy debugowania'
-    log: 'Pokaż logi'
-    reload: 'Przeładuj pliki konfiguracyjne OreAnnouncer'
-    stats: 'Pokaż statystyki gracza'
-    top: 'Pokaż Top graczy'
-    version: 'Pokaż informacje OreAnnouncer'
-    whitelist: 'Biała lista graczy'
+    help: 'Toont de hulp pagina''s'
+    alerts: '(de)activeer alerts'
+    debug: 'Debug problemen'
+    log: 'toon logs'
+    reload: 'Herlaad OreAnnouncer configuratie bestanden'
+    stats: 'Toon speler statistieken'
+    top: 'Toon beste spelers'
+    version: 'Toon OreAnnouncer informatie'
+    whitelist: 'Whitelist spelers'
 dont-edit-this:
   version: 10
