@@ -164,7 +164,8 @@ public abstract class BlockListener {
 	
 	private void found(User user, OABlockImpl block, ADPLocation blockLocation, int lightLevel) {
 		if (!plugin.getBlockManager().isBlockMarked(blockLocation, BlockManager.MarkType.FOUND)) {
-			if ((!ConfigMain.BLOCKS_LIGHT_ENABLE || !ConfigMain.BLOCKS_LIGHT_COUNTIFLOWER || lightLevel <= block.getLightLevel())
+			if (block.getCountNumber() > 0 && block.getCountTime() > 0
+					&& (!ConfigMain.BLOCKS_LIGHT_ENABLE || !ConfigMain.BLOCKS_LIGHT_COUNTIFLOWER || lightLevel <= block.getLightLevel())
 					&& (!ConfigMain.BLOCKS_HEIGHT_ENABLE || !ConfigMain.BLOCKS_HEIGHT_COUNTIFLOWER || block.getHeightLevel() <= 0 || blockLocation.getY() <= block.getHeightLevel())) {
 				int numberOfBlocks = plugin.getBlockManager().countNearBlocks(blockLocation, block, BlockManager.MarkType.FOUND);
 				if (numberOfBlocks > 0) {

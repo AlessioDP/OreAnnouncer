@@ -1,5 +1,6 @@
 package com.alessiodp.oreannouncer.common.addons.internal;
 
+import com.alessiodp.core.common.user.User;
 import com.alessiodp.core.common.utils.CommonUtils;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.blocks.objects.OABlockImpl;
@@ -37,6 +38,7 @@ public enum OAPlaceholder {
 	PLAYER_FOUND_BLOCK (true, "player_found_<block>"),
 	PLAYER_FOUNDIN_RANGE (true, "player_foundin_<range>"),
 	PLAYER_FOUNDIN_RANGE_BLOCK (true, "player_foundin_<range>_<block>"),
+	PLAYER_DISPLAY_NAME,
 	PLAYER_ID,
 	PLAYER_NAME,
 	PLAYER_TOP_BY_DESTROY,
@@ -244,6 +246,9 @@ public enum OAPlaceholder {
 						} catch (Exception ignored) {}
 					}
 					return "0";
+				case PLAYER_DISPLAY_NAME:
+					User user = plugin.getPlayer(player.getPlayerUUID());
+					return user != null ? user.getDisplayName() : player.getName();
 				case PLAYER_ID:
 					return player.getPlayerUUID().toString();
 				case PLAYER_NAME:
