@@ -22,29 +22,29 @@ oreannouncer:
   common-messages:
     invalid-command: '&cUngültiger Befehl'
     configuration-reloaded: '&aDie Konfigurationen wurden neu geladen'
-    player-not-found: '&cThe player %player% has not been found'
+    player-not-found: '&cDer Spieler %player% wurde nicht gefunden'
   blocks:
-    enabled: '&aEnabled'
-    disabled: '&cDisabled'
-    toggled-on: '&aOn'
-    toggled-off: '&cOff'
-    word-yes: '&aYes'
-    word-no: '&cNo'
-    empty: '&8Empty'
-    none: '&8None'
+    enabled: '&aAktiviert'
+    disabled: '&cDeaktiviert'
+    toggled-on: '&aAn'
+    toggled-off: '&cAus'
+    word-yes: '&aJa'
+    word-no: '&cNein'
+    empty: '&8Leer'
+    none: '&8Keine'
   syntax:
-    wrong-message: '&cWrong syntax: Type &7/%syntax%'
-    advanced: 'advanced'
-    block: 'block'
-    destroy: 'destroy'
-    found: 'found'
+    wrong-message: '&cFalscher Syntax: Gebe &7/%syntax% ein'
+    advanced: 'erweitert'
+    block: 'blockieren'
+    destroy: 'zerstören'
+    found: 'gefunden'
     normal: 'normal'
-    number: 'number'
-    order: 'order'
-    page: 'page'
-    player: 'player'
-    type: 'type'
-    unknown: 'unknown'
+    number: 'zahl'
+    order: 'auftrag'
+    page: 'seite'
+    player: 'spieler'
+    type: 'typ'
+    unknown: "unbekannt\n"
 #/ =============================== \
 #|        COMMANDS MESSAGES        |
 #\ =============================== /
@@ -54,7 +54,7 @@ commands:
     toggle-off: '&aDu wirst keine Warnungen mehr sehen'
   debug:
     common:
-      invalid-block: '&cInvalid block'
+      invalid-block: '&cUngültiger Block'
       invalid-player: "&cThe player '%player%' must be online"
     alert:
       invalid-number: '&cYou must insert a positive number'
@@ -93,30 +93,30 @@ commands:
     footer-player: ''
     header-block: '&2============= &l%block%''s Log (%page%/%maxpages%) &r&2============='
     footer-block: ''
-    header-block-general: '&2================ &lBlocks Log (%page%/%maxpages%) &r&2================'
+    header-block-general: '&2================ &lBlöcke-Log (%page%/%maxpages%) &r&2================'
     footer-block-general: ''
     format-player-block: '[{"text":"&6%number% %display_color%%display_name% "},{"text":"&7%date_elapsed% ago!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
-    format-general-block: '[{"text":"&6%number% %display_color%%display_name% &8by %player% "},{"text":"&7%date_elapsed% ago!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
-    nothing: '&7Nothing'
-    invalid-block: '&cInvalid block'
+    format-general-block: '[{"text":"&6%number% %display_color%%display_name% &8von %player% "},{"text":"&7%date_elapsed% her!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
+    nothing: '&7Nichts'
+    invalid-block: '&cUngültiger Block'
   stats:
-    header: '&2============== &l%player%''s Stats &r&2=============='
+    header: '&2============== &l%player%''s Statistik &r&2=============='
     footer: ''
-    nothing: '&7Nothing'
+    nothing: '&7Nichts'
     format-block: '%display_color%%display_name%&7: %value%'
-    invalid-type: '&cInvalid value type'
+    invalid-type: '&cUngültiger Werttyp'
   top:
     #[Special tags]
     #=> %total%    = Total players
     #=> %page%     = Current list page
     #=> %maxpages% = How many pages exist
-    header: '&2=================== &lTop Players &r&2==================='
+    header: '&2=================== &lTop Spieler &r&2==================='
     footer: ''
     no-one: '&7Niemand'
     #You can use JSON to shows per-block total on hover
-    format-player: '&a%player%&7: %value% blocks'
-    invalid-order: '&cInvalid order type'
-    invalid-block: '&cInvalid block'
+    format-player: '&a%player%&7: %value% Blöcke'
+    invalid-order: '&cUngültiger Auftragstyp'
+    invalid-block: '&cUngültiger Block'
   version:
     #[Special tags]
     #=> %version%    = OreAnnouncer version
@@ -125,15 +125,15 @@ commands:
     updated: '&2&lOreAnnouncer &2%version% &7(%platform%) - Entwickelt von &6AlessioDP'
     outdated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Entwickelt von &6AlessioDP\\n&aNeue Version gefunden: &2%newversion%"
   whitelist:
-    added: '&aAdded %player% to the whitelist'
-    removed: '&aRemoved %player% from the whitelist'
+    added: '%player% zur Whitelist &ahinzugefügt'
+    removed: '%player% von der Whitelist &aentfernt'
 #/ =============================== \
 #|          HELP MESSAGES          |
 #\ =============================== /
 help:
-  header: '&2============= &lOreAnnouncer Help Page &r&2============='
+  header: '&2============= &lOreAnnouncer Hilfeseite &r&2============='
   footer: ''
-  perform-command: 'Perform the command'
+  perform-command: 'Führe den Befehl aus'
   console-help:
     header: 'Du kannst nur diese Befehle ausführen:'
     command: ' > %command% - %description%'
@@ -153,14 +153,14 @@ help:
     version: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
     whitelist: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
   command-descriptions:
-    help: 'Show help pages'
-    alerts: 'Toggle alerts'
-    debug: 'Debug issues'
-    log: 'Show logs'
-    reload: 'Reload OreAnnouncer configuration files'
-    stats: 'Show player stats'
-    top: 'Show top players'
-    version: 'Show OreAnnouncer information'
-    whitelist: 'Whitelist players'
+    help: 'Hilfeseiten anzeigen'
+    alerts: 'Alarme umschalten'
+    debug: 'Debug-Fehler'
+    log: 'Logs anzeigen'
+    reload: 'OreAnnouncer Konfigurationsdateien neu laden'
+    stats: 'Spielerstatistiken anzeigen'
+    top: 'Top Spieler anzeigen'
+    version: 'OreAnnouncer Informationen anzeigen'
+    whitelist: 'Whitelist-Spieler'
 dont-edit-this:
   version: 8
