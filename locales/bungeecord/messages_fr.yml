@@ -22,7 +22,7 @@ oreannouncer:
   common-messages:
     invalid-command: '&cCommande invalide'
     configuration-reloaded: '&aConfiguration rechargée'
-    player-not-found: '&cThe player %player% has not been found'
+    player-not-found: '&cLe joueur %player% n''a pas été trouvé'
   blocks:
     enabled: '&aActivé'
     disabled: '&cDésactivé'
@@ -34,12 +34,12 @@ oreannouncer:
     none: '&8Aucun'
   syntax:
     wrong-message: '&cMauvaise syntaxe: écrivez &7/%syntax%'
-    advanced: 'advanced'
+    advanced: 'avancé'
     block: 'bloquer'
     destroy: 'détruire'
     found: 'trouvé'
     normal: 'normal'
-    number: 'number'
+    number: 'nombre'
     order: 'ordre'
     page: 'page'
     player: 'joueur'
@@ -125,8 +125,8 @@ commands:
     updated: '&2&lOreAnnouncer &2%version% &7(%platform%) - Développé par &6AlessioDP'
     outdated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Développé par &6AlessioDP\n&aNouvelle version trouvée : &2%newversion%"
   whitelist:
-    added: '&aAdded %player% to the whitelist'
-    removed: '&aRemoved %player% from the whitelist'
+    added: '&aAjout de %player% à la liste blanche'
+    removed: '&aSuppression de %player% à la liste blanche'
 #/ =============================== \
 #|          HELP MESSAGES          |
 #\ =============================== /
@@ -161,6 +161,6 @@ help:
     stats: 'Afficher les statistiques du joueur'
     top: 'Afficher les meilleurs joueurs'
     version: 'Afficher les informations OreAnnouncer'
-    whitelist: 'Whitelist players'
+    whitelist: 'Liste blanche des joueurs'
 dont-edit-this:
   version: 8
