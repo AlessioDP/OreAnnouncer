@@ -1,0 +1,166 @@
+---
+#/ =========================================== \
+#|  This is the messages file of OreAnnouncer  |
+#\ =========================================== /
+#For any problem be sure to:
+#- Read the entire documentation on: https://alessiodp.com/docs/oreannouncer/
+#- Join our Discord for further help: https://discord.alessiodp.com/
+#/ =============================== \
+#|      OREANNOUNCER MESSAGES      |
+#\ =============================== /
+oreannouncer:
+  #[Special tags]
+  #=> %version%     = New version found
+  #=> %thisversion% = Version installed
+  update-available: '&2New version of OreAnnouncer found: %version% (Current: %thisversion%)'
+  #[Special tags]
+  #=> %config%      = The configuration file name that is outdated
+  configuration-outdated: '&cThe configuration file ''%config%'' of OreAnnouncer is outdated!'
+  #[Special tags]
+  #=> %permission%  = Missing permission
+  no-permission: '&cYou do not have access to that command'
+  common-messages:
+    invalid-command: '&cInvalid command'
+    configuration-reloaded: '&aConfiguration reloaded'
+    player-not-found: '&cThe player %player% has not been found'
+  blocks:
+    enabled: '&aEnabled'
+    disabled: '&cDisabled'
+    toggled-on: '&aOn'
+    toggled-off: '&cOff'
+    word-yes: '&aYes'
+    word-no: '&cNo'
+    empty: '&8Empty'
+    none: '&8None'
+  syntax:
+    wrong-message: '&cWrong syntax: Type &7/%syntax%'
+    advanced: 'advanced'
+    block: 'block'
+    destroy: 'destroy'
+    found: 'found'
+    normal: 'normal'
+    number: 'number'
+    order: 'order'
+    page: 'page'
+    player: 'player'
+    type: 'type'
+    unknown: 'unknown'
+#/ =============================== \
+#|        COMMANDS MESSAGES        |
+#\ =============================== /
+commands:
+  alerts:
+    toggle-on: '&aNow you will be able to see alerts'
+    toggle-off: '&aYou won''t see alerts anymore'
+  debug:
+    common:
+      invalid-block: '&cInvalid block'
+      invalid-player: "&cThe player '%player%' must be online"
+    alert:
+      invalid-number: '&cYou must insert a positive number'
+      invalid-type: '&cYou must insert a valid alert type: normal/advanced'
+    block:
+      header: '&2=================== &lDebug Blocks &r&2==================='
+      text:
+        - "&2%material_name% &7(%display_name%&7) (%enabled%&7):"
+        - "  &7Alert users/admins: %alert_users%&7/&f%alert_admins%"
+        - "   number/time: &f%count_number%&7/&f%count_time%"
+        - "  &7Count destroy/TNT/light: %count_on_destroy%&7/%tnt%&7/&f%light_level%"
+    config:
+      header: '&2================== &lDebug Config &r&2=================='
+      text:
+        - "&2Outdated config/messages:&7 %outdated_config%&7/%outdated_messages%"
+        - "&2Storage&7: %storage%"
+        - "&2Alerts&7: %alerts%&7,  &2Coordinates&7: %coordinates%"
+        - "&2Bypass player/silk/counter&7: %bypass_player%&7/%bypass_silk%&7/%bypass_counter%"
+        - "&2Stats&7: %stats% &7(%stats_values%)"
+        - "  &2Blacklist log&7: %blacklist_log%"
+        - "  &2Blacklist stats&7: %blacklist_stats%"
+        - "  &2Blacklist top&7: %blacklist_top%"
+        - "&2Advanced count&7: %advanced_count%"
+        - "  &2Log command&7: %log_command%"
+        - "&2Top command&7: %top_command%"
+    player:
+      header: '&2================== &lDebug Player &r&2=================='
+      text:
+        - "&2UUID&7: %uuid%"
+        - "&2Name&7: %name%"
+        - "&2Operator&7: %op%"
+        - "&2Bypass alerts/destroy/found&7: %permission_bypass_alerts%&7/%permission_bypass_destroy%&7/%permission_bypass_found%"
+        - "&2See alerts of users/admins&7: %see_alerts_users%&7/%see_alerts_admins%"
+  log:
+    header-player: '&2============ &l%player%''s Log (%page%/%maxpages%) &r&2============'
+    footer-player: ''
+    header-block: '&2============= &l%block%''s Log (%page%/%maxpages%) &r&2============='
+    footer-block: ''
+    header-block-general: '&2================ &lBlocks Log (%page%/%maxpages%) &r&2================'
+    footer-block-general: ''
+    format-player-block: '[{"text":"&6%number% %display_color%%display_name% "},{"text":"&7%date_elapsed% ago!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
+    format-general-block: '[{"text":"&6%number% %display_color%%display_name% &8by %player% "},{"text":"&7%date_elapsed% ago!","hoverEvent":{"action":"show_text","value":["",{"text":"&6%date%"}]}}]'
+    nothing: '&7Nothing'
+    invalid-block: '&cInvalid block'
+  stats:
+    header: '&2============== &l%player%''s Stats &r&2=============='
+    footer: ''
+    nothing: '&7Nothing'
+    format-block: '%display_color%%display_name%&7: %value%'
+    invalid-type: '&cInvalid value type'
+  top:
+    #[Special tags]
+    #=> %total%    = Total players
+    #=> %page%     = Current list page
+    #=> %maxpages% = How many pages exist
+    header: '&2=================== &lTop Players &r&2==================='
+    footer: ''
+    no-one: '&7No one'
+    #You can use JSON to shows per-block total on hover
+    format-player: '&a%player%&7: %value% blocks'
+    invalid-order: '&cInvalid order type'
+    invalid-block: '&cInvalid block'
+  version:
+    #[Special tags]
+    #=> %version%    = OreAnnouncer version
+    #=> %newversion% = Latest OreAnnouncer version
+    #=> %platform%   = Platform of the plugin (e.g. Bukkit, BungeeCord)
+    updated: '&2&lOreAnnouncer &2%version% &7(%platform%) - Developed by &6AlessioDP'
+    outdated: "&2&lOreAnnouncer &2%version% &7(%platform%) - Developed by &6AlessioDP\n&aNew version found: &2%newversion%"
+  whitelist:
+    added: '&aAdded %player% to the whitelist'
+    removed: '&aRemoved %player% from the whitelist'
+#/ =============================== \
+#|          HELP MESSAGES          |
+#\ =============================== /
+help:
+  header: '&2============= &lOreAnnouncer Help Page &r&2============='
+  footer: ''
+  perform-command: 'Perform the command'
+  console-help:
+    header: 'You can only make these commands:'
+    command: ' > %command% - %description%'
+  commands:
+    #[Special tags]
+    #=> %syntax%          = Command syntax
+    #=> %description%     = Description
+    #=> %run_command%     = Command run syntax
+    #=> %perform_command% = Perform command message
+    help: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    alerts: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    debug: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    log: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    reload: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    stats: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    top: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    version: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"run_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+    whitelist: '{"text":"&2/%syntax% &7- %description%","clickEvent":{"action":"suggest_command","value":"/%run_command% "},"hoverEvent":{"action":"show_text","value":{"text":"&6%perform_command%"}}}'
+  command-descriptions:
+    help: 'Show help pages'
+    alerts: 'Toggle alerts'
+    debug: 'Debug issues'
+    log: 'Show logs'
+    reload: 'Reload OreAnnouncer configuration files'
+    stats: 'Show player stats'
+    top: 'Show top players'
+    version: 'Show OreAnnouncer information'
+    whitelist: 'Whitelist players'
+dont-edit-this:
+  version: 8
