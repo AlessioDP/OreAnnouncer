@@ -65,7 +65,7 @@ public class CommandWhitelist extends OASubCommand {
 			// Add or remove
 			if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_MISC_ADD))
 				commandType = CommandType.ADD;
-			else if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_MISC_ADD))
+			else if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_MISC_REMOVE))
 				commandType = CommandType.REMOVE;
 			else {
 				sendMessage(sender, player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
