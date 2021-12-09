@@ -17,7 +17,7 @@ public interface IAlertFoundEvent extends OreAnnouncerEvent {
 	/**
 	 * Get the block
 	 *
-	 * @return Returns the the {@link OABlock}
+	 * @return Returns the {@link OABlock}
 	 */
 	@NotNull
 	OABlock getBlock();

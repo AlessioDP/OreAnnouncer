@@ -1,6 +1,5 @@
 package com.alessiodp.oreannouncer.common.storage;
 
-import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.logging.LoggerManager;
 import com.alessiodp.core.common.storage.StorageType;
 import com.alessiodp.core.common.storage.sql.dao.SchemaHistorySQLiteDao;
@@ -9,13 +8,9 @@ import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
 import com.alessiodp.oreannouncer.common.players.PlayerManager;
 import com.alessiodp.oreannouncer.common.storage.dispatchers.OASQLDispatcher;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,34 +18,23 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.powermock.api.mockito.PowerMockito.when;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({
-		ADPPlugin.class
-})
 public class MigrationsTest {
-	@Rule
-	public final TemporaryFolder testFolder = new TemporaryFolder();
-	
-	private OreAnnouncerPlugin mockPlugin;
+	private static final OreAnnouncerPlugin mockPlugin = mock(OreAnnouncerPlugin.class);
 	private final Path testingPath = Paths.get("../testing/");
 	
-	@Before
-	public void setUp() throws IOException {
-		mockPlugin = mock(OreAnnouncerPlugin.class);
+	@BeforeAll
+	public static void setUp(@TempDir Path tempDir) {
 		LoggerManager mockLoggerManager = mock(LoggerManager.class);
-		mockStatic(ADPPlugin.class);
-		when(ADPPlugin.getInstance()).thenReturn(mockPlugin);
 		when(mockPlugin.getLoggerManager()).thenReturn(mockLoggerManager);
 		when(mockPlugin.getPluginFallbackName()).thenReturn("oreannouncer");
-		when(mockPlugin.getFolder()).thenReturn(testFolder.newFolder().toPath());
-		when(mockPlugin.getResource(anyString())).thenAnswer((mock) -> getClass().getClassLoader().getResourceAsStream(mock.getArgument(0)));
+		when(mockPlugin.getFolder()).thenReturn(tempDir);
+		when(mockPlugin.getResource(anyString())).thenAnswer((mock) -> ClassLoader.getSystemResourceAsStream(mock.getArgument(0)));
 		when(mockLoggerManager.isDebugEnabled()).thenReturn(true);
 		
 		// Mock managers for player/party initialization

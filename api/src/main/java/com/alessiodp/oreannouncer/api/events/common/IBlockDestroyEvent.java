@@ -18,7 +18,7 @@ public interface IBlockDestroyEvent extends OreAnnouncerEvent {
 	/**
 	 * Get the block
 	 *
-	 * @return Returns the the {@link OABlock}
+	 * @return Returns the {@link OABlock}
 	 */
 	@NotNull
 	OABlock getBlock();
@@ -26,7 +26,7 @@ public interface IBlockDestroyEvent extends OreAnnouncerEvent {
 	/**
 	 * Get the block location
 	 *
-	 * @return Returns the the {@link BlockLocation}
+	 * @return Returns the {@link BlockLocation}
 	 */
 	@NotNull
 	BlockLocation getBlockLocation();

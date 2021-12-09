@@ -187,7 +187,13 @@ public class CommandDebug extends OASubCommand {
 		} else if (commandData.getArgs()[1].equalsIgnoreCase(ConfigMain.COMMANDS_MISC_PLAYER)) {
 			commandType = CommandType.PLAYER;
 			if (commandData.getArgs().length == 2) {
-				targetPlayer = player;
+				if (player != null)
+					targetPlayer = player;
+				else {
+					sendMessage(sender, player, Messages.OREANNOUNCER_SYNTAX_WRONGMESSAGE
+							.replace("%syntax%", syntaxPlayer));
+					return;
+				}
 			} else if (commandData.getArgs().length == 3) {
 				// oa debug player <PLAYER>
 				User targetUser = plugin.getPlayerByName(commandData.getArgs()[2]);
@@ -239,13 +245,13 @@ public class CommandDebug extends OASubCommand {
 				// All blocks
 				for (OABlockImpl b : Blocks.LIST.values()) {
 					for (String line : Messages.CMD_DEBUG_BLOCK_TEXT) {
-						player.sendMessage(((OreAnnouncerPlugin) plugin).getMessageUtils().convertBlockFormattedPlaceholders(line, b));
+						sendMessage(sender, player, ((OreAnnouncerPlugin) plugin).getMessageUtils().convertBlockFormattedPlaceholders(line, b));
 					}
 				}
 			} else {
 				// Specific block
 				for (String line : Messages.CMD_DEBUG_BLOCK_TEXT) {
-					player.sendMessage(((OreAnnouncerPlugin) plugin).getMessageUtils().convertBlockFormattedPlaceholders(line, block));
+					sendMessage(sender, player, ((OreAnnouncerPlugin) plugin).getMessageUtils().convertBlockFormattedPlaceholders(line, block));
 				}
 			}
 		} else if (commandType == CommandType.CONFIG) {

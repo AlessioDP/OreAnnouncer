@@ -215,13 +215,12 @@ public abstract class BlockManager {
 	
 	public void handleTNTDestroy(BlockData data) {
 		// data.getPlayer() can be null
-		String userMessage = Messages.ALERTS_TNT_USER;
-		String adminMessage = Messages.ALERTS_TNT_ADMIN;
-		String consoleMessage = Messages.ALERTS_TNT_CONSOLE;
+		String userMessage = data.isAlertUsers() ? parseMessage(Messages.ALERTS_TNT_USER, data, AlerterType.USER) : "";
+		String adminMessage = data.isAlertAdmins() ? parseMessage(Messages.ALERTS_TNT_ADMIN, data, AlerterType.ADMIN) : "";
 		
-		userMessage = parseMessage(userMessage, data, AlerterType.USER);
-		adminMessage = parseMessage(adminMessage, data, AlerterType.ADMIN);
+		String consoleMessage = Messages.ALERTS_TNT_CONSOLE;
 		consoleMessage = parseMessage(consoleMessage, data, AlerterType.CONSOLE);
+		
 		
 		// Send message to players
 		if (plugin.isBungeeCordEnabled()) {

@@ -26,15 +26,13 @@ import com.alessiodp.oreannouncer.common.storage.sql.dao.players.PlayersDao;
 import com.alessiodp.oreannouncer.common.storage.sql.dao.players.PostgreSQLPlayersDao;
 import com.alessiodp.oreannouncer.common.storage.sql.dao.players.SQLitePlayersDao;
 import com.alessiodp.oreannouncer.common.utils.BlocksFoundResult;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import org.mockito.MockedStatic;
 
-import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashMap;
@@ -43,32 +41,25 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.powermock.api.mockito.PowerMockito.doReturn;
-import static org.powermock.api.mockito.PowerMockito.when;
-import static org.powermock.api.mockito.PowerMockito.doAnswer;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.when;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({
-		ADPPlugin.class
-})
 public class SQLDispatcherTest {
-	@Rule
-	public final TemporaryFolder testFolder = new TemporaryFolder();
+	private static final OreAnnouncerPlugin mockPlugin = mock(OreAnnouncerPlugin.class);
+	private static MockedStatic<ADPPlugin> staticPlugin;
 	
-	private OreAnnouncerPlugin mockPlugin;
-	
-	@Before
-	public void setUp() {
-		mockPlugin = mock(OreAnnouncerPlugin.class);
+	@BeforeAll
+	public static void setUp(@TempDir Path tempDir) {
 		ADPBootstrap mockBootstrap = mock(ADPBootstrap.class);
 		LoggerManager mockLoggerManager = mock(LoggerManager.class);
 		when(mockPlugin.getPluginFallbackName()).thenReturn("oreannouncer");
@@ -77,12 +68,8 @@ public class SQLDispatcherTest {
 		when(mockPlugin.getLoggerManager()).thenReturn(mockLoggerManager);
 		when(mockPlugin.getVersion()).thenReturn("1.0.0");
 		
-		// Mock static ADPPlugin, used in DAOs
-		mockStatic(ADPPlugin.class);
-		when(ADPPlugin.getInstance()).thenReturn(mockPlugin);
-		
 		// Mock debug methods
-		when(mockPlugin.getResource(anyString())).thenAnswer((mock) -> getClass().getClassLoader().getResourceAsStream(mock.getArgument(0)));
+		when(mockPlugin.getResource(anyString())).thenAnswer((mock) -> ClassLoader.getSystemResourceAsStream(mock.getArgument(0)));
 		when(mockLoggerManager.isDebugEnabled()).thenReturn(true);
 		doAnswer((args) -> {
 			System.out.println((String) args.getArgument(0));
@@ -99,6 +86,14 @@ public class SQLDispatcherTest {
 		when(mockOfflineUser.getName()).thenReturn("Dummy");
 		
 		ConfigMain.STORAGE_SETTINGS_GENERAL_SQL_PREFIX = "test_";
+		
+		staticPlugin = mockStatic(ADPPlugin.class);
+		when(ADPPlugin.getInstance()).thenReturn(mockPlugin);
+	}
+	
+	@AfterAll
+	public static void tearDown() {
+		staticPlugin.close();
 	}
 	
 	private OASQLDispatcher getSQLDispatcherH2() {
@@ -115,17 +110,13 @@ public class SQLDispatcherTest {
 		return ret;
 	}
 	
-	private OASQLDispatcher getSQLDispatcherSQLite() {
+	private OASQLDispatcher getSQLDispatcherSQLite(Path temporaryDirectory) {
 		ConfigMain.STORAGE_SETTINGS_SQLITE_DBFILE = "";
 		OASQLDispatcher ret = new OASQLDispatcher(mockPlugin, StorageType.SQLITE) {
 			@Override
 			public ConnectionFactory initConnectionFactory() {
 				ConnectionFactory ret = super.initConnectionFactory();
-				try {
-					ret.setDatabaseUrl("jdbc:sqlite:" + testFolder.newFile("database.db").toPath().toString());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				ret.setDatabaseUrl("jdbc:sqlite:" + temporaryDirectory.resolve("database.db"));
 				return ret;
 			}
 		};
@@ -206,12 +197,12 @@ public class SQLDispatcherTest {
 	}
 	
 	@Test
-	public void testPlayer() {
+	public void testPlayer(@TempDir Path tempDir) {
 		OASQLDispatcher dispatcher = getSQLDispatcherH2();
 		player(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(H2PlayersDao.class));
 		dispatcher.stop();
 		
-		dispatcher = getSQLDispatcherSQLite();
+		dispatcher = getSQLDispatcherSQLite(tempDir);
 		player(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLitePlayersDao.class));
 		dispatcher.stop();
 		
@@ -265,12 +256,12 @@ public class SQLDispatcherTest {
 	}
 	
 	@Test
-	public void testBlockFound() {
+	public void testBlockFound(@TempDir Path tempDir) {
 		OASQLDispatcher dispatcher = getSQLDispatcherH2();
 		blockFound(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(BlocksFoundDao.class));
 		dispatcher.stop();
 		
-		dispatcher = getSQLDispatcherSQLite();
+		dispatcher = getSQLDispatcherSQLite(tempDir);
 		blockFound(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(BlocksFoundDao.class));
 		dispatcher.stop();
 		
@@ -341,12 +332,12 @@ public class SQLDispatcherTest {
 	}
 	
 	@Test
-	public void testTopPlayersDestroyed() {
+	public void testTopPlayersDestroyed(@TempDir Path tempDir) {
 		OASQLDispatcher dispatcher = getSQLDispatcherH2();
 		topPlayersDestroyed(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(H2BlocksDao.class));
 		dispatcher.stop();
 		
-		dispatcher = getSQLDispatcherSQLite();
+		dispatcher = getSQLDispatcherSQLite(tempDir);
 		topPlayersDestroyed(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLiteBlocksDao.class));
 		dispatcher.stop();
 		
@@ -434,12 +425,12 @@ public class SQLDispatcherTest {
 	}
 	
 	@Test
-	public void testTopPlayersFound() {
+	public void testTopPlayersFound(@TempDir Path tempDir) {
 		OASQLDispatcher dispatcher = getSQLDispatcherH2();
 		topPlayersFound(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(BlocksFoundDao.class));
 		dispatcher.stop();
 		
-		dispatcher = getSQLDispatcherSQLite();
+		dispatcher = getSQLDispatcherSQLite(tempDir);
 		topPlayersFound(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(BlocksFoundDao.class));
 		dispatcher.stop();
 		
@@ -533,12 +524,12 @@ public class SQLDispatcherTest {
 	}
 	
 	@Test
-	public void testStatsPlayerDestroyed() {
+	public void testStatsPlayerDestroyed(@TempDir Path tempDir) {
 		OASQLDispatcher dispatcher = getSQLDispatcherH2();
 		statsPlayerDestroyed(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(H2BlocksDao.class));
 		dispatcher.stop();
 		
-		dispatcher = getSQLDispatcherSQLite();
+		dispatcher = getSQLDispatcherSQLite(tempDir);
 		statsPlayerDestroyed(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(SQLiteBlocksDao.class));
 		dispatcher.stop();
 		
@@ -625,12 +616,12 @@ public class SQLDispatcherTest {
 	}
 	
 	@Test
-	public void testStatsPlayerFound() {
+	public void testStatsPlayerFound(@TempDir Path tempDir) {
 		OASQLDispatcher dispatcher = getSQLDispatcherH2();
 		statsPlayerFound(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(BlocksFoundDao.class));
 		dispatcher.stop();
 		
-		dispatcher = getSQLDispatcherSQLite();
+		dispatcher = getSQLDispatcherSQLite(tempDir);
 		statsPlayerFound(dispatcher, dispatcher.getConnectionFactory().getJdbi().onDemand(BlocksFoundDao.class));
 		dispatcher.stop();
 		
@@ -715,12 +706,12 @@ public class SQLDispatcherTest {
 	}
 	
 	@Test
-	public void testGetLogBlocks() {
+	public void testGetLogBlocks(@TempDir Path tempDir) {
 		OASQLDispatcher dispatcher = getSQLDispatcherH2();
 		getLogBlocks(dispatcher);
 		dispatcher.stop();
 		
-		dispatcher = getSQLDispatcherSQLite();
+		dispatcher = getSQLDispatcherSQLite(tempDir);
 		getLogBlocks(dispatcher);
 		dispatcher.stop();
 		

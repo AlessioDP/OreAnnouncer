@@ -12,34 +12,33 @@ import com.alessiodp.oreannouncer.common.players.PlayerManager;
 import com.alessiodp.oreannouncer.common.players.objects.OAPlayerImpl;
 import com.alessiodp.oreannouncer.common.storage.OADatabaseManager;
 import com.alessiodp.oreannouncer.common.utils.BlocksFoundResult;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.MockRepository;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
-import static org.powermock.api.mockito.PowerMockito.doAnswer;
-import static org.powermock.api.mockito.PowerMockito.when;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.spy;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
-@RunWith(PowerMockRunner.class)
 public class OAPlaceholderTest {
-	private OreAnnouncerPlugin mockPlugin;
-	private OADatabaseManager mockDatabaseManager;
+	private static final OreAnnouncerPlugin mockPlugin = mock(OreAnnouncerPlugin.class);
+	private static final OADatabaseManager mockDatabaseManager = mock(OADatabaseManager.class);
+	private static MockedStatic<ADPPlugin> staticPlugin;
 	
 	private OABlockImpl block1;
 	private OABlockImpl block2;
@@ -47,31 +46,27 @@ public class OAPlaceholderTest {
 	private OAPlayerImpl player1;
 	private OAPlayerImpl player2;
 	
-	@Before
-	public void setUp() {
-		MockRepository.clear();
-		mockPlugin = mock(OreAnnouncerPlugin.class);
-		// Mock logger
+	@BeforeAll
+	public static void setUp() {
 		LoggerManager mockLoggerManager = mock(LoggerManager.class);
 		when(mockPlugin.getLoggerManager()).thenReturn(mockLoggerManager);
-		
-		// Mock getInstance
-		mockStatic(ADPPlugin.class);
-		when(ADPPlugin.getInstance()).thenReturn(mockPlugin);
-		
-		// Mock player manager
-		TestPlayerManager playerManager = spy(new TestPlayerManager(mockPlugin));
-		when(mockPlugin.getPlayerManager()).thenReturn(playerManager);
-		
-		// Mock database manager
-		mockDatabaseManager = mock(OADatabaseManager.class);
 		when(mockPlugin.getDatabaseManager()).thenReturn(mockDatabaseManager);
 		
-		// Mock names
 		OfflineUser mockOfflineUser = mock(OfflineUser.class);
 		when(mockPlugin.getOfflinePlayer(any())).thenReturn(mockOfflineUser);
 		when(mockOfflineUser.getName()).thenReturn("Dummy");
 		
+		staticPlugin = mockStatic(ADPPlugin.class);
+		when(ADPPlugin.getInstance()).thenReturn(mockPlugin);
+	}
+	
+	@AfterAll
+	public static void tearDown() {
+		staticPlugin.close();
+	}
+	
+	@BeforeEach
+	public void setUpEach() {
 		ConfigMain.STATS_BLACKLIST_BLOCKS_STATS = Collections.emptyList();
 		
 		block1 = new OABlockImpl(mockPlugin, "matA");
@@ -85,6 +80,8 @@ public class OAPlaceholderTest {
 		player1 = new TestOAPlayerImpl(mockPlugin, UUID.randomUUID());
 		player2 = new TestOAPlayerImpl(mockPlugin, UUID.randomUUID());
 		
+		TestPlayerManager playerManager = spy(new TestPlayerManager(mockPlugin));
+		when(mockPlugin.getPlayerManager()).thenReturn(playerManager);
 		when(playerManager.getPlayer(any())).then(uuid -> {
 			if (uuid.getArgument(0).equals(player1.getPlayerUUID()))
 				return player1;
@@ -95,7 +92,6 @@ public class OAPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, OAPlaceholder.class})
 	public void testPlaceholderPlayerDestroy() {
 		LinkedHashMap<OABlockImpl, Integer> statsPlayer = new LinkedHashMap<>();
 		statsPlayer.put(block1, 30);
@@ -115,7 +111,6 @@ public class OAPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, OAPlaceholder.class})
 	public void testPlaceholderPlayerFound() {
 		doAnswer((mock) -> {
 			if (mock.getArgument(1) != null && mock.getArgument(1) instanceof OABlockImpl) {
@@ -142,7 +137,6 @@ public class OAPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, OAPlaceholder.class})
 	public void testPlaceholderPlayerFoundIn() {
 		doAnswer((mock) -> {
 			if (mock.getArgument(1) == null) {
@@ -186,7 +180,6 @@ public class OAPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, OAPlaceholder.class})
 	public void testPlaceholderTopPlayerDestroy() {
 		LinkedHashMap<OABlockImpl, Integer> statsPlayer = new LinkedHashMap<>();
 		statsPlayer.put(block1, 30);
@@ -206,7 +199,6 @@ public class OAPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, OAPlaceholder.class})
 	public void testPlaceholderTopPlayerByDestroy() {
 		LinkedHashMap<UUID, Integer> res = new LinkedHashMap<>();
 		res.put(player1.getPlayerUUID(), 20);
@@ -237,7 +229,6 @@ public class OAPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, OAPlaceholder.class})
 	public void testPlaceholderTopPlayerByFound() {
 		LinkedHashMap<UUID, Integer> res = new LinkedHashMap<>();
 		res.put(player1.getPlayerUUID(), 20);
@@ -268,7 +259,6 @@ public class OAPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, OAPlaceholder.class})
 	public void testPlaceholderTopPlayersTotalByDestroy() {
 		when(mockDatabaseManager.getTopPlayersNumber(eq(OADatabaseManager.ValueType.DESTROY), isNull())).thenReturn(20);
 		when(mockDatabaseManager.getTopPlayersNumber(eq(OADatabaseManager.ValueType.DESTROY), eq(block1))).thenReturn(10);
@@ -285,7 +275,6 @@ public class OAPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, OAPlaceholder.class})
 	public void testPlaceholderTopPlayersTotalByFound() {
 		when(mockDatabaseManager.getTopPlayersNumber(eq(OADatabaseManager.ValueType.FOUND), isNull())).thenReturn(20);
 		when(mockDatabaseManager.getTopPlayersNumber(eq(OADatabaseManager.ValueType.FOUND), eq(block1))).thenReturn(10);
@@ -302,7 +291,6 @@ public class OAPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, OAPlaceholder.class})
 	public void testPlaceholderPlayerTopByDestroy() {
 		when(mockDatabaseManager.getTopPlayerPosition(eq(player1.getPlayerUUID()), eq(OADatabaseManager.ValueType.DESTROY), isNull())).thenReturn(1);
 		when(mockDatabaseManager.getTopPlayerPosition(eq(player1.getPlayerUUID()), eq(OADatabaseManager.ValueType.DESTROY), eq(block1))).thenReturn(2);
@@ -319,7 +307,6 @@ public class OAPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, OAPlaceholder.class})
 	public void testPlaceholderTotalByDestroy() {
 		when(mockDatabaseManager.getTotalDestroy(isNull())).thenReturn(20);
 		when(mockDatabaseManager.getTotalDestroy(eq(block1))).thenReturn(10);
@@ -336,7 +323,6 @@ public class OAPlaceholderTest {
 	}
 	
 	@Test
-	@PrepareForTest({ADPPlugin.class, OAPlaceholder.class})
 	public void testPlaceholderTotalByFound() {
 		when(mockDatabaseManager.getTotalFound(isNull())).thenReturn(20);
 		when(mockDatabaseManager.getTotalFound(eq(block1))).thenReturn(10);
