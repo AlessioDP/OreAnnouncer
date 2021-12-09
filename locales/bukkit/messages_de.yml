@@ -167,8 +167,8 @@ commands:
     player:
       header: '&2================== &lDebug Player &r&2=================='
       text:
-        - "&2UUID&7: %uuid%"
-        - "&2Name&7: %name%"
+        - "&2UUID&7: %player_uuid%"
+        - "&2Name&7: %player_name%"
         - "&2Operator&7: %op%"
         - "&2Bypass alerts/destroy/found&7: %permission_bypass_alerts%&7/%permission_bypass_destroy%&7/%permission_bypass_found%"
         - "&2See alerts of users/admins&7: %see_alerts_users%&7/%see_alerts_admins%"
