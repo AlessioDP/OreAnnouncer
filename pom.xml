@@ -91,7 +91,7 @@
 		<!-- External plugins -->
 		<libs.discordsrv>1.24.0</libs.discordsrv>
 		<libs.itemMods>2.0.0-alpha.1</libs.itemMods>
-		<libs.llapi>1.6.0</libs.llapi>
+		<libs.llapi>1.7.2</libs.llapi>
 		<libs.mmoItems>6.6.4</libs.mmoItems>
 		<libs.mythicLib>1.1.6</libs.mythicLib>
 		<libs.papi>2.10.10</libs.papi>
