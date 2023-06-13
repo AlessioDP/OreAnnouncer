@@ -4,7 +4,6 @@ import com.alessiodp.core.common.addons.internal.JsonHandler;
 import com.alessiodp.core.common.utils.ADPLocation;
 import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.configuration.data.ConfigMain;
-import com.alessiodp.oreannouncer.common.configuration.data.Messages;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

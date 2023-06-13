@@ -18,6 +18,11 @@ public abstract class OAConfigurationManager extends ConfigurationManager {
 	}
 	
 	@Override
+	protected boolean isAutoUpgradeEnabled() {
+		return false;
+	}
+	
+	@Override
 	protected void performChanges() {
 		plugin.getDatabaseManager().setDatabaseType(StorageType.getEnum(ConfigMain.STORAGE_TYPE_DATABASE));
 		plugin.getLoginAlertsManager().setPermission(OreAnnouncerPermission.ADMIN_WARNINGS);

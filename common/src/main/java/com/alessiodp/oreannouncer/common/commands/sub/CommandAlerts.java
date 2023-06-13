@@ -4,7 +4,6 @@ import com.alessiodp.core.common.ADPPlugin;
 import com.alessiodp.core.common.commands.utils.ADPMainCommand;
 import com.alessiodp.core.common.commands.utils.CommandData;
 import com.alessiodp.core.common.user.User;
-import com.alessiodp.oreannouncer.common.OreAnnouncerPlugin;
 import com.alessiodp.oreannouncer.common.commands.list.CommonCommands;
 import com.alessiodp.oreannouncer.common.commands.utils.OACommandData;
 import com.alessiodp.oreannouncer.common.commands.utils.OASubCommand;

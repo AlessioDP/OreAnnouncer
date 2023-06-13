@@ -32,8 +32,8 @@ public class OAPacketTest {
 	
 	@Test
 	public void testBuildAdvanced() throws IOException {
-		byte[] raw = makePacket()
-				.setType(OAPacket.PacketType.values()[0])
+		byte[] raw = ((OAPacket) makePacket()
+				.setType(OAPacket.PacketType.values()[0]))
 				.setDataRaw(new OAPacket.Data(
 						UUID.randomUUID(),
 						"material",
@@ -48,7 +48,7 @@ public class OAPacketTest {
 	
 	@Test
 	public void testReadBasic() throws IOException {
-		OAPacket packet = makePacket()
+		OAPacket packet = (OAPacket) makePacket()
 				.setType(OAPacket.PacketType.values()[0]);
 		
 		OAPacket newPacket = OAPacket.read(mockPlugin, packet.build());
@@ -58,18 +58,18 @@ public class OAPacketTest {
 	
 	@Test
 	public void testReadBasicFail() throws IOException {
-		OAPacket packet = makePacket()
+		OAPacket packet = (OAPacket) makePacket()
 				.setType(OAPacket.PacketType.values()[0]);
 		
 		OAPacket newPacket = OAPacket.read(mockPlugin, packet.build());
-		packet = packet.setServerId("different");
+		packet = packet.setSource("different");
 		assertNotEquals(packet, newPacket);
 	}
 	
 	@Test
 	public void testReadAdvanced() throws IOException {
-		OAPacket packet = makePacket()
-				.setType(OAPacket.PacketType.values()[0])
+		OAPacket packet = ((OAPacket) makePacket()
+				.setType(OAPacket.PacketType.values()[0]))
 				.setDataRaw(new OAPacket.Data(
 						UUID.randomUUID(),
 						"material",
@@ -86,8 +86,8 @@ public class OAPacketTest {
 	
 	@Test
 	public void testReadAdvancedFail() throws IOException {
-		OAPacket packet = makePacket()
-				.setType(OAPacket.PacketType.values()[0])
+		OAPacket packet = ((OAPacket) makePacket()
+				.setType(OAPacket.PacketType.values()[0]))
 				.setDataRaw(new OAPacket.Data(
 						UUID.randomUUID(),
 						"material",
@@ -99,12 +99,12 @@ public class OAPacketTest {
 		
 		OAPacket newPacket = OAPacket.read(mockPlugin, packet.build());
 		
-		packet.setServerName("another");
+		packet.setSource("another");
 		
 		assertNotEquals(packet, newPacket);
 	}
 	
 	private OAPacket makePacket() {
-		return new OAPacket(VERSION);
+		return (OAPacket) new OAPacket().setVersion(VERSION);
 	}
 }

@@ -115,7 +115,6 @@ public abstract class OreAnnouncerPlugin extends ADPPlugin {
 	private void reloadAdpUpdater() {
 		getAdpUpdater().reload(
 				getPluginFallbackName(),
-				OAConstants.PLUGIN_SPIGOTCODE,
 				ConfigMain.OREANNOUNCER_UPDATES_CHECK,
 				ConfigMain.OREANNOUNCER_UPDATES_WARN,
 				OreAnnouncerPermission.ADMIN_WARNINGS,

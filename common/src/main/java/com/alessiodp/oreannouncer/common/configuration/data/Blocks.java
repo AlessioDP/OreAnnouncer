@@ -119,7 +119,11 @@ public class Blocks extends ConfigurationFile {
 	}
 	
 	@Override
-	public void loadConfiguration() {
+	public void loadCustomFileOptions() {
+		loadBlocks();
+	}
+	
+	public void loadBlocks() {
 		HashMap<String, OABlockImpl> list = new HashMap<>();
 		HashMap<String, OABlockImpl> variants = new HashMap<>();
 		
@@ -136,7 +140,7 @@ public class Blocks extends ConfigurationFile {
 						if (v instanceof String && ((OreAnnouncerPlugin) plugin).getBlockManager().existsMaterial((String) v)) {
 							block.addVariant((String) v);
 						} else {
-							plugin.getLoggerManager().printError(String.format(OAConstants.DEBUG_CFG_WRONG_VARIANT, v));
+							plugin.getLoggerManager().logError(String.format(OAConstants.DEBUG_CFG_WRONG_VARIANT, v));
 						}
 					});
 					block.setDisplayName(csBlocks.getString(key + ".display-name", key));
@@ -165,7 +169,7 @@ public class Blocks extends ConfigurationFile {
 					block.getVariants().forEach(v -> variants.put(CommonUtils.toUpperCase(v), block));
 				} else {
 					// Material doesn't exist
-					plugin.getLoggerManager().printError(String.format(OAConstants.DEBUG_CFG_WRONG_BLOCK, key));
+					plugin.getLoggerManager().logError(String.format(OAConstants.DEBUG_CFG_WRONG_BLOCK, key));
 				}
 			}
 		}

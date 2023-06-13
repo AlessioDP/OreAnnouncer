@@ -243,14 +243,4 @@ public abstract class ConfigMain extends ConfigurationFile {
 	protected ConfigMain(OreAnnouncerPlugin plugin) {
 		super(plugin);
 	}
-	
-	@Override
-	public void loadDefaults() {
-		loadDefaultConfigOptions();
-	}
-	
-	@Override
-	public void loadConfiguration() {
-		loadConfigOptions();
-	}
 }

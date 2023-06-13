@@ -227,13 +227,4 @@ public abstract class Messages extends ConfigurationFile {
 	protected Messages(OreAnnouncerPlugin plugin) {
 		super(plugin);
 	}
-	
-	public void loadDefaults() {
-		loadDefaultConfigOptions();
-	}
-	
-	@Override
-	public void loadConfiguration() {
-		loadConfigOptions();
-	}
 }

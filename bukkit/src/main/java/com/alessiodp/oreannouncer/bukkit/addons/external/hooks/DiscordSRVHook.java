@@ -29,7 +29,7 @@ public class DiscordSRVHook {
 			
 			ret = true;
 		} catch (Exception ex) {
-			plugin.getLoggerManager().printError(String.format(Constants.DEBUG_ADDON_OUTDATED, "DiscordSRV"));
+			plugin.getLoggerManager().logError(String.format(Constants.DEBUG_ADDON_OUTDATED, "DiscordSRV"));
 			ex.printStackTrace();
 		}
 		return ret;

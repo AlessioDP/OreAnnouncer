@@ -253,7 +253,7 @@ public abstract class BlockManager {
 						} else {
 							// Calculating too many blocks, print an error
 							// and force to stop the counter
-							plugin.getLoggerManager().printError(String.format(OAConstants.DEBUG_EVENT_BLOCK_BREAK_INFINITE_COUNT, block.getMaterialName()));
+							plugin.getLoggerManager().logError(String.format(OAConstants.DEBUG_EVENT_BLOCK_BREAK_INFINITE_COUNT, block.getMaterialName()));
 							return -1;
 						}
 						

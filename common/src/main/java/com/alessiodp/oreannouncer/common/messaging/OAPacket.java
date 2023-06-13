@@ -20,22 +20,11 @@ import java.util.UUID;
 @ToString
 public class OAPacket extends ADPPacket {
 	// Common
-	@Getter private PacketType type;
-	@Getter private String serverName;
-	@Getter private String serverId;
+	@Getter private String source;
 	
 	@Getter private UUID playerUuid;
 	@Getter private Data data;
 	@Getter private Messages messages;
-	
-	public OAPacket(String version) {
-		super(version);
-	}
-	
-	@Override
-	public String getName() {
-		return type != null ? type.name() : "UNKNOWN";
-	}
 	
 	public static OAPacket read(ADPPlugin plugin, byte[] bytes) {
 		OAPacket ret = null;
@@ -44,13 +33,13 @@ public class OAPacket extends ADPPacket {
 			ObjectInput in = new ObjectInputStream(bis);
 			ret = (OAPacket) in.readObject();
 		} catch (Exception ex) {
-			plugin.getLoggerManager().printError(String.format(Constants.DEBUG_LOG_MESSAGING_FAILED_READ, ex.getMessage()));
+			plugin.getLoggerManager().logError(String.format(Constants.DEBUG_LOG_MESSAGING_FAILED_READ, ex.getMessage()));
 		}
 		return ret;
 	}
 	
-	public OAPacket setType(PacketType type) {
-		this.type = type;
+	public OAPacket setSource(String source) {
+		this.source = source;
 		return this;
 	}
 	
@@ -78,16 +67,6 @@ public class OAPacket extends ADPPacket {
 	
 	public OAPacket setMessages(String user, String admin, String console) {
 		this.messages = new Messages(user, admin, console);
-		return this;
-	}
-	
-	public OAPacket setServerName(String serverName) {
-		this.serverName = serverName;
-		return this;
-	}
-	
-	public OAPacket setServerId(String serverId) {
-		this.serverId = serverId;
 		return this;
 	}
 	

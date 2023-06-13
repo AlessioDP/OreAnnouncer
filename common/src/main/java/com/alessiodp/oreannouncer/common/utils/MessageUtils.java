@@ -223,7 +223,7 @@ public abstract class MessageUtils {
 		try {
 			ret = DateTimeFormatter.ofPattern(ret).format(date);
 		} catch (IllegalArgumentException ex) {
-			plugin.getLoggerManager().printError(OAConstants.DEBUG_FAILED_PARSE_DATE);
+			plugin.getLoggerManager().logError(OAConstants.DEBUG_FAILED_PARSE_DATE);
 			ex.printStackTrace();
 		}
 		return ret;

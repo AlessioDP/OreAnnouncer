@@ -78,7 +78,7 @@ public class SQLDispatcherTest {
 		doAnswer((args) -> {
 			((Exception) args.getArgument(1)).printStackTrace();
 			return null;
-		}).when(mockLoggerManager).printErrorStacktrace(any(), any());
+		}).when(mockLoggerManager).logError(any(), any());
 		
 		// Mock names
 		OfflineUser mockOfflineUser = mock(OfflineUser.class);

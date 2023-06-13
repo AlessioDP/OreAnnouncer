@@ -12,6 +12,7 @@ public class BungeeOAMessenger extends ADPMessenger {
 	
 	@Override
 	public void reload() {
+		messageDispatcher.register();
 		messageListener.register();
 	}
 }

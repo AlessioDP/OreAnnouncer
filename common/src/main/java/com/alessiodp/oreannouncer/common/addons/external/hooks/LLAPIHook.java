@@ -23,7 +23,7 @@ public class LLAPIHook {
 			api = LastLogin.getApi();
 			ret = true;
 		} catch (Exception ex) {
-			plugin.getLoggerManager().printError(String.format(Constants.DEBUG_ADDON_OUTDATED, "LastLoginAPI"));
+			plugin.getLoggerManager().logError(String.format(Constants.DEBUG_ADDON_OUTDATED, "LastLoginAPI"));
 			ex.printStackTrace();
 		}
 		return ret;
