@@ -38,7 +38,8 @@ public class BukkitOAMessageDispatcher extends BukkitMessageDispatcher implement
 	@Override
 	public void sendAlertCount(BlockData blockData, String messageUser, String messageAdmin, String messageConsole) {
 		sendPacketToBungeecord(makePacket(OAPacket.PacketType.ALERT_COUNT)
-				.setData(blockData));
+				.setData(blockData)
+				.setMessages(messageUser, messageAdmin, messageConsole));
 	}
 	
 	@Override

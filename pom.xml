@@ -6,7 +6,7 @@
 	
 	<groupId>com.alessiodp.oreannouncer</groupId>
 	<artifactId>oreannouncer</artifactId>
-	<version>2.8.4</version>
+	<version>2.8.5</version>
 	<packaging>pom</packaging>
 	
 	<name>OreAnnouncer</name>
@@ -92,7 +92,7 @@
 		<libs.discordsrv>1.24.0</libs.discordsrv>
 		<libs.itemMods>2.0.0-alpha.1</libs.itemMods>
 		<libs.llapi>1.6.0</libs.llapi>
-		<libs.mmoItems>6.6.4</libs.mmoItems>
+		<libs.mmoItems>6.9.4-SNAPSHOT</libs.mmoItems>
 		<libs.mythicLib>1.1.6</libs.mythicLib>
 		<libs.papi>2.10.10</libs.papi>
 	</properties>
