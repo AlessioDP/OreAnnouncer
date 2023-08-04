@@ -89,12 +89,11 @@
 		<libs.sqlite>3.40.0.0</libs.sqlite>
 		
 		<!-- External plugins -->
-		<libs.discordsrv>1.24.0</libs.discordsrv>
+		<libs.discordsrv>1.27.0-SNAPSHOT</libs.discordsrv>
 		<libs.itemMods>2.0.0-alpha.1</libs.itemMods>
-		<libs.llapi>1.6.0</libs.llapi>
+		<libs.llapi>1.7.4</libs.llapi>
 		<libs.mmoItems>6.9.4-SNAPSHOT</libs.mmoItems>
-		<libs.mythicLib>1.1.6</libs.mythicLib>
-		<libs.papi>2.10.10</libs.papi>
+		<libs.papi>2.11.3</libs.papi>
 	</properties>
 	
 	<build>

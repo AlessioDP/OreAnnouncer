@@ -104,7 +104,19 @@
 			<scope>provided</scope>
 			<exclusions>
 				<exclusion>
-					<groupId>*</groupId>
+					<groupId>net.kyori</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>dev.vankka</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.bstats</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
 					<artifactId>*</artifactId>
 				</exclusion>
 			</exclusions>
